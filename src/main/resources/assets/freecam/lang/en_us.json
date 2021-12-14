@@ -1,4 +1,5 @@
 {
+  "text.autoconfig.freecam.title": "Freecam Options",
   "key.freecam.toggle": "Toggle Freecam",
   "category.freecam.freecam": "Freecam",
   "text.autoconfig.freecam.option.freecamHSpeed": "Freecam Horizontal Speed",
