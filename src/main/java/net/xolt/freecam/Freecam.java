@@ -26,7 +26,6 @@ public class Freecam implements ClientModInitializer {
     private static float[] rot;
     private static Entity riding;
     private static EntityPose pose;
-
     private static boolean isFlying;
     private static boolean isFallFlying;
     private static ClonePlayerEntity clone;
