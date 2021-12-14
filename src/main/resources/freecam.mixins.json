@@ -1,0 +1,14 @@
+{
+  "required": true,
+  "package": "net.xolt.freecam.mixins",
+  "compatibilityLevel": "JAVA_17",
+  "client": [
+    "ClientConnectionMixin",
+    "ClientPlayerEntityMixin",
+    "EntityMixin",
+    "MinecraftClientMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

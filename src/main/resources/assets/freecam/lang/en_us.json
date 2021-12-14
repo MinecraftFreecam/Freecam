@@ -1,0 +1,11 @@
+{
+  "key.freecam.toggle": "Toggle Freecam",
+  "category.freecam.freecam": "Freecam",
+  "text.autoconfig.freecam.option.freecamHSpeed": "Freecam Horizontal Speed",
+  "text.autoconfig.freecam.option.freecamVSpeed": "Freecam Vertical Speed",
+  "text.autoconfig.freecam.option.showHand": "Show Hand",
+  "text.autoconfig.freecam.option.showClone": "Show Clone",
+  "text.autoconfig.freecam.option.notify": "Notifications",
+  "text.autoconfig.freecam.option.enableMessage": "Enable Message",
+  "text.autoconfig.freecam.option.disableMessage": "Disable Message"
+}

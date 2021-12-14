@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "id": "freecam",
+  "version": "${version}",
+  "name": "Freecam",
+  "description": "A simple, standalone freecam mod.",
+  "authors": ["hashalite"],
+  "contact": {},
+  "license": "MIT",
+  "icon": "assets/freecam/icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": ["net.xolt.freecam.Freecam"],
+    "modmenu": [
+      "net.xolt.freecam.config.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "freecam.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": ">=0.12.11",
+    "fabric": "*",
+    "minecraft": "1.18.1"
+  }
+}
