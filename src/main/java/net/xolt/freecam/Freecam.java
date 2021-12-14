@@ -7,6 +7,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.Vec3d;
@@ -24,6 +25,8 @@ public class Freecam implements ClientModInitializer {
     private static Vec3d pos;
     private static float[] rot;
     private static Entity riding;
+    private static EntityPose pose;
+
     private static boolean isFlying;
     private static boolean isFallFlying;
     private static ClonePlayerEntity clone;
@@ -52,7 +55,8 @@ public class Freecam implements ClientModInitializer {
     private static void onEnable() {
         MC.chunkCullingEnabled = false;
         pos = MC.player.getPos();
-        rot = new float[]{MC.player.getYaw(), MC.player.getPitch()};
+        rot = new float[]{MC.player.getYaw(), MC.player.getPitch(), MC.player.bodyYaw};
+        pose = MC.player.getPose();
         isFlying = MC.player.getAbilities().flying;
         isFallFlying = MC.player.isFallFlying();
 
@@ -68,6 +72,8 @@ public class Freecam implements ClientModInitializer {
         if (ModConfig.INSTANCE.showClone) {
             clone = new ClonePlayerEntity(MC.world, MC.player);
             MC.world.addEntity(clone.getId(), clone);
+            clone.setPose(pose);
+            clone.setBodyYaw(rot[2]);
             if (riding != null) {
                 clone.startRiding(riding);
             }
@@ -90,6 +96,7 @@ public class Freecam implements ClientModInitializer {
         MC.chunkCullingEnabled = true;
         MC.gameRenderer.setRenderHand(true);
         MC.player.noClip = false;
+        MC.player.setPose(pose);
         MC.player.setVelocity(Vec3d.ZERO);
         MC.player.getAbilities().flying = isFlying;
         if (isFallFlying) {
