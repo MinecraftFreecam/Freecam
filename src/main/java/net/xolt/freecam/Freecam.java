@@ -24,6 +24,7 @@ public class Freecam implements ClientModInitializer {
     private static Vec3d pos;
     private static float[] rot;
     private static Entity riding;
+    private static boolean isFallFlying;
     private static ClonePlayerEntity clone;
 
     @Override
@@ -51,6 +52,7 @@ public class Freecam implements ClientModInitializer {
         MC.chunkCullingEnabled = false;
         pos = MC.player.getPos();
         rot = new float[]{MC.player.getYaw(), MC.player.getPitch()};
+        isFallFlying = MC.player.isFallFlying();
 
         if (!ModConfig.INSTANCE.showHand) {
             MC.gameRenderer.setRenderHand(false);
@@ -69,6 +71,10 @@ public class Freecam implements ClientModInitializer {
             }
         }
 
+        if (isFallFlying) {
+            MC.player.stopFallFlying();
+        }
+
         if (MC.player.isSprinting()) {
             MC.player.networkHandler.sendPacket(new ClientCommandC2SPacket(MC.player, ClientCommandC2SPacket.Mode.STOP_SPRINTING));
         }
@@ -83,6 +89,9 @@ public class Freecam implements ClientModInitializer {
         MC.gameRenderer.setRenderHand(true);
         MC.player.noClip = false;
         MC.player.setVelocity(Vec3d.ZERO);
+        if (isFallFlying) {
+            MC.player.startFallFlying();
+        }
 
         if (clone != null) {
             MC.world.removeEntity(clone.getId(), Entity.RemovalReason.DISCARDED);
@@ -94,6 +103,7 @@ public class Freecam implements ClientModInitializer {
 
         if (riding != null && MC.world.getEntityById(riding.getId()) != null) {
             MC.player.startRiding(riding);
+            riding = null;
         }
 
         if (ModConfig.INSTANCE.notify) {
