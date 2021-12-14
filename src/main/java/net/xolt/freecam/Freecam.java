@@ -43,11 +43,10 @@ public class Freecam implements ClientModInitializer {
     }
 
     private static void toggle() {
-        enabled = !enabled;
         if (enabled) {
-            onEnable();
-        } else {
             onDisable();
+        } else {
+            onEnable();
         }
     }
 
@@ -86,6 +85,8 @@ public class Freecam implements ClientModInitializer {
             MC.player.networkHandler.sendPacket(new ClientCommandC2SPacket(MC.player, ClientCommandC2SPacket.Mode.STOP_SPRINTING));
         }
 
+        enabled = true;
+
         if (ModConfig.INSTANCE.notify) {
             MC.player.sendMessage(new LiteralText(ModConfig.INSTANCE.enableMessage), true);
         }
@@ -114,6 +115,8 @@ public class Freecam implements ClientModInitializer {
             MC.player.startRiding(riding);
             riding = null;
         }
+
+        enabled = false;
 
         if (ModConfig.INSTANCE.notify) {
             MC.player.sendMessage(new LiteralText(ModConfig.INSTANCE.disableMessage), true);
