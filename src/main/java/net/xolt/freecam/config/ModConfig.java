@@ -33,7 +33,6 @@ public class ModConfig implements ConfigData {
     @Comment("Toggles action bar notifications.")
     public boolean notify = true;
 
-
     @Comment("The message that is shown when freecam is enabled.")
     public String enableMessage = "Freecam has been enabled.";
 
