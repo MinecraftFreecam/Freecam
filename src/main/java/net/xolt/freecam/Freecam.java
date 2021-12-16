@@ -24,6 +24,7 @@ public class Freecam implements ClientModInitializer {
 
     private static Vec3d pos;
     private static float[] rot;
+    private static float[] limbs;
     private static Entity riding;
     private static EntityPose pose;
     private static boolean isFlying;
@@ -58,6 +59,7 @@ public class Freecam implements ClientModInitializer {
         pose = MC.player.getPose();
         isFlying = MC.player.getAbilities().flying;
         isFallFlying = MC.player.isFallFlying();
+        limbs = new float[]{MC.player.limbAngle, MC.player.limbDistance};
 
         if (!ModConfig.INSTANCE.showHand) {
             MC.gameRenderer.setRenderHand(false);
@@ -71,8 +73,6 @@ public class Freecam implements ClientModInitializer {
         if (ModConfig.INSTANCE.showClone) {
             clone = new ClonePlayerEntity(MC.world, MC.player);
             MC.world.addEntity(clone.getId(), clone);
-            clone.setPose(pose);
-            clone.setBodyYaw(rot[2]);
             if (riding != null) {
                 clone.startRiding(riding);
             }
@@ -109,6 +109,9 @@ public class Freecam implements ClientModInitializer {
         MC.player.updatePosition(pos.x, pos.y, pos.z);
         MC.player.setYaw(rot[0]);
         MC.player.setPitch(rot[1]);
+        MC.player.setBodyYaw(rot[2]);
+        MC.player.limbAngle = limbs[0];
+        MC.player.limbDistance = limbs[1];
 
         if (riding != null && MC.world.getEntityById(riding.getId()) != null) {
             MC.player.startRiding(riding);

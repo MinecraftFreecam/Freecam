@@ -13,6 +13,10 @@ public class ClonePlayerEntity extends OtherClientPlayerEntity {
         copyFrom(player);
         getInventory().clone(player.getInventory());
         getAttributes().setFrom(player.getAttributes());
+        setPose(player.getPose());
+        setBodyYaw(player.bodyYaw);
+        limbAngle = player.limbAngle;
+        limbDistance = player.limbDistance;
         resetCapeMovement();
 
         getPlayerListEntry();
