@@ -65,13 +65,13 @@ public class Freecam implements ClientModInitializer {
         MC.chunkCullingEnabled = false;
         MC.player.setVelocity(Vec3d.ZERO);
 
-        if (!ModConfig.INSTANCE.showHand) {
-            MC.gameRenderer.setRenderHand(false);
-        }
-
         if (MC.player.getVehicle() != null) {
             riding = MC.player.getVehicle();
-            MC.player.getVehicle().removeAllPassengers();
+            riding.removeAllPassengers();
+        }
+
+        if (!ModConfig.INSTANCE.showHand) {
+            MC.gameRenderer.setRenderHand(false);
         }
 
         if (ModConfig.INSTANCE.showClone) {
@@ -113,6 +113,12 @@ public class Freecam implements ClientModInitializer {
         MC.player.getAbilities().setFlySpeed(flightSpeed);
 
         MC.player.updatePosition(pos.x, pos.y, pos.z);
+
+        if (riding != null && MC.world.getEntityById(riding.getId()) != null) {
+            MC.player.startRiding(riding);
+            riding = null;
+        }
+
         MC.player.setPose(pose);
         MC.player.setYaw(rot[0]);
         MC.player.setPitch(rot[1]);
@@ -122,11 +128,6 @@ public class Freecam implements ClientModInitializer {
 
         if (isFallFlying) {
             MC.player.startFallFlying();
-        }
-
-        if (riding != null && MC.world.getEntityById(riding.getId()) != null) {
-            MC.player.startRiding(riding);
-            riding = null;
         }
 
         if (ModConfig.INSTANCE.notify) {
