@@ -1,9 +1,9 @@
 {
-  "text.autoconfig.freecam.title": "Freecam Options",
   "key.freecam.toggle": "Toggle Freecam",
   "category.freecam.freecam": "Freecam",
-  "text.autoconfig.freecam.option.freecamHSpeed": "Freecam Horizontal Speed",
-  "text.autoconfig.freecam.option.freecamVSpeed": "Freecam Vertical Speed",
+  "text.autoconfig.freecam.title": "Freecam Options",
+  "text.autoconfig.freecam.option.freecamMode":  "Freecam Mode",
+  "text.autoconfig.freecam.option.freecamSpeed": "Freecam Speed",
   "text.autoconfig.freecam.option.showHand": "Show Hand",
   "text.autoconfig.freecam.option.showClone": "Show Clone",
   "text.autoconfig.freecam.option.notify": "Notifications",

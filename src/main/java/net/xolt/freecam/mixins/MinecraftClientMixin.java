@@ -17,8 +17,13 @@ public class MinecraftClientMixin {
     @Inject(method = "tick", at = @At("HEAD"))
     private void onTick(CallbackInfo ci) {
         if (Freecam.isEnabled()) {
-            Motion.doMotion(ModConfig.INSTANCE.freecamHSpeed, ModConfig.INSTANCE.freecamVSpeed);
-            MC.player.setOnGround(true);
+            if (ModConfig.INSTANCE.freecamMode.equals(ModConfig.FlightMode.MODDED)) {
+                Motion.doMotion(ModConfig.INSTANCE.freecamSpeed, ModConfig.INSTANCE.freecamSpeed * 0.8);
+                MC.player.setOnGround(true);
+            } else {
+                MC.player.getAbilities().flying = true;
+                MC.player.setOnGround(false);
+            }
         }
     }
 }

@@ -18,11 +18,11 @@ public class ModConfig implements ConfigData {
         INSTANCE = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
     }
 
-    @Comment("Changes the horizontal speed of freecam.")
-    public double freecamHSpeed = 1.0;
+    @Comment("The type of flight that is used in freecam.")
+    public FlightMode freecamMode = FlightMode.MODDED;
 
-    @Comment("Changes the vertical speed of freecam.")
-    public double freecamVSpeed = 0.8;
+    @Comment("Changes the speed of freecam.")
+    public double freecamSpeed = 1.0;
 
     @Comment("Toggles whether your player is rendered in your original position while freecam is enabled.")
     public boolean showClone = true;
@@ -33,9 +33,18 @@ public class ModConfig implements ConfigData {
     @Comment("Toggles action bar notifications.")
     public boolean notify = true;
 
+
     @Comment("The message that is shown when freecam is enabled.")
     public String enableMessage = "Freecam has been enabled.";
 
     @Comment("The message that is shown when freecam is disabled.")
     public String disableMessage = "Freecam has been disabled.";
+
+    public enum FlightMode {
+        VANILLA,
+        MODDED;
+
+        private FlightMode() {
+        }
+    }
 }
