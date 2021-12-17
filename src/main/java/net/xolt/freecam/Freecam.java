@@ -135,6 +135,10 @@ public class Freecam implements ClientModInitializer {
         }
     }
 
+    public static ClonePlayerEntity getClone() {
+        return clone;
+    }
+
     public static boolean isEnabled() {
         return enabled;
     }
