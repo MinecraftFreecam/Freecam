@@ -24,9 +24,6 @@ public class MinecraftClientMixin {
                 MC.player.getAbilities().flying = true;
                 MC.player.setOnGround(false);
             }
-            if (ModConfig.INSTANCE.showClone && Freecam.getClone() != null) {
-                Freecam.getClone().updateInventory();
-            }
         }
     }
 }

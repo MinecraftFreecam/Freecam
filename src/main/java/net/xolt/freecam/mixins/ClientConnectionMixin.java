@@ -20,7 +20,7 @@ import static net.xolt.freecam.Freecam.MC;
 public class ClientConnectionMixin {
 
     @Inject(method = "send(Lnet/minecraft/network/Packet;)V", at = @At("HEAD"), cancellable = true)
-    public void send(Packet<?> packet, CallbackInfo ci) {
+    private void onSendPacket(Packet<?> packet, CallbackInfo ci) {
         if (Freecam.isEnabled()) {
             if ((packet instanceof PlayerMoveC2SPacket || packet instanceof PlayerInputC2SPacket)) {
                 ci.cancel();
@@ -28,11 +28,18 @@ public class ClientConnectionMixin {
                 ci.cancel();
             } else if (ModConfig.INSTANCE.showClone && Freecam.getClone() != null) {
                 if (packet instanceof UpdateSelectedSlotC2SPacket) {
-                    Freecam.getClone().getInventory().selectedSlot = MC.player.getInventory().selectedSlot;
+                    Freecam.getClone().getInventory().selectedSlot = ((UpdateSelectedSlotC2SPacket) packet).getSelectedSlot();
                 } else if (packet instanceof HandSwingC2SPacket) {
                     Freecam.getClone().swingHand(((HandSwingC2SPacket) packet).getHand());
                 }
             }
+        }
+    }
+
+    @Inject(method = "disconnect", at = @At("HEAD"))
+    private void onDisconnect(CallbackInfo ci) {
+        if (Freecam.isEnabled()) {
+            Freecam.toggle();
         }
     }
 }

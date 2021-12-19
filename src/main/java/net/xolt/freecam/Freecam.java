@@ -44,7 +44,7 @@ public class Freecam implements ClientModInitializer {
         });
     }
 
-    private static void toggle() {
+    public static void toggle() {
         if (enabled) {
             onDisable();
         } else {
