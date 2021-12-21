@@ -1,11 +1,7 @@
 package net.xolt.freecam.mixins;
 
 import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.MovementType;
-import net.minecraft.util.math.Vec3d;
 import net.xolt.freecam.Freecam;
-import net.xolt.freecam.config.ModConfig;
-import net.xolt.freecam.util.Motion;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;

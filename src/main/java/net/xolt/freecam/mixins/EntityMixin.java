@@ -9,6 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(Entity.class)
 public class EntityMixin {
+
     @Inject(method = "wouldPoseNotCollide", at = @At("HEAD"), cancellable = true)
     private void wouldPoseNotCollide(CallbackInfoReturnable<Boolean> cir) {
         if (Freecam.isEnabled()) {

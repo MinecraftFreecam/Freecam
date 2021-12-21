@@ -7,6 +7,7 @@ import net.minecraft.util.math.Vec3d;
 import static net.xolt.freecam.Freecam.MC;
 
 public class Motion {
+
     public static final double DIAGONAL_MULTIPLIER = MathHelper.sin((float) Math.toRadians(45));
 
     public static void doMotion(double hSpeed, double vSpeed) {
@@ -46,7 +47,7 @@ public class Motion {
 
         if (straight && strafing) {
             velocityX *= DIAGONAL_MULTIPLIER;
-            velocityY *= DIAGONAL_MULTIPLIER;
+            velocityZ *= DIAGONAL_MULTIPLIER;
         }
 
         if(player.input.jumping) {

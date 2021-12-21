@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(PlayerInventory.class)
 public class PlayerInventoryMixin {
+
     @Inject(method = "updateItems", at = @At("TAIL"))
     private void onUpdateItems(CallbackInfo ci) {
         if (Freecam.isEnabled() && ModConfig.INSTANCE.showClone && Freecam.getClone() != null) {

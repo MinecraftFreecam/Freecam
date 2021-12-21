@@ -7,11 +7,14 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
 
+import static net.xolt.freecam.Freecam.MC;
+
 @Mixin(ClientPlayNetworkHandler.class)
 public class ClientPlayNetworkHandlerMixin {
+
     @ModifyArg(method = "onItemPickupAnimation", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/world/ClientWorld;getEntityById(I)Lnet/minecraft/entity/Entity;"))
     private int onItemPickupAnimation(int entityId) {
-        if (entityId == Freecam.MC.player.getId()) {
+        if (entityId == MC.player.getId()) {
             if (ModConfig.INSTANCE.showClone) {
                 return Freecam.getClone().getId();
             }

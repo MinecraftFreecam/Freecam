@@ -6,6 +6,7 @@ import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
+import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
 
 @Config(name = "freecam")
 public class ModConfig implements ConfigData {
@@ -19,6 +20,7 @@ public class ModConfig implements ConfigData {
     }
 
     @Comment("The type of flight that is used in freecam.")
+    @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
     public FlightMode freecamMode = FlightMode.MODDED;
 
     @Comment("Changes the speed of freecam.")
@@ -39,11 +41,18 @@ public class ModConfig implements ConfigData {
     @Comment("The message that is shown when freecam is disabled.")
     public String disableMessage = "Freecam has been disabled.";
 
-    public enum FlightMode {
-        VANILLA,
-        MODDED;
+    public enum FlightMode implements SelectionListEntry.Translatable {
+        VANILLA("Vanilla"),
+        MODDED("Modded");
 
-        private FlightMode() {
+        private final String name;
+
+        FlightMode(String name) {
+            this.name = name;
+        }
+
+        public String getKey() {
+            return name;
         }
     }
 }

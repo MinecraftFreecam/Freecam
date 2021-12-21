@@ -8,12 +8,14 @@ import net.xolt.freecam.Freecam;
 import java.util.UUID;
 
 public class ClonePlayerEntity extends OtherClientPlayerEntity {
+
     public ClonePlayerEntity(ClientWorld world, PlayerEntity player) {
         super(world, player.getGameProfile());
 
         copyFrom(player);
-        getInventory().clone(player.getInventory());
+        updateInventory();
         getAttributes().setFrom(player.getAttributes());
+
         setPose(player.getPose());
         setBodyYaw(player.bodyYaw);
         limbAngle = player.limbAngle;
