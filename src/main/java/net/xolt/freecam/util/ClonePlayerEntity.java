@@ -31,6 +31,18 @@ public class ClonePlayerEntity extends OtherClientPlayerEntity {
         getInventory().clone(Freecam.MC.player.getInventory());
     }
 
+    public void spawn() {
+        if (clientWorld != null) {
+            clientWorld.addEntity(getId(), this);
+        }
+    }
+
+    public void despawn() {
+        if (clientWorld != null && clientWorld.getEntityById(getId()) != null) {
+            clientWorld.removeEntity(getId(), RemovalReason.DISCARDED);
+        }
+    }
+
     private void resetCapeMovement() {
         capeX = getX();
         capeY = getY();

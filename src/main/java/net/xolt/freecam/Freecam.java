@@ -5,10 +5,12 @@ import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.option.KeyBinding;
+import net.minecraft.client.option.Perspective;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.network.packet.c2s.play.ClientCommandC2SPacket;
+import net.minecraft.network.packet.s2c.play.PlayerPositionLookS2CPacket;
 import net.minecraft.text.LiteralText;
 import net.minecraft.util.math.Vec3d;
 import net.xolt.freecam.config.ModConfig;
@@ -70,13 +72,17 @@ public class Freecam implements ClientModInitializer {
             riding.removeAllPassengers();
         }
 
+        if (MC.gameRenderer.getCamera().isThirdPerson()) {
+            MC.gameRenderer.getClient().options.setPerspective(Perspective.FIRST_PERSON);
+        }
+
         if (!ModConfig.INSTANCE.showHand) {
             MC.gameRenderer.setRenderHand(false);
         }
 
         if (ModConfig.INSTANCE.showClone) {
             clone = new ClonePlayerEntity(MC.world, MC.player);
-            MC.world.addEntity(clone.getId(), clone);
+            clone.spawn();
             if (riding != null) {
                 clone.startRiding(riding);
             }
@@ -105,7 +111,7 @@ public class Freecam implements ClientModInitializer {
         MC.player.noClip = false;
 
         if (clone != null) {
-            MC.world.removeEntity(clone.getId(), Entity.RemovalReason.DISCARDED);
+            clone.despawn();
         }
 
         MC.player.setVelocity(Vec3d.ZERO);
@@ -133,6 +139,16 @@ public class Freecam implements ClientModInitializer {
         if (ModConfig.INSTANCE.notify) {
             MC.player.sendMessage(new LiteralText(ModConfig.INSTANCE.disableMessage), true);
         }
+    }
+
+    public static void updatePositionLook(PlayerPositionLookS2CPacket packet) {
+        pos = new Vec3d(packet.getX(), packet.getY(), packet.getZ());
+        rot[0] = packet.getYaw();
+        rot[1] = packet.getPitch();
+
+        clone.setPosition(pos);
+        clone.setYaw(rot[0]);
+        clone.setPitch(rot[1]);
     }
 
     public static ClonePlayerEntity getClone() {

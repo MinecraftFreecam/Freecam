@@ -5,9 +5,10 @@
   "client": [
     "ClientConnectionMixin",
     "ClientPlayerEntityMixin",
-    "EntityMixin",
-    "MinecraftClientMixin",
     "ClientPlayNetworkHandlerMixin",
+    "EntityMixin",
+    "GameOptionsMixin",
+    "MinecraftClientMixin",
     "PlayerInventoryMixin"
   ],
   "injectors": {
