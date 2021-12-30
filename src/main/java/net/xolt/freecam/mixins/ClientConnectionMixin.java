@@ -43,8 +43,10 @@ public class ClientConnectionMixin {
     @Inject(method = "handlePacket", at = @At("HEAD"), cancellable = true)
     private static <T extends PacketListener> void onHandlePacket(Packet<T> packet, PacketListener listener, CallbackInfo ci) {
         if (Freecam.isEnabled()) {
-            if (packet instanceof EntityVelocityUpdateS2CPacket && ((EntityVelocityUpdateS2CPacket) packet).getId() == MC.player.getId()) {
-                ci.cancel();
+            if (packet instanceof EntityVelocityUpdateS2CPacket) {
+                if (((EntityVelocityUpdateS2CPacket) packet).getId() == MC.player.getId()) {
+                    ci.cancel();
+                }
             } else if (packet instanceof PlayerPositionLookS2CPacket) {
                 Freecam.updatePositionLook((PlayerPositionLookS2CPacket) packet);
                 ci.cancel();
