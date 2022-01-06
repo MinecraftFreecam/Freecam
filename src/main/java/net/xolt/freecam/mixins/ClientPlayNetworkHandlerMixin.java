@@ -14,10 +14,8 @@ public class ClientPlayNetworkHandlerMixin {
 
     @ModifyArg(method = "onItemPickupAnimation", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/world/ClientWorld;getEntityById(I)Lnet/minecraft/entity/Entity;"))
     private int onItemPickupAnimation(int entityId) {
-        if (Freecam.isEnabled() && entityId == MC.player.getId()) {
-            if (ModConfig.INSTANCE.showClone) {
-                return Freecam.getClone().getId();
-            }
+        if (Freecam.isEnabled() && ModConfig.INSTANCE.showClone && entityId == MC.player.getId()) {
+            return Freecam.getClone().getId();
         }
         return entityId;
     }

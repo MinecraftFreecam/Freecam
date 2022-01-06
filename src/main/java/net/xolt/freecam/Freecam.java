@@ -48,11 +48,12 @@ public class Freecam implements ClientModInitializer {
 
     public static void toggle() {
         if (enabled) {
+            enabled = false;
             onDisable();
         } else {
             onEnable();
+            enabled = true;
         }
-        enabled = !enabled;
     }
 
     private static void onEnable() {
@@ -112,6 +113,7 @@ public class Freecam implements ClientModInitializer {
 
         if (clone != null) {
             clone.despawn();
+            clone = null;
         }
 
         MC.player.setVelocity(Vec3d.ZERO);
@@ -149,6 +151,13 @@ public class Freecam implements ClientModInitializer {
         clone.setPosition(pos);
         clone.setYaw(rot[0]);
         clone.setPitch(rot[1]);
+    }
+
+    public static void updateRiding(Entity entity, boolean force) {
+        riding = entity;
+        if (ModConfig.INSTANCE.showClone && clone != null) {
+            clone.startRiding(entity, force);
+        }
     }
 
     public static ClonePlayerEntity getClone() {

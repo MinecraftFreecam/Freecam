@@ -28,8 +28,10 @@ public class ClientConnectionMixin {
         if (Freecam.isEnabled()) {
             if ((packet instanceof PlayerMoveC2SPacket || packet instanceof PlayerInputC2SPacket)) {
                 ci.cancel();
-            } else if (packet instanceof ClientCommandC2SPacket && !((ClientCommandC2SPacket) packet).getMode().equals(ClientCommandC2SPacket.Mode.OPEN_INVENTORY)) {
-                ci.cancel();
+            } else if (packet instanceof ClientCommandC2SPacket) {
+                if (!((ClientCommandC2SPacket) packet).getMode().equals(ClientCommandC2SPacket.Mode.OPEN_INVENTORY)) {
+                    ci.cancel();
+                }
             } else if (ModConfig.INSTANCE.showClone && Freecam.getClone() != null) {
                 if (packet instanceof UpdateSelectedSlotC2SPacket) {
                     Freecam.getClone().getInventory().selectedSlot = ((UpdateSelectedSlotC2SPacket) packet).getSelectedSlot();
