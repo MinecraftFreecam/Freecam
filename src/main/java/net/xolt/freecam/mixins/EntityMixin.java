@@ -7,12 +7,14 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static net.xolt.freecam.Freecam.MC;
+
 @Mixin(Entity.class)
 public class EntityMixin {
 
     @Inject(method = "wouldPoseNotCollide", at = @At("HEAD"), cancellable = true)
-    private void wouldPoseNotCollide(CallbackInfoReturnable<Boolean> cir) {
-        if (Freecam.isEnabled()) {
+    private void onWouldPoseNotCollide(CallbackInfoReturnable<Boolean> cir) {
+        if (Freecam.isEnabled() && this.equals(MC.player)) {
             cir.setReturnValue(true);
         }
     }
