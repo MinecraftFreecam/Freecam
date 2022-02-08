@@ -26,6 +26,9 @@ public class ModConfig implements ConfigData {
     @Comment("Changes the speed of freecam.")
     public double freecamSpeed = 1.0;
 
+    @Comment("Toggles whether you can break blocks while freecam is enabled.")
+    public boolean allowBlockBreak = true;
+
     @Comment("Toggles whether your player is rendered in your original position while freecam is enabled.")
     public boolean showClone = true;
 

@@ -9,6 +9,7 @@
     "EntityMixin",
     "GameOptionsMixin",
     "MinecraftClientMixin",
+    "PlayerEntityMixin",
     "PlayerInventoryMixin"
   ],
   "injectors": {

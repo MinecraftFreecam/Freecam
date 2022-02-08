@@ -29,6 +29,7 @@ public class Freecam implements ClientModInitializer {
     private static float flightSpeed;
     private static boolean isFlying;
     private static boolean isFallFlying;
+    private static boolean canBreakBlocks;
     private static Vec3d pos;
     private static Entity riding;
     private static EntityPose pose;
@@ -62,11 +63,16 @@ public class Freecam implements ClientModInitializer {
         flightSpeed = MC.player.getAbilities().getFlySpeed();
         isFlying = MC.player.getAbilities().flying;
         isFallFlying = MC.player.isFallFlying();
+        canBreakBlocks = MC.player.getAbilities().allowModifyWorld;
         pos = MC.player.getPos();
         pose = MC.player.getPose();
 
         MC.chunkCullingEnabled = false;
         MC.player.setVelocity(Vec3d.ZERO);
+
+        if (!ModConfig.INSTANCE.allowBlockBreak) {
+            MC.player.getAbilities().allowModifyWorld = false;
+        }
 
         if (MC.player.getVehicle() != null) {
             riding = MC.player.getVehicle();
@@ -108,6 +114,7 @@ public class Freecam implements ClientModInitializer {
 
     private static void onDisable() {
         MC.chunkCullingEnabled = true;
+        MC.player.getAbilities().allowModifyWorld = canBreakBlocks;
         MC.gameRenderer.setRenderHand(true);
         MC.player.noClip = false;
 
