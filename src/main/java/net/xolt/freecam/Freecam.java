@@ -58,7 +58,7 @@ public class Freecam implements ClientModInitializer {
         }
 
         if (MC.gameRenderer.getCamera().isThirdPerson()) {
-            MC.gameRenderer.getClient().options.setPerspective(Perspective.FIRST_PERSON);
+            MC.options.setPerspective(Perspective.FIRST_PERSON);
         }
 
         if (!ModConfig.INSTANCE.showHand) {
