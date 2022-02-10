@@ -19,18 +19,17 @@ public class ModConfig implements ConfigData {
         INSTANCE = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
     }
 
-    @Comment("The type of flight that is used in freecam.")
-    @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
-    public FlightMode freecamMode = FlightMode.MODDED;
+    @Comment("Changes the horizontal speed of freecam.")
+    public double horizontalSpeed = 1.0;
 
-    @Comment("Changes the speed of freecam.")
-    public double freecamSpeed = 1.0;
+    @Comment("Changes the vertical speed of freecam.")
+    public double verticalSpeed = 0.8;
 
     @Comment("Toggles whether you can break blocks while freecam is enabled.")
     public boolean allowBlockBreak = true;
 
     @Comment("Toggles whether your player is rendered in your original position while freecam is enabled.")
-    public boolean showClone = true;
+    public boolean showPlayer = true;
 
     @Comment("Toggles whether your hand is shown while freecam is enabled.")
     public boolean showHand = false;
@@ -43,19 +42,4 @@ public class ModConfig implements ConfigData {
 
     @Comment("The message that is shown when freecam is disabled.")
     public String disableMessage = "Freecam has been disabled.";
-
-    public enum FlightMode implements SelectionListEntry.Translatable {
-        VANILLA("Vanilla"),
-        MODDED("Modded");
-
-        private final String name;
-
-        FlightMode(String name) {
-            this.name = name;
-        }
-
-        public String getKey() {
-            return name;
-        }
-    }
 }
