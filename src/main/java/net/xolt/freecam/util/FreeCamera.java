@@ -50,22 +50,7 @@ public class FreeCamera extends ClientPlayerEntity {
     }
 
     @Override
-    public boolean shouldRender(double distance) {
-        return true;
-    }
-
-    @Override
     public void setPose(EntityPose pose) {
-    }
-
-    @Override
-    public boolean hasStatusEffect(StatusEffect effect) {
-        return MC.player.hasStatusEffect(effect);
-    }
-
-    @Override
-    public StatusEffectInstance getStatusEffect(StatusEffect effect) {
-        return MC.player.getStatusEffect(effect);
     }
 
     @Override
