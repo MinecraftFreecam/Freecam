@@ -8,7 +8,6 @@ import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.network.Packet;
-import net.minecraft.util.math.Box;
 import net.xolt.freecam.config.ModConfig;
 
 import java.util.UUID;
@@ -67,11 +66,6 @@ public class FreeCamera extends ClientPlayerEntity {
     @Override
     public StatusEffectInstance getStatusEffect(StatusEffect effect) {
         return MC.player.getStatusEffect(effect);
-    }
-
-    @Override
-    protected Box calculateBoundingBox() {
-        return new Box(0D, 0D, 0D, 0D, 0D, 0D);
     }
 
 }
