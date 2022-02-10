@@ -68,4 +68,8 @@ public class FreeCamera extends ClientPlayerEntity {
         return MC.player.getStatusEffect(effect);
     }
 
+    @Override
+    public boolean isSpectator() {
+        return true;
+    }
 }
