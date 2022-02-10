@@ -14,7 +14,7 @@ public class MouseMixin {
     private void onUpdateMouse(ClientPlayerEntity player, double x, double y) {
         if (Freecam.isEnabled() && Freecam.getFreeCamera() != null) {
             Freecam.getFreeCamera().changeLookDirection(x, y);
-            Freecam.getFreeCamera().setHeadYaw(Freecam.getFreeCamera().getYaw());
+            Freecam.getFreeCamera().setHeadYaw(Freecam.getFreeCamera().yaw);
         } else {
             player.changeLookDirection(x, y);
         }

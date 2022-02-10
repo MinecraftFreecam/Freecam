@@ -11,6 +11,7 @@ import net.minecraft.client.option.Perspective;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.LiteralText;
 import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.mixins.GameRendererAccessor;
 import net.xolt.freecam.util.FreeCamera;
 import org.lwjgl.glfw.GLFW;
 
@@ -47,22 +48,22 @@ public class Freecam implements ClientModInitializer {
 
     private static void onEnable() {
         MC.chunkCullingEnabled = false;
-        canBreakBlocks = MC.player.getAbilities().allowModifyWorld;
+        canBreakBlocks = MC.player.abilities.allowModifyWorld;
 
         freeCamera = new FreeCamera();
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
 
         if (!ModConfig.INSTANCE.allowBlockBreak) {
-            MC.player.getAbilities().allowModifyWorld = false;
+            MC.player.abilities.allowModifyWorld = false;
         }
 
         if (MC.gameRenderer.getCamera().isThirdPerson()) {
-            MC.gameRenderer.getClient().options.setPerspective(Perspective.FIRST_PERSON);
+            MC.options.setPerspective(Perspective.FIRST_PERSON);
         }
 
         if (!ModConfig.INSTANCE.showHand) {
-            MC.gameRenderer.setRenderHand(false);
+            ((GameRendererAccessor) MC.gameRenderer).setRenderHand(false);
         }
 
         if (ModConfig.INSTANCE.notify) {
@@ -72,8 +73,8 @@ public class Freecam implements ClientModInitializer {
 
     private static void onDisable() {
         MC.chunkCullingEnabled = true;
-        MC.gameRenderer.setRenderHand(true);
-        MC.player.getAbilities().allowModifyWorld = canBreakBlocks;
+        ((GameRendererAccessor) MC.gameRenderer).setRenderHand(true);
+        MC.player.abilities.allowModifyWorld = canBreakBlocks;
 
         MC.setCameraEntity(MC.player);
         MC.player.input = new KeyboardInput(MC.options);

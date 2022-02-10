@@ -8,7 +8,7 @@ public class Motion {
     public static final double DIAGONAL_MULTIPLIER = MathHelper.sin((float) Math.toRadians(45));
 
     public static void doMotion(FreeCamera freeCamera, double hSpeed, double vSpeed) {
-        float yaw = freeCamera.getYaw();
+        float yaw = freeCamera.yaw;
 
         double velocityX = 0.0;
         double velocityY = 0.0;

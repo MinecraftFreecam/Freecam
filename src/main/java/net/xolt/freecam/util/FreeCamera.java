@@ -17,7 +17,7 @@ import static net.xolt.freecam.Freecam.MC;
 
 public class FreeCamera extends ClientPlayerEntity {
 
-    private static final ClientPlayNetworkHandler NETWORK_HANDLER = new ClientPlayNetworkHandler(MC, MC.currentScreen, MC.getNetworkHandler().getConnection(), new GameProfile(UUID.randomUUID(), "FreeCamera"), MC.createTelemetrySender()) {
+    private static final ClientPlayNetworkHandler NETWORK_HANDLER = new ClientPlayNetworkHandler(MC, MC.currentScreen, MC.getNetworkHandler().getConnection(), new GameProfile(UUID.randomUUID(), "FreeCamera")) {
         @Override
         public void sendPacket(Packet<?> packet) {
         }
@@ -33,13 +33,13 @@ public class FreeCamera extends ClientPlayerEntity {
 
     public void spawn() {
         if (clientWorld != null) {
-            clientWorld.addEntity(getId(), this);
+            clientWorld.addEntity(getEntityId(), this);
         }
     }
 
     public void despawn() {
-        if (clientWorld != null && clientWorld.getEntityById(getId()) != null) {
-            clientWorld.removeEntity(getId(), RemovalReason.DISCARDED);
+        if (clientWorld != null && clientWorld.getEntityById(getEntityId()) != null) {
+            clientWorld.removeEntity(getEntityId());
         }
     }
 
@@ -66,11 +66,6 @@ public class FreeCamera extends ClientPlayerEntity {
     @Override
     public StatusEffectInstance getStatusEffect(StatusEffect effect) {
         return MC.player.getStatusEffect(effect);
-    }
-
-    @Override
-    protected Box calculateBoundingBox() {
-        return new Box(0D, 0D, 0D, 0D, 0D, 0D);
     }
 
 }
