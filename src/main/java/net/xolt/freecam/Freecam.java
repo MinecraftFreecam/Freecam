@@ -22,7 +22,6 @@ public class Freecam implements ClientModInitializer {
     private static boolean enabled = false;
 
     private static FreeCamera freeCamera;
-    private static boolean canBreakBlocks;
 
     @Override
     public void onInitializeClient() {
