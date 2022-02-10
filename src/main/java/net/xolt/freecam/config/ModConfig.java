@@ -28,6 +28,9 @@ public class ModConfig implements ConfigData {
     @Comment("Toggles whether you can break blocks while freecam is enabled.")
     public boolean allowBlockBreak = true;
 
+    @Comment("Toggles whether you can interact with entities while freecam is enabled.")
+    public boolean allowEntityInteract = true;
+
     @Comment("Toggles whether your player is rendered in your original position while freecam is enabled.")
     public boolean showPlayer = true;
 
