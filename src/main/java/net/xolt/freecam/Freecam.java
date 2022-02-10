@@ -47,15 +47,11 @@ public class Freecam implements ClientModInitializer {
 
     private static void onEnable() {
         MC.chunkCullingEnabled = false;
-        canBreakBlocks = MC.player.abilities.allowModifyWorld;
 
         freeCamera = new FreeCamera();
         freeCamera.spawn();
-        MC.setCameraEntity(freeCamera);
 
-        if (!ModConfig.INSTANCE.allowBlockBreak) {
-            MC.player.abilities.allowModifyWorld = false;
-        }
+        MC.setCameraEntity(freeCamera);
 
         if (MC.gameRenderer.getCamera().isThirdPerson()) {
             MC.options.setPerspective(Perspective.FIRST_PERSON);
@@ -73,7 +69,6 @@ public class Freecam implements ClientModInitializer {
     private static void onDisable() {
         MC.chunkCullingEnabled = true;
         ((GameRendererAccessor) MC.gameRenderer).setRenderHand(true);
-        MC.player.abilities.allowModifyWorld = canBreakBlocks;
 
         MC.setCameraEntity(MC.player);
         MC.player.input = new KeyboardInput(MC.options);
