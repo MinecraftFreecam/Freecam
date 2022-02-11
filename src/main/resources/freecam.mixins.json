@@ -7,11 +7,11 @@
     "ClientConnectionMixin",
     "ClientPlayerEntityMixin",
     "ClientPlayerInteractionManagerMixin",
+    "EntityMixin",
     "GameOptionsMixin",
     "GameRendererAccessor",
     "InGameHudMixin",
     "MinecraftClientMixin",
-    "MouseMixin",
     "PlayerEntityMixin"
   ],
   "injectors": {
