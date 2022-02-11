@@ -8,4 +8,4 @@ This mod works in multiplayer, but may be considered cheating on some servers, s
 
 ### Requirements
 - [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
-- [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu)
+- [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu) (Optional for easier configuration)
