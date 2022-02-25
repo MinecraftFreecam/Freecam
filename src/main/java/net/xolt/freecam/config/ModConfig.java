@@ -19,6 +19,10 @@ public class ModConfig implements ConfigData {
         INSTANCE = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
     }
 
+    @Comment("The type of flight that is used by freecam.")
+    @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
+    public FlightMode flightMode = FlightMode.DEFAULT;
+
     @Comment("Changes the horizontal speed of freecam.")
     public double horizontalSpeed = 1.0;
 
@@ -45,4 +49,19 @@ public class ModConfig implements ConfigData {
 
     @Comment("The message that is shown when freecam is disabled.")
     public String disableMessage = "Freecam has been disabled.";
+
+    public enum FlightMode implements SelectionListEntry.Translatable {
+        CREATIVE("Creative"),
+        DEFAULT("Default");
+
+        private final String name;
+
+        FlightMode(String name) {
+            this.name = name;
+        }
+
+        public String getKey() {
+            return name;
+        }
+    }
 }
