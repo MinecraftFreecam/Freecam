@@ -2,6 +2,7 @@
   "key.freecam.toggle": "Toggle Freecam",
   "category.freecam.freecam": "Freecam",
   "text.autoconfig.freecam.title": "Freecam Options",
+  "text.autoconfig.freecam.option.flightMode": "Flight Mode",
   "text.autoconfig.freecam.option.horizontalSpeed": "Horizontal Speed",
   "text.autoconfig.freecam.option.verticalSpeed": "Vertical Speed",
   "text.autoconfig.freecam.option.allowBlockBreak": "Allow Breaking Blocks",
