@@ -24,7 +24,7 @@ public class ClientPlayerEntityMixin {
 
     @ModifyArgs(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec3d;add(DDD)Lnet/minecraft/util/math/Vec3d;"))
     private void onTickMovement(Args args) {
-        if (Freecam.isEnabled() && ModConfig.INSTANCE.flightMode.equals(ModConfig.FlightMode.CREATIVE) && this.equals(Freecam.getFreeCamera())) {
+        if (Freecam.isEnabled() && ModConfig.INSTANCE.flightMode.equals(ModConfig.FlightMode.CREATIVE) && this.equals(Freecam.getFreeCamera()) && ModConfig.INSTANCE.horizontalSpeed != 0.0) {
             args.set(1, ((Double) args.get(1) / (ModConfig.INSTANCE.horizontalSpeed / 10)) * (ModConfig.INSTANCE.verticalSpeed / 10));
         }
     }
