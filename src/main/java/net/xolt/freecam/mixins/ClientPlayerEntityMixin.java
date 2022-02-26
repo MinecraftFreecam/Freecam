@@ -3,6 +3,7 @@ package net.xolt.freecam.mixins;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.util.FreeCamera;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -24,8 +25,10 @@ public class ClientPlayerEntityMixin {
 
     @ModifyArgs(method = "tickMovement", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/math/Vec3d;add(DDD)Lnet/minecraft/util/math/Vec3d;"))
     private void onTickMovement(Args args) {
-        if (Freecam.isEnabled() && ModConfig.INSTANCE.flightMode.equals(ModConfig.FlightMode.CREATIVE) && this.equals(Freecam.getFreeCamera()) && ModConfig.INSTANCE.horizontalSpeed != 0.0) {
-            args.set(1, ((Double) args.get(1) / (ModConfig.INSTANCE.horizontalSpeed / 10)) * (ModConfig.INSTANCE.verticalSpeed / 10));
+        if (Freecam.isEnabled() && ModConfig.INSTANCE.flightMode.equals(ModConfig.FlightMode.CREATIVE) && this.equals(Freecam.getFreeCamera())) {
+            FreeCamera freeCamera = Freecam.getFreeCamera();
+            int verticalMovement = (freeCamera.input.jumping ? 1 : 0) - (freeCamera.input.sneaking ? 1 : 0);
+            args.set(1, (float) verticalMovement * (ModConfig.INSTANCE.verticalSpeed / 10) * 3.0F);
         }
     }
 }
