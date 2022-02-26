@@ -11,6 +11,7 @@
     "EntityMixin",
     "GameOptionsMixin",
     "GameRendererAccessor",
+    "GameRendererMixin",
     "InGameHudMixin",
     "MinecraftClientMixin",
     "PlayerEntityMixin"
