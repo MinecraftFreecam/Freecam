@@ -9,9 +9,10 @@
     "ClientPlayerEntityMixin",
     "ClientPlayerInteractionManagerMixin",
     "EntityMixin",
+    "EntityRendererMixin",
     "GameOptionsMixin",
-    "GameRendererMixin",
     "InGameHudMixin",
+    "LivingEntityMixin",
     "MinecraftClientMixin",
     "PlayerEntityMixin"
   ],
