@@ -24,6 +24,7 @@ public class FreeCamera extends ClientPlayerEntity {
         super(MC, MC.world, NETWORK_HANDLER, MC.player.getStatHandler(), MC.player.getRecipeBook(), false, false);
 
         copyPositionAndRotation(MC.player);
+        this.getAbilities().flying = true;
         this.getAbilities().allowModifyWorld = ModConfig.INSTANCE.allowBlockBreak;
         this.noClip = true;
         this.input = new KeyboardInput(MC.options);
@@ -47,8 +48,7 @@ public class FreeCamera extends ClientPlayerEntity {
             input.tick(false);
             Motion.doMotion(this, ModConfig.INSTANCE.horizontalSpeed, ModConfig.INSTANCE.verticalSpeed);
         } else {
-            this.getAbilities().flying = true;
-            this.getAbilities().setFlySpeed((float) ModConfig.INSTANCE.horizontalSpeed / 10);
+            this.getAbilities().setFlySpeed((float) ModConfig.INSTANCE.verticalSpeed / 10);
             super.tickMovement();
         }
     }
