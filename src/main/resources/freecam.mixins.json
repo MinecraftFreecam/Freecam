@@ -8,6 +8,7 @@
     "ClientConnectionMixin",
     "ClientPlayerEntityMixin",
     "ClientPlayerInteractionManagerMixin",
+    "ClientPlayNetworkHandlerMixin",
     "EntityMixin",
     "EntityRendererMixin",
     "GameOptionsMixin",
