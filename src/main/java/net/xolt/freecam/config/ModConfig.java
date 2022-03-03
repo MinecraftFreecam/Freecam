@@ -23,23 +23,26 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
     public FlightMode flightMode = FlightMode.DEFAULT;
 
-    @Comment("Changes the horizontal speed of freecam.")
+    @Comment("The horizontal speed of freecam.")
     public double horizontalSpeed = 1.0;
 
-    @Comment("Changes the vertical speed of freecam.")
+    @Comment("The vertical speed of freecam.")
     public double verticalSpeed = 0.8;
-
-    @Comment("Toggles whether you can break blocks while freecam is enabled.")
-    public boolean allowBlockBreak = true;
-
-    @Comment("Toggles whether you can interact with entities while freecam is enabled.")
-    public boolean allowEntityInteract = true;
 
     @Comment("Toggles whether your player is rendered in your original position while freecam is enabled.")
     public boolean showPlayer = true;
 
     @Comment("Toggles whether your hand is shown while freecam is enabled.")
     public boolean showHand = false;
+
+    @Comment("Toggles whether taking damage disables freecam.")
+    public boolean disableOnDamage = true;
+
+    @Comment("Toggles whether you can break blocks while freecam is enabled.")
+    public boolean allowBlockBreak = true;
+
+    @Comment("Toggles whether you can interact with entities while freecam is enabled.")
+    public boolean allowEntityInteract = true;
 
     @Comment("Toggles action bar notifications.")
     public boolean notify = true;
