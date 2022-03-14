@@ -18,24 +18,24 @@ public class Motion {
         Vec3d side = Vec3d.fromPolar(0, yaw + 90);
 
         boolean straight = false;
-        if(freeCamera.input.pressingForward) {
+        if (freeCamera.input.pressingForward) {
             velocityX += forward.x * hSpeed;
             velocityZ += forward.z * hSpeed;
             straight = true;
         }
-        if(freeCamera.input.pressingBack) {
+        if (freeCamera.input.pressingBack) {
             velocityX -= forward.x * hSpeed;
             velocityZ -= forward.z * hSpeed;
             straight = true;
         }
 
         boolean strafing = false;
-        if(freeCamera.input.pressingRight) {
+        if (freeCamera.input.pressingRight) {
             velocityZ += side.z * hSpeed;
             velocityX += side.x * hSpeed;
             strafing = true;
         }
-        if(freeCamera.input.pressingLeft) {
+        if (freeCamera.input.pressingLeft) {
             velocityZ -= side.z * hSpeed;
             velocityX -= side.x * hSpeed;
             strafing = true;
