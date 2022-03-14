@@ -17,7 +17,9 @@ public class MinecraftClientMixin {
     @Inject(method = "tick", at = @At("HEAD"))
     private void onTick(CallbackInfo ci) {
         if (Freecam.isEnabled() && MC.player.input instanceof KeyboardInput) {
-            MC.player.input = new Input();
+            Input input = new Input();
+            input.sneaking = MC.player.input.sneaking;
+            MC.player.input = input;
         }
     }
 }
