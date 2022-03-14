@@ -46,11 +46,11 @@ public class Motion {
             velocityZ *= DIAGONAL_MULTIPLIER;
         }
 
-        if(freeCamera.input.jumping && freeCamera.input.sneaking) {
-        } else if(freeCamera.input.jumping) {
-        	velocityY += vSpeed;
-        } else if(freeCamera.input.sneaking) {
-        	velocityY -= vSpeed;
+        if (freeCamera.input.jumping) {
+            velocityY += vSpeed;
+        }
+        if (freeCamera.input.sneaking) {
+            velocityY -= vSpeed;
         }
 
         freeCamera.setPosition(freeCamera.getX() + velocityX, freeCamera.getY() + velocityY, freeCamera.getZ() + velocityZ);
