@@ -4,6 +4,7 @@ import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.input.Input;
 import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.option.Perspective;
@@ -17,19 +18,26 @@ public class Freecam implements ClientModInitializer {
 
     public static final MinecraftClient MC = MinecraftClient.getInstance();
 
-    private static KeyBinding keyBinding;
+    private static KeyBinding freecamBind;
+    private static KeyBinding playerControlBind;
     private static boolean enabled = false;
+    private static boolean playerControlEnabled = false;
 
     private static FreeCamera freeCamera;
 
     @Override
     public void onInitializeClient() {
         ModConfig.init();
-        keyBinding = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+        freecamBind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.freecam.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_X, "category.freecam.freecam"));
+        playerControlBind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+            "key.freecam.playerControl", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam"));
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
-            while (keyBinding.wasPressed()) {
+            while (freecamBind.wasPressed()) {
                 toggle();
+            }
+            while (playerControlBind.wasPressed()) {
+                switchControls();
             }
         });
     }
@@ -41,6 +49,18 @@ public class Freecam implements ClientModInitializer {
             onEnable();
         }
         enabled = !enabled;
+    }
+
+    public static void switchControls() {
+        if (enabled) {
+            if (playerControlEnabled) {
+                freeCamera.input = new KeyboardInput(MC.options);
+            } else {
+                MC.player.input = new KeyboardInput(MC.options);
+                freeCamera.input = new Input();
+            }
+            playerControlEnabled = !playerControlEnabled;
+        }
     }
 
     private static void onEnable() {
@@ -66,6 +86,7 @@ public class Freecam implements ClientModInitializer {
         MC.setCameraEntity(MC.player);
         freeCamera.despawn();
         freeCamera = null;
+        playerControlEnabled = false;
 
         if (ModConfig.INSTANCE.notify) {
             MC.player.sendMessage(new TranslatableText("msg.freecam.disable"), true);
@@ -78,5 +99,9 @@ public class Freecam implements ClientModInitializer {
 
     public static boolean isEnabled() {
         return enabled;
+    }
+
+    public static boolean isPlayerControlEnabled() {
+        return playerControlEnabled;
     }
 }
