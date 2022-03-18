@@ -1,6 +1,7 @@
 {
   "category.freecam.freecam": "Freecam",
   "key.freecam.toggle": "Toggle Freecam",
+  "key.freecam.playerControl": "Control Player",
   "msg.freecam.enable": "Freecam has been enabled.",
   "msg.freecam.disable": "Freecam has been disabled.",
   "text.autoconfig.freecam.title": "Freecam Options",

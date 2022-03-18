@@ -15,7 +15,7 @@ public class EntityMixin {
 
     @Inject(method = "changeLookDirection", at = @At("HEAD"), cancellable = true)
     private void onChangeLookDirection(double x, double y, CallbackInfo ci) {
-        if (Freecam.isEnabled() && this.equals(MC.player)) {
+        if (Freecam.isEnabled() && this.equals(MC.player) && !Freecam.isPlayerControlEnabled()) {
             Freecam.getFreeCamera().changeLookDirection(x, y);
             ci.cancel();
         }
