@@ -8,7 +8,7 @@ import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.option.Perspective;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.LiteralText;
+import net.minecraft.text.TranslatableText;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.mixins.GameRendererAccessor;
 import net.xolt.freecam.util.FreeCamera;
@@ -56,7 +56,7 @@ public class Freecam implements ClientModInitializer {
         }
 
         if (ModConfig.INSTANCE.notify) {
-            MC.player.sendMessage(new LiteralText(ModConfig.INSTANCE.enableMessage), true);
+            MC.player.sendMessage(new TranslatableText("msg.freecam.enable"), true);
         }
     }
 
@@ -69,7 +69,7 @@ public class Freecam implements ClientModInitializer {
         freeCamera = null;
 
         if (ModConfig.INSTANCE.notify) {
-            MC.player.sendMessage(new LiteralText(ModConfig.INSTANCE.disableMessage), true);
+            MC.player.sendMessage(new TranslatableText("msg.freecam.disable"), true);
         }
     }
 

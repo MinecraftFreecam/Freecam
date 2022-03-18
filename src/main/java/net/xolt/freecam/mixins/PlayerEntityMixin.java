@@ -15,7 +15,7 @@ public class PlayerEntityMixin {
 
     @Inject(method = "isBlockBreakingRestricted", at = @At("HEAD"), cancellable = true)
     public void onIsBlockBreakingRestricted(CallbackInfoReturnable<Boolean> cir) {
-        if (Freecam.isEnabled() && !ModConfig.INSTANCE.allowBlockBreak && this.equals(MC.player)) {
+        if (Freecam.isEnabled() && !ModConfig.INSTANCE.allowInteract && this.equals(MC.player)) {
             cir.setReturnValue(true);
         }
     }

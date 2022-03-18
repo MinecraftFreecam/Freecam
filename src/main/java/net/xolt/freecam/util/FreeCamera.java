@@ -25,7 +25,7 @@ public class FreeCamera extends ClientPlayerEntity {
 
         copyPositionAndRotation(MC.player);
         this.abilities.flying = true;
-        this.abilities.allowModifyWorld = ModConfig.INSTANCE.allowBlockBreak;
+        this.abilities.allowModifyWorld = ModConfig.INSTANCE.allowInteract;
         this.noClip = true;
         this.input = new KeyboardInput(MC.options);
     }
