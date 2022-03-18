@@ -5,7 +5,10 @@
   "name": "Freecam",
   "description": "A simple, standalone freecam mod.",
   "authors": ["hashalite"],
-  "contact": {},
+  "contact": {
+    "homepage": "https://www.curseforge.com/minecraft/mc-mods/free-cam",
+    "sources": "https://github.com/hashalite/Freecam"
+  },
   "license": "MIT",
   "icon": "assets/freecam/icon.png",
   "environment": "client",

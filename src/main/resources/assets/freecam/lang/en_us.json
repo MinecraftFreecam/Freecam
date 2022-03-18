@@ -1,6 +1,8 @@
 {
-  "key.freecam.toggle": "Toggle Freecam",
   "category.freecam.freecam": "Freecam",
+  "key.freecam.toggle": "Toggle Freecam",
+  "msg.freecam.enable": "Freecam has been enabled.",
+  "msg.freecam.disable": "Freecam has been disabled.",
   "text.autoconfig.freecam.title": "Freecam Options",
   "text.autoconfig.freecam.option.flightMode": "Flight Mode",
   "text.autoconfig.freecam.option.horizontalSpeed": "Horizontal Speed",
@@ -8,9 +10,6 @@
   "text.autoconfig.freecam.option.showPlayer": "Show Player",
   "text.autoconfig.freecam.option.showHand": "Show Hand",
   "text.autoconfig.freecam.option.disableOnDamage": "Disable on Damage",
-  "text.autoconfig.freecam.option.allowBlockBreak": "Allow Breaking Blocks",
-  "text.autoconfig.freecam.option.allowEntityInteract": "Allow Entity Interaction",
-  "text.autoconfig.freecam.option.notify": "Notifications",
-  "text.autoconfig.freecam.option.enableMessage": "Enable Message",
-  "text.autoconfig.freecam.option.disableMessage": "Disable Message"
+  "text.autoconfig.freecam.option.allowInteract": "Allow Interaction",
+  "text.autoconfig.freecam.option.notify": "Notifications"
 }

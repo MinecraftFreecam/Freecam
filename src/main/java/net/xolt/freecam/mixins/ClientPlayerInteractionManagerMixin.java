@@ -21,21 +21,21 @@ public class ClientPlayerInteractionManagerMixin {
 
     @Inject(method = "interactEntity", at = @At("HEAD"), cancellable = true)
     private void onInteractEntity(PlayerEntity player, Entity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (entity.equals(MC.player) || (!ModConfig.INSTANCE.allowEntityInteract && Freecam.isEnabled())) {
+        if (entity.equals(MC.player) || (!ModConfig.INSTANCE.allowInteract && Freecam.isEnabled())) {
             cir.setReturnValue(ActionResult.FAIL);
         }
     }
 
     @Inject(method = "interactEntityAtLocation", at = @At("HEAD"), cancellable = true)
     private void onInteractEntityAtLocation(PlayerEntity player, Entity entity, EntityHitResult hitResult, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (entity.equals(MC.player) || (!ModConfig.INSTANCE.allowEntityInteract && Freecam.isEnabled())) {
+        if (entity.equals(MC.player) || (!ModConfig.INSTANCE.allowInteract && Freecam.isEnabled())) {
             cir.setReturnValue(ActionResult.FAIL);
         }
     }
 
     @Inject(method = "attackEntity", at = @At("HEAD"), cancellable = true)
     private void onAttackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {
-        if (target.equals(MC.player) || (!ModConfig.INSTANCE.allowEntityInteract && Freecam.isEnabled())) {
+        if (target.equals(MC.player) || (!ModConfig.INSTANCE.allowInteract && Freecam.isEnabled())) {
             ci.cancel();
         }
     }
