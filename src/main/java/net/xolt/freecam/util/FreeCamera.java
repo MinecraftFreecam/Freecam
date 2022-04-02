@@ -24,10 +24,14 @@ public class FreeCamera extends ClientPlayerEntity {
         super(MC, MC.world, NETWORK_HANDLER, MC.player.getStatHandler(), MC.player.getRecipeBook(), false, false);
 
         copyPositionAndRotation(MC.player);
-        this.getAbilities().flying = true;
-        this.getAbilities().allowModifyWorld = ModConfig.INSTANCE.allowInteract;
-        this.noClip = true;
-        this.input = new KeyboardInput(MC.options);
+        renderPitch = getPitch();
+        renderYaw = getYaw();
+        lastRenderPitch = renderPitch;
+        lastRenderYaw = renderYaw;
+        getAbilities().flying = true;
+        getAbilities().allowModifyWorld = ModConfig.INSTANCE.allowInteract;
+        noClip = true;
+        input = new KeyboardInput(MC.options);
     }
 
     public void spawn() {
@@ -45,12 +49,16 @@ public class FreeCamera extends ClientPlayerEntity {
     @Override
     public void tickMovement() {
         if (ModConfig.INSTANCE.flightMode.equals(ModConfig.FlightMode.DEFAULT)) {
-            input.tick(false);
             Motion.doMotion(this, ModConfig.INSTANCE.horizontalSpeed, ModConfig.INSTANCE.verticalSpeed);
         } else {
             this.getAbilities().setFlySpeed((float) ModConfig.INSTANCE.verticalSpeed / 10);
-            super.tickMovement();
         }
+        super.tickMovement();
+    }
+
+    @Override
+    public float getHandSwingProgress(float tickDelta) {
+        return MC.player.getHandSwingProgress(tickDelta);
     }
 
     @Override

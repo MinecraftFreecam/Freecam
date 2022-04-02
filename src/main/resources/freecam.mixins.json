@@ -12,6 +12,7 @@
     "EntityMixin",
     "EntityRendererMixin",
     "GameOptionsMixin",
+    "HeldItemRendererMixin",
     "InGameHudMixin",
     "LivingEntityMixin",
     "MinecraftClientMixin",
