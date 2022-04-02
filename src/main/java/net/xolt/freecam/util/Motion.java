@@ -53,6 +53,6 @@ public class Motion {
             velocityY -= vSpeed;
         }
 
-        freeCamera.setPosition(freeCamera.getX() + velocityX, freeCamera.getY() + velocityY, freeCamera.getZ() + velocityZ);
+        freeCamera.setVelocity(velocityX, velocityY, velocityZ);
     }
 }
