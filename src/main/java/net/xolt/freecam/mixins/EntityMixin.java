@@ -1,6 +1,7 @@
 package net.xolt.freecam.mixins;
 
 import net.minecraft.entity.Entity;
+import net.minecraft.entity.player.PlayerEntity;
 import net.xolt.freecam.Freecam;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -25,6 +26,13 @@ public class EntityMixin {
     private void onShouldRender(CallbackInfoReturnable<Boolean> cir) {
         if (Freecam.isEnabled()) {
             cir.setReturnValue(true);
+        }
+    }
+
+    @Inject(method = "pushAwayFrom", at = @At("HEAD"), cancellable = true)
+    private void onPushAwayFrom(Entity entity, CallbackInfo ci) {
+        if (Freecam.isEnabled() && (entity.equals(Freecam.getFreeCamera()) || this.equals(Freecam.getFreeCamera()))) {
+            ci.cancel();
         }
     }
 }

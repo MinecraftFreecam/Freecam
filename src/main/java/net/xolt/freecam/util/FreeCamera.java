@@ -1,11 +1,13 @@
 package net.xolt.freecam.util;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.network.Packet;
+import net.minecraft.util.math.BlockPos;
 import net.xolt.freecam.config.ModConfig;
 
 import java.util.UUID;
@@ -24,10 +26,13 @@ public class FreeCamera extends ClientPlayerEntity {
         super(MC, MC.world, NETWORK_HANDLER, MC.player.getStatHandler(), MC.player.getRecipeBook(), false, false);
 
         copyPositionAndRotation(MC.player);
-        this.getAbilities().flying = true;
-        this.getAbilities().allowModifyWorld = ModConfig.INSTANCE.allowInteract;
-        this.noClip = true;
-        this.input = new KeyboardInput(MC.options);
+        renderPitch = getPitch();
+        renderYaw = getYaw();
+        lastRenderPitch = renderPitch;
+        lastRenderYaw = renderYaw;
+        getAbilities().flying = true;
+        getAbilities().allowModifyWorld = ModConfig.INSTANCE.allowInteract;
+        input = new KeyboardInput(MC.options);
     }
 
     public void spawn() {
@@ -44,13 +49,19 @@ public class FreeCamera extends ClientPlayerEntity {
 
     @Override
     public void tickMovement() {
+        noClip = ModConfig.INSTANCE.noclip;
         if (ModConfig.INSTANCE.flightMode.equals(ModConfig.FlightMode.DEFAULT)) {
             input.tick(false);
             Motion.doMotion(this, ModConfig.INSTANCE.horizontalSpeed, ModConfig.INSTANCE.verticalSpeed);
         } else {
             this.getAbilities().setFlySpeed((float) ModConfig.INSTANCE.verticalSpeed / 10);
-            super.tickMovement();
         }
+        super.tickMovement();
+    }
+
+    @Override
+    public float getHandSwingProgress(float tickDelta) {
+        return MC.player.getHandSwingProgress(tickDelta);
     }
 
     @Override
@@ -58,7 +69,6 @@ public class FreeCamera extends ClientPlayerEntity {
     }
 
     @Override
-    public boolean isSpectator() {
-        return true;
+    protected void fall(double heightDifference, boolean onGround, BlockState landedState, BlockPos landedPosition) {
     }
 }

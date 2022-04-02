@@ -82,14 +82,16 @@ public class Freecam implements ClientModInitializer {
     private static void onDisable() {
         MC.chunkCullingEnabled = true;
         MC.gameRenderer.setRenderHand(true);
-        MC.player.input = new KeyboardInput(MC.options);
         MC.setCameraEntity(MC.player);
         freeCamera.despawn();
         freeCamera = null;
         playerControlEnabled = false;
 
-        if (ModConfig.INSTANCE.notify) {
-            MC.player.sendMessage(new TranslatableText("msg.freecam.disable"), true);
+        if (MC.player != null) {
+            MC.player.input = new KeyboardInput(MC.options);
+            if (ModConfig.INSTANCE.notify) {
+                MC.player.sendMessage(new TranslatableText("msg.freecam.disable"), true);
+            }
         }
     }
 

@@ -27,7 +27,10 @@ public class ModConfig implements ConfigData {
     public double horizontalSpeed = 1.0;
 
     @Comment("The vertical speed of freecam.")
-    public double verticalSpeed = 0.8;
+    public double verticalSpeed = 1.0;
+
+    @Comment("Whether you can travel through blocks.")
+    public boolean noclip = true;
 
     @Comment("Whether your player is rendered in your original position while freecam is enabled.")
     public boolean showPlayer = true;
