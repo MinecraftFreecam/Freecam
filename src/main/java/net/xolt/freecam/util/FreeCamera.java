@@ -54,7 +54,8 @@ public class FreeCamera extends ClientPlayerEntity {
             input.tick(false);
             Motion.doMotion(this, ModConfig.INSTANCE.horizontalSpeed, ModConfig.INSTANCE.verticalSpeed);
         } else {
-            this.abilities.setFlySpeed((float) ModConfig.INSTANCE.verticalSpeed / 10);
+            abilities.flying = true;
+            abilities.setFlySpeed((float) ModConfig.INSTANCE.verticalSpeed / 10);
         }
         super.tickMovement();
     }
