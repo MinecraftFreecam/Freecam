@@ -7,7 +7,8 @@
   "authors": ["hashalite"],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/free-cam",
-    "sources": "https://github.com/hashalite/Freecam"
+    "sources": "https://github.com/hashalite/Freecam",
+    "issues": "https://github.com/hashalite/Freecam/issues"
   },
   "license": "MIT",
   "icon": "assets/freecam/icon.png",
