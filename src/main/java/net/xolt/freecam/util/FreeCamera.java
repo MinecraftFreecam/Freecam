@@ -1,11 +1,13 @@
 package net.xolt.freecam.util;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.block.BlockState;
 import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.network.Packet;
+import net.minecraft.util.math.BlockPos;
 import net.xolt.freecam.config.ModConfig;
 
 import java.util.UUID;
@@ -30,7 +32,6 @@ public class FreeCamera extends ClientPlayerEntity {
         lastRenderYaw = renderYaw;
         getAbilities().flying = true;
         getAbilities().allowModifyWorld = ModConfig.INSTANCE.allowInteract;
-        noClip = true;
         input = new KeyboardInput(MC.options);
     }
 
@@ -48,7 +49,9 @@ public class FreeCamera extends ClientPlayerEntity {
 
     @Override
     public void tickMovement() {
+        noClip = ModConfig.INSTANCE.noclip;
         if (ModConfig.INSTANCE.flightMode.equals(ModConfig.FlightMode.DEFAULT)) {
+            input.tick(false);
             Motion.doMotion(this, ModConfig.INSTANCE.horizontalSpeed, ModConfig.INSTANCE.verticalSpeed);
         } else {
             this.getAbilities().setFlySpeed((float) ModConfig.INSTANCE.verticalSpeed / 10);
@@ -66,7 +69,6 @@ public class FreeCamera extends ClientPlayerEntity {
     }
 
     @Override
-    public boolean isSpectator() {
-        return true;
+    protected void fall(double heightDifference, boolean onGround, BlockState landedState, BlockPos landedPosition) {
     }
 }
