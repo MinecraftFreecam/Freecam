@@ -30,8 +30,6 @@ public class FreeCamera extends ClientPlayerEntity {
         renderYaw = yaw;
         lastRenderPitch = renderPitch;
         lastRenderYaw = renderYaw;
-        abilities.flying = true;
-        abilities.allowModifyWorld = ModConfig.INSTANCE.allowInteract;
         input = new KeyboardInput(MC.options);
     }
 
@@ -54,11 +52,14 @@ public class FreeCamera extends ClientPlayerEntity {
             input.tick(false);
             Motion.doMotion(this, ModConfig.INSTANCE.horizontalSpeed, ModConfig.INSTANCE.verticalSpeed);
         } else {
+            onGround = false;
             abilities.flying = true;
             abilities.setFlySpeed((float) ModConfig.INSTANCE.verticalSpeed / 10);
         }
         super.tickMovement();
     }
+
+
 
     @Override
     public float getHandSwingProgress(float tickDelta) {

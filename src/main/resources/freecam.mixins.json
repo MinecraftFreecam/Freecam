@@ -13,11 +13,11 @@
     "EntityRendererMixin",
     "GameOptionsMixin",
     "GameRendererAccessor",
+    "GameRendererMixin",
     "HeldItemRendererMixin",
     "InGameHudMixin",
     "LivingEntityMixin",
-    "MinecraftClientMixin",
-    "PlayerEntityMixin"
+    "MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1

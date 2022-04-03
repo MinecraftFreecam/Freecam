@@ -29,20 +29,20 @@ public class ModConfig implements ConfigData {
     @Comment("The vertical speed of freecam.")
     public double verticalSpeed = 1.0;
 
-    @Comment("Whether you can travel through blocks.")
+    @Comment("Whether you can travel through blocks in freecam.")
     public boolean noclip = true;
 
-    @Comment("Whether your player is rendered in your original position while freecam is enabled.")
-    public boolean showPlayer = true;
-
-    @Comment("Whether your hand is shown while freecam is enabled.")
-    public boolean showHand = false;
+    @Comment("Whether you can interact with blocks/entities in freecam.")
+    public boolean allowInteract = false;
 
     @Comment("Whether taking damage disables freecam.")
     public boolean disableOnDamage = true;
 
-    @Comment("Whether you can interact with blocks/entities while freecam is enabled.")
-    public boolean allowInteract = true;
+    @Comment("Whether your player is shown in your original position.")
+    public boolean showPlayer = true;
+
+    @Comment("Whether you can see your hand in freecam.")
+    public boolean showHand = false;
 
     @Comment("Whether action bar notifications are displayed.")
     public boolean notify = true;
