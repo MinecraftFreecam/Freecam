@@ -9,7 +9,6 @@ public class Motion {
 
     public static void doMotion(FreeCamera freeCamera, double hSpeed, double vSpeed) {
         float yaw = freeCamera.getYaw();
-
         double velocityX = 0.0;
         double velocityY = 0.0;
         double velocityZ = 0.0;
@@ -17,6 +16,7 @@ public class Motion {
         Vec3d forward = Vec3d.fromPolar(0, yaw);
         Vec3d side = Vec3d.fromPolar(0, yaw + 90);
 
+        freeCamera.input.tick(false);
         boolean straight = false;
         if (freeCamera.input.pressingForward) {
             velocityX += forward.x * hSpeed;
