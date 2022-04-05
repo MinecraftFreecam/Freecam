@@ -6,10 +6,8 @@ import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.MovementType;
 import net.minecraft.network.Packet;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.xolt.freecam.config.ModConfig;
 
 import java.util.UUID;

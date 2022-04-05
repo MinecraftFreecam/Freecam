@@ -1,7 +1,6 @@
 package net.xolt.freecam.mixins;
 
 import net.minecraft.entity.Entity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.xolt.freecam.Freecam;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
