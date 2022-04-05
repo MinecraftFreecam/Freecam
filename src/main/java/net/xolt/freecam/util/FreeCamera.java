@@ -6,8 +6,10 @@ import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.MovementType;
 import net.minecraft.network.Packet;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Vec3d;
 import net.xolt.freecam.config.ModConfig;
 
 import java.util.UUID;
@@ -30,6 +32,7 @@ public class FreeCamera extends ClientPlayerEntity {
         renderYaw = yaw;
         lastRenderPitch = renderPitch;
         lastRenderYaw = renderYaw;
+        abilities.flying = true;
         input = new KeyboardInput(MC.options);
     }
 
@@ -49,17 +52,15 @@ public class FreeCamera extends ClientPlayerEntity {
     public void tickMovement() {
         noClip = ModConfig.INSTANCE.noclip;
         if (ModConfig.INSTANCE.flightMode.equals(ModConfig.FlightMode.DEFAULT)) {
-            input.tick(false);
+            abilities.setFlySpeed(0);
             Motion.doMotion(this, ModConfig.INSTANCE.horizontalSpeed, ModConfig.INSTANCE.verticalSpeed);
         } else {
-            onGround = false;
-            abilities.flying = true;
             abilities.setFlySpeed((float) ModConfig.INSTANCE.verticalSpeed / 10);
         }
         super.tickMovement();
+        abilities.flying = true;
+        onGround = false;
     }
-
-
 
     @Override
     public float getHandSwingProgress(float tickDelta) {
