@@ -47,6 +47,24 @@ public class FreeCamera extends ClientPlayerEntity {
     }
 
     @Override
+    protected void fall(double heightDifference, boolean onGround, BlockState landedState, BlockPos landedPosition) {
+    }
+
+    @Override
+    public float getHandSwingProgress(float tickDelta) {
+        return MC.player.getHandSwingProgress(tickDelta);
+    }
+
+    @Override
+    public boolean isSpectator() {
+        return true;
+    }
+
+    @Override
+    public void setPose(EntityPose pose) {
+    }
+
+    @Override
     public void tickMovement() {
         noClip = ModConfig.INSTANCE.noclip;
         if (ModConfig.INSTANCE.flightMode.equals(ModConfig.FlightMode.DEFAULT)) {
@@ -58,18 +76,5 @@ public class FreeCamera extends ClientPlayerEntity {
         super.tickMovement();
         abilities.flying = true;
         onGround = false;
-    }
-
-    @Override
-    public float getHandSwingProgress(float tickDelta) {
-        return MC.player.getHandSwingProgress(tickDelta);
-    }
-
-    @Override
-    public void setPose(EntityPose pose) {
-    }
-
-    @Override
-    protected void fall(double heightDifference, boolean onGround, BlockState landedState, BlockPos landedPosition) {
     }
 }
