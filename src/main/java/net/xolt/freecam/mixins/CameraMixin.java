@@ -14,6 +14,7 @@ import static net.xolt.freecam.Freecam.MC;
 @Mixin(Camera.class)
 public class CameraMixin {
 
+    // Makes the player render if showPlayer is enabled.
     @Inject(method = "getFocusedEntity", at = @At("HEAD"), cancellable = true)
     private void onGetFocusedEntity(CallbackInfoReturnable<Entity> cir) {
         if (Freecam.isEnabled() && ModConfig.INSTANCE.showPlayer) {
@@ -21,6 +22,7 @@ public class CameraMixin {
         }
     }
 
+    // Makes the game think third person is enabled so the focused entity is rendered.
     @Inject(method = "isThirdPerson", at = @At("HEAD"), cancellable = true)
     private void onIsThirdPerson(CallbackInfoReturnable<Boolean> cir) {
         if (Freecam.isEnabled() && ModConfig.INSTANCE.showPlayer) {

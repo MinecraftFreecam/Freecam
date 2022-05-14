@@ -15,6 +15,7 @@ import static net.xolt.freecam.Freecam.MC;
 @Mixin(EntityRenderer.class)
 public class EntityRendererMixin {
 
+    // Makes arm shading depend upon FreeCamera position rather than player position.
     @Inject(method = "getLight", at = @At("HEAD"), cancellable = true)
     private void onGetLight(Entity entity, float tickDelta, CallbackInfoReturnable<Integer> cir) {
         if (Freecam.isEnabled() && ModConfig.INSTANCE.showHand && entity.equals(MC.player)) {

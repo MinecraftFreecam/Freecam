@@ -13,6 +13,7 @@ import static net.xolt.freecam.Freecam.MC;
 @Mixin(InGameHud.class)
 public class InGameHudMixin {
 
+    // Makes HUD correspond to the player rather than the FreeCamera.
     @Inject(method = "getCameraPlayer", at = @At("HEAD"), cancellable = true)
     private void onGetCameraPlayer(CallbackInfoReturnable<PlayerEntity> cir) {
         if (Freecam.isEnabled()) {

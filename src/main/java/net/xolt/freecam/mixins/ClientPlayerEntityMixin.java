@@ -13,6 +13,7 @@ import static net.xolt.freecam.Freecam.MC;
 @Mixin(ClientPlayerEntity.class)
 public class ClientPlayerEntityMixin {
 
+    // Needed for Baritone compatibility.
     @Inject(method = "isCamera", at = @At("HEAD"), cancellable = true)
     private void onIsCamera(CallbackInfoReturnable<Boolean> cir) {
         if (Freecam.isEnabled() && this.equals(MC.player)) {
@@ -20,6 +21,7 @@ public class ClientPlayerEntityMixin {
         }
     }
 
+    // Disables freecam upon receiving damage if disableOnDamage is enabled.
     @Inject(method = "damage", at = @At("HEAD"))
     private void onDamage(CallbackInfoReturnable<Boolean> cir) {
         if (Freecam.isEnabled() && ModConfig.INSTANCE.disableOnDamage && this.equals(MC.player)) {

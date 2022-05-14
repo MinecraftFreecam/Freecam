@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(GameOptions.class)
 public class GameOptionsMixin {
 
+    // Prevents switching to third person in freecam.
     @Inject(method = "setPerspective", at = @At("HEAD"), cancellable = true)
     private void onSetPerspective(CallbackInfo ci) {
         if (Freecam.isEnabled()) {

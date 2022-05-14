@@ -13,6 +13,7 @@ import static net.xolt.freecam.Freecam.MC;
 @Mixin(Entity.class)
 public class EntityMixin {
 
+    // Makes mouse input rotate the FreeCamera.
     @Inject(method = "changeLookDirection", at = @At("HEAD"), cancellable = true)
     private void onChangeLookDirection(double x, double y, CallbackInfo ci) {
         if (Freecam.isEnabled() && this.equals(MC.player) && !Freecam.isPlayerControlEnabled()) {
@@ -21,6 +22,7 @@ public class EntityMixin {
         }
     }
 
+    // Makes entities render regardless of distance.
     @Inject(method = "shouldRender(D)Z", at = @At("HEAD"), cancellable = true)
     private void onShouldRender(CallbackInfoReturnable<Boolean> cir) {
         if (Freecam.isEnabled()) {
@@ -28,6 +30,7 @@ public class EntityMixin {
         }
     }
 
+    // Prevents FreeCamera from pushing/getting pushed by entities.
     @Inject(method = "pushAwayFrom", at = @At("HEAD"), cancellable = true)
     private void onPushAwayFrom(Entity entity, CallbackInfo ci) {
         if (Freecam.isEnabled() && (entity.equals(Freecam.getFreeCamera()) || this.equals(Freecam.getFreeCamera()))) {
