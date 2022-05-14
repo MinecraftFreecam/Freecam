@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.ModifyVariable;
 @Mixin(HeldItemRenderer.class)
 public class HeldItemRendererMixin {
 
+    // Makes arm movement depend upon FreeCamera movement rather than player movement.
     @ModifyVariable(method = "renderItem(FLnet/minecraft/client/util/math/MatrixStack;Lnet/minecraft/client/render/VertexConsumerProvider$Immediate;Lnet/minecraft/client/network/ClientPlayerEntity;I)V", at = @At("HEAD"), argsOnly = true)
     public ClientPlayerEntity onRenderItem(ClientPlayerEntity player) {
         if (Freecam.isEnabled()) {
