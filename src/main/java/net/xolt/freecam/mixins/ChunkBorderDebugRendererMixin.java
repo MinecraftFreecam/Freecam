@@ -13,13 +13,13 @@ import static net.xolt.freecam.Freecam.MC;
 public class ChunkBorderDebugRendererMixin {
     
     @ModifyVariable(method = "render", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/render/Camera;getFocusedEntity()Lnet/minecraft/entity/Entity;"))
-    private Entity getFocusedEntity(Entity in) {
+    private Entity onGetFocusedEntity(Entity entity) {
         if (Freecam.isEnabled()) {
             // When ShowPlayer is enabled, FreeCamera.getFocusedEntity returns MC.player.
             // When rendering chunk borders, we actually want the camera's position not the player's.
             return MC.getCameraEntity();
         }
-        return in;
+        return entity;
     }
 
 }
