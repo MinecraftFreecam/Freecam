@@ -5,9 +5,9 @@
   "client": [
     "BlockEntityMixin",
     "CameraMixin",
+    "ChunkBorderDebugRendererMixin",
     "ClientConnectionMixin",
     "ClientPlayerEntityMixin",
-    "ClientPlayerInteractionManagerMixin",
     "ClientPlayNetworkHandlerMixin",
     "EntityMixin",
     "EntityRendererMixin",

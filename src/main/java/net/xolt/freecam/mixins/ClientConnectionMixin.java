@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ClientConnection.class)
 public class ClientConnectionMixin {
 
+    // Disables freecam if the player disconnects.
     @Inject(method = "handleDisconnection", at = @At("HEAD"))
     private void onHandleDisconnection(CallbackInfo ci) {
         if (Freecam.isEnabled()) {

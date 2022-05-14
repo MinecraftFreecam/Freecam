@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(BlockEntity.class)
 public abstract class BlockEntityMixin {
 
+    // Makes BlockEntities render regardless of distance.
     @Inject(method = "getRenderDistance", at = @At("HEAD"), cancellable = true)
     private void onGetRenderDistance(CallbackInfoReturnable<Double> cir) {
         if (Freecam.isEnabled()) {

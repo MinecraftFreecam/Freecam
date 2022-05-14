@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ClientPlayNetworkHandler.class)
 public class ClientPlayNetworkHandlerMixin {
 
+    // Disables freecam when the player respawns.
     @Inject(method = "onPlayerRespawn", at = @At("HEAD"))
     private void onPlayerRespawn(CallbackInfo ci) {
         if (Freecam.isEnabled()) {

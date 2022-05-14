@@ -28,7 +28,7 @@ public class FreeCamera extends ClientPlayerEntity {
         copyPositionAndRotation(MC.player);
         renderPitch = pitch;
         renderYaw = yaw;
-        lastRenderPitch = renderPitch;
+        lastRenderPitch = renderPitch; // Prevents camera from rotating upon entering freecam.
         lastRenderYaw = renderYaw;
         abilities.flying = true;
         input = new KeyboardInput(MC.options);
@@ -46,20 +46,24 @@ public class FreeCamera extends ClientPlayerEntity {
         }
     }
 
+    // Prevents fall damage sound when FreeCamera touches ground with noClip disabled.
     @Override
     protected void fall(double heightDifference, boolean onGround, BlockState landedState, BlockPos landedPosition) {
     }
 
+    // Needed for hand swings to be shown in freecam since the player is replaced by FreeCamera in HeldItemRenderer.renderItem()
     @Override
     public float getHandSwingProgress(float tickDelta) {
         return MC.player.getHandSwingProgress(tickDelta);
     }
 
+    // Prevents shadow being cast when Iris is installed.
     @Override
     public boolean isSpectator() {
         return true;
     }
 
+    // Prevents the pose of the FreeCamera from being modified.
     @Override
     public void setPose(EntityPose pose) {
     }
