@@ -10,9 +10,12 @@ import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.network.Packet;
+import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.math.BlockPos;
 import net.xolt.freecam.config.ModConfig;
 
+import java.util.Optional;
 import java.util.UUID;
 
 import static net.xolt.freecam.Freecam.MC;
@@ -33,15 +36,83 @@ public class FreeCamera extends ClientPlayerEntity {
         super(MC, MC.world, NETWORK_HANDLER, MC.player.getStatHandler(), MC.player.getRecipeBook(), false, false);
 
         setId(id);
+        applyPosition(position);
+        getAbilities().flying = true;
+        input = new KeyboardInput(MC.options);
+    }
+
+    public void applyPosition(FreecamPosition position) {
         refreshPositionAndAngles(position.x, position.y, position.z, position.yaw, position.pitch);
         super.setPose(position.pose);
         renderPitch = getPitch();
         renderYaw = getYaw();
         lastRenderPitch = renderPitch; // Prevents camera from rotating upon entering freecam.
         lastRenderYaw = renderYaw;
-        getAbilities().flying = true;
-        input = new KeyboardInput(MC.options);
     }
+
+    // Mutate the position and rotation based on perspective
+    // If checkCollision is true, move as far as possible without colliding
+    // Return an optional error message
+    public Optional<Text> applyPerspective(ModConfig.Perspective perspective, boolean checkCollision) {
+        FreecamPosition position = new FreecamPosition(this);
+        boolean successful = true;
+
+        switch (perspective) {
+            case INSIDE:
+                // No-op
+                break;
+            case FIRST_PERSON:
+                // Move just in front of the player's eyes
+                successful = moveForwardUntilCollision(position, 0.4, checkCollision);
+                break;
+            case THIRD_PERSON_MIRROR:
+                // Invert the rotation and fallthrough into the THIRD_PERSON case
+                position.mirrorRotation();
+            case THIRD_PERSON:
+                // Move back as per F5 mode
+                successful = moveForwardUntilCollision(position, -4.0, checkCollision);
+                break;
+        }
+
+        return successful ? Optional.empty() : Optional.of(Text.translatable("msg.freecam.collisionError").formatted(Formatting.RED));
+    }
+
+    // Move FreeCamera forward using FreecamPosition.moveForward.
+    // If checkCollision is true, stop moving forward before hitting a collision.
+    // Return true if successfully able to move.
+    private boolean moveForwardUntilCollision(FreecamPosition position, double distance, boolean checkCollision) {
+        if (!checkCollision) {
+            position.moveForward(distance);
+            applyPosition(position);
+            return true;
+        }
+        return moveForwardUntilCollision(position, distance);
+    }
+
+    // Same as above, but always check collision.
+    private boolean moveForwardUntilCollision(FreecamPosition position, double maxDistance) {
+        boolean negative = maxDistance < 0;
+        maxDistance = negative ? -1 * maxDistance : maxDistance;
+        double increment = 0.1;
+
+        // Move forward by increment until we reach maxDistance or hit a collision
+        for (double distance = 0.0; distance < maxDistance; distance += increment) {
+            FreecamPosition oldPosition = new FreecamPosition(this);
+
+            position.moveForward(negative ? -1 * increment : increment);
+            applyPosition(position);
+
+            if (!wouldPoseNotCollide(getPose())) {
+                // Revert to last non-colliding position and return whether we were unable to move at all
+                applyPosition(oldPosition);
+                return distance > 0;
+            }
+        }
+
+        return true;
+    }
+
+
 
     public void spawn() {
         if (clientWorld != null) {

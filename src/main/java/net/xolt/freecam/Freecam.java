@@ -17,6 +17,7 @@ import net.xolt.freecam.util.FreecamPosition;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 public class Freecam implements ClientModInitializer {
 
@@ -168,10 +169,13 @@ public class Freecam implements ClientModInitializer {
     private static void onEnableFreecam() {
         onEnable();
         freeCamera = new FreeCamera(-420);
+        Optional<Text> errorMsg = freeCamera.applyPerspective(ModConfig.INSTANCE.perspective, ModConfig.INSTANCE.checkCollision || !ModConfig.INSTANCE.noClip);
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
 
-        if (ModConfig.INSTANCE.notifyFreecam) {
+        if (errorMsg.isPresent())  {
+            MC.player.sendMessage(errorMsg.get(), true);
+        } else if (ModConfig.INSTANCE.notifyFreecam) {
             MC.player.sendMessage(Text.translatable("msg.freecam.enable"), true);
         }
     }
