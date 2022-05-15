@@ -7,6 +7,7 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
+import org.jetbrains.annotations.NotNull;
 
 @Config(name = "freecam")
 public class ModConfig implements ConfigData {
@@ -38,6 +39,10 @@ public class ModConfig implements ConfigData {
     @Comment("Whether taking damage disables freecam.")
     public boolean disableOnDamage = true;
 
+    @Comment("The initial perspective of the camera.")
+    @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
+    public Perspective perspective = Perspective.THIRD_PERSON;
+
     @Comment("Whether your player is shown in your original position.")
     public boolean showPlayer = true;
 
@@ -57,7 +62,24 @@ public class ModConfig implements ConfigData {
             this.name = name;
         }
 
-        public String getKey() {
+        public @NotNull String getKey() {
+            return name;
+        }
+    }
+
+    public enum Perspective implements SelectionListEntry.Translatable {
+        FIRST_PERSON("First Person"),
+        THIRD_PERSON("Third Person"),
+        THIRD_PERSON_MIRROR("Mirror"),
+        INSIDE("Inside");
+
+        private final String name;
+
+        Perspective(String name) {
+            this.name = name;
+        }
+
+        public @NotNull String getKey() {
             return name;
         }
     }

@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -27,7 +28,7 @@ public class FreeCamera extends ClientPlayerEntity {
     public FreeCamera() {
         super(MC, MC.world, NETWORK_HANDLER, MC.player.getStatHandler(), MC.player.getRecipeBook(), false, false);
 
-        copyPositionAndRotation(MC.player);
+        copyPositionAndRotation(MC.player, ModConfig.INSTANCE.perspective);
         renderPitch = getPitch();
         renderYaw = getYaw();
         lastRenderPitch = renderPitch; // Prevents camera from rotating upon entering freecam.
@@ -88,5 +89,31 @@ public class FreeCamera extends ClientPlayerEntity {
         super.tickMovement();
         getAbilities().flying = true;
         onGround = false;
+    }
+
+    private void copyPositionAndRotation(Entity entity, ModConfig.Perspective perspective) {
+        // Copy the entity's position and rotation
+        PositionRotationUtil util = new PositionRotationUtil(entity);
+
+        // Mutate the position and rotation based on ModConfig
+        switch (perspective) {
+            case INSIDE:
+                // No-op
+                break;
+            case FIRST_PERSON:
+                // Move just in front of the player's eyes
+                util.moveForward(0.3);
+                break;
+            case THIRD_PERSON_MIRROR:
+                // Invert the rotation and fallthrough into the THIRD_PERSON case
+                util.mirrorRotation();
+            case THIRD_PERSON:
+                // Move back 4 blocks, as per F5 mode
+                util.moveForward(-4.0);
+                break;
+        }
+
+        // Apply the mutated position and rotation to the FreeCamera
+        util.applyPositionAndRotation(this);
     }
 }
