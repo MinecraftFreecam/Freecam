@@ -6,6 +6,8 @@ import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.EntityPose;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.network.Packet;
 import net.minecraft.util.math.BlockPos;
 import net.xolt.freecam.config.ModConfig;
@@ -57,10 +59,16 @@ public class FreeCamera extends ClientPlayerEntity {
         return MC.player.getHandSwingProgress(tickDelta);
     }
 
-    // Prevents shadow being cast when Iris is installed.
+    // Prevents shadow being cast when Iris is enabled.
     @Override
     public boolean isSpectator() {
         return true;
+    }
+
+    // Makes night vision apply to FreeCamera when Iris is enabled.
+    @Override
+    public StatusEffectInstance getStatusEffect(StatusEffect effect) {
+        return MC.player.getStatusEffect(effect);
     }
 
     // Prevents the pose of the FreeCamera from being modified.
