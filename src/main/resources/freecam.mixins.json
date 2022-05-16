@@ -8,6 +8,7 @@
     "ChunkBorderDebugRendererMixin",
     "ClientConnectionMixin",
     "ClientPlayerEntityMixin",
+    "ClientPlayerInteractionManagerMixin",
     "ClientPlayNetworkHandlerMixin",
     "EntityMixin",
     "EntityRendererMixin",

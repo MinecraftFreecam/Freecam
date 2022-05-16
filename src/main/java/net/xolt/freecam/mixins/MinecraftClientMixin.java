@@ -34,14 +34,6 @@ public class MinecraftClientMixin {
         }
     }
 
-    // Prevents using items/blocks when allowInteract is disabled.
-    @Inject(method = "doItemUse", at = @At("HEAD"), cancellable = true)
-    private void onDoItemUse(CallbackInfo ci) {
-        if (Freecam.isEnabled() && !ModConfig.INSTANCE.allowInteract) {
-            ci.cancel();
-        }
-    }
-
     // Prevents item pick when allowInteract is disabled.
     @Inject(method = "doItemPick", at = @At("HEAD"), cancellable = true)
     private void onDoItemPick(CallbackInfo ci) {
