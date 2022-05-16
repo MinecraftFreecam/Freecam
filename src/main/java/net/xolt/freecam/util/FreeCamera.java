@@ -59,6 +59,18 @@ public class FreeCamera extends ClientPlayerEntity {
         return MC.player.getHandSwingProgress(tickDelta);
     }
 
+    // Needed for item use animations to be shown in freecam since the player is replaced by FreeCamera in HeldItemRenderer.renderItem()
+    @Override
+    public int getItemUseTimeLeft() {
+        return MC.player.getItemUseTimeLeft();
+    }
+
+    // Also needed for item use animations to be shown in freecam.
+    @Override
+    public boolean isUsingItem() {
+        return MC.player.isUsingItem();
+    }
+
     // Prevents shadow being cast when Iris is enabled.
     @Override
     public boolean isSpectator() {
