@@ -9,7 +9,7 @@ import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.option.Perspective;
 import net.minecraft.client.util.InputUtil;
-import net.minecraft.text.TranslatableText;
+import net.minecraft.text.Text;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.util.FreeCamera;
 import org.lwjgl.glfw.GLFW;
@@ -75,7 +75,7 @@ public class Freecam implements ClientModInitializer {
         }
 
         if (ModConfig.INSTANCE.notify) {
-            MC.player.sendMessage(new TranslatableText("msg.freecam.enable"), true);
+            MC.player.sendMessage(Text.translatable("msg.freecam.enable"), true);
         }
     }
 
@@ -90,7 +90,7 @@ public class Freecam implements ClientModInitializer {
         if (MC.player != null) {
             MC.player.input = new KeyboardInput(MC.options);
             if (ModConfig.INSTANCE.notify) {
-                MC.player.sendMessage(new TranslatableText("msg.freecam.disable"), true);
+                MC.player.sendMessage(Text.translatable("msg.freecam.disable"), true);
             }
         }
     }
