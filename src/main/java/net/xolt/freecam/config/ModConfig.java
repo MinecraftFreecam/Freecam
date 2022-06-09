@@ -32,6 +32,9 @@ public class ModConfig implements ConfigData {
     @Comment("Whether you can travel through blocks in freecam.")
     public boolean noclip = true;
 
+    @Comment("Whether your player is frozen in place while freecam is active.")
+    public boolean freezePlayer = false;
+
     @Comment("Whether you can interact with blocks/entities in freecam.")
     public boolean allowInteract = false;
 

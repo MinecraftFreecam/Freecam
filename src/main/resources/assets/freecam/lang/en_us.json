@@ -9,6 +9,7 @@
   "text.autoconfig.freecam.option.horizontalSpeed": "Horizontal Speed",
   "text.autoconfig.freecam.option.verticalSpeed": "Vertical Speed",
   "text.autoconfig.freecam.option.noclip": "NoClip",
+  "text.autoconfig.freecam.option.freezePlayer": "Freeze Player",
   "text.autoconfig.freecam.option.showPlayer": "Show Player",
   "text.autoconfig.freecam.option.showHand": "Show Hand",
   "text.autoconfig.freecam.option.disableOnDamage": "Disable on Damage",
