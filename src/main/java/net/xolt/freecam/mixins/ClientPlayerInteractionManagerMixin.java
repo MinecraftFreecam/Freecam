@@ -24,7 +24,7 @@ public class ClientPlayerInteractionManagerMixin {
 
     // Prevents interacting with blocks when allowInteract is disabled.
     @Inject(method = "interactBlock", at = @At("HEAD"), cancellable = true)
-    private void onInteractBlock(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
+    private void onInteractBlock(ClientPlayerEntity player, ClientWorld world, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
         if (Freecam.isEnabled() && !ModConfig.INSTANCE.allowInteract) {
             cir.setReturnValue(ActionResult.PASS);
         }
