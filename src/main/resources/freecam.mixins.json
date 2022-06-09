@@ -18,7 +18,7 @@
     "HeldItemRendererMixin",
     "InGameHudMixin",
     "LivingEntityMixin",
-    "MinecraftClientMixin",
+    "MinecraftClientMixin"
   ],
   "injectors": {
     "defaultRequire": 1
