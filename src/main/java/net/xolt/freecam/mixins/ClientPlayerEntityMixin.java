@@ -6,7 +6,6 @@ import net.xolt.freecam.config.ModConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static net.xolt.freecam.Freecam.MC;
@@ -27,14 +26,6 @@ public class ClientPlayerEntityMixin {
     private void onDamage(CallbackInfoReturnable<Boolean> cir) {
         if (Freecam.isEnabled() && ModConfig.INSTANCE.disableOnDamage && this.equals(MC.player)) {
             Freecam.toggle();
-        }
-    }
-
-    // Freezes the player's position if freezePlayer is enabled.
-    @Inject(method = "tickMovement", at = @At("HEAD"), cancellable = true)
-    private void onTickMovement(CallbackInfo ci) {
-        if (Freecam.isEnabled() && ModConfig.INSTANCE.freezePlayer && this.equals(MC.player)) {
-            ci.cancel();
         }
     }
 }

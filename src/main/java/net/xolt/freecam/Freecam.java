@@ -29,7 +29,7 @@ public class Freecam implements ClientModInitializer {
     public void onInitializeClient() {
         ModConfig.init();
         freecamBind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-                "key.freecam.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_X, "category.freecam.freecam"));
+                "key.freecam.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F4, "category.freecam.freecam"));
         playerControlBind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.freecam.playerControl", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam"));
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -72,11 +72,6 @@ public class Freecam implements ClientModInitializer {
 
         if (MC.gameRenderer.getCamera().isThirdPerson()) {
             MC.options.setPerspective(Perspective.FIRST_PERSON);
-        }
-
-        if (ModConfig.INSTANCE.freezePlayer) {
-            MC.player.limbAngle = MC.player.lastLimbDistance = MC.player.limbDistance = 0;
-            MC.player.setSprinting(false);
         }
 
         if (ModConfig.INSTANCE.notify) {
