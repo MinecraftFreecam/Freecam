@@ -74,11 +74,6 @@ public class Freecam implements ClientModInitializer {
             MC.options.setPerspective(Perspective.FIRST_PERSON);
         }
 
-        if (ModConfig.INSTANCE.freezePlayer) {
-            MC.player.limbAngle = MC.player.lastLimbDistance = MC.player.limbDistance = 0;
-            MC.player.setSprinting(false);
-        }
-
         if (ModConfig.INSTANCE.notify) {
             MC.player.sendMessage(Text.translatable("msg.freecam.enable"), true);
         }
