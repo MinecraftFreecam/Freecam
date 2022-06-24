@@ -18,10 +18,13 @@ public class MinecraftClientMixin {
     // Prevents player from being controlled when freecam is enabled.
     @Inject(method = "tick", at = @At("HEAD"))
     private void onTick(CallbackInfo ci) {
-        if (Freecam.isEnabled() && MC.player != null && MC.player.input instanceof KeyboardInput && !Freecam.isPlayerControlEnabled()) {
-            Input input = new Input();
-            input.sneaking = MC.player.input.sneaking; // Makes player continue to sneak after freecam is enabled.
-            MC.player.input = input;
+        if (Freecam.isEnabled()) {
+            if (MC.player != null && MC.player.input instanceof KeyboardInput && !Freecam.isPlayerControlEnabled()) {
+                Input input = new Input();
+                input.sneaking = MC.player.input.sneaking; // Makes player continue to sneak after freecam is enabled.
+                MC.player.input = input;
+            }
+            MC.gameRenderer.setRenderHand(ModConfig.INSTANCE.showHand);
         }
     }
 
