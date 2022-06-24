@@ -24,7 +24,7 @@ public class MinecraftClientMixin {
                 input.sneaking = MC.player.input.sneaking; // Makes player continue to sneak after freecam is enabled.
                 MC.player.input = input;
             }
-            MC.gameRenderer.setRenderHand(ModConfig.INSTANCE.showHand);
+            ((GameRendererAccessor) MC.gameRenderer).setRenderHand(ModConfig.INSTANCE.showHand);
         }
     }
 
