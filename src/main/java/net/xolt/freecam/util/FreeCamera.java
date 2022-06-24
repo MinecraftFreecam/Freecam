@@ -9,6 +9,7 @@ import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.network.Packet;
+import net.minecraft.util.Hand;
 import net.minecraft.util.math.BlockPos;
 import net.xolt.freecam.config.ModConfig;
 
@@ -69,6 +70,12 @@ public class FreeCamera extends ClientPlayerEntity {
     @Override
     public boolean isUsingItem() {
         return MC.player.isUsingItem();
+    }
+
+    // Fixes crash when eating food in freecam in 1.16/17
+    @Override
+    public Hand getActiveHand() {
+        return MC.player.getActiveHand();
     }
 
     // Prevents shadow being cast when Iris is enabled.
