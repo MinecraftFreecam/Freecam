@@ -17,7 +17,7 @@ public class ClientConnectionMixin {
             Freecam.toggle();
         } else if (Freecam.isPersistentCameraEnabled()) {
             Freecam.togglePersistentCamera();
-            Freecam.clearPersistentCameras();
         }
+        Freecam.clearPersistentCameras();
     }
 }
