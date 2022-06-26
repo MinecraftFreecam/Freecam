@@ -22,7 +22,7 @@ The freecam bind can also be used in conjunction with any of the hotbar keys (`F
 |Flight Mode|The type of flight used by freecam.<br /><br />**Options:**<br />- `DEFAULT` Static velocity with no drifting<br />- `CREATIVE` Vanilla creative flight|`DEFAULT`|
 |Horizontal Speed|The horizontal speed of freecam.|`1.0`|
 |Vertical Speed|The vertical speed of freecam.|`1.0`|
-|NoClip|Whether you can travel through blocks in freecam.|`true`|
+|No Clip|Whether you can travel through blocks in freecam.|`true`|
 |Freeze Player|Prevents player movement while freecam is active.<br />**WARNING: Multiplayer usage not advised.**|`false`|
 |Allow Interaction|Whether you can interact with blocks/entities in freecam.<br />**WARNING: Multiplayer usage not advised.**|`false`|
 |Disable on Damage|Disables freecam when damage is received.|`true`|
