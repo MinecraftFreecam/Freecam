@@ -13,10 +13,8 @@ public class ClientConnectionMixin {
     // Disables freecam if the player disconnects.
     @Inject(method = "handleDisconnection", at = @At("HEAD"))
     private void onHandleDisconnection(CallbackInfo ci) {
-        if (Freecam.isFreecamEnabled()) {
+        if (Freecam.isEnabled()) {
             Freecam.toggle();
-        } else if (Freecam.isPersistentCameraEnabled()) {
-            Freecam.togglePersistentCamera();
         }
         Freecam.clearPersistentCameras();
     }
