@@ -43,22 +43,13 @@ public class Freecam implements ClientModInitializer {
             if (freecamBind.isPressed()) {
                 for (KeyBinding hotbarKey : MC.options.keysHotbar) {
                     while (hotbarKey.wasPressed()) {
-                        if (enabled) {
-                            toggle();
-                        }
                         togglePersistentCamera(hotbarKey.getDefaultKey().getCode());
-                        while (freecamBind.wasPressed()) {
-                        }
+                        while (freecamBind.wasPressed()) {}
                     }
                 }
             } else if (freecamBind.wasPressed()){
-                if (persistentCameraEnabled) {
-                    togglePersistentCamera(activePersistentCamera);
-                } else {
-                    toggle();
-                }
-                while (freecamBind.wasPressed()) {
-                }
+                toggle();
+                while (freecamBind.wasPressed()) {}
             }
 
             while (playerControlBind.wasPressed()) {
@@ -68,28 +59,36 @@ public class Freecam implements ClientModInitializer {
     }
 
     public static void toggle() {
-        if (enabled) {
-            onDisableFreecam();
+        if (persistentCameraEnabled) {
+            togglePersistentCamera(activePersistentCamera);
         } else {
-            onEnableFreecam();
+            if (enabled) {
+                onDisableFreecam();
+            } else {
+                onEnableFreecam();
+            }
+            enabled = !enabled;
         }
-        enabled = !enabled;
     }
 
     public static void togglePersistentCamera() {
         togglePersistentCamera(activePersistentCamera);
     }
 
-    public static void togglePersistentCamera(int keyCode) {
+    private static void togglePersistentCamera(int keyCode) {
         if (persistentCameraEnabled) {
             if (activePersistentCamera.equals(keyCode)) {
                 onDisablePersistentCamera(keyCode);
                 persistentCameraEnabled = false;
             } else {
-                onDisablePersistentCamera(activePersistentCamera);
+                onDisable();
+                persistentCameras.get(activePersistentCamera).input = new Input();
                 onEnablePersistentCamera(keyCode);
             }
         } else {
+            if (enabled) {
+                toggle();
+            }
             onEnablePersistentCamera(keyCode);
             persistentCameraEnabled = true;
         }
@@ -109,7 +108,6 @@ public class Freecam implements ClientModInitializer {
 
     private static void onEnablePersistentCamera(int keyCode) {
         onEnable();
-        activePersistentCamera = keyCode;
         FreeCamera persistentCamera = persistentCameras.get(keyCode);
 
         boolean chunkLoaded = false;
@@ -126,11 +124,22 @@ public class Freecam implements ClientModInitializer {
 
         persistentCamera.input = new KeyboardInput(MC.options);
         MC.setCameraEntity(persistentCamera);
+        activePersistentCamera = keyCode;
+
+        if (ModConfig.INSTANCE.notify) {
+            MC.player.sendMessage(Text.translatable("msg.freecam.enablePersistent").append("" + activePersistentCamera % GLFW.GLFW_KEY_0), true);
+        }
     }
 
     private static void onDisablePersistentCamera(int keyCode) {
         onDisable();
         persistentCameras.get(keyCode).input = new Input();
+
+        if (MC.player != null) {
+            if (ModConfig.INSTANCE.notify) {
+                MC.player.sendMessage(Text.translatable("msg.freecam.disablePersistent").append("" + activePersistentCamera % GLFW.GLFW_KEY_0), true);
+            }
+        }
         activePersistentCamera = null;
     }
 
