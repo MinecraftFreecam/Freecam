@@ -29,6 +29,6 @@ public class GameRendererMixin {
         if (Freecam.isEnabled() && Freecam.isPlayerControlEnabled()) {
             return MC.player;
         }
-        return Freecam.getFreeCamera();
+        return entity;
     }
 }
