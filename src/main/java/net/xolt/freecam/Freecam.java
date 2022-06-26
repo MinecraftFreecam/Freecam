@@ -127,7 +127,7 @@ public class Freecam implements ClientModInitializer {
         activePersistentCamera = keyCode;
 
         if (ModConfig.INSTANCE.notify) {
-            MC.player.sendMessage(Text.translatable("msg.freecam.enablePersistent").append("" + activePersistentCamera % GLFW.GLFW_KEY_0), true);
+            MC.player.sendMessage(new TranslatableText("msg.freecam.enablePersistent").append("" + activePersistentCamera % GLFW.GLFW_KEY_0), true);
         }
     }
 
@@ -137,7 +137,7 @@ public class Freecam implements ClientModInitializer {
 
         if (MC.player != null) {
             if (ModConfig.INSTANCE.notify) {
-                MC.player.sendMessage(Text.translatable("msg.freecam.disablePersistent").append("" + activePersistentCamera % GLFW.GLFW_KEY_0), true);
+                MC.player.sendMessage(new TranslatableText("msg.freecam.disablePersistent").append("" + activePersistentCamera % GLFW.GLFW_KEY_0), true);
             }
         }
         activePersistentCamera = null;
