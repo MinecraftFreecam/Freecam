@@ -13,7 +13,7 @@ import static net.xolt.freecam.Freecam.MC;
 public class BackgroundRendererMixin {
 
     // Fixes night vision not working underwater
-    @ModifyVariable(method = "render", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/render/Camera;getFocusedEntity()Lnet/minecraft/entity/Entity;"))
+    @ModifyVariable(method = "render", at = @At("STORE"))
     private static Entity onRender(Entity entity) {
         if (Freecam.isEnabled()) {
             return MC.getCameraEntity();
@@ -22,7 +22,7 @@ public class BackgroundRendererMixin {
     }
 
     // Fixes night vision not working underwater
-    @ModifyVariable(method = "applyFog", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/render/Camera;getFocusedEntity()Lnet/minecraft/entity/Entity;"))
+    @ModifyVariable(method = "applyFog", at = @At("STORE"))
     private static Entity onApplyFog(Entity entity) {
         if (Freecam.isEnabled()) {
             return MC.getCameraEntity();
