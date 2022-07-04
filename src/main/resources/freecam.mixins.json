@@ -4,9 +4,6 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "BlockEntityMixin",
-    "BackgroundRendererMixin",
-    "CameraMixin",
-    "ChunkBorderDebugRendererMixin",
     "ClientConnectionMixin",
     "ClientPlayerEntityMixin",
     "ClientPlayerInteractionManagerMixin",
@@ -19,7 +16,8 @@
     "HeldItemRendererMixin",
     "InGameHudMixin",
     "LivingEntityMixin",
-    "MinecraftClientMixin"
+    "MinecraftClientMixin",
+    "WorldRendererMixin"
   ],
   "injectors": {
     "defaultRequire": 1
