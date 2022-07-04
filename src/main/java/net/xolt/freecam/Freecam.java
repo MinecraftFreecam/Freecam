@@ -126,7 +126,7 @@ public class Freecam implements ClientModInitializer {
         MC.setCameraEntity(persistentCamera);
         activePersistentCamera = keyCode;
 
-        if (ModConfig.INSTANCE.notify) {
+        if (ModConfig.INSTANCE.notifyPersistent) {
             MC.player.sendMessage(new TranslatableText("msg.freecam.enablePersistent").append("" + activePersistentCamera % GLFW.GLFW_KEY_0), true);
         }
     }
@@ -136,7 +136,7 @@ public class Freecam implements ClientModInitializer {
         persistentCameras.get(keyCode).input = new Input();
 
         if (MC.player != null) {
-            if (ModConfig.INSTANCE.notify) {
+            if (ModConfig.INSTANCE.notifyPersistent) {
                 MC.player.sendMessage(new TranslatableText("msg.freecam.disablePersistent").append("" + activePersistentCamera % GLFW.GLFW_KEY_0), true);
             }
         }
@@ -149,7 +149,7 @@ public class Freecam implements ClientModInitializer {
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
 
-        if (ModConfig.INSTANCE.notify) {
+        if (ModConfig.INSTANCE.notifyFreecam) {
             MC.player.sendMessage(new TranslatableText("msg.freecam.disable"), true);
         }
     }
@@ -160,7 +160,7 @@ public class Freecam implements ClientModInitializer {
         freeCamera = null;
 
         if (MC.player != null) {
-            if (ModConfig.INSTANCE.notify) {
+            if (ModConfig.INSTANCE.notifyFreecam) {
                 MC.player.sendMessage(new TranslatableText("msg.freecam.disable"), true);
             }
         }

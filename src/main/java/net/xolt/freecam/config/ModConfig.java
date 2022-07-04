@@ -47,8 +47,11 @@ public class ModConfig implements ConfigData {
     @Comment("Whether you can see your hand in freecam.")
     public boolean showHand = false;
 
-    @Comment("Whether action bar notifications are displayed.")
-    public boolean notify = true;
+    @Comment("Notifies you when entering/exiting freecam.")
+    public boolean notifyFreecam = true;
+
+    @Comment("Notifies you when entering/exiting tripod cameras.")
+    public boolean notifyPersistent = true;
 
     public enum FlightMode implements SelectionListEntry.Translatable {
         CREATIVE("Creative"),
