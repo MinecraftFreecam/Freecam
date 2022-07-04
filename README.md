@@ -28,7 +28,8 @@ The freecam bind can also be used in conjunction with any of the hotbar keys (`F
 |Disable on Damage|Disables freecam when damage is received.|`true`|
 |Show Player|Shows your player in its original position.|`true`|
 |Show Hand|Whether you can see your hand in freecam.|`false`|
-|Notify|Whether action bar notifications are displayed.|`true`|
+|Freecam Notifications|Notifies you when entering/exiting freecam.|`true`|
+|Tripod Notifications|Notifies you when entering/exiting tripod cameras.|`true`|
 
 ## Requirements
 - [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
