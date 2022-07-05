@@ -9,7 +9,6 @@
     "ClientPlayerInteractionManagerMixin",
     "ClientPlayNetworkHandlerMixin",
     "EntityMixin",
-    "EntityRendererMixin",
     "GameOptionsMixin",
     "GameRendererMixin",
     "HeldItemRendererMixin",
