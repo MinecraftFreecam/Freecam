@@ -28,6 +28,7 @@ public class FreeCamera extends ClientPlayerEntity {
         super(MC, MC.world, NETWORK_HANDLER, MC.player.getStatHandler(), MC.player.getRecipeBook(), false, false);
 
         copyPositionAndRotation(MC.player);
+        setPose(MC.player.getPose());
         renderPitch = getPitch();
         renderYaw = getYaw();
         lastRenderPitch = renderPitch; // Prevents camera from rotating upon entering freecam.
@@ -71,21 +72,10 @@ public class FreeCamera extends ClientPlayerEntity {
         return MC.player.isUsingItem();
     }
 
-    // Prevents shadow being cast when Iris is enabled.
-    @Override
-    public boolean isSpectator() {
-        return true;
-    }
-
     // Makes night vision apply to FreeCamera when Iris is enabled.
     @Override
     public StatusEffectInstance getStatusEffect(StatusEffect effect) {
         return MC.player.getStatusEffect(effect);
-    }
-
-    // Prevents the pose of the FreeCamera from being modified.
-    @Override
-    public void setPose(EntityPose pose) {
     }
 
     @Override
