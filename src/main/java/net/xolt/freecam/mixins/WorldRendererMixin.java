@@ -16,8 +16,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static net.xolt.freecam.Freecam.MC;
 
 @Mixin(WorldRenderer.class)
-public class WorldRendererMixin
-{
+public class WorldRendererMixin {
+
   @Shadow
   private BufferBuilderStorage bufferBuilders;
 
