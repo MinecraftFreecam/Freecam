@@ -1,8 +1,10 @@
 # Freecam
 
-This mod allows you to control your camera separately from your player. While it is enabled, you can fly around and travel through blocks within your render distance. Disabling it will restore you to your original position. This can be useful for quickly inspecting builds and exploring your world. 
+This mod allows you to control your camera separately from your player. While it is enabled, you can fly around within your render distance. Disabling it will restore you to your original position. This can be useful for quickly inspecting builds and exploring your world.
 
-This mod works in multiplayer, but may be considered cheating on some servers, so use it at your own risk.
+This version of Freecam is modified to comply with Modrinth's [rules](https://modrinth.com/legal/rules) regarding cheats and hacks. This means that access to certain features (noclip, block/entity interaction, and player freezing) is restricted unless you are an operator on the current server, in creative mode, or playing in a singleplayer world. If you would like to check out the original mod, it can be downloaded from [Curseforge](https://www.curseforge.com/minecraft/mc-mods/free-cam) or [Github](https://github.com/hashalite/Freecam).
+
+If you encounter a bug or would like to request a feature, please make a GitHub issue [here](https://github.com/hashalite/Freecam).
 
 ## Keybinds
 
@@ -22,9 +24,9 @@ The freecam bind can also be used in conjunction with any of the hotbar keys (`F
 |Flight Mode|The type of flight used by freecam.<br /><br />**Options:**<br />- `DEFAULT` Static velocity with no drifting<br />- `CREATIVE` Vanilla creative flight|`DEFAULT`|
 |Horizontal Speed|The horizontal speed of freecam.|`1.0`|
 |Vertical Speed|The vertical speed of freecam.|`1.0`|
-|No Clip|Whether you can travel through blocks in freecam.|`true`|
-|Freeze Player|Prevents player movement while freecam is active.<br />**WARNING: Multiplayer usage not advised.**|`false`|
-|Allow Interaction|Whether you can interact with blocks/entities in freecam.<br />**WARNING: Multiplayer usage not advised.**|`false`|
+|No Clip|Whether you can travel through blocks in freecam.<br />**NOTE: Can only be used in singleplayer, creative, or with operator status.**|`false`|
+|Freeze Player|Prevents player movement while freecam is active.<br />**NOTE: Can only be used in singleplayer, creative, or with operator status.**|`false`|
+|Allow Interaction|Whether you can interact with blocks/entities in freecam.<br />**NOTE: Can only be used in singleplayer, creative, or with operator status.**|`false`|
 |Disable on Damage|Disables freecam when damage is received.|`true`|
 |Show Player|Shows your player in its original position.|`true`|
 |Show Hand|Whether you can see your hand in freecam.|`false`|
@@ -34,5 +36,3 @@ The freecam bind can also be used in conjunction with any of the hotbar keys (`F
 ## Requirements
 - [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
 - [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu) (Optional for easier configuration)
-
-Curseforge page [here](https://www.curseforge.com/minecraft/mc-mods/free-cam).
