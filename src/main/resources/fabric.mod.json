@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "id": "freecam",
   "version": "${version}",
-  "name": "Freecam",
+  "name": "Freecam (Modrinth Edition)",
   "description": "A simple, standalone freecam mod.",
   "authors": ["hashalite"],
   "contact": {
