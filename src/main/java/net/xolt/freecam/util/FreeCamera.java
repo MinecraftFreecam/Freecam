@@ -5,6 +5,7 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.network.Packet;
@@ -28,7 +29,7 @@ public class FreeCamera extends ClientPlayerEntity {
         super(MC, MC.world, NETWORK_HANDLER, MC.player.getStatHandler(), MC.player.getRecipeBook(), false, false);
 
         copyPositionAndRotation(MC.player);
-        setPose(MC.player.getPose());
+        super.setPose(MC.player.getPose());
         renderPitch = pitch;
         renderYaw = yaw;
         lastRenderPitch = renderPitch; // Prevents camera from rotating upon entering freecam.
@@ -82,6 +83,14 @@ public class FreeCamera extends ClientPlayerEntity {
     @Override
     public StatusEffectInstance getStatusEffect(StatusEffect effect) {
         return MC.player.getStatusEffect(effect);
+    }
+
+    // Prevents pose from changing when clipping through blocks.
+    @Override
+    public void setPose(EntityPose pose) {
+        if (pose.equals(EntityPose.STANDING) || (pose.equals(EntityPose.CROUCHING) && !getPose().equals(EntityPose.STANDING))) {
+            super.setPose(pose);
+        }
     }
 
     @Override
