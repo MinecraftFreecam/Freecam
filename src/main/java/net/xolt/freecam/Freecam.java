@@ -219,4 +219,8 @@ public class Freecam implements ClientModInitializer {
     public static boolean isPlayerControlEnabled() {
         return playerControlEnabled;
     }
+
+    public static boolean canUseCheats() {
+        return MC.player.hasPermissionLevel(2) || MC.isInSingleplayer();
+    }
 }

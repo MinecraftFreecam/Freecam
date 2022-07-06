@@ -9,6 +9,7 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.network.Packet;
 import net.minecraft.util.math.BlockPos;
+import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModConfig;
 
 import java.util.UUID;
@@ -79,7 +80,7 @@ public class FreeCamera extends ClientPlayerEntity {
 
     @Override
     public void tickMovement() {
-        noClip = ModConfig.INSTANCE.noclip;
+        noClip = ModConfig.INSTANCE.noclip && Freecam.canUseCheats();
         if (ModConfig.INSTANCE.flightMode.equals(ModConfig.FlightMode.DEFAULT)) {
             getAbilities().setFlySpeed(0);
             Motion.doMotion(this, ModConfig.INSTANCE.horizontalSpeed, ModConfig.INSTANCE.verticalSpeed);
