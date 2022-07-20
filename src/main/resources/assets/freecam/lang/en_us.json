@@ -8,6 +8,7 @@
   "msg.freecam.disablePersistent": "Closing camera #",
   "text.autoconfig.freecam.title": "Freecam Options",
   "text.autoconfig.freecam.option.flightMode": "Flight Mode",
+  "text.autoconfig.freecam.option.interactionMode": "Interaction Mode",
   "text.autoconfig.freecam.option.horizontalSpeed": "Horizontal Speed",
   "text.autoconfig.freecam.option.verticalSpeed": "Vertical Speed",
   "text.autoconfig.freecam.option.noclip": "No Clip",
