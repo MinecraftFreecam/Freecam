@@ -150,7 +150,7 @@ public class Freecam implements ClientModInitializer {
         MC.setCameraEntity(freeCamera);
 
         if (ModConfig.INSTANCE.notifyFreecam) {
-            MC.player.sendMessage(new TranslatableText("msg.freecam.disable"), true);
+            MC.player.sendMessage(new TranslatableText("msg.freecam.enable"), true);
         }
     }
 
