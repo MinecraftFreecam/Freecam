@@ -23,6 +23,10 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
     public FlightMode flightMode = FlightMode.DEFAULT;
 
+    @Comment("The source of block/entity interactions.")
+    @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
+    public InteractionMode interactionMode = InteractionMode.FREECAM;
+
     @Comment("The horizontal speed of freecam.")
     public double horizontalSpeed = 1.0;
 
@@ -35,7 +39,7 @@ public class ModConfig implements ConfigData {
     @Comment("Prevents player movement while freecam is active.\nNOTE: Can only be used in singleplayer, creative, or with operator status.")
     public boolean freezePlayer = false;
 
-    @Comment("Whether you can interact with blocks/entities in freecam.\nNOTE: Can only be used in singleplayer, creative, or with operator status.")
+    @Comment("Whether the freecamera can interact with blocks/entities.\nNOTE: Can only be used in singleplayer, creative, or with operator status.")
     public boolean allowInteract = false;
 
     @Comment("Disables freecam when damage is received.")
@@ -60,6 +64,21 @@ public class ModConfig implements ConfigData {
         private final String name;
 
         FlightMode(String name) {
+            this.name = name;
+        }
+
+        public String getKey() {
+            return name;
+        }
+    }
+
+    public enum InteractionMode implements SelectionListEntry.Translatable {
+        FREECAM("Freecam"),
+        PLAYER("Player");
+
+        private final String name;
+
+        InteractionMode(String name) {
             this.name = name;
         }
 
