@@ -31,7 +31,7 @@ public class MinecraftClientMixin {
     // Prevents attacks when allowInteract is disabled.
     @Inject(method = "doAttack", at = @At("HEAD"), cancellable = true)
     private void onDoAttack(CallbackInfo ci) {
-        if (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !ModConfig.INSTANCE.interactionMode.equals(ModConfig.InteractionMode.PLAYER) && !ModConfig.INSTANCE.allowInteract) {
+        if (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !ModConfig.INSTANCE.allowInteract) {
             ci.cancel();
         }
     }
@@ -39,7 +39,7 @@ public class MinecraftClientMixin {
     // Prevents item pick when allowInteract is disabled.
     @Inject(method = "doItemPick", at = @At("HEAD"), cancellable = true)
     private void onDoItemPick(CallbackInfo ci) {
-        if (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !ModConfig.INSTANCE.interactionMode.equals(ModConfig.InteractionMode.PLAYER) && !ModConfig.INSTANCE.allowInteract) {
+        if (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !ModConfig.INSTANCE.allowInteract) {
             ci.cancel();
         }
     }
@@ -47,7 +47,7 @@ public class MinecraftClientMixin {
     // Prevents block breaking when allowInteract is disabled.
     @Inject(method = "handleBlockBreaking", at = @At("HEAD"), cancellable = true)
     private void onHandleBlockBreaking(CallbackInfo ci) {
-        if (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !ModConfig.INSTANCE.interactionMode.equals(ModConfig.InteractionMode.PLAYER) && !ModConfig.INSTANCE.allowInteract) {
+        if (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !ModConfig.INSTANCE.allowInteract) {
             ci.cancel();
         }
     }
