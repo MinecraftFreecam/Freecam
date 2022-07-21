@@ -33,13 +33,13 @@ public class ModConfig implements ConfigData {
     @Comment("The vertical speed of freecam.")
     public double verticalSpeed = 1.0;
 
-    @Comment("Whether you can travel through blocks in freecam.\nNOTE: Can only be used in singleplayer, creative, or with operator status.")
+    @Comment("Whether you can travel through blocks in freecam.\n§cNOTE: Can only be used in singleplayer, creative, or with operator status.")
     public boolean noclip = false;
 
-    @Comment("Prevents player movement while freecam is active.\nNOTE: Can only be used in singleplayer, creative, or with operator status.")
+    @Comment("Prevents player movement while freecam is active.\n§cNOTE: Can only be used in singleplayer, creative, or with operator status.")
     public boolean freezePlayer = false;
 
-    @Comment("Whether you can interact with blocks/entities in freecam.\nNOTE: Can only be used in singleplayer, creative, or with operator status.\n*Unless using interaction mode 'Player'")
+    @Comment("Whether you can interact with blocks/entities in freecam.\n§cNOTE: Can only be used in singleplayer, creative, or with operator status.\n§c*Unless using interaction mode 'Player'")
     public boolean allowInteract = false;
 
     @Comment("Disables freecam when damage is received.")
