@@ -18,7 +18,7 @@ public class GameRendererMixin {
     // Disables block outlines when allowInteract is disabled.
     @Inject(method = "shouldRenderBlockOutline", at = @At("HEAD"), cancellable = true)
     private void onShouldRenderBlockOutline(CallbackInfoReturnable<Boolean> cir) {
-        if (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !ModConfig.INSTANCE.interactionMode.equals(ModConfig.InteractionMode.PLAYER) && !ModConfig.INSTANCE.allowInteract) {
+        if (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !ModConfig.INSTANCE.allowInteract) {
             cir.setReturnValue(false);
         }
     }

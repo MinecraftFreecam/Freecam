@@ -25,7 +25,7 @@ public class ClientPlayerInteractionManagerMixin {
     // Prevents interacting with blocks when allowInteract is disabled.
     @Inject(method = "interactBlock", at = @At("HEAD"), cancellable = true)
     private void onInteractBlock(ClientPlayerEntity player, ClientWorld world, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
-        if (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !ModConfig.INSTANCE.interactionMode.equals(ModConfig.InteractionMode.PLAYER) && !ModConfig.INSTANCE.allowInteract) {
+        if (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !ModConfig.INSTANCE.allowInteract) {
             cir.setReturnValue(ActionResult.PASS);
         }
     }
@@ -33,7 +33,7 @@ public class ClientPlayerInteractionManagerMixin {
     // Prevents interacting with entities when allowInteract is disabled, and prevents interacting with self.
     @Inject(method = "interactEntity", at = @At("HEAD"), cancellable = true)
     private void onInteractEntity(PlayerEntity player, Entity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (entity.equals(MC.player) || (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !ModConfig.INSTANCE.interactionMode.equals(ModConfig.InteractionMode.PLAYER) && !ModConfig.INSTANCE.allowInteract)) {
+        if (entity.equals(MC.player) || (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !ModConfig.INSTANCE.allowInteract)) {
             cir.setReturnValue(ActionResult.PASS);
         }
     }
@@ -41,7 +41,7 @@ public class ClientPlayerInteractionManagerMixin {
     // Prevents interacting with entities when allowInteract is disabled, and prevents interacting with self.
     @Inject(method = "interactEntityAtLocation", at = @At("HEAD"), cancellable = true)
     private void onInteractEntityAtLocation(PlayerEntity player, Entity entity, EntityHitResult hitResult, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (entity.equals(MC.player) || (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !ModConfig.INSTANCE.interactionMode.equals(ModConfig.InteractionMode.PLAYER) && !ModConfig.INSTANCE.allowInteract)) {
+        if (entity.equals(MC.player) || (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !ModConfig.INSTANCE.allowInteract)) {
             cir.setReturnValue(ActionResult.PASS);
         }
     }
