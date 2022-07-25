@@ -1,0 +1,22 @@
+{
+  "category.freecam.freecam": "自由视角(Freecam)",
+  "key.freecam.toggle": "切换自由视角(Freecam)",
+  "key.freecam.playerControl": "控制玩家",
+  "msg.freecam.enable": "自由视角已经启用.",
+  "msg.freecam.disable": "自由视角已经禁用.",
+  "msg.freecam.enablePersistent": "启用视角 #",
+  "msg.freecam.disablePersistent": "关闭视角 #",
+  "text.autoconfig.freecam.title": "自由视角(Freecam)选项",
+  "text.autoconfig.freecam.option.flightMode": "飞行模式",
+  "text.autoconfig.freecam.option.interactionMode": "交互模式",
+  "text.autoconfig.freecam.option.horizontalSpeed": "水平速度",
+  "text.autoconfig.freecam.option.verticalSpeed": "垂直速度",
+  "text.autoconfig.freecam.option.noclip": "穿墙",
+  "text.autoconfig.freecam.option.freezePlayer": "冻结玩家",
+  "text.autoconfig.freecam.option.showPlayer": "显示玩家",
+  "text.autoconfig.freecam.option.showHand": "显示手",
+  "text.autoconfig.freecam.option.disableOnDamage": "受伤时禁用",
+  "text.autoconfig.freecam.option.allowInteract": "允许交互",
+  "text.autoconfig.freecam.option.notifyFreecam": "自由视角通知",
+  "text.autoconfig.freecam.option.notifyPersistent": "设置(三脚架相机Tripod)视角通知"
+}
