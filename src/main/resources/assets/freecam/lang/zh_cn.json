@@ -5,7 +5,7 @@
   "msg.freecam.enable": "自由视角已经启用.",
   "msg.freecam.disable": "自由视角已经禁用.",
   "msg.freecam.enablePersistent": "启用视角 #",
-  "msg.freecam.disablePersistent": "关闭视角 #",
+  "msg.freecam.disablePersistent": "禁用视角 #",
   "text.autoconfig.freecam.title": "自由视角(Freecam)选项",
   "text.autoconfig.freecam.option.flightMode": "飞行模式",
   "text.autoconfig.freecam.option.interactionMode": "交互模式",
