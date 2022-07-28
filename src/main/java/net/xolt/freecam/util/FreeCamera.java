@@ -73,6 +73,18 @@ public class FreeCamera extends ClientPlayerEntity {
         return MC.player.isUsingItem();
     }
 
+    // Prevents slow down from ladders/vines.
+    @Override
+    public boolean isClimbing() {
+        return false;
+    }
+
+    // Prevents slow down from water.
+    @Override
+    public boolean isTouchingWater() {
+        return false;
+    }
+
     // Fixes crash when eating food in freecam in 1.16/17
     @Override
     public Hand getActiveHand() {
