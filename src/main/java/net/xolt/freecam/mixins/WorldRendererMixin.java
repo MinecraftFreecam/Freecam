@@ -22,7 +22,7 @@ public class WorldRendererMixin {
   private BufferBuilderStorage bufferBuilders;
 
   // Makes the player render if showPlayer is enabled.
-  @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;checkEmpty(Lnet/minecraft/client/util/math/MatrixStack;)V", ordinal = 0))
+  @Inject(method = "render", at = @At("HEAD"))
   private void onRender(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f positionMatrix, CallbackInfo ci) {
     if (Freecam.isEnabled() && ModConfig.INSTANCE.showPlayer) {
       Vec3d cameraPos = camera.getPos();
