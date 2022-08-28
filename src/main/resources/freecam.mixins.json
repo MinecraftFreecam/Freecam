@@ -3,7 +3,6 @@
   "package": "net.xolt.freecam.mixins",
   "compatibilityLevel": "JAVA_8",
   "client": [
-    "BlockEntityMixin",
     "ClientConnectionMixin",
     "ClientPlayerEntityMixin",
     "ClientPlayerInteractionManagerMixin",
