@@ -95,7 +95,7 @@ public class FreeCamera extends ClientPlayerEntity {
     // Prevents pistons from moving FreeCamera when noClip is enabled.
     @Override
     public PistonBehavior getPistonBehavior() {
-        return ModConfig.INSTANCE.noclip ? PistonBehavior.IGNORE : PistonBehavior.NORMAL;
+        return ModConfig.INSTANCE.noClip ? PistonBehavior.IGNORE : PistonBehavior.NORMAL;
     }
 
     // Prevents pose from changing when clipping through blocks.
@@ -108,7 +108,7 @@ public class FreeCamera extends ClientPlayerEntity {
 
     @Override
     public void tickMovement() {
-        noClip = ModConfig.INSTANCE.noclip;
+        noClip = ModConfig.INSTANCE.noClip;
         if (ModConfig.INSTANCE.flightMode.equals(ModConfig.FlightMode.DEFAULT)) {
             getAbilities().setFlySpeed(0);
             Motion.doMotion(this, ModConfig.INSTANCE.horizontalSpeed, ModConfig.INSTANCE.verticalSpeed);
