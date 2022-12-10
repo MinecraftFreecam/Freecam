@@ -2,6 +2,7 @@ package net.xolt.freecam.util;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
@@ -25,9 +26,10 @@ public class FreeCamera extends ClientPlayerEntity {
         }
     };
 
-    public FreeCamera() {
+    public FreeCamera(int id) {
         super(MC, MC.world, NETWORK_HANDLER, MC.player.getStatHandler(), MC.player.getRecipeBook(), false, false);
 
+        setId(id);
         copyPositionAndRotation(MC.player);
         super.setPose(MC.player.getPose());
         renderPitch = getPitch();
@@ -91,6 +93,12 @@ public class FreeCamera extends ClientPlayerEntity {
         return MC.player.getStatusEffect(effect);
     }
 
+    // Prevents pistons from moving FreeCamera when noClip is enabled.
+    @Override
+    public PistonBehavior getPistonBehavior() {
+        return ModConfig.INSTANCE.noClip ? PistonBehavior.IGNORE : PistonBehavior.NORMAL;
+    }
+
     // Prevents pose from changing when clipping through blocks.
     @Override
     public void setPose(EntityPose pose) {
@@ -101,7 +109,7 @@ public class FreeCamera extends ClientPlayerEntity {
 
     @Override
     public void tickMovement() {
-        noClip = ModConfig.INSTANCE.noclip && Freecam.canUseCheats();
+        noClip = ModConfig.INSTANCE.noClip && Freecam.canUseCheats();
         if (ModConfig.INSTANCE.flightMode.equals(ModConfig.FlightMode.DEFAULT)) {
             getAbilities().setFlySpeed(0);
             Motion.doMotion(this, ModConfig.INSTANCE.horizontalSpeed, ModConfig.INSTANCE.verticalSpeed);
