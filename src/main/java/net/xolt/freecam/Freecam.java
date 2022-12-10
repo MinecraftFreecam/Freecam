@@ -111,7 +111,7 @@ public class Freecam implements ClientModInitializer {
         if (camera != null) {
             camera.copyPositionAndRotation(MC.player);
             if (ModConfig.INSTANCE.notifyPersistent) {
-                MC.player.sendMessage(Text.translatable("msg.freecam.tripodReset").append("" + keyCode % GLFW.GLFW_KEY_0), true);
+                MC.player.sendMessage(new TranslatableText("msg.freecam.tripodReset").append("" + keyCode % GLFW.GLFW_KEY_0), true);
             }
         }
     }
