@@ -24,6 +24,7 @@ public class Freecam implements ClientModInitializer {
 
     private static KeyBinding freecamBind;
     private static KeyBinding playerControlBind;
+    private static KeyBinding tripodResetBind;
     private static boolean enabled = false;
     private static boolean persistentCameraEnabled = false;
     private static boolean playerControlEnabled = false;
@@ -39,8 +40,19 @@ public class Freecam implements ClientModInitializer {
                 "key.freecam.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F4, "category.freecam.freecam"));
         playerControlBind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
             "key.freecam.playerControl", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam"));
+        tripodResetBind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.freecam.tripodReset", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam"));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
+            if (tripodResetBind.isPressed()) {
+                for (KeyBinding hotbarKey : MC.options.keysHotbar) {
+                    while (hotbarKey.wasPressed()) {
+                        resetCamera(hotbarKey.getDefaultKey().getCode());
+                        while (tripodResetBind.wasPressed()) {}
+                    }
+                }
+            }
+
             if (freecamBind.isPressed()) {
                 for (KeyBinding hotbarKey : MC.options.keysHotbar) {
                     while (hotbarKey.wasPressed()) {
@@ -95,6 +107,16 @@ public class Freecam implements ClientModInitializer {
         }
     }
 
+    private static void resetCamera(int keyCode) {
+        FreeCamera camera = persistentCameras.get(keyCode);
+        if (camera != null) {
+            camera.copyPositionAndRotation(MC.player);
+            if (ModConfig.INSTANCE.notifyPersistent) {
+                MC.player.sendMessage(new TranslatableText("msg.freecam.tripodReset").append("" + keyCode % GLFW.GLFW_KEY_0), true);
+            }
+        }
+    }
+
     public static void switchControls() {
         if (isEnabled()) {
             if (playerControlEnabled) {
@@ -117,7 +139,7 @@ public class Freecam implements ClientModInitializer {
         }
 
         if (persistentCamera == null || !chunkLoaded) {
-            persistentCamera = new FreeCamera();
+            persistentCamera = new FreeCamera(-420 - (keyCode % GLFW.GLFW_KEY_0));
             persistentCameras.put(keyCode, persistentCamera);
             persistentCamera.spawn();
         }
@@ -145,7 +167,7 @@ public class Freecam implements ClientModInitializer {
 
     private static void onEnableFreecam() {
         onEnable();
-        freeCamera = new FreeCamera();
+        freeCamera = new FreeCamera(-420);
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
 
@@ -202,6 +224,10 @@ public class Freecam implements ClientModInitializer {
 
     public static KeyBinding getFreecamBind() {
         return freecamBind;
+    }
+
+    public static KeyBinding getTripodResetBind() {
+        return tripodResetBind;
     }
 
     public static boolean isEnabled() {

@@ -34,16 +34,16 @@ public class ModConfig implements ConfigData {
     public double verticalSpeed = 1.0;
 
     @Comment("Whether you can travel through blocks in freecam.")
-    public boolean noclip = true;
+    public boolean noClip = true;
 
-    @Comment("Prevents player movement while freecam is active.\n§cWARNING: Multiplayer usage not advised.")
-    public boolean freezePlayer = false;
+    @Comment("Disables freecam when damage is received.")
+    public boolean disableOnDamage = true;
 
     @Comment("Whether you can interact with blocks/entities in freecam.\n§cWARNING: Multiplayer usage not advised.")
     public boolean allowInteract = false;
 
-    @Comment("Disables freecam when damage is received.")
-    public boolean disableOnDamage = true;
+    @Comment("Prevents player movement while freecam is active.\n§cWARNING: Multiplayer usage not advised.")
+    public boolean freezePlayer = false;
 
     @Comment("Shows your player in its original position.")
     public boolean showPlayer = true;
