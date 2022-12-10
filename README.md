@@ -10,8 +10,9 @@ This mod works in multiplayer, but may be considered cheating on some servers, s
 |-|-|-|
 |Toggle Freecam|Enables/disables Freecam|`F4`|
 |Control Player|Transfers control back to your player, but retains your current perspective (Can only be used while Freecam is active.)|`Unbound`|
+|Reset Tripod|Resets a tripod\* camera when pressed in combination with any of the hotbar keys|`Unbound`|
 
-The freecam bind can also be used in conjunction with any of the hotbar keys (`F4` + `1`...`9`) to enter "tripod" mode. This enables you to set up multiple cameras with differing perspectives, and switch between them at will.
+\*The freecam bind can also be used in conjunction with any of the hotbar keys (`F4` + `1`...`9`) to enter "tripod" mode. This enables you to set up multiple cameras with differing perspectives, and switch between them at will.
 
 ## Settings
 
@@ -33,7 +34,12 @@ The freecam bind can also be used in conjunction with any of the hotbar keys (`F
 |Tripod Notifications|Notifies you when entering/exiting tripod cameras.|`true`|
 
 ## Requirements
+
+### Fabric
 - [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
 - [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu) (Optional for easier configuration)
+
+### Forge
+- None
 
 Curseforge page [here](https://www.curseforge.com/minecraft/mc-mods/free-cam).
