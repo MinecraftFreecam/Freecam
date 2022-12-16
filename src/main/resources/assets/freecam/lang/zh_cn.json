@@ -10,7 +10,7 @@
   "msg.freecam.tripodReset": "重置视角 #",
   "text.autoconfig.freecam.title": "自由视角(Freecam)选项",
   "text.autoconfig.freecam.option.flightMode": "飞行模式",
-  "text.autoconfig.freecam.option.flightMode.@Tooltip": "自由视角使用的飞行类型。",
+  "text.autoconfig.freecam.option.flightMode.@Tooltip": "自由视角使用的飞行方式。",
   "text.autoconfig.freecam.option.flightMode.default": "默认",
   "text.autoconfig.freecam.option.flightMode.creative": "创造",
   "text.autoconfig.freecam.option.interactionMode": "交互模式",
