@@ -37,6 +37,6 @@
   "text.autoconfig.freecam.option.showHand.@Tooltip": "当你处于自由视角是否可以看到你的手。",
   "text.autoconfig.freecam.option.notifyFreecam": "自由视角通知",
   "text.autoconfig.freecam.option.notifyFreecam.@Tooltip": "进入/退出自由视角时通知你。",
-  "text.autoconfig.freecam.option.notifyTripod": "三脚架（保存视角）通知。",
+  "text.autoconfig.freecam.option.notifyTripod": "三脚架通知。",
   "text.autoconfig.freecam.option.notifyTripod.@Tooltip": "进入/退出三脚架摄像机时通知你。"
 }
