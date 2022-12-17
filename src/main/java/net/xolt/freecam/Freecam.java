@@ -10,7 +10,6 @@ import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.option.Perspective;
 import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.TranslatableText;
-import net.minecraft.util.math.ChunkPos;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.mixins.GameRendererAccessor;
 import net.xolt.freecam.util.FreeCamera;
