@@ -137,10 +137,12 @@ public class Freecam implements ClientModInitializer {
             chunkLoaded = MC.world.getChunkManager().isChunkLoaded(tripod.chunkX, tripod.chunkZ);
         }
 
-        if (tripod == null || !chunkLoaded) {
+        if (tripod == null) {
             tripod = new FreeCamera(-420 - (keyCode % GLFW.GLFW_KEY_0));
             tripods.put(keyCode, tripod);
             tripod.spawn();
+        } else if (!chunkLoaded) {
+            resetCamera(keyCode);
         }
 
         tripod.input = new KeyboardInput(MC.options);
@@ -208,6 +210,9 @@ public class Freecam implements ClientModInitializer {
     }
 
     public static void clearTripods() {
+        for (Integer key : tripods.keySet()) {
+            tripods.get(key).despawn();
+        }
         tripods = new HashMap<>();
     }
 
