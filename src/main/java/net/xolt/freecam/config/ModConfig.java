@@ -5,7 +5,6 @@ import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
-import me.shedaniel.cloth.clothconfig.shadowed.blue.endless.jankson.Comment;
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
 
 @Config(name = "freecam")
@@ -19,47 +18,47 @@ public class ModConfig implements ConfigData {
         INSTANCE = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
     }
 
-    @Comment("The type of flight used by freecam.")
+    @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
     public FlightMode flightMode = FlightMode.DEFAULT;
 
-    @Comment("The source of block/entity interactions.")
+    @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
     public InteractionMode interactionMode = InteractionMode.CAMERA;
 
-    @Comment("The horizontal speed of freecam.")
+    @ConfigEntry.Gui.Tooltip
     public double horizontalSpeed = 1.0;
 
-    @Comment("The vertical speed of freecam.")
+    @ConfigEntry.Gui.Tooltip
     public double verticalSpeed = 1.0;
 
-    @Comment("Whether you can travel through blocks in freecam.")
+    @ConfigEntry.Gui.Tooltip
     public boolean noClip = true;
 
-    @Comment("Disables freecam when damage is received.")
+    @ConfigEntry.Gui.Tooltip
     public boolean disableOnDamage = true;
 
-    @Comment("Whether you can interact with blocks/entities in freecam.\n§cWARNING: Multiplayer usage not advised.")
+    @ConfigEntry.Gui.Tooltip(count = 2)
     public boolean allowInteract = false;
 
-    @Comment("Prevents player movement while freecam is active.\n§cWARNING: Multiplayer usage not advised.")
+    @ConfigEntry.Gui.Tooltip(count = 2)
     public boolean freezePlayer = false;
 
-    @Comment("Shows your player in its original position.")
+    @ConfigEntry.Gui.Tooltip
     public boolean showPlayer = true;
 
-    @Comment("Whether you can see your hand in freecam.")
+    @ConfigEntry.Gui.Tooltip
     public boolean showHand = false;
 
-    @Comment("Notifies you when entering/exiting freecam.")
+    @ConfigEntry.Gui.Tooltip
     public boolean notifyFreecam = true;
 
-    @Comment("Notifies you when entering/exiting tripod cameras.")
-    public boolean notifyPersistent = true;
+    @ConfigEntry.Gui.Tooltip
+    public boolean notifyTripod = true;
 
     public enum FlightMode implements SelectionListEntry.Translatable {
-        CREATIVE("Creative"),
-        DEFAULT("Default");
+        CREATIVE("text.autoconfig.freecam.option.flightMode.creative"),
+        DEFAULT("text.autoconfig.freecam.option.flightMode.default");
 
         private final String name;
 
@@ -73,8 +72,8 @@ public class ModConfig implements ConfigData {
     }
 
     public enum InteractionMode implements SelectionListEntry.Translatable {
-        CAMERA("Camera"),
-        PLAYER("Player");
+        CAMERA("text.autoconfig.freecam.option.interactionMode.camera"),
+        PLAYER("text.autoconfig.freecam.option.interactionMode.player");
 
         private final String name;
 
