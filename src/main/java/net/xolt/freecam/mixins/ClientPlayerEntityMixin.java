@@ -27,8 +27,8 @@ public class ClientPlayerEntityMixin {
         if (ModConfig.INSTANCE.disableOnDamage && this.equals(MC.player)) {
             if (Freecam.isFreecamEnabled()) {
                 Freecam.toggle();
-            } else if (Freecam.isPersistentCameraEnabled()) {
-                Freecam.togglePersistentCamera();
+            } else if (Freecam.isTripodEnabled()) {
+                Freecam.toggleTripod();
             }
         }
     }
