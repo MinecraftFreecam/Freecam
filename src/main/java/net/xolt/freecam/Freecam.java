@@ -149,8 +149,7 @@ public class Freecam implements ClientModInitializer {
         activeTripod = keyCode;
 
         if (ModConfig.INSTANCE.notifyTripod) {
-            MC.player.sendMessage(Text.translatable("msg.freecam.openTripod").append("" + activeTripod
-                % GLFW.GLFW_KEY_0), true);
+            MC.player.sendMessage(Text.translatable("msg.freecam.openTripod").append("" + activeTripod % GLFW.GLFW_KEY_0), true);
         }
     }
 
@@ -160,8 +159,7 @@ public class Freecam implements ClientModInitializer {
 
         if (MC.player != null) {
             if (ModConfig.INSTANCE.notifyTripod) {
-                MC.player.sendMessage(Text.translatable("msg.freecam.closeTripod").append("" + activeTripod
-                    % GLFW.GLFW_KEY_0), true);
+                MC.player.sendMessage(Text.translatable("msg.freecam.closeTripod").append("" + activeTripod % GLFW.GLFW_KEY_0), true);
             }
         }
         activeTripod = null;
