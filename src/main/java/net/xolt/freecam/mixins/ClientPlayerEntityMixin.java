@@ -25,10 +25,8 @@ public class ClientPlayerEntityMixin {
     @Inject(method = "damage", at = @At("HEAD"))
     private void onDamage(CallbackInfoReturnable<Boolean> cir) {
         if (ModConfig.INSTANCE.disableOnDamage && this.equals(MC.player)) {
-            if (Freecam.isFreecamEnabled()) {
+            if (Freecam.isEnabled()) {
                 Freecam.toggle();
-            } else if (Freecam.isTripodEnabled()) {
-                Freecam.toggleTripod();
             }
         }
     }

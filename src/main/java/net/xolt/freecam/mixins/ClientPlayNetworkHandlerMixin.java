@@ -16,6 +16,5 @@ public class ClientPlayNetworkHandlerMixin {
         if (Freecam.isEnabled()) {
             Freecam.toggle();
         }
-        Freecam.clearTripods();
     }
 }
