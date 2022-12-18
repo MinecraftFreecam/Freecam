@@ -114,10 +114,10 @@ public class Freecam implements ClientModInitializer {
         }
 
         if (playerControlEnabled) {
-            getFreeCamera().input = new KeyboardInput(MC.options);
+            freeCamera.input = new KeyboardInput(MC.options);
         } else {
             MC.player.input = new KeyboardInput(MC.options);
-            getFreeCamera().input = new Input();
+            freeCamera.input = new Input();
         }
         playerControlEnabled = !playerControlEnabled;
     }
