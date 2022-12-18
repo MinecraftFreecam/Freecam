@@ -5,23 +5,23 @@ import net.minecraft.entity.EntityPose;
 import net.minecraft.util.math.ChunkPos;
 
 public class FreecamPosition {
-  public double x;
-  public double y;
-  public double z;
-  public float pitch;
-  public float yaw;
-  public EntityPose pose;
+    public double x;
+    public double y;
+    public double z;
+    public float pitch;
+    public float yaw;
+    public EntityPose pose;
 
-  public FreecamPosition(Entity entity) {
-    x = entity.getX();
-    y = entity.getY();
-    z = entity.getZ();
-    pitch = entity.getPitch();
-    yaw = entity.getYaw();
-    pose = entity.getPose();
-  }
+    public FreecamPosition(Entity entity) {
+        x = entity.getX();
+        y = entity.getY();
+        z = entity.getZ();
+        pitch = entity.getPitch();
+        yaw = entity.getYaw();
+        pose = entity.getPose();
+    }
 
-  public ChunkPos getChunkPos() {
-    return new ChunkPos((int)(x / 16), (int)(z / 16));
-  }
+    public ChunkPos getChunkPos() {
+        return new ChunkPos((int) (x / 16), (int) (z / 16));
+    }
 }
