@@ -40,7 +40,7 @@ public class Freecam implements ClientModInitializer {
         freecamBind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.freecam.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F4, "category.freecam.freecam"));
         playerControlBind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-            "key.freecam.playerControl", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam"));
+                "key.freecam.playerControl", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam"));
         tripodResetBind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.freecam.tripodReset", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam"));
 
@@ -61,7 +61,7 @@ public class Freecam implements ClientModInitializer {
                         while (freecamBind.wasPressed()) {}
                     }
                 }
-            } else if (freecamBind.wasPressed()){
+            } else if (freecamBind.wasPressed()) {
                 toggle();
                 while (freecamBind.wasPressed()) {}
             }
