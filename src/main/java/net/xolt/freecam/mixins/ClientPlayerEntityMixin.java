@@ -24,7 +24,7 @@ public class ClientPlayerEntityMixin {
     // Disables freecam upon receiving damage if disableOnDamage is enabled.
     @Inject(method = "damage", at = @At("HEAD"))
     private void onDamage(CallbackInfoReturnable<Boolean> cir) {
-        if (Freecam.isEnabled() && ModConfig.INSTANCE.disableOnDamage && this.equals(MC.player)) {
+        if (Freecam.isEnabled() && ModConfig.INSTANCE.disableOnDamage && this.equals(MC.player) && !MC.player.isCreative()) {
             Freecam.setDisableNextTick(true);
         }
     }
