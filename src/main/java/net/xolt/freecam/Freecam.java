@@ -28,6 +28,7 @@ public class Freecam implements ClientModInitializer {
     private static boolean freecamEnabled = false;
     private static boolean tripodEnabled = false;
     private static boolean playerControlEnabled = false;
+    private static boolean disableNextTick = false;
     private static Integer activeTripod = null;
     private static FreeCamera freeCamera;
     private static HashMap<Integer, FreecamPosition> overworld_tripods = new HashMap<>();
@@ -252,6 +253,14 @@ public class Freecam implements ClientModInitializer {
 
     public static KeyBinding getTripodResetBind() {
         return tripodResetBind;
+    }
+
+    public static boolean disableNextTick() {
+        return disableNextTick;
+    }
+
+    public static void setDisableNextTick(boolean damage) {
+        disableNextTick = damage;
     }
 
     public static boolean isEnabled() {
