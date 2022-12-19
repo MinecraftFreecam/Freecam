@@ -210,7 +210,7 @@ public class Freecam implements ClientModInitializer {
     }
 
     private static void resetCamera(int keyCode) {
-        if (tripodEnabled && activeTripod == keyCode && freeCamera != null) {
+        if (tripodEnabled && activeTripod != null && activeTripod == keyCode && freeCamera != null) {
             freeCamera.copyPositionAndRotation(MC.player);
         } else {
             getTripodsForDimension().put(keyCode, null);
