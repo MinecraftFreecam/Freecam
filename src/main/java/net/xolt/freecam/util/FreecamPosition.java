@@ -21,6 +21,18 @@ public class FreecamPosition {
         pose = entity.getPose();
     }
 
+    public static FreecamPosition getSwimmingPosition(Entity entity) {
+        FreecamPosition position = new FreecamPosition(entity);
+
+        // Set pose to swimming, adjusting y position so eye-height doesn't change
+        if (position.pose != EntityPose.SWIMMING) {
+            position.y += entity.getEyeHeight(position.pose) - entity.getEyeHeight(EntityPose.SWIMMING);
+            position.pose = EntityPose.SWIMMING;
+        }
+
+        return position;
+    }
+
     public ChunkPos getChunkPos() {
         return new ChunkPos((int) (x / 16), (int) (z / 16));
     }
