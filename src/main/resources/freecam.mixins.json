@@ -3,6 +3,7 @@
   "package": "net.xolt.freecam.mixins",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "BlockCollisionSpliteratorMixin",
     "CameraMixin",
     "ClientConnectionMixin",
     "ClientPlayerEntityMixin",

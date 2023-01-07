@@ -37,10 +37,21 @@ public class ModConfig implements ConfigData {
     public double verticalSpeed = 1.0;
 
     @ConfigEntry.Gui.Tooltip
-    public boolean noClip = true;
+    @ConfigEntry.Gui.CollapsibleObject
+    public CollisionConfig collision = new CollisionConfig();
+    public static class CollisionConfig {
+        @ConfigEntry.Gui.Tooltip
+        public boolean ignoreTransparent = true;
 
-    @ConfigEntry.Gui.Tooltip
-    public boolean checkCollision = false;
+        @ConfigEntry.Gui.Tooltip
+        public boolean ignoreOpenable = true;
+
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public boolean ignoreAll = true;
+
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public boolean alwaysCheck = false;
+    }
 
     @ConfigEntry.Gui.Tooltip
     public boolean disableOnDamage = true;
