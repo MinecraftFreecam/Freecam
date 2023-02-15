@@ -167,7 +167,7 @@ public class Freecam implements ClientModInitializer {
 
     private static void onEnableFreecam() {
         onEnable();
-        freeCamera = new FreeCamera(-420);
+        freeCamera = new FreeCamera(-420, FreecamPosition.getSwimmingPosition(MC.player));
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
 
