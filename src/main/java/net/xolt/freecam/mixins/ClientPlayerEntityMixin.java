@@ -2,7 +2,6 @@ package net.xolt.freecam.mixins;
 
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.xolt.freecam.Freecam;
-import net.xolt.freecam.config.ModConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -18,14 +17,6 @@ public class ClientPlayerEntityMixin {
     private void onIsCamera(CallbackInfoReturnable<Boolean> cir) {
         if (Freecam.isEnabled() && this.equals(MC.player)) {
             cir.setReturnValue(true);
-        }
-    }
-
-    // Disables freecam upon receiving damage if disableOnDamage is enabled.
-    @Inject(method = "damage", at = @At("HEAD"))
-    private void onDamage(CallbackInfoReturnable<Boolean> cir) {
-        if (Freecam.isEnabled() && ModConfig.INSTANCE.disableOnDamage && this.equals(MC.player) && !MC.player.isCreative()) {
-            Freecam.setDisableNextTick(true);
         }
     }
 }
