@@ -1,8 +1,9 @@
 package net.xolt.freecam.mixins;
 
 import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.CameraSubmersionType;
 import net.minecraft.entity.Entity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
 import net.minecraft.world.BlockView;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModConfig;
@@ -34,10 +35,10 @@ public class CameraMixin {
     }
 
     // Removes the submersion overlay when underwater, in lava, or powdered snow.
-    @Inject(method = "getSubmersionType", at = @At("HEAD"), cancellable = true)
-    public void onGetSubmersionType(CallbackInfoReturnable<CameraSubmersionType> cir) {
+    @Inject(method = "getSubmergedFluidState", at = @At("HEAD"), cancellable = true)
+    public void onGetSubmersionType(CallbackInfoReturnable<FluidState> cir) {
         if (Freecam.isEnabled() && !ModConfig.INSTANCE.showSubmersion) {
-            cir.setReturnValue(CameraSubmersionType.NONE);
+            cir.setReturnValue(Fluids.EMPTY.getDefaultState());
         }
     }
 }
