@@ -53,16 +53,6 @@ public class FreecamPosition {
         move(distance, 0, 0);
     }
 
-    // Move up/down relative to the current rotation
-    public void moveUp(double distance) {
-        move(0, distance, 0);
-    }
-
-    // Move right/left relative to the current rotation
-    public void moveRight(double distance) {
-        move(0, 0, distance);
-    }
-
     // Move relative to current rotation
     // From net.minecraft.client.render.Camera.moveBy
     public void move(double fwd, double up, double right) {
