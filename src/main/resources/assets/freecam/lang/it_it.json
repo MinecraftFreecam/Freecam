@@ -35,6 +35,8 @@
   "text.autoconfig.freecam.option.showPlayer.@Tooltip": "Mostra il giocatore nella sua posizione originale.",
   "text.autoconfig.freecam.option.showHand": "Mostra Mano",
   "text.autoconfig.freecam.option.showHand.@Tooltip": "Se puoi vedere la tua mano nella Camera libera.",
+  "text.autoconfig.freecam.option.showSubmersion": "Mostra Nebbia da immersione",
+  "text.autoconfig.freecam.option.showSubmersion.@Tooltip": "Se vedi una copertura di nebbia sott'acqua, nella lava e nella neve farinosa.",
   "text.autoconfig.freecam.option.notifyFreecam": "Notifiche Camera libera",
   "text.autoconfig.freecam.option.notifyFreecam.@Tooltip": "Ti avvisa quando entri/esci dalla Camera libera.",
   "text.autoconfig.freecam.option.notifyTripod": "Notifiche Treppiedi",
