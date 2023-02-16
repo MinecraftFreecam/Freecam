@@ -58,6 +58,9 @@ public class ModConfig implements ConfigData {
     public boolean showHand = false;
 
     @ConfigEntry.Gui.Tooltip
+    public boolean showSubmersion = false;
+
+    @ConfigEntry.Gui.Tooltip
     public boolean notifyFreecam = true;
 
     @ConfigEntry.Gui.Tooltip
