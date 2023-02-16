@@ -20,7 +20,6 @@ public class FreecamPosition {
     private final Vec3f horizontalPlane = new Vec3f(0.0F, 0.0F, 1.0F);
 
     public FreecamPosition(Entity entity) {
-
         x = entity.getX();
         y = entity.getY();
         z = entity.getZ();
