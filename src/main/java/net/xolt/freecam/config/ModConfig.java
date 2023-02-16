@@ -37,10 +37,10 @@ public class ModConfig implements ConfigData {
     public double verticalSpeed = 1.0;
 
     @ConfigEntry.Gui.Tooltip
-    public boolean checkCollision = false;
+    public boolean noClip = true;
 
     @ConfigEntry.Gui.Tooltip
-    public boolean noClip = true;
+    public boolean checkCollision = false;
 
     @ConfigEntry.Gui.Tooltip
     public boolean disableOnDamage = true;
