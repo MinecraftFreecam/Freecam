@@ -28,7 +28,7 @@ public class FreecamPosition {
     }
 
     // From net.minecraft.client.render.Camera.setRotation
-    protected void setRotation(float yaw, float pitch) {
+    public void setRotation(float yaw, float pitch) {
         this.pitch = pitch;
         this.yaw = yaw;
         rotation.rotationYXZ(-yaw * ((float) Math.PI / 180), pitch * ((float) Math.PI / 180), 0.0f);
@@ -46,16 +46,6 @@ public class FreecamPosition {
     // Move forward/backward relative to the current rotation
     public void moveForward(double distance) {
         move(distance, 0, 0);
-    }
-
-    // Move up/down relative to the current rotation
-    public void moveUp(double distance) {
-        move(0, distance, 0);
-    }
-
-    // Move right/left relative to the current rotation
-    public void moveRight(double distance) {
-        move(0, 0, distance);
     }
 
     // Move relative to current rotation
