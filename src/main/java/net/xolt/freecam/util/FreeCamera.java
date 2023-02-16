@@ -102,7 +102,7 @@ public class FreeCamera extends ClientPlayerEntity {
         return ModConfig.INSTANCE.noClip ? PistonBehavior.IGNORE : PistonBehavior.NORMAL;
     }
 
-    // Prevents pose from changing when clipping through blocks.
+    // Ensures that the FreeCamera is always in the swimming pose.
     @Override
     public void setPose(EntityPose pose) {
         super.setPose(EntityPose.SWIMMING);
