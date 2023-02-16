@@ -8,7 +8,6 @@
   "msg.freecam.openTripod": "Opening camera #",
   "msg.freecam.closeTripod": "Closing camera #",
   "msg.freecam.tripodReset": "Reset camera #",
-  "msg.freecam.collisionError": "Unable to use camera perspective without clipping into blocks.",
   "text.autoconfig.freecam.title": "Freecam Options",
   "text.autoconfig.freecam.option.flightMode": "Flight Mode",
   "text.autoconfig.freecam.option.flightMode.@Tooltip": "The type of flight used by freecam.",

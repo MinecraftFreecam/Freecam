@@ -52,10 +52,8 @@ public class FreeCamera extends ClientPlayerEntity {
 
     // Mutate the position and rotation based on perspective
     // If checkCollision is true, move as far as possible without colliding
-    // Return an optional error message
-    public Optional<Text> applyPerspective(ModConfig.Perspective perspective, boolean checkCollision) {
+    public void applyPerspective(ModConfig.Perspective perspective, boolean checkCollision) {
         FreecamPosition position = new FreecamPosition(this);
-        boolean successful = true;
 
         switch (perspective) {
             case INSIDE:
@@ -63,18 +61,16 @@ public class FreeCamera extends ClientPlayerEntity {
                 break;
             case FIRST_PERSON:
                 // Move just in front of the player's eyes
-                successful = moveForwardUntilCollision(position, 0.4, checkCollision);
+                moveForwardUntilCollision(position, 0.4, checkCollision);
                 break;
             case THIRD_PERSON_MIRROR:
                 // Invert the rotation and fallthrough into the THIRD_PERSON case
                 position.mirrorRotation();
             case THIRD_PERSON:
                 // Move back as per F5 mode
-                successful = moveForwardUntilCollision(position, -4.0, checkCollision);
+                moveForwardUntilCollision(position, -4.0, checkCollision);
                 break;
         }
-
-        return successful ? Optional.empty() : Optional.of(Text.translatable("msg.freecam.collisionError").formatted(Formatting.RED));
     }
 
     // Move FreeCamera forward using FreecamPosition.moveForward.
