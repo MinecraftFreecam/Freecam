@@ -10,6 +10,7 @@ import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.network.Packet;
+import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.xolt.freecam.config.ModConfig;
 
@@ -105,8 +106,6 @@ public class FreeCamera extends ClientPlayerEntity {
         return true;
     }
 
-
-
     public void spawn() {
         if (clientWorld != null) {
             clientWorld.addEntity(getId(), this);
@@ -171,6 +170,17 @@ public class FreeCamera extends ClientPlayerEntity {
     public void setPose(EntityPose pose) {
         super.setPose(EntityPose.SWIMMING);
     }
+
+    // Prevents water submersion sounds from playing.
+    @Override
+    protected boolean updateWaterSubmersionState() {
+        this.isSubmergedInWater = this.isSubmergedIn(FluidTags.WATER);
+        return this.isSubmergedInWater;
+    }
+
+    // Prevents water submersion sounds from playing.
+    @Override
+    protected void onSwimmingStart() {}
 
     @Override
     public void tickMovement() {

@@ -44,7 +44,7 @@
   "text.autoconfig.freecam.option.showHand": "Show Hand",
   "text.autoconfig.freecam.option.showHand.@Tooltip": "Whether you can see your hand in freecam.",
   "text.autoconfig.freecam.option.showSubmersion": "Show Submersion Fog",
-  "text.autoconfig.freecam.option.showSubmersion.@Tooltip": "Whether you see a fog overlay underwater, in lava and powdered snow.",
+  "text.autoconfig.freecam.option.showSubmersion.@Tooltip": "Whether you see a fog overlay underwater, in lava, or powdered snow.",
   "text.autoconfig.freecam.option.notifyFreecam": "Freecam Notifications",
   "text.autoconfig.freecam.option.notifyFreecam.@Tooltip": "Notifies you when entering/exiting freecam.",
   "text.autoconfig.freecam.option.notifyTripod": "Tripod Notifications",
