@@ -24,6 +24,10 @@ public class ModConfig implements ConfigData {
 
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
+    public Perspective perspective = Perspective.INSIDE;
+
+    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.EnumHandler(option = ConfigEntry.Gui.EnumHandler.EnumDisplayOption.BUTTON)
     public InteractionMode interactionMode = InteractionMode.CAMERA;
 
     @ConfigEntry.Gui.Tooltip
@@ -34,6 +38,9 @@ public class ModConfig implements ConfigData {
 
     @ConfigEntry.Gui.Tooltip
     public boolean noClip = true;
+
+    @ConfigEntry.Gui.Tooltip
+    public boolean checkCollision = false;
 
     @ConfigEntry.Gui.Tooltip
     public boolean disableOnDamage = true;
@@ -78,6 +85,23 @@ public class ModConfig implements ConfigData {
         private final String name;
 
         InteractionMode(String name) {
+            this.name = name;
+        }
+
+        public String getKey() {
+            return name;
+        }
+    }
+
+    public enum Perspective implements SelectionListEntry.Translatable {
+        FIRST_PERSON("text.autoconfig.freecam.option.perspective.firstPerson"),
+        THIRD_PERSON("text.autoconfig.freecam.option.perspective.thirdPerson"),
+        THIRD_PERSON_MIRROR("text.autoconfig.freecam.option.perspective.thirdPersonMirror"),
+        INSIDE("text.autoconfig.freecam.option.perspective.inside");
+
+        private final String name;
+
+        Perspective(String name) {
             this.name = name;
         }
 
