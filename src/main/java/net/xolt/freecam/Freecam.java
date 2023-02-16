@@ -18,7 +18,6 @@ import net.xolt.freecam.util.FreecamPosition;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.HashMap;
-import java.util.Optional;
 
 public class Freecam implements ClientModInitializer {
 
