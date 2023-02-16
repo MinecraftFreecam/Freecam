@@ -3,8 +3,8 @@ package net.xolt.freecam.util;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.util.math.ChunkPos;
-import org.joml.Quaternionf;
-import org.joml.Vector3f;
+import net.minecraft.util.math.Quaternion;
+import net.minecraft.util.math.Vec3f;
 
 public class FreecamPosition {
     public double x;
@@ -14,12 +14,13 @@ public class FreecamPosition {
     public float yaw;
     public EntityPose pose;
 
-    private final Quaternionf rotation = new Quaternionf(0.0F, 0.0F, 0.0F, 1.0F);
-    private final Vector3f verticalPlane = new Vector3f(0.0F, 1.0F, 0.0F);
-    private final Vector3f diagonalPlane = new Vector3f(1.0F, 0.0F, 0.0F);
-    private final Vector3f horizontalPlane = new Vector3f(0.0F, 0.0F, 1.0F);
+    private final Quaternion rotation = new Quaternion(0.0F, 0.0F, 0.0F, 1.0F);
+    private final Vec3f verticalPlane = new Vec3f(0.0F, 1.0F, 0.0F);
+    private final Vec3f diagonalPlane = new Vec3f(1.0F, 0.0F, 0.0F);
+    private final Vec3f horizontalPlane = new Vec3f(0.0F, 0.0F, 1.0F);
 
     public FreecamPosition(Entity entity) {
+
         x = entity.getX();
         y = entity.getY();
         z = entity.getZ();
@@ -28,13 +29,18 @@ public class FreecamPosition {
     }
 
     // From net.minecraft.client.render.Camera.setRotation
-    protected void setRotation(float yaw, float pitch) {
+    public void setRotation(float yaw, float pitch) {
         this.pitch = pitch;
         this.yaw = yaw;
-        rotation.rotationYXZ(-yaw * ((float) Math.PI / 180), pitch * ((float) Math.PI / 180), 0.0f);
-        horizontalPlane.set(0.0f, 0.0f, 1.0f).rotate(rotation);
-        verticalPlane.set(0.0f, 1.0f, 0.0f).rotate(rotation);
-        diagonalPlane.set(1.0f, 0.0f, 0.0f).rotate(rotation);
+        this.rotation.set(0.0F, 0.0F, 0.0F, 1.0F);
+        this.rotation.hamiltonProduct(Vec3f.POSITIVE_Y.getDegreesQuaternion(-yaw));
+        this.rotation.hamiltonProduct(Vec3f.POSITIVE_X.getDegreesQuaternion(pitch));
+        this.horizontalPlane.set(0.0F, 0.0F, 1.0F);
+        this.horizontalPlane.rotate(this.rotation);
+        this.verticalPlane.set(0.0F, 1.0F, 0.0F);
+        this.verticalPlane.rotate(this.rotation);
+        this.diagonalPlane.set(1.0F, 0.0F, 0.0F);
+        this.diagonalPlane.rotate(this.rotation);
     }
 
     // Invert the rotation so that it is mirrored
@@ -61,17 +67,17 @@ public class FreecamPosition {
     // Move relative to current rotation
     // From net.minecraft.client.render.Camera.moveBy
     public void move(double fwd, double up, double right) {
-        x += (double) horizontalPlane.x() * fwd
-           + (double) verticalPlane.x()   * up
-           + (double) diagonalPlane.x()   * right;
-        
-        y += (double) horizontalPlane.y() * fwd
-           + (double) verticalPlane.y()   * up
-           + (double) diagonalPlane.y()   * right;
-        
-        z += (double) horizontalPlane.z() * fwd
-           + (double) verticalPlane.z()   * up
-           + (double) diagonalPlane.z()   * right;
+        x += (double) horizontalPlane.getX() * fwd
+           + (double) verticalPlane.getX()   * up
+           + (double) diagonalPlane.getX()   * right;
+
+        y += (double) horizontalPlane.getY() * fwd
+           + (double) verticalPlane.getY()   * up
+           + (double) diagonalPlane.getY()   * right;
+
+        z += (double) horizontalPlane.getZ() * fwd
+           + (double) verticalPlane.getZ()   * up
+           + (double) diagonalPlane.getZ()   * right;
     }
 
     public static FreecamPosition getSwimmingPosition(Entity entity) {
