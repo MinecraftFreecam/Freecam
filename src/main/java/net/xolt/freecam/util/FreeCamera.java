@@ -29,7 +29,7 @@ public class FreeCamera extends ClientPlayerEntity {
     };
 
     public FreeCamera(int id) {
-        this(id, new FreecamPosition(MC.player));
+        this(id, FreecamPosition.getSwimmingPosition(MC.player));
     }
 
     public FreeCamera(int id, FreecamPosition position) {
@@ -42,8 +42,8 @@ public class FreeCamera extends ClientPlayerEntity {
     }
 
     public void applyPosition(FreecamPosition position) {
-        refreshPositionAndAngles(position.x, position.y, position.z, position.yaw, position.pitch);
         super.setPose(position.pose);
+        refreshPositionAndAngles(position.x, position.y, position.z, position.yaw, position.pitch);
         renderPitch = getPitch();
         renderYaw = getYaw();
         lastRenderPitch = renderPitch; // Prevents camera from rotating upon entering freecam.
@@ -173,12 +173,10 @@ public class FreeCamera extends ClientPlayerEntity {
         return ModConfig.INSTANCE.noClip ? PistonBehavior.IGNORE : PistonBehavior.NORMAL;
     }
 
-    // Prevents pose from changing when clipping through blocks.
+    // Ensures that the FreeCamera is always in the swimming pose.
     @Override
     public void setPose(EntityPose pose) {
-        if (pose.equals(EntityPose.STANDING) || (pose.equals(EntityPose.CROUCHING) && !getPose().equals(EntityPose.STANDING))) {
-            super.setPose(pose);
-        }
+        super.setPose(EntityPose.SWIMMING);
     }
 
     @Override
