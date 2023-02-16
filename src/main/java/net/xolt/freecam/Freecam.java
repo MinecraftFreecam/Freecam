@@ -168,6 +168,7 @@ public class Freecam implements ClientModInitializer {
     private static void onEnableFreecam() {
         onEnable();
         freeCamera = new FreeCamera(-420);
+        freeCamera.applyPerspective(ModConfig.INSTANCE.perspective, ModConfig.INSTANCE.checkCollision || !ModConfig.INSTANCE.noClip);
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
 

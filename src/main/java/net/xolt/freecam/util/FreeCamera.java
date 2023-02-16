@@ -26,22 +26,86 @@ public class FreeCamera extends ClientPlayerEntity {
     };
 
     public FreeCamera(int id) {
-        this(id, new FreecamPosition(MC.player));
+        this(id, FreecamPosition.getSwimmingPosition(MC.player));
     }
 
     public FreeCamera(int id, FreecamPosition position) {
         super(MC, MC.world, NETWORK_HANDLER, MC.player.getStatHandler(), MC.player.getRecipeBook(), false, false);
 
         setId(id);
-        refreshPositionAndAngles(position.x, position.y, position.z, position.yaw, position.pitch);
+        applyPosition(position);
+        getAbilities().flying = true;
+        input = new KeyboardInput(MC.options);
+    }
+
+    public void applyPosition(FreecamPosition position) {
         super.setPose(position.pose);
+        refreshPositionAndAngles(position.x, position.y, position.z, position.yaw, position.pitch);
         renderPitch = getPitch();
         renderYaw = getYaw();
         lastRenderPitch = renderPitch; // Prevents camera from rotating upon entering freecam.
         lastRenderYaw = renderYaw;
-        getAbilities().flying = true;
-        input = new KeyboardInput(MC.options);
     }
+
+    // Mutate the position and rotation based on perspective
+    // If checkCollision is true, move as far as possible without colliding
+    public void applyPerspective(ModConfig.Perspective perspective, boolean checkCollision) {
+        FreecamPosition position = new FreecamPosition(this);
+
+        switch (perspective) {
+            case INSIDE:
+                // No-op
+                break;
+            case FIRST_PERSON:
+                // Move just in front of the player's eyes
+                moveForwardUntilCollision(position, 0.4, checkCollision);
+                break;
+            case THIRD_PERSON_MIRROR:
+                // Invert the rotation and fallthrough into the THIRD_PERSON case
+                position.mirrorRotation();
+            case THIRD_PERSON:
+                // Move back as per F5 mode
+                moveForwardUntilCollision(position, -4.0, checkCollision);
+                break;
+        }
+    }
+
+    // Move FreeCamera forward using FreecamPosition.moveForward.
+    // If checkCollision is true, stop moving forward before hitting a collision.
+    // Return true if successfully able to move.
+    private boolean moveForwardUntilCollision(FreecamPosition position, double distance, boolean checkCollision) {
+        if (!checkCollision) {
+            position.moveForward(distance);
+            applyPosition(position);
+            return true;
+        }
+        return moveForwardUntilCollision(position, distance);
+    }
+
+    // Same as above, but always check collision.
+    private boolean moveForwardUntilCollision(FreecamPosition position, double maxDistance) {
+        boolean negative = maxDistance < 0;
+        maxDistance = negative ? -1 * maxDistance : maxDistance;
+        double increment = 0.1;
+
+        // Move forward by increment until we reach maxDistance or hit a collision
+        for (double distance = 0.0; distance < maxDistance; distance += increment) {
+            FreecamPosition oldPosition = new FreecamPosition(this);
+
+            position.moveForward(negative ? -1 * increment : increment);
+            applyPosition(position);
+
+            if (!wouldPoseNotCollide(getPose())) {
+                // Revert to last non-colliding position and return whether we were unable to move at all
+                applyPosition(oldPosition);
+                return distance > 0;
+            }
+        }
+
+        return true;
+    }
+
+
 
     public void spawn() {
         if (clientWorld != null) {
@@ -102,12 +166,10 @@ public class FreeCamera extends ClientPlayerEntity {
         return ModConfig.INSTANCE.noClip ? PistonBehavior.IGNORE : PistonBehavior.NORMAL;
     }
 
-    // Prevents pose from changing when clipping through blocks.
+    // Ensures that the FreeCamera is always in the swimming pose.
     @Override
     public void setPose(EntityPose pose) {
-        if (pose.equals(EntityPose.STANDING) || (pose.equals(EntityPose.CROUCHING) && !getPose().equals(EntityPose.STANDING))) {
-            super.setPose(pose);
-        }
+        super.setPose(EntityPose.SWIMMING);
     }
 
     @Override
