@@ -27,7 +27,7 @@
   "text.autoconfig.freecam.option.horizontalSpeed.@Tooltip": "The horizontal speed of freecam.",
   "text.autoconfig.freecam.option.verticalSpeed": "Vertical Speed",
   "text.autoconfig.freecam.option.verticalSpeed.@Tooltip": "The vertical speed of freecam.",
-  "text.autoconfig.freecam.option.collision": "Collision Settings",
+  "text.autoconfig.freecam.option.collision": "Collision Options",
   "text.autoconfig.freecam.option.collision.@Tooltip": "Which blocks you can travel through in freecam.",
   "text.autoconfig.freecam.option.collision.ignoreTransparent": "Ignore Transparent Blocks",
   "text.autoconfig.freecam.option.collision.ignoreTransparent.@Tooltip": "You can travel through glass blocks in freecam.",
