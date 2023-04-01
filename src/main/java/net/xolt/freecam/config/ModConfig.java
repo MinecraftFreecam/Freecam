@@ -46,6 +46,9 @@ public class ModConfig implements ConfigData {
         public boolean rememberF5 = true;
 
         @ConfigEntry.Gui.Tooltip
+        public boolean disableOnDamage = true;
+
+        @ConfigEntry.Gui.Tooltip
         public boolean notifyFreecam = true;
 
         @ConfigEntry.Gui.Tooltip
@@ -69,9 +72,6 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.Tooltip(count = 2)
         public boolean alwaysCheck = false;
     }
-
-    @ConfigEntry.Gui.Tooltip
-    public boolean disableOnDamage = true;
 
     @ConfigEntry.Gui.Tooltip(count = 2)
     public boolean allowInteract = false;
