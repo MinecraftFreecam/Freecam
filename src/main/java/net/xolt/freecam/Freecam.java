@@ -34,6 +34,7 @@ public class Freecam implements ClientModInitializer {
     private static HashMap<Integer, FreecamPosition> overworld_tripods = new HashMap<>();
     private static HashMap<Integer, FreecamPosition> nether_tripods = new HashMap<>();
     private static HashMap<Integer, FreecamPosition> end_tripods = new HashMap<>();
+    private static Perspective rememberedF5 = null;
 
     @Override
     public void onInitializeClient() {
@@ -85,6 +86,9 @@ public class Freecam implements ClientModInitializer {
             onEnableFreecam();
         }
         freecamEnabled = !freecamEnabled;
+        if (!freecamEnabled) {
+            onDisabled();
+        }
     }
 
     private static void toggleTripod(Integer keyCode) {
@@ -106,6 +110,9 @@ public class Freecam implements ClientModInitializer {
             }
             onEnableTripod(keyCode);
             tripodEnabled = true;
+        }
+        if (!tripodEnabled) {
+            onDisabled();
         }
     }
 
@@ -168,7 +175,7 @@ public class Freecam implements ClientModInitializer {
     private static void onEnableFreecam() {
         onEnable();
         freeCamera = new FreeCamera(-420);
-        freeCamera.applyPerspective(ModConfig.INSTANCE.perspective, ModConfig.INSTANCE.collision.alwaysCheck || !ModConfig.INSTANCE.collision.ignoreAll);
+        freeCamera.applyPerspective(ModConfig.INSTANCE.transition.perspective, ModConfig.INSTANCE.collision.alwaysCheck || !ModConfig.INSTANCE.collision.ignoreAll);
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
 
@@ -191,6 +198,7 @@ public class Freecam implements ClientModInitializer {
         MC.chunkCullingEnabled = false;
         MC.gameRenderer.setRenderHand(ModConfig.INSTANCE.showHand);
 
+        rememberedF5 = MC.options.getPerspective();
         if (MC.gameRenderer.getCamera().isThirdPerson()) {
             MC.options.setPerspective(Perspective.FIRST_PERSON);
         }
@@ -207,6 +215,12 @@ public class Freecam implements ClientModInitializer {
 
         if (MC.player != null) {
             MC.player.input = new KeyboardInput(MC.options);
+        }
+    }
+
+    private static void onDisabled() {
+        if (ModConfig.INSTANCE.transition.rememberF5 && rememberedF5 != null) {
+            MC.options.setPerspective(rememberedF5);
         }
     }
 

@@ -26,10 +26,6 @@ public class ModConfig implements ConfigData {
 
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
-    public Perspective perspective = Perspective.INSIDE;
-
-    @ConfigEntry.Gui.Tooltip
-    @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
     public InteractionMode interactionMode = InteractionMode.CAMERA;
 
     @ConfigEntry.Gui.Tooltip
@@ -37,6 +33,19 @@ public class ModConfig implements ConfigData {
 
     @ConfigEntry.Gui.Tooltip
     public double verticalSpeed = 1.0;
+
+    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.CollapsibleObject
+    public TransitionConfig transition = new TransitionConfig();
+    public static class TransitionConfig {
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
+        public Perspective perspective = Perspective.INSIDE;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean rememberF5 = true;
+
+    }
 
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.CollapsibleObject
@@ -110,10 +119,10 @@ public class ModConfig implements ConfigData {
     }
 
     public enum Perspective implements SelectionListEntry.Translatable {
-        FIRST_PERSON("text.autoconfig.freecam.option.perspective.firstPerson"),
-        THIRD_PERSON("text.autoconfig.freecam.option.perspective.thirdPerson"),
-        THIRD_PERSON_MIRROR("text.autoconfig.freecam.option.perspective.thirdPersonMirror"),
-        INSIDE("text.autoconfig.freecam.option.perspective.inside");
+        FIRST_PERSON("text.autoconfig.freecam.option.transition.perspective.firstPerson"),
+        THIRD_PERSON("text.autoconfig.freecam.option.transition.perspective.thirdPerson"),
+        THIRD_PERSON_MIRROR("text.autoconfig.freecam.option.transition.perspective.thirdPersonMirror"),
+        INSIDE("text.autoconfig.freecam.option.transition.perspective.inside");
 
         private final String name;
 
