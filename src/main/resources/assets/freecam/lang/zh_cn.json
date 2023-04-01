@@ -19,6 +19,10 @@
   "text.autoconfig.freecam.option.transition.perspective.thirdPerson": "第三人称",
   "text.autoconfig.freecam.option.transition.perspective.thirdPersonMirror": "镜像",
   "text.autoconfig.freecam.option.transition.perspective.inside": "内部",
+  "text.autoconfig.freecam.option.transition.notifyFreecam": "自由视角通知",
+  "text.autoconfig.freecam.option.transition.notifyFreecam.@Tooltip": "进入/退出自由视角时通知你。",
+  "text.autoconfig.freecam.option.transition.notifyTripod": "三脚架通知",
+  "text.autoconfig.freecam.option.transition.notifyTripod.@Tooltip": "进入/退出三脚架摄像机时通知你。",
   "text.autoconfig.freecam.option.interactionMode": "交互模式",
   "text.autoconfig.freecam.option.interactionMode.@Tooltip": "方块/实体交互的源头。",
   "text.autoconfig.freecam.option.interactionMode.camera": "视角",
@@ -40,9 +44,5 @@
   "text.autoconfig.freecam.option.showHand": "显示手",
   "text.autoconfig.freecam.option.showHand.@Tooltip": "当你处于自由视角是否可以看到你的手。",
   "text.autoconfig.freecam.option.showSubmersion": "显示淹没雾",
-  "text.autoconfig.freecam.option.showSubmersion.@Tooltip": "您是否看到雾覆盖在水下、熔岩和粉状雪中。",
-  "text.autoconfig.freecam.option.notifyFreecam": "自由视角通知",
-  "text.autoconfig.freecam.option.notifyFreecam.@Tooltip": "进入/退出自由视角时通知你。",
-  "text.autoconfig.freecam.option.notifyTripod": "三脚架通知",
-  "text.autoconfig.freecam.option.notifyTripod.@Tooltip": "进入/退出三脚架摄像机时通知你。"
+  "text.autoconfig.freecam.option.showSubmersion.@Tooltip": "您是否看到雾覆盖在水下、熔岩和粉状雪中。"
 }

@@ -155,7 +155,7 @@ public class Freecam implements ClientModInitializer {
         MC.setCameraEntity(freeCamera);
         activeTripod = keyCode;
 
-        if (ModConfig.INSTANCE.notifyTripod) {
+        if (ModConfig.INSTANCE.transition.notifyTripod) {
             MC.player.sendMessage(Text.translatable("msg.freecam.openTripod").append("" + activeTripod % GLFW.GLFW_KEY_0), true);
         }
     }
@@ -165,7 +165,7 @@ public class Freecam implements ClientModInitializer {
         onDisable();
 
         if (MC.player != null) {
-            if (ModConfig.INSTANCE.notifyTripod) {
+            if (ModConfig.INSTANCE.transition.notifyTripod) {
                 MC.player.sendMessage(Text.translatable("msg.freecam.closeTripod").append("" + activeTripod % GLFW.GLFW_KEY_0), true);
             }
         }
@@ -179,7 +179,7 @@ public class Freecam implements ClientModInitializer {
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
 
-        if (ModConfig.INSTANCE.notifyFreecam) {
+        if (ModConfig.INSTANCE.transition.notifyFreecam) {
             MC.player.sendMessage(Text.translatable("msg.freecam.enable"), true);
         }
     }
@@ -188,7 +188,7 @@ public class Freecam implements ClientModInitializer {
         onDisable();
 
         if (MC.player != null) {
-            if (ModConfig.INSTANCE.notifyFreecam) {
+            if (ModConfig.INSTANCE.transition.notifyFreecam) {
                 MC.player.sendMessage(Text.translatable("msg.freecam.disable"), true);
             }
         }
@@ -231,7 +231,7 @@ public class Freecam implements ClientModInitializer {
             getTripodsForDimension().put(keyCode, null);
         }
 
-        if (ModConfig.INSTANCE.notifyTripod) {
+        if (ModConfig.INSTANCE.transition.notifyTripod) {
             MC.player.sendMessage(Text.translatable("msg.freecam.tripodReset").append("" + keyCode % GLFW.GLFW_KEY_0), true);
         }
     }

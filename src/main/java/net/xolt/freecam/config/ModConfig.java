@@ -45,6 +45,12 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.Tooltip
         public boolean rememberF5 = true;
 
+        @ConfigEntry.Gui.Tooltip
+        public boolean notifyFreecam = true;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean notifyTripod = true;
+
     }
 
     @ConfigEntry.Gui.Tooltip
@@ -81,12 +87,6 @@ public class ModConfig implements ConfigData {
 
     @ConfigEntry.Gui.Tooltip
     public boolean showSubmersion = false;
-
-    @ConfigEntry.Gui.Tooltip
-    public boolean notifyFreecam = true;
-
-    @ConfigEntry.Gui.Tooltip
-    public boolean notifyTripod = true;
 
     public enum FlightMode implements SelectionListEntry.Translatable {
         CREATIVE("text.autoconfig.freecam.option.flightMode.creative"),

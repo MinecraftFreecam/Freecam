@@ -23,6 +23,10 @@
   "text.autoconfig.freecam.option.transition.perspective.inside": "Inside",
   "text.autoconfig.freecam.option.transition.rememberF5": "Remember F5",
   "text.autoconfig.freecam.option.transition.rememberF5.@Tooltip": "Remember F5 state when exiting freecam.",
+  "text.autoconfig.freecam.option.transition.notifyFreecam": "Freecam Notifications",
+  "text.autoconfig.freecam.option.transition.notifyFreecam.@Tooltip": "Notifies you when entering/exiting freecam.",
+  "text.autoconfig.freecam.option.transition.notifyTripod": "Tripod Notifications",
+  "text.autoconfig.freecam.option.transition.notifyTripod.@Tooltip": "Notifies you when entering/exiting tripod cameras.",
   "text.autoconfig.freecam.option.interactionMode": "Interaction Mode",
   "text.autoconfig.freecam.option.interactionMode.@Tooltip": "The source of block/entity interactions.",
   "text.autoconfig.freecam.option.interactionMode.camera": "Camera",
@@ -56,9 +60,5 @@
   "text.autoconfig.freecam.option.showHand": "Show Hand",
   "text.autoconfig.freecam.option.showHand.@Tooltip": "Whether you can see your hand in freecam.",
   "text.autoconfig.freecam.option.showSubmersion": "Show Submersion Fog",
-  "text.autoconfig.freecam.option.showSubmersion.@Tooltip": "Whether you see a fog overlay underwater, in lava, or powdered snow.",
-  "text.autoconfig.freecam.option.notifyFreecam": "Freecam Notifications",
-  "text.autoconfig.freecam.option.notifyFreecam.@Tooltip": "Notifies you when entering/exiting freecam.",
-  "text.autoconfig.freecam.option.notifyTripod": "Tripod Notifications",
-  "text.autoconfig.freecam.option.notifyTripod.@Tooltip": "Notifies you when entering/exiting tripod cameras."
+  "text.autoconfig.freecam.option.showSubmersion.@Tooltip": "Whether you see a fog overlay underwater, in lava, or powdered snow."
 }
