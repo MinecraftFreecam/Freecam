@@ -28,7 +28,7 @@ public abstract class LivingEntityMixin {
     // Disables freecam upon receiving damage if disableOnDamage is enabled.
     @Inject(method = "setHealth", at = @At("HEAD"))
     private void onSetHealth(float health, CallbackInfo ci) {
-        if (Freecam.isEnabled() && ModConfig.INSTANCE.transition.disableOnDamage && this.equals(MC.player)) {
+        if (Freecam.isEnabled() && ModConfig.INSTANCE.toggle.disableOnDamage && this.equals(MC.player)) {
             if (!MC.player.isCreative() && getHealth() > health) {
                 Freecam.setDisableNextTick(true);
             }

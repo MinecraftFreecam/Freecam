@@ -155,7 +155,7 @@ public class Freecam implements ClientModInitializer {
         MC.setCameraEntity(freeCamera);
         activeTripod = keyCode;
 
-        if (ModConfig.INSTANCE.transition.notifyTripod) {
+        if (ModConfig.INSTANCE.toggle.notifyTripod) {
             MC.player.sendMessage(Text.translatable("msg.freecam.openTripod").append("" + activeTripod % GLFW.GLFW_KEY_0), true);
         }
     }
@@ -165,7 +165,7 @@ public class Freecam implements ClientModInitializer {
         onDisable();
 
         if (MC.player != null) {
-            if (ModConfig.INSTANCE.transition.notifyTripod) {
+            if (ModConfig.INSTANCE.toggle.notifyTripod) {
                 MC.player.sendMessage(Text.translatable("msg.freecam.closeTripod").append("" + activeTripod % GLFW.GLFW_KEY_0), true);
             }
         }
@@ -175,11 +175,11 @@ public class Freecam implements ClientModInitializer {
     private static void onEnableFreecam() {
         onEnable();
         freeCamera = new FreeCamera(-420);
-        freeCamera.applyPerspective(ModConfig.INSTANCE.transition.perspective, ModConfig.INSTANCE.collision.alwaysCheck || !ModConfig.INSTANCE.collision.ignoreAll);
+        freeCamera.applyPerspective(ModConfig.INSTANCE.toggle.perspective, ModConfig.INSTANCE.collision.alwaysCheck || !ModConfig.INSTANCE.collision.ignoreAll);
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
 
-        if (ModConfig.INSTANCE.transition.notifyFreecam) {
+        if (ModConfig.INSTANCE.toggle.notifyFreecam) {
             MC.player.sendMessage(Text.translatable("msg.freecam.enable"), true);
         }
     }
@@ -188,7 +188,7 @@ public class Freecam implements ClientModInitializer {
         onDisable();
 
         if (MC.player != null) {
-            if (ModConfig.INSTANCE.transition.notifyFreecam) {
+            if (ModConfig.INSTANCE.toggle.notifyFreecam) {
                 MC.player.sendMessage(Text.translatable("msg.freecam.disable"), true);
             }
         }
@@ -219,7 +219,7 @@ public class Freecam implements ClientModInitializer {
     }
 
     private static void onDisabled() {
-        if (ModConfig.INSTANCE.transition.rememberF5 && rememberedF5 != null) {
+        if (ModConfig.INSTANCE.toggle.rememberF5 && rememberedF5 != null) {
             MC.options.setPerspective(rememberedF5);
         }
     }
@@ -231,7 +231,7 @@ public class Freecam implements ClientModInitializer {
             getTripodsForDimension().put(keyCode, null);
         }
 
-        if (ModConfig.INSTANCE.transition.notifyTripod) {
+        if (ModConfig.INSTANCE.toggle.notifyTripod) {
             MC.player.sendMessage(Text.translatable("msg.freecam.tripodReset").append("" + keyCode % GLFW.GLFW_KEY_0), true);
         }
     }

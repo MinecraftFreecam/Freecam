@@ -36,8 +36,8 @@ public class ModConfig implements ConfigData {
 
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.CollapsibleObject
-    public TransitionConfig transition = new TransitionConfig();
-    public static class TransitionConfig {
+    public ToggleConfig toggle = new ToggleConfig();
+    public static class ToggleConfig {
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
         public Perspective perspective = Perspective.INSIDE;
@@ -119,10 +119,10 @@ public class ModConfig implements ConfigData {
     }
 
     public enum Perspective implements SelectionListEntry.Translatable {
-        FIRST_PERSON("text.autoconfig.freecam.option.transition.perspective.firstPerson"),
-        THIRD_PERSON("text.autoconfig.freecam.option.transition.perspective.thirdPerson"),
-        THIRD_PERSON_MIRROR("text.autoconfig.freecam.option.transition.perspective.thirdPersonMirror"),
-        INSIDE("text.autoconfig.freecam.option.transition.perspective.inside");
+        FIRST_PERSON("text.autoconfig.freecam.option.toggle.perspective.firstPerson"),
+        THIRD_PERSON("text.autoconfig.freecam.option.toggle.perspective.thirdPerson"),
+        THIRD_PERSON_MIRROR("text.autoconfig.freecam.option.toggle.perspective.thirdPersonMirror"),
+        INSIDE("text.autoconfig.freecam.option.toggle.perspective.inside");
 
         private final String name;
 
