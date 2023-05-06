@@ -4,12 +4,10 @@ import net.minecraft.block.BlockState;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.entity.Entity;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Box;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockCollisionSpliterator;
 import net.minecraft.world.BlockView;
-import net.minecraft.world.CollisionView;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.CollisionWhitelist;
 import net.xolt.freecam.config.ModConfig;
@@ -17,11 +15,7 @@ import net.xolt.freecam.util.FreeCamera;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.util.function.BiPredicate;
 
 @Mixin(BlockCollisionSpliterator.class)
 public class BlockCollisionSpliteratorMixin {
