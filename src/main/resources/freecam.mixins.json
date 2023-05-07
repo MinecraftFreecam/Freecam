@@ -11,6 +11,7 @@
     "ClientPlayNetworkHandlerMixin",
     "EntityMixin",
     "EntityRenderDispatcherMixin",
+    "EntityShapeContextMixin",
     "GameOptionsMixin",
     "GameRendererAccessor",
     "GameRendererMixin",

@@ -11,6 +11,7 @@ import net.minecraft.world.BlockView;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.CollisionWhitelist;
 import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.util.EntityShapeContextMixinInterface;
 import net.xolt.freecam.util.FreeCamera;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,7 +23,7 @@ public class AbstractBlockMixin {
 
     @Inject(method = "getCollisionShape", at = @At("HEAD"), cancellable = true)
     private void onGetCollisionShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (context instanceof EntityShapeContext && ((EntityShapeContext)context).getEntity().isPresent() && ((EntityShapeContext)context).getEntity().get() instanceof FreeCamera) {
+        if (context instanceof EntityShapeContext && ((EntityShapeContextMixinInterface)context).getEntity() != null && ((EntityShapeContextMixinInterface)context).getEntity() instanceof FreeCamera) {
             // Unless "Always Check Initial Collision" is on and Freecam isn't enabled yet
             if (!ModConfig.INSTANCE.collision.alwaysCheck || Freecam.isEnabled()) {
                 // Ignore all collisions
