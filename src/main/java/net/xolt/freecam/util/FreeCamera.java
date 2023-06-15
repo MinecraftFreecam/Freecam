@@ -20,7 +20,7 @@ import static net.xolt.freecam.Freecam.MC;
 
 public class FreeCamera extends ClientPlayerEntity {
 
-    private static final ClientPlayNetworkHandler NETWORK_HANDLER = new ClientPlayNetworkHandler(MC, MC.currentScreen, MC.getNetworkHandler().getConnection(), MC.getCurrentServerEntry(), new GameProfile(UUID.randomUUID(), "FreeCamera"), MC.getTelemetryManager().createWorldSession(false, null)) {
+    private static final ClientPlayNetworkHandler NETWORK_HANDLER = new ClientPlayNetworkHandler(MC, MC.currentScreen, MC.getNetworkHandler().getConnection(), MC.getCurrentServerEntry(), new GameProfile(UUID.randomUUID(), "FreeCamera"), MC.getTelemetryManager().createWorldSession(false, null, null)) {
         @Override
         public void sendPacket(Packet<?> packet) {
         }
@@ -198,6 +198,6 @@ public class FreeCamera extends ClientPlayerEntity {
         }
         super.tickMovement();
         getAbilities().flying = true;
-        onGround = false;
+        setOnGround(false);
     }
 }
