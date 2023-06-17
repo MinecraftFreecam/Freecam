@@ -26,10 +26,6 @@ public class ModConfig implements ConfigData {
 
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
-    public Perspective perspective = Perspective.INSIDE;
-
-    @ConfigEntry.Gui.Tooltip
-    @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
     public InteractionMode interactionMode = InteractionMode.CAMERA;
 
     @ConfigEntry.Gui.Tooltip
@@ -37,6 +33,28 @@ public class ModConfig implements ConfigData {
 
     @ConfigEntry.Gui.Tooltip
     public double verticalSpeed = 1.0;
+
+    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.CollapsibleObject
+    public ToggleConfig toggle = new ToggleConfig();
+    public static class ToggleConfig {
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
+        public Perspective perspective = Perspective.INSIDE;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean rememberF5 = true;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean disableOnDamage = true;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean notifyFreecam = true;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean notifyTripod = true;
+
+    }
 
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.CollapsibleObject
@@ -55,9 +73,6 @@ public class ModConfig implements ConfigData {
         public boolean alwaysCheck = false;
     }
 
-    @ConfigEntry.Gui.Tooltip
-    public boolean disableOnDamage = true;
-
     @ConfigEntry.Gui.Tooltip(count = 2)
     public boolean allowInteract = false;
 
@@ -72,12 +87,6 @@ public class ModConfig implements ConfigData {
 
     @ConfigEntry.Gui.Tooltip
     public boolean showSubmersion = false;
-
-    @ConfigEntry.Gui.Tooltip
-    public boolean notifyFreecam = true;
-
-    @ConfigEntry.Gui.Tooltip
-    public boolean notifyTripod = true;
 
     public enum FlightMode implements SelectionListEntry.Translatable {
         CREATIVE("text.autoconfig.freecam.option.flightMode.creative"),
@@ -110,10 +119,10 @@ public class ModConfig implements ConfigData {
     }
 
     public enum Perspective implements SelectionListEntry.Translatable {
-        FIRST_PERSON("text.autoconfig.freecam.option.perspective.firstPerson"),
-        THIRD_PERSON("text.autoconfig.freecam.option.perspective.thirdPerson"),
-        THIRD_PERSON_MIRROR("text.autoconfig.freecam.option.perspective.thirdPersonMirror"),
-        INSIDE("text.autoconfig.freecam.option.perspective.inside");
+        FIRST_PERSON("text.autoconfig.freecam.option.toggle.perspective.firstPerson"),
+        THIRD_PERSON("text.autoconfig.freecam.option.toggle.perspective.thirdPerson"),
+        THIRD_PERSON_MIRROR("text.autoconfig.freecam.option.toggle.perspective.thirdPersonMirror"),
+        INSIDE("text.autoconfig.freecam.option.toggle.perspective.inside");
 
         private final String name;
 
