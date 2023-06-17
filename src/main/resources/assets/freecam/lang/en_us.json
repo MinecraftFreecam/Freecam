@@ -66,5 +66,4 @@
   "text.autoconfig.freecam.option.notification.notifyFreecam.@Tooltip": "Notifies you when entering/exiting freecam.",
   "text.autoconfig.freecam.option.notification.notifyTripod": "Tripod Notifications",
   "text.autoconfig.freecam.option.notification.notifyTripod.@Tooltip": "Notifies you when entering/exiting tripod cameras."
-
 }

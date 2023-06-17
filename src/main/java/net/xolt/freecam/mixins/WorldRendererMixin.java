@@ -7,6 +7,7 @@ import net.minecraft.util.math.Vec3d;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModConfig;
 import org.joml.Matrix4f;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,6 +20,7 @@ import static net.xolt.freecam.Freecam.MC;
 public class WorldRendererMixin {
 
     @Shadow
+    @Final
     private BufferBuilderStorage bufferBuilders;
 
     // Makes the player render if showPlayer is enabled.
