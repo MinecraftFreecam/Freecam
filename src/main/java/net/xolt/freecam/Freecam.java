@@ -1,5 +1,6 @@
 package net.xolt.freecam;
 
+import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
@@ -25,6 +26,7 @@ public class Freecam implements ClientModInitializer {
     private static KeyBinding freecamBind;
     private static KeyBinding playerControlBind;
     private static KeyBinding tripodResetBind;
+    private static KeyBinding configGuiBind;
     private static boolean freecamEnabled = false;
     private static boolean tripodEnabled = false;
     private static boolean playerControlEnabled = false;
@@ -44,6 +46,8 @@ public class Freecam implements ClientModInitializer {
                 "key.freecam.playerControl", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam"));
         tripodResetBind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.freecam.tripodReset", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam"));
+        configGuiBind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.freecam.configGui", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam"));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (tripodResetBind.isPressed()) {
@@ -69,6 +73,10 @@ public class Freecam implements ClientModInitializer {
 
             while (playerControlBind.wasPressed()) {
                 switchControls();
+            }
+
+            while (configGuiBind.wasPressed()) {
+                MC.setScreen(AutoConfig.getConfigScreen(ModConfig.class, MC.currentScreen).get());
             }
         });
     }
