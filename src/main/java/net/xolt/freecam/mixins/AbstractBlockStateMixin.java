@@ -35,7 +35,7 @@ public abstract class AbstractBlockStateMixin {
             if (ModConfig.INSTANCE.collision.ignoreTransparent && CollisionWhitelist.isTransparent(getBlock())) {
                 cir.setReturnValue(VoxelShapes.empty());
             }
-            // Ignore transparent block collisions
+            // Ignore openable block collisions
             if (ModConfig.INSTANCE.collision.ignoreOpenable && CollisionWhitelist.isOpenable(getBlock())) {
                 cir.setReturnValue(VoxelShapes.empty());
             }
