@@ -7,6 +7,7 @@ import net.minecraft.util.math.Matrix4f;
 import net.minecraft.util.math.Vec3d;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModConfig;
+import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -19,12 +20,13 @@ import static net.xolt.freecam.Freecam.MC;
 public class WorldRendererMixin {
 
     @Shadow
+    @Final
     private BufferBuilderStorage bufferBuilders;
 
     // Makes the player render if showPlayer is enabled.
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;checkEmpty(Lnet/minecraft/client/util/math/MatrixStack;)V", ordinal = 0))
     private void onRender(MatrixStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightmapTextureManager lightmapTextureManager, Matrix4f positionMatrix, CallbackInfo ci) {
-        if (Freecam.isEnabled() && ModConfig.INSTANCE.showPlayer) {
+        if (Freecam.isEnabled() && ModConfig.INSTANCE.visual.showPlayer) {
             Vec3d cameraPos = camera.getPos();
             renderEntity(MC.player, cameraPos.x, cameraPos.y, cameraPos.z, tickDelta, matrices, bufferBuilders.getEntityVertexConsumers());
         }
