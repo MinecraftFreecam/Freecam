@@ -17,9 +17,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Camera.class)
 public class CameraMixin {
 
-    @Shadow Entity focusedEntity;
-    @Shadow float lastCameraY;
-    @Shadow float cameraY;
+    @Shadow
+    private Entity focusedEntity;
+
+    @Shadow
+    private float lastCameraY;
+
+    @Shadow
+    private float cameraY;
 
     // When toggling freecam, update the camera's eye height instantly without any transition.
     @Inject(method = "update", at = @At("HEAD"))
@@ -36,7 +41,7 @@ public class CameraMixin {
     // Removes the submersion overlay when underwater, in lava, or powdered snow.
     @Inject(method = "getSubmersionType", at = @At("HEAD"), cancellable = true)
     public void onGetSubmersionType(CallbackInfoReturnable<CameraSubmersionType> cir) {
-        if (Freecam.isEnabled() && !ModConfig.INSTANCE.showSubmersion) {
+        if (Freecam.isEnabled() && !ModConfig.INSTANCE.visual.showSubmersion) {
             cir.setReturnValue(CameraSubmersionType.NONE);
         }
     }

@@ -21,22 +21,19 @@ public class ModConfig implements ConfigData {
     }
 
     @ConfigEntry.Gui.Tooltip
-    @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
-    public FlightMode flightMode = FlightMode.DEFAULT;
+    @ConfigEntry.Gui.CollapsibleObject
+    public MovementConfig movement = new MovementConfig();
+    public static class MovementConfig {
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
+        public FlightMode flightMode = FlightMode.DEFAULT;
 
-    @ConfigEntry.Gui.Tooltip
-    @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
-    public Perspective perspective = Perspective.INSIDE;
+        @ConfigEntry.Gui.Tooltip
+        public double horizontalSpeed = 1.0;
 
-    @ConfigEntry.Gui.Tooltip
-    @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
-    public InteractionMode interactionMode = InteractionMode.CAMERA;
-
-    @ConfigEntry.Gui.Tooltip
-    public double horizontalSpeed = 1.0;
-
-    @ConfigEntry.Gui.Tooltip
-    public double verticalSpeed = 1.0;
+        @ConfigEntry.Gui.Tooltip
+        public double verticalSpeed = 1.0;
+    }
 
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.CollapsibleObject
@@ -56,32 +53,55 @@ public class ModConfig implements ConfigData {
     }
 
     @ConfigEntry.Gui.Tooltip
-    public boolean disableOnDamage = true;
+    @ConfigEntry.Gui.CollapsibleObject
+    public VisualConfig visual = new VisualConfig();
+    public static class VisualConfig {
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
+        public Perspective perspective = Perspective.INSIDE;
 
-    @ConfigEntry.Gui.Tooltip(count = 2)
-    public boolean allowInteract = false;
+        @ConfigEntry.Gui.Tooltip
+        public boolean showPlayer = true;
 
-    @ConfigEntry.Gui.Tooltip(count = 2)
-    public boolean freezePlayer = false;
+        @ConfigEntry.Gui.Tooltip
+        public boolean showHand = false;
 
-    @ConfigEntry.Gui.Tooltip
-    public boolean showPlayer = true;
-
-    @ConfigEntry.Gui.Tooltip
-    public boolean showHand = false;
-
-    @ConfigEntry.Gui.Tooltip
-    public boolean showSubmersion = false;
-
-    @ConfigEntry.Gui.Tooltip
-    public boolean notifyFreecam = true;
+        @ConfigEntry.Gui.Tooltip
+        public boolean showSubmersion = false;
+    }
 
     @ConfigEntry.Gui.Tooltip
-    public boolean notifyTripod = true;
+    @ConfigEntry.Gui.CollapsibleObject
+    public UtilityConfig utility = new UtilityConfig();
+    public static class UtilityConfig {
+        @ConfigEntry.Gui.Tooltip
+        public boolean disableOnDamage = true;
+
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public boolean freezePlayer = false;
+
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public boolean allowInteract = false;
+
+        @ConfigEntry.Gui.Tooltip
+        @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
+        public InteractionMode interactionMode = InteractionMode.CAMERA;
+    }
+
+    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.CollapsibleObject
+    public NotificationConfig notification = new NotificationConfig();
+    public static class NotificationConfig {
+        @ConfigEntry.Gui.Tooltip
+        public boolean notifyFreecam = true;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean notifyTripod = true;
+    }
 
     public enum FlightMode implements SelectionListEntry.Translatable {
-        CREATIVE("text.autoconfig.freecam.option.flightMode.creative"),
-        DEFAULT("text.autoconfig.freecam.option.flightMode.default");
+        CREATIVE("text.autoconfig.freecam.option.movement.flightMode.creative"),
+        DEFAULT("text.autoconfig.freecam.option.movement.flightMode.default");
 
         private final String name;
 
@@ -95,8 +115,8 @@ public class ModConfig implements ConfigData {
     }
 
     public enum InteractionMode implements SelectionListEntry.Translatable {
-        CAMERA("text.autoconfig.freecam.option.interactionMode.camera"),
-        PLAYER("text.autoconfig.freecam.option.interactionMode.player");
+        CAMERA("text.autoconfig.freecam.option.utility.interactionMode.camera"),
+        PLAYER("text.autoconfig.freecam.option.utility.interactionMode.player");
 
         private final String name;
 
@@ -110,10 +130,10 @@ public class ModConfig implements ConfigData {
     }
 
     public enum Perspective implements SelectionListEntry.Translatable {
-        FIRST_PERSON("text.autoconfig.freecam.option.perspective.firstPerson"),
-        THIRD_PERSON("text.autoconfig.freecam.option.perspective.thirdPerson"),
-        THIRD_PERSON_MIRROR("text.autoconfig.freecam.option.perspective.thirdPersonMirror"),
-        INSIDE("text.autoconfig.freecam.option.perspective.inside");
+        FIRST_PERSON("text.autoconfig.freecam.option.visual.perspective.firstPerson"),
+        THIRD_PERSON("text.autoconfig.freecam.option.visual.perspective.thirdPerson"),
+        THIRD_PERSON_MIRROR("text.autoconfig.freecam.option.visual.perspective.thirdPersonMirror"),
+        INSIDE("text.autoconfig.freecam.option.visual.perspective.inside");
 
         private final String name;
 
