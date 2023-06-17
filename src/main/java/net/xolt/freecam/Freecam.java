@@ -77,7 +77,7 @@ public class Freecam implements ClientModInitializer {
             }
 
             while (configGuiBind.wasPressed()) {
-                MC.setScreen(AutoConfig.getConfigScreen(ModConfig.class, MC.currentScreen).get());
+                MC.openScreen(AutoConfig.getConfigScreen(ModConfig.class, MC.currentScreen).get());
             }
         });
     }
