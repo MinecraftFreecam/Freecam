@@ -67,6 +67,9 @@ public class ModConfig implements ConfigData {
         public boolean showHand = false;
 
         @ConfigEntry.Gui.Tooltip
+        public boolean fullBright = false;
+
+        @ConfigEntry.Gui.Tooltip
         public boolean showSubmersion = false;
     }
 
