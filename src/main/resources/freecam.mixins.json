@@ -15,6 +15,7 @@
     "GameRendererMixin",
     "HeldItemRendererMixin",
     "InGameHudMixin",
+    "LightmapTextureManagerMixin",
     "LivingEntityMixin",
     "MinecraftClientMixin",
     "WorldRendererMixin"
