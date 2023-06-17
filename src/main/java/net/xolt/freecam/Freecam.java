@@ -36,6 +36,7 @@ public class Freecam implements ClientModInitializer {
     private static HashMap<Integer, FreecamPosition> overworld_tripods = new HashMap<>();
     private static HashMap<Integer, FreecamPosition> nether_tripods = new HashMap<>();
     private static HashMap<Integer, FreecamPosition> end_tripods = new HashMap<>();
+    private static Perspective rememberedF5 = null;
 
     @Override
     public void onInitializeClient() {
@@ -93,6 +94,9 @@ public class Freecam implements ClientModInitializer {
             onEnableFreecam();
         }
         freecamEnabled = !freecamEnabled;
+        if (!freecamEnabled) {
+            onDisabled();
+        }
     }
 
     private static void toggleTripod(Integer keyCode) {
@@ -114,6 +118,9 @@ public class Freecam implements ClientModInitializer {
             }
             onEnableTripod(keyCode);
             tripodEnabled = true;
+        }
+        if (!tripodEnabled) {
+            onDisabled();
         }
     }
 
@@ -156,7 +163,7 @@ public class Freecam implements ClientModInitializer {
         MC.setCameraEntity(freeCamera);
         activeTripod = keyCode;
 
-        if (ModConfig.INSTANCE.notifyTripod) {
+        if (ModConfig.INSTANCE.notification.notifyTripod) {
             MC.player.sendMessage(new TranslatableText("msg.freecam.openTripod").append("" + activeTripod % GLFW.GLFW_KEY_0), true);
         }
     }
@@ -166,7 +173,7 @@ public class Freecam implements ClientModInitializer {
         onDisable();
 
         if (MC.player != null) {
-            if (ModConfig.INSTANCE.notifyTripod) {
+            if (ModConfig.INSTANCE.notification.notifyTripod) {
                 MC.player.sendMessage(new TranslatableText("msg.freecam.closeTripod").append("" + activeTripod % GLFW.GLFW_KEY_0), true);
             }
         }
@@ -176,11 +183,11 @@ public class Freecam implements ClientModInitializer {
     private static void onEnableFreecam() {
         onEnable();
         freeCamera = new FreeCamera(-420);
-        freeCamera.applyPerspective(ModConfig.INSTANCE.perspective, ModConfig.INSTANCE.collision.alwaysCheck || !ModConfig.INSTANCE.collision.ignoreAll);
+        freeCamera.applyPerspective(ModConfig.INSTANCE.visual.perspective, ModConfig.INSTANCE.collision.alwaysCheck || !ModConfig.INSTANCE.collision.ignoreAll);
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
 
-        if (ModConfig.INSTANCE.notifyFreecam) {
+        if (ModConfig.INSTANCE.notification.notifyFreecam) {
             MC.player.sendMessage(new TranslatableText("msg.freecam.enable"), true);
         }
     }
@@ -189,7 +196,7 @@ public class Freecam implements ClientModInitializer {
         onDisable();
 
         if (MC.player != null) {
-            if (ModConfig.INSTANCE.notifyFreecam) {
+            if (ModConfig.INSTANCE.notification.notifyFreecam) {
                 MC.player.sendMessage(new TranslatableText("msg.freecam.disable"), true);
             }
         }
@@ -197,8 +204,9 @@ public class Freecam implements ClientModInitializer {
 
     private static void onEnable() {
         MC.chunkCullingEnabled = false;
-        MC.gameRenderer.setRenderHand(ModConfig.INSTANCE.showHand);
+        MC.gameRenderer.setRenderHand(ModConfig.INSTANCE.visual.showHand);
 
+        rememberedF5 = MC.options.getPerspective();
         if (MC.gameRenderer.getCamera().isThirdPerson()) {
             MC.options.setPerspective(Perspective.FIRST_PERSON);
         }
@@ -218,6 +226,12 @@ public class Freecam implements ClientModInitializer {
         }
     }
 
+    private static void onDisabled() {
+        if (rememberedF5 != null) {
+            MC.options.setPerspective(rememberedF5);
+        }
+    }
+
     private static void resetCamera(int keyCode) {
         if (tripodEnabled && activeTripod != null && activeTripod == keyCode && freeCamera != null) {
             freeCamera.copyPositionAndRotation(MC.player);
@@ -225,7 +239,7 @@ public class Freecam implements ClientModInitializer {
             getTripodsForDimension().put(keyCode, null);
         }
 
-        if (ModConfig.INSTANCE.notifyTripod) {
+        if (ModConfig.INSTANCE.notification.notifyTripod) {
             MC.player.sendMessage(new TranslatableText("msg.freecam.tripodReset").append("" + keyCode % GLFW.GLFW_KEY_0), true);
         }
     }
