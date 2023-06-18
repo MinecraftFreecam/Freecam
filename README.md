@@ -62,7 +62,7 @@ This mod works in multiplayer, but may be considered cheating on some servers, s
 
 ### Fabric
 - [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
-- [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu) (Optional for easier configuration)
+- [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu) (Optional)
 
 ### Forge
 - None
