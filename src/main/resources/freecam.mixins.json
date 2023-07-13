@@ -4,6 +4,7 @@
   "compatibilityLevel": "JAVA_8",
   "client": [
     "AbstractBlockStateMixin",
+    "BubbleColumnSoundPlayerMixin",
     "CameraMixin",
     "ClientConnectionMixin",
     "ClientPlayerEntityMixin",
