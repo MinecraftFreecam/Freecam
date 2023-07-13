@@ -3,7 +3,7 @@
   "id": "freecam",
   "version": "${version}",
   "name": "Freecam",
-  "description": "A simple, standalone freecam mod.",
+  "description": "A highly customizable freecam mod.",
   "authors": ["hashalite"],
   "contact": {
     "homepage": "https://www.curseforge.com/minecraft/mc-mods/free-cam",
