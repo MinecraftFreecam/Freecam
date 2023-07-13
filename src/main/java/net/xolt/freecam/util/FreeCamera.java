@@ -6,6 +6,7 @@ import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityPose;
 import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
@@ -163,6 +164,12 @@ public class FreeCamera extends ClientPlayerEntity {
     @Override
     public PistonBehavior getPistonBehavior() {
         return ModConfig.INSTANCE.collision.ignoreAll ? PistonBehavior.IGNORE : PistonBehavior.NORMAL;
+    }
+
+    // Prevents collision with solid entities (shulkers, boats)
+    @Override
+    public boolean collidesWith(Entity other) {
+        return false;
     }
 
     // Ensures that the FreeCamera is always in the swimming pose.
