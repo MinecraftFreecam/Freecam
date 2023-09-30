@@ -4,6 +4,8 @@ import com.mojang.authlib.GameProfile;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.piston.PistonBehavior;
 import net.minecraft.client.input.KeyboardInput;
+import net.minecraft.client.network.ClientConnectionState;
+import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.client.network.ClientPlayerEntity;
 import net.minecraft.entity.Entity;
@@ -12,6 +14,7 @@ import net.minecraft.entity.effect.StatusEffect;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.registry.tag.FluidTags;
+import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.util.math.BlockPos;
 import net.xolt.freecam.config.ModConfig;
 
@@ -21,7 +24,17 @@ import static net.xolt.freecam.Freecam.MC;
 
 public class FreeCamera extends ClientPlayerEntity {
 
-    private static final ClientPlayNetworkHandler NETWORK_HANDLER = new ClientPlayNetworkHandler(MC, MC.currentScreen, MC.getNetworkHandler().getConnection(), MC.getCurrentServerEntry(), new GameProfile(UUID.randomUUID(), "FreeCamera"), MC.getTelemetryManager().createWorldSession(false, null, null)) {
+    private static final ClientPlayNetworkHandler NETWORK_HANDLER = new ClientPlayNetworkHandler(
+            MC,
+            MC.getNetworkHandler().getConnection(),
+            new ClientConnectionState(
+                    new GameProfile(UUID.randomUUID(), "FreeCamera"),
+                    MC.getTelemetryManager().createWorldSession(false, null, null),
+                    DynamicRegistryManager.Immutable.EMPTY,
+                    FeatureSet.empty(),
+                    null,
+                    MC.getCurrentServerEntry(),
+                    MC.currentScreen)) {
         @Override
         public void sendPacket(Packet<?> packet) {
         }
@@ -97,7 +110,7 @@ public class FreeCamera extends ClientPlayerEntity {
             position.moveForward(negative ? -1 * increment : increment);
             applyPosition(position);
 
-            if (!wouldPoseNotCollide(getPose())) {
+            if (collidesWithStateAtPos(getBlockPos(), getBlockStateAtPos())) {
                 // Revert to last non-colliding position and return whether we were unable to move at all
                 applyPosition(oldPosition);
                 return distance > 0;
@@ -109,7 +122,7 @@ public class FreeCamera extends ClientPlayerEntity {
 
     public void spawn() {
         if (clientWorld != null) {
-            clientWorld.addEntity(getId(), this);
+            clientWorld.addEntity(this);
         }
     }
 
