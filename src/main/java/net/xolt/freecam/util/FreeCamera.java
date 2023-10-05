@@ -110,7 +110,7 @@ public class FreeCamera extends ClientPlayerEntity {
             position.moveForward(negative ? -1 * increment : increment);
             applyPosition(position);
 
-            if (collidesWithStateAtPos(getBlockPos(), getBlockStateAtPos())) {
+            if (!wouldNotSuffocateInPose(getPose())) {
                 // Revert to last non-colliding position and return whether we were unable to move at all
                 applyPosition(oldPosition);
                 return distance > 0;
