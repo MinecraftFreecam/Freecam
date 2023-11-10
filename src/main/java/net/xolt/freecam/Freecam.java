@@ -4,14 +4,19 @@ import me.shedaniel.autoconfig.AutoConfig;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricEntityTypeBuilder.Living;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.option.Perspective;
 import net.minecraft.client.util.InputUtil;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.LivingEntity;
 import net.minecraft.text.Text;
+import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.ChunkPos;
+import net.minecraft.util.math.Vec3d;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.util.FreeCamera;
 import net.xolt.freecam.util.FreecamPosition;
@@ -27,12 +32,16 @@ public class Freecam implements ClientModInitializer {
     private static KeyBinding playerControlBind;
     private static KeyBinding tripodResetBind;
     private static KeyBinding configGuiBind;
+    private static KeyBinding followBind;
+    private static KeyBinding setFollowBind;
     private static boolean freecamEnabled = false;
     private static boolean tripodEnabled = false;
+    private static boolean followEnabled = false;
     private static boolean playerControlEnabled = false;
     private static boolean disableNextTick = false;
     private static Integer activeTripod = null;
     private static FreeCamera freeCamera;
+    private static LivingEntity followMe;
     private static HashMap<Integer, FreecamPosition> overworld_tripods = new HashMap<>();
     private static HashMap<Integer, FreecamPosition> nether_tripods = new HashMap<>();
     private static HashMap<Integer, FreecamPosition> end_tripods = new HashMap<>();
@@ -49,6 +58,10 @@ public class Freecam implements ClientModInitializer {
                 "key.freecam.tripodReset", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam"));
         configGuiBind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
                 "key.freecam.configGui", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam"));
+        followBind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.freecam.follow", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam"));
+        setFollowBind = KeyBindingHelper.registerKeyBinding(new KeyBinding(
+                "key.freecam.setFollow", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam"));
 
         ClientTickEvents.END_CLIENT_TICK.register(client -> {
             if (tripodResetBind.isPressed()) {
@@ -70,6 +83,16 @@ public class Freecam implements ClientModInitializer {
             } else if (freecamBind.wasPressed()) {
                 toggle();
                 while (freecamBind.wasPressed()) {}
+            } else if (followBind.wasPressed()) {
+                toggleFollow();
+                while (freecamBind.wasPressed()) {}
+            } else if (setFollowBind.wasPressed()) {
+                final LivingEntity entity = raycastEntity();
+                if (entity != null) {
+                    followMe = entity;
+                    toggleFollow();
+                }
+                while (setFollowBind.wasPressed()) {}
             }
 
             while (playerControlBind.wasPressed()) {
@@ -80,6 +103,54 @@ public class Freecam implements ClientModInitializer {
                 MC.setScreen(AutoConfig.getConfigScreen(ModConfig.class, MC.currentScreen).get());
             }
         });
+    }
+
+    public static LivingEntity raycastEntity() {
+        if (!(MC.crosshairTarget instanceof EntityHitResult entityHit)) {
+            return null;
+        }
+
+        Entity lookedAtEntity = entityHit.getEntity();
+        if (lookedAtEntity == null) {
+            return null;
+        }
+
+        if (!(lookedAtEntity instanceof LivingEntity follow)) {
+            return null;
+        }
+
+        return follow;
+    }
+
+    public static void toggleFollow() {
+        if (followEnabled) {
+            followEnabled = false;
+            onDisable();
+            return;
+        }
+
+        if (followMe == null) {
+            followMe = raycastEntity();
+        }
+
+        if (followMe == null) {
+            return;
+        }
+
+        followEnabled = true;
+        MC.setCameraEntity(followMe);
+
+        if (!freecamEnabled) {
+            onEnable();
+            return;
+        }
+
+        freeCamera.despawn();
+        freeCamera.input = new Input();
+        freeCamera = null;
+
+        freecamEnabled = false;
+        return;
     }
 
     public static void toggle() {
@@ -181,8 +252,17 @@ public class Freecam implements ClientModInitializer {
     }
 
     private static void onEnableFreecam() {
-        onEnable();
+        if (!followEnabled) {
+            onEnable();
+        }
+
         freeCamera = new FreeCamera(-420);
+
+        if (followEnabled) {
+            freeCamera.applyPosition(new FreecamPosition(followMe));
+            followEnabled = false;
+        }
+
         freeCamera.applyPerspective(ModConfig.INSTANCE.visual.perspective, ModConfig.INSTANCE.collision.alwaysCheck || !ModConfig.INSTANCE.collision.ignoreAll);
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
@@ -217,9 +297,12 @@ public class Freecam implements ClientModInitializer {
         MC.gameRenderer.setRenderHand(true);
         MC.setCameraEntity(MC.player);
         playerControlEnabled = false;
-        freeCamera.despawn();
-        freeCamera.input = new Input();
-        freeCamera = null;
+
+        if (freeCamera != null) {
+            freeCamera.despawn();
+            freeCamera.input = new Input();
+            freeCamera = null;
+        }
 
         if (MC.player != null) {
             MC.player.input = new KeyboardInput(MC.options);
