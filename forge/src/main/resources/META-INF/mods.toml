@@ -27,10 +27,3 @@ mandatory = true
 versionRange = "[1.20.2,)"
 ordering = "NONE"
 side = "BOTH"
-
-[[dependencies.freecam]]
-modId = "architectury"
-mandatory = true
-versionRange = "[10.0.16,)"
-ordering = "AFTER"
-side = "BOTH"
