@@ -10,6 +10,7 @@ import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
 import net.minecraft.client.gui.screens.Screen;
 import net.xolt.freecam.variant.api.BuildVariant;
+import org.jetbrains.annotations.NotNull;
 
 @Config(name = "freecam")
 public class ModConfig implements ConfigData {
@@ -119,49 +120,52 @@ public class ModConfig implements ConfigData {
     }
 
     public enum FlightMode implements SelectionListEntry.Translatable {
-        CREATIVE("text.autoconfig.freecam.option.movement.flightMode.creative"),
-        DEFAULT("text.autoconfig.freecam.option.movement.flightMode.default");
+        CREATIVE("creative"),
+        DEFAULT("default");
 
-        private final String name;
+        private final String key;
 
         FlightMode(String name) {
-            this.name = name;
+            this.key = "text.autoconfig.freecam.option.movement.flightMode." + name;
         }
 
-        public String getKey() {
-            return name;
+        @Override
+        public @NotNull String getKey() {
+            return key;
         }
     }
 
     public enum InteractionMode implements SelectionListEntry.Translatable {
-        CAMERA("text.autoconfig.freecam.option.utility.interactionMode.camera"),
-        PLAYER("text.autoconfig.freecam.option.utility.interactionMode.player");
+        CAMERA("camera"),
+        PLAYER("player");
 
-        private final String name;
+        private final String key;
 
         InteractionMode(String name) {
-            this.name = name;
+            this.key = "text.autoconfig.freecam.option.utility.interactionMode." + name;
         }
 
-        public String getKey() {
-            return name;
+        @Override
+        public @NotNull String getKey() {
+            return key;
         }
     }
 
     public enum Perspective implements SelectionListEntry.Translatable {
-        FIRST_PERSON("text.autoconfig.freecam.option.visual.perspective.firstPerson"),
-        THIRD_PERSON("text.autoconfig.freecam.option.visual.perspective.thirdPerson"),
-        THIRD_PERSON_MIRROR("text.autoconfig.freecam.option.visual.perspective.thirdPersonMirror"),
-        INSIDE("text.autoconfig.freecam.option.visual.perspective.inside");
+        FIRST_PERSON("firstPerson"),
+        THIRD_PERSON("thirdPerson"),
+        THIRD_PERSON_MIRROR("thirdPersonMirror"),
+        INSIDE("inside");
 
-        private final String name;
+        private final String key;
 
         Perspective(String name) {
-            this.name = name;
+            this.key = "text.autoconfig.freecam.option.visual.perspective." + name;
         }
 
-        public String getKey() {
-            return name;
+        @Override
+        public @NotNull String getKey() {
+            return key;
         }
     }
 }
