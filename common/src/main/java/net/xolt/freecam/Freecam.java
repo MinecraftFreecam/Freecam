@@ -7,6 +7,7 @@ import net.minecraft.client.player.Input;
 import net.minecraft.client.player.KeyboardInput;
 import net.minecraft.network.chat.Component;
 import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.gui.go.GotoScreen;
 import net.xolt.freecam.tripod.TripodRegistry;
 import net.xolt.freecam.tripod.TripodSlot;
 import net.xolt.freecam.util.FreeCamera;
@@ -87,6 +88,10 @@ public class Freecam {
 
         while (KEY_PLAYER_CONTROL.consumeClick()) {
             switchControls();
+        }
+
+        while (KEY_GOTO_GUI.consumeClick()) {
+            mc.setScreen(new GotoScreen());
         }
 
         while (KEY_CONFIG_GUI.consumeClick()) {

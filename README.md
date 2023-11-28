@@ -10,6 +10,7 @@ This mod works in multiplayer, but may be considered cheating on some servers, s
 |----------------|-------------------------------------------------------------------------------------------------------------------------|--------------|
 | Toggle Freecam | Enables/disables Freecam                                                                                                | `F4`         |
 | Config GUI     | Opens the settings screen.                                                                                              | `Unbound`    |
+| Goto GUI       | Opens a "goto" screen, which allows jumping Freecam to any player within range.                                         | `G`          |
 | Control Player | Transfers control back to your player, but retains your current perspective (Can only be used while Freecam is active.) | `Unbound`    |
 | Reset Tripod   | Resets a tripod\* camera when pressed in combination with any of the hotbar keys                                        | `Unbound`    |
 

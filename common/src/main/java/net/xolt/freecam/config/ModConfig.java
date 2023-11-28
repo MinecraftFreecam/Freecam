@@ -122,6 +122,12 @@ public class ModConfig implements ConfigData {
         public boolean notifyGoto = true;
     }
 
+    @ConfigEntry.Gui.Excluded
+    public Hidden hidden = new Hidden();
+    public static class Hidden {
+        public Perspective gotoPlayerPerspective = Perspective.THIRD_PERSON;
+    }
+
     public enum FlightMode implements SelectionListEntry.Translatable {
         CREATIVE("creative"),
         DEFAULT("default");

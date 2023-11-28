@@ -12,14 +12,14 @@ import java.util.Objects;
 import java.util.Spliterator;
 import java.util.function.Consumer;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_F4;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_UNKNOWN;
+import static org.lwjgl.glfw.GLFW.*;
 
 public enum ModBindings {
 
     KEY_TOGGLE("toggle", GLFW_KEY_F4),
     KEY_PLAYER_CONTROL("playerControl"),
     KEY_TRIPOD_RESET("tripodReset"),
+    KEY_GOTO_GUI("goto", GLFW_KEY_G),
     KEY_CONFIG_GUI("configGui");
 
     private final Supplier<KeyMapping> lazyMapping;
@@ -55,6 +55,14 @@ public enum ModBindings {
      */
     public boolean consumeClick() {
         return get().consumeClick();
+    }
+
+    /**
+     * @return the result of calling {@link KeyMapping#matches(int, int)} on the represented {@link KeyMapping}.
+     * @see KeyMapping#matches(int, int)
+     */
+    public boolean matches(int keyCode, int scanCode) {
+        return get().matches(keyCode, scanCode);
     }
 
     /**
