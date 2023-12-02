@@ -30,10 +30,12 @@ public class ModConfig implements ConfigData {
         public FlightMode flightMode = FlightMode.DEFAULT;
 
         @ConfigEntry.Gui.Tooltip
-        public double horizontalSpeed = 1.0;
+        @ConfigEntry.BoundedDiscrete(min = 1, max = 500)
+        public int horizontalSpeed = 100;
 
         @ConfigEntry.Gui.Tooltip
-        public double verticalSpeed = 1.0;
+        @ConfigEntry.BoundedDiscrete(min = 1, max = 500)
+        public int verticalSpeed = 100;
     }
 
     @ConfigEntry.Gui.Tooltip
