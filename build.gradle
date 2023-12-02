@@ -26,6 +26,14 @@ subprojects {
                 // https://github.com/architectury/architectury-loom/blob/5b3e7c72b665f7eb38c23ceb677027acdc867398/src/main/java/net/fabricmc/loom/configuration/ide/RunConfig.java#L117
                 configName "Run"
             }
+            loggedIn {
+                inherit client
+                configName "Run logged in"
+                programArg "--msa"
+                if (project.path.contains("forge")) {
+                    forgeTemplate "client"
+                }
+            }
             remove server // We only need client runs
         }
 
@@ -38,6 +46,7 @@ subprojects {
         mappings "net.fabricmc:yarn:${rootProject.yarn_mappings}:v2"
         // TODO consider using to official mappings?
         // mappings loom.officialMojangMappings()
+        modLocalRuntime "com.ptsmods:devlogin:${rootProject.devlogin_version}"
     }
 }
 
@@ -64,6 +73,7 @@ allprojects {
         // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
         // See https://docs.gradle.org/current/userguide/declaring_repositories.html
         // for more information about repositories.
+        mavenCentral()
         maven { url "https://maven.shedaniel.me/" }
         maven { url "https://maven.terraformersmc.com/" }
     }
