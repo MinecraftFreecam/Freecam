@@ -14,6 +14,7 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 ### Changed
 
 - Movement speed options now use sliders instead of text fields ([#190](https://github.com/MinecraftFreecam/Freecam/pull/190)).
+- Redundant collision options are now dynamically hidden ([#121](https://github.com/MinecraftFreecam/Freecam/pull/121)).
 
 ### Removed
 
