@@ -17,6 +17,7 @@ public class ModConfig implements ConfigData {
 
     public static void init() {
         AutoConfig.register(ModConfig.class, JanksonConfigSerializer::new);
+        ConfigRequirements.init(AutoConfig.getGuiRegistry(ModConfig.class));
         INSTANCE = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
     }
 
@@ -40,10 +41,10 @@ public class ModConfig implements ConfigData {
     public CollisionConfig collision = new CollisionConfig();
     public static class CollisionConfig {
         @ConfigEntry.Gui.Tooltip
-        public boolean ignoreTransparent = true;
+        public boolean ignoreTransparent = false;
 
         @ConfigEntry.Gui.Tooltip
-        public boolean ignoreOpenable = true;
+        public boolean ignoreOpenable = false;
 
         @ConfigEntry.Gui.Tooltip(count = 2)
         public boolean ignoreAll = true;
