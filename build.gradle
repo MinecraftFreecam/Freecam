@@ -19,6 +19,10 @@ subprojects {
     loom {
         accessWidenerPath = project(":common").file "src/main/resources/freecam.accesswidener"
 
+        runs {
+            remove server // We only need client runs
+        }
+
         // TODO consider using to official mappings?
         // silentMojangMappingsLicense()
     }
