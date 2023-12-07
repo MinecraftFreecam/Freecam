@@ -3,6 +3,12 @@ plugins {
     id "dev.architectury.loom"
 }
 
+loom {
+    runs {
+        remove server
+    }
+}
+
 dependencies {
     minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
     mappings "net.fabricmc:yarn:${rootProject.yarn_mappings}:v2"
