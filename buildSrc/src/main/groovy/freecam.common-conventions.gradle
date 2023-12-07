@@ -1,33 +1,18 @@
 plugins {
-    id "java"
-    id "maven-publish"
-    id "architectury-plugin"
+    id "freecam.java-conventions"
+    id "freecam.minecraft-conventions"
 }
 
-repositories {
-    // Add repositories to retrieve artifacts from in here.
-    // You should only use this when depending on other mods because
-    // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
-    // See https://docs.gradle.org/current/userguide/declaring_repositories.html
-    // for more information about repositories.
-    maven { url "https://maven.shedaniel.me/" }
-    maven { url "https://maven.terraformersmc.com/" }
+architectury {
+    common(rootProject.enabled_platforms.split(","))
 }
 
-// ensure that the encoding is set to UTF-8, no matter what the system default is
-// this fixes some edge cases with special characters not displaying correctly
-// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-tasks.withType(JavaCompile).configureEach {
-    options.encoding = "UTF-8"
-    options.release = 17
+loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
 }
 
-java {
-    withSourcesJar()
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-}
-
-jar {
-    from "LICENSE"
+dependencies {
+    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    modApi "dev.architectury:architectury:${rootProject.architectury_version}"
+    modApi "me.shedaniel.cloth:cloth-config:${rootProject.cloth_version}"
 }

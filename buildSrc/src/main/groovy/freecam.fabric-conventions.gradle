@@ -1,0 +1,66 @@
+plugins {
+    id "freecam.java-conventions"
+    id "freecam.minecraft-conventions"
+    id "com.github.johnrengelman.shadow"
+}
+
+architectury {
+    platformSetupLoomIde()
+    fabric()
+}
+
+loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+}
+
+configurations {
+    common
+    shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentFabric.extendsFrom common
+}
+
+dependencies {
+    modImplementation "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    modApi "net.fabricmc.fabric-api:fabric-api:${rootProject.fabric_api_version}"
+
+    modApi "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
+    include "dev.architectury:architectury-fabric:${rootProject.architectury_version}"
+
+    modImplementation("com.terraformersmc:modmenu:${rootProject.modmenu_version}") {
+        exclude module: "fabric-api"
+    }
+
+    modApi("me.shedaniel.cloth:cloth-config-fabric:${rootProject.cloth_version}") {
+        exclude(group: "net.fabricmc.fabric-api")
+    }
+    include "me.shedaniel.cloth:cloth-config-fabric:${rootProject.cloth_version}"
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("fabric.mod.json") {
+        expand "version": project.version
+    }
+}
+
+shadowJar {
+    exclude "architectury.common.json"
+
+    configurations = [project.configurations.shadowCommon]
+    archiveClassifier = "dev-shadow"
+}
+
+remapJar {
+    injectAccessWidener = true
+    inputFile.set shadowJar.archiveFile
+    dependsOn shadowJar
+}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}

@@ -1,0 +1,15 @@
+plugins {
+    id "freecam.forge-conventions"
+}
+
+sourceSets {
+    main {
+        java.srcDirs = [ project(":forge").sourceSets.main.java ]
+        resources.srcDirs = [ project(":forge").sourceSets.main.resources ]
+    }
+}
+
+dependencies {
+    common(project(path: ":modrinth", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":modrinth", configuration: "transformProductionForge")) { transitive false }
+}

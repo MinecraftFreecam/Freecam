@@ -1,0 +1,15 @@
+plugins {
+    id "freecam.fabric-conventions"
+}
+
+sourceSets {
+    main {
+        java.srcDirs = [ project(":fabric").sourceSets.main.java ]
+        resources.srcDirs = [ project(":fabric").sourceSets.main.resources ]
+    }
+}
+
+dependencies {
+    common(project(path: ":modrinth", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":modrinth", configuration: "transformProductionFabric")) { transitive false }
+}

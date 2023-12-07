@@ -1,0 +1,10 @@
+plugins {
+    id "freecam.common-conventions"
+}
+
+sourceSets {
+    main {
+        java.srcDirs = [ project(":common").sourceSets.main.java ]
+        resources.srcDirs = [ project(":common").sourceSets.main.resources ]
+    }
+}

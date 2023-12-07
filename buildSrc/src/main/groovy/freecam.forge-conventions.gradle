@@ -1,0 +1,71 @@
+plugins {
+    id "freecam.java-conventions"
+    id "freecam.minecraft-conventions"
+    id "com.github.johnrengelman.shadow"
+}
+
+architectury {
+    platformSetupLoomIde()
+    forge()
+}
+
+loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+
+    forge {
+        convertAccessWideners = true
+        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
+
+        mixinConfig "freecam-common.mixins.json"
+        mixinConfig "freecam-forge.mixins.json"
+    }
+}
+
+configurations {
+    common
+    shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentForge.extendsFrom common
+}
+
+dependencies {
+    forge "net.minecraftforge:forge:${rootProject.forge_version}"
+
+    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+    include "dev.architectury:architectury-forge:${rootProject.architectury_version}"
+
+    modApi "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_version}"
+    include "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_version}"
+}
+
+processResources {
+    inputs.property "version", project.version
+
+    filesMatching("META-INF/mods.toml") {
+        expand "version": project.version
+    }
+}
+
+compileJava {
+
+}
+
+shadowJar {
+    exclude "fabric.mod.json"
+    exclude "architectury.common.json"
+
+    configurations = [project.configurations.shadowCommon]
+    archiveClassifier = "dev-shadow"
+}
+
+remapJar {
+    inputFile.set shadowJar.archiveFile
+    dependsOn shadowJar
+}
+
+components.java {
+    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
+        skip()
+    }
+}

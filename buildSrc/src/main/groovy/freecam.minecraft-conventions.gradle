@@ -1,6 +1,7 @@
 plugins {
-    id "freecam.common-conventions"
+    id "freecam.java-conventions"
     id "dev.architectury.loom"
+    id "architectury-plugin"
 }
 
 loom {
