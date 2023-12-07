@@ -1,0 +1,21 @@
+plugins {
+    id "freecam.common-conventions"
+    id "freecam.minecraft-conventions"
+    id "dev.architectury.loom"
+}
+
+architectury {
+    platformSetupLoomIde()
+}
+
+loom {
+    accessWidenerPath = project(":common").loom.accessWidenerPath
+}
+
+configurations {
+    common
+    shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.
+    compileClasspath.extendsFrom common
+    runtimeClasspath.extendsFrom common
+    developmentFabric.extendsFrom common
+}

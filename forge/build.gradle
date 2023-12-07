@@ -1,15 +1,13 @@
 plugins {
     id "com.github.johnrengelman.shadow" version "7.1.2"
+    id "freecam.mod-impl-conventions"
 }
 
 architectury {
-    platformSetupLoomIde()
     forge()
 }
 
 loom {
-    accessWidenerPath = project(":common").loom.accessWidenerPath
-
     forge {
         convertAccessWideners = true
         extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
@@ -17,14 +15,6 @@ loom {
         mixinConfig "freecam-common.mixins.json"
         mixinConfig "freecam-forge.mixins.json"
     }
-}
-
-configurations {
-    common
-    shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.
-    compileClasspath.extendsFrom common
-    runtimeClasspath.extendsFrom common
-    developmentForge.extendsFrom common
 }
 
 dependencies {
@@ -57,7 +47,7 @@ shadowJar {
 }
 
 remapJar {
-    input.set shadowJar.archiveFile
+    inputFile.set shadowJar.archiveFile
     dependsOn shadowJar
 }
 
