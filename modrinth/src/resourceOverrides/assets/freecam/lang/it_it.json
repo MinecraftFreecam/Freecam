@@ -1,0 +1,6 @@
+{
+  "text.autoconfig.freecam.option.collision.ignoreAll.@Tooltip[2]": "\u00A7cNOTA: Può essere utilizzato solo in giocatore singolo, creativo o con lo stato di operatore.",
+  "text.autoconfig.freecam.option.utility.freezePlayer.@Tooltip[1]": "\u00A7cNOTA: Può essere utilizzato solo in giocatore singolo, creativo o con lo stato di operatore.",
+  "text.autoconfig.freecam.option.utility.allowInteract.@Tooltip[1]": "\u00A7cNOTA: Può essere utilizzato solo in giocatore singolo, creativo o con lo stato di operatore.",
+  "text.autoconfig.freecam.option.utility.allowInteract.@Tooltip[2]": "\u00A7c*A meno che, utilizzi la modalità di interazione 'Giocatore'"
+}

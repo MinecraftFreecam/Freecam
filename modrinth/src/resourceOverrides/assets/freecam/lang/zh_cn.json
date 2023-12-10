@@ -1,0 +1,6 @@
+{
+  "text.autoconfig.freecam.option.collision.ignoreAll.@Tooltip[2]": "\u00A7c注意：只能在单人游戏、创造模式或具有管理员身份的情况下使用。",
+  "text.autoconfig.freecam.option.utility.freezePlayer.@Tooltip[1]": "\u00A7c注意：只能在单人游戏、创造模式或具有管理员身份的情况下使用。",
+  "text.autoconfig.freecam.option.utility.allowInteract.@Tooltip[1]": "\u00A7c注意：只能在单人游戏、创造模式或具有管理员身份的情况下使用。",
+  "text.autoconfig.freecam.option.utility.allowInteract.@Tooltip[2]": "\u00A7c*除非你使用的交互模式为‘玩家’"
+}
