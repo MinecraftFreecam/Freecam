@@ -36,15 +36,15 @@ allprojects {
     apply plugin: "architectury-plugin"
     apply plugin: "maven-publish"
 
+    version = "${project.mod_version}+${project.minecraft_version}"
+    group = rootProject.maven_group
     base {
-        archivesName = rootProject.archives_base_name
+        // Format archive names, e.g. 'freecam-fabric-1.2.1.1+1.20.2.jar'
+        archivesName = rootProject.name + project.path.replaceAll(':', '-')
     }
 
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
-
-    version = rootProject.mod_version
-    group = rootProject.maven_group
 
     repositories {
         // Add repositories to retrieve artifacts from in here.
