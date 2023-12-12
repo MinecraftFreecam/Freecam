@@ -30,7 +30,7 @@ public abstract class AbstractBlockStateMixin {
             // Unless "Always Check Initial Collision" is on and Freecam isn't enabled yet
             if (!ModConfig.INSTANCE.collision.alwaysCheck || Freecam.isEnabled()) {
                 // Ignore all collisions
-                if (ModConfig.INSTANCE.collision.ignoreAll) {
+                if (ModConfig.INSTANCE.collision.ignoreAll && Freecam.canUseCheats()) {
                     cir.setReturnValue(VoxelShapes.empty());
                 }
             }

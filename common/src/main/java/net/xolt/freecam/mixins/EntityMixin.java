@@ -33,7 +33,7 @@ public class EntityMixin {
     // Freezes the player's position if freezePlayer is enabled.
     @Inject(method = "setVelocity", at = @At("HEAD"), cancellable = true)
     private void onSetVelocity(CallbackInfo ci) {
-        if (Freecam.isEnabled() && ModConfig.INSTANCE.utility.freezePlayer && !Freecam.isPlayerControlEnabled() && this.equals(MC.player)) {
+        if (Freecam.isEnabled() && ModConfig.INSTANCE.utility.freezePlayer && Freecam.canUseCheats() && !Freecam.isPlayerControlEnabled() && this.equals(MC.player)) {
             ci.cancel();
         }
     }
@@ -41,7 +41,7 @@ public class EntityMixin {
     // Freezes the player's position if freezePlayer is enabled.
     @Inject(method = "updateVelocity", at = @At("HEAD"), cancellable = true)
     private void onUpdateVelocity(CallbackInfo ci) {
-        if (Freecam.isEnabled() && ModConfig.INSTANCE.utility.freezePlayer && !Freecam.isPlayerControlEnabled() && this.equals(MC.player)) {
+        if (Freecam.isEnabled() && ModConfig.INSTANCE.utility.freezePlayer && Freecam.canUseCheats() && !Freecam.isPlayerControlEnabled() && this.equals(MC.player)) {
             ci.cancel();
         }
     }
@@ -49,7 +49,7 @@ public class EntityMixin {
     // Freezes the player's position if freezePlayer is enabled.
     @Inject(method = "setPosition", at = @At("HEAD"), cancellable = true)
     private void onSetPosition(CallbackInfo ci) {
-        if (Freecam.isEnabled() && ModConfig.INSTANCE.utility.freezePlayer && !Freecam.isPlayerControlEnabled() && this.equals(MC.player)) {
+        if (Freecam.isEnabled() && ModConfig.INSTANCE.utility.freezePlayer && Freecam.canUseCheats() && !Freecam.isPlayerControlEnabled() && this.equals(MC.player)) {
             ci.cancel();
         }
     }
@@ -57,7 +57,7 @@ public class EntityMixin {
     // Freezes the player's position if freezePlayer is enabled.
     @Inject(method = "setPos", at = @At("HEAD"), cancellable = true)
     private void onSetPos(CallbackInfo ci) {
-        if (Freecam.isEnabled() && ModConfig.INSTANCE.utility.freezePlayer && !Freecam.isPlayerControlEnabled() && this.equals(MC.player)) {
+        if (Freecam.isEnabled() && ModConfig.INSTANCE.utility.freezePlayer && Freecam.canUseCheats() && !Freecam.isPlayerControlEnabled() && this.equals(MC.player)) {
             ci.cancel();
         }
     }
