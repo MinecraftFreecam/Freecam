@@ -9,11 +9,13 @@ import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModConfig;
 
-@Mod(Freecam.MOD_ID)
+import static net.xolt.freecam.BuildConfig.MODID;
+
+@Mod(MODID)
 public class FreecamForge {
     public FreecamForge() {
         // Register our event bus with Architectury
-        EventBuses.registerModEventBus(Freecam.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
+        EventBuses.registerModEventBus(MODID, FMLJavaModLoadingContext.get().getModEventBus());
 
         // Register our config screen with Forge
         ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory((client, parent) ->

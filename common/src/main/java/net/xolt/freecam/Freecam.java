@@ -22,7 +22,6 @@ import java.util.stream.Stream;
 public class Freecam {
 
     public static final MinecraftClient MC = MinecraftClient.getInstance();
-    public static final String MOD_ID = "freecam";
 
     public static final KeyBinding KEY_TOGGLE = new KeyBinding(
                 "key.freecam.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F4, "category.freecam.freecam");
