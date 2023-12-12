@@ -3,6 +3,7 @@ package net.xolt.freecam.mixins;
 import net.minecraft.client.render.GameRenderer;
 import net.minecraft.entity.Entity;
 import net.xolt.freecam.Freecam;
+import net.xolt.freecam.config.Behaviour;
 import net.xolt.freecam.config.ModConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -18,7 +19,7 @@ public class GameRendererMixin {
     // Disables block outlines when allowInteract is disabled.
     @Inject(method = "shouldRenderBlockOutline", at = @At("HEAD"), cancellable = true)
     private void onShouldRenderBlockOutline(CallbackInfoReturnable<Boolean> cir) {
-        if (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && (!ModConfig.INSTANCE.utility.allowInteract || (!Freecam.canUseCheats() && !ModConfig.INSTANCE.utility.interactionMode.equals(ModConfig.InteractionMode.PLAYER)))) {
+        if (Behaviour.disableInteract()) {
             cir.setReturnValue(false);
         }
     }

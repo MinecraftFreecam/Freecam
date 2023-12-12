@@ -24,6 +24,7 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.CollapsibleObject
     public MovementConfig movement = new MovementConfig();
+
     public static class MovementConfig {
         @ConfigEntry.Gui.Tooltip
         @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)

@@ -8,8 +8,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
-import net.xolt.freecam.Freecam;
-import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.config.Behaviour;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -21,10 +20,18 @@ import static net.xolt.freecam.Freecam.MC;
 @Mixin(ClientPlayerInteractionManager.class)
 public class ClientPlayerInteractionManagerMixin {
 
+    // Prevents attacking self.
+    @Inject(method = "attackEntity", at = @At("HEAD"), cancellable = true)
+    private void onAttackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {
+        if (target.equals(MC.player)) {
+            ci.cancel();
+        }
+    }
+
     // Prevents interacting with blocks when allowInteract is disabled.
     @Inject(method = "interactBlock", at = @At("HEAD"), cancellable = true)
     private void onInteractBlock(ClientPlayerEntity player, Hand hand, BlockHitResult hitResult, CallbackInfoReturnable<ActionResult> cir) {
-        if (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && (!ModConfig.INSTANCE.utility.allowInteract || (!Freecam.canUseCheats() && !ModConfig.INSTANCE.utility.interactionMode.equals(ModConfig.InteractionMode.PLAYER)))) {
+        if (Behaviour.disableInteract()) {
             cir.setReturnValue(ActionResult.PASS);
         }
     }
@@ -32,7 +39,7 @@ public class ClientPlayerInteractionManagerMixin {
     // Prevents interacting with entities when allowInteract is disabled, and prevents interacting with self.
     @Inject(method = "interactEntity", at = @At("HEAD"), cancellable = true)
     private void onInteractEntity(PlayerEntity player, Entity entity, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (entity.equals(MC.player) || (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && (!ModConfig.INSTANCE.utility.allowInteract || (!Freecam.canUseCheats() && !ModConfig.INSTANCE.utility.interactionMode.equals(ModConfig.InteractionMode.PLAYER))))) {
+        if (entity.equals(MC.player) || Behaviour.disableInteract()) {
             cir.setReturnValue(ActionResult.PASS);
         }
     }
@@ -40,16 +47,8 @@ public class ClientPlayerInteractionManagerMixin {
     // Prevents interacting with entities when allowInteract is disabled, and prevents interacting with self.
     @Inject(method = "interactEntityAtLocation", at = @At("HEAD"), cancellable = true)
     private void onInteractEntityAtLocation(PlayerEntity player, Entity entity, EntityHitResult hitResult, Hand hand, CallbackInfoReturnable<ActionResult> cir) {
-        if (entity.equals(MC.player) || (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && (!ModConfig.INSTANCE.utility.allowInteract || (!Freecam.canUseCheats() && !ModConfig.INSTANCE.utility.interactionMode.equals(ModConfig.InteractionMode.PLAYER))))) {
+        if (entity.equals(MC.player) || Behaviour.disableInteract()) {
             cir.setReturnValue(ActionResult.PASS);
-        }
-    }
-
-    // Prevents attacking self.
-    @Inject(method = "attackEntity", at = @At("HEAD"), cancellable = true)
-    private void onAttackEntity(PlayerEntity player, Entity target, CallbackInfo ci) {
-        if (target.equals(MC.player)) {
-            ci.cancel();
         }
     }
 }

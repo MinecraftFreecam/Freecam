@@ -4,6 +4,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
 import net.minecraft.client.input.KeyboardInput;
 import net.xolt.freecam.Freecam;
+import net.xolt.freecam.config.Behaviour;
 import net.xolt.freecam.config.ModConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -37,7 +38,7 @@ public class MinecraftClientMixin {
     // Prevents attacks when allowInteract is disabled.
     @Inject(method = "doAttack", at = @At("HEAD"), cancellable = true)
     private void onDoAttack(CallbackInfoReturnable<Boolean> cir) {
-        if (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && (!ModConfig.INSTANCE.utility.allowInteract || (!Freecam.canUseCheats() && !ModConfig.INSTANCE.utility.interactionMode.equals(ModConfig.InteractionMode.PLAYER)))) {
+        if (Behaviour.disableInteract()) {
             cir.cancel();
         }
     }
@@ -45,7 +46,7 @@ public class MinecraftClientMixin {
     // Prevents item pick when allowInteract is disabled.
     @Inject(method = "doItemPick", at = @At("HEAD"), cancellable = true)
     private void onDoItemPick(CallbackInfo ci) {
-        if (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && (!ModConfig.INSTANCE.utility.allowInteract || (!Freecam.canUseCheats() && !ModConfig.INSTANCE.utility.interactionMode.equals(ModConfig.InteractionMode.PLAYER)))) {
+        if (Behaviour.disableInteract()) {
             ci.cancel();
         }
     }
@@ -53,7 +54,7 @@ public class MinecraftClientMixin {
     // Prevents block breaking when allowInteract is disabled.
     @Inject(method = "handleBlockBreaking", at = @At("HEAD"), cancellable = true)
     private void onHandleBlockBreaking(CallbackInfo ci) {
-        if (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && (!ModConfig.INSTANCE.utility.allowInteract || (!Freecam.canUseCheats() && !ModConfig.INSTANCE.utility.interactionMode.equals(ModConfig.InteractionMode.PLAYER)))) {
+        if (Behaviour.disableInteract()) {
             ci.cancel();
         }
     }

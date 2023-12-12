@@ -9,6 +9,7 @@ import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.xolt.freecam.Freecam;
+import net.xolt.freecam.config.Behaviour;
 import net.xolt.freecam.config.CollisionWhitelist;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.util.FreeCamera;
@@ -30,7 +31,7 @@ public abstract class AbstractBlockStateMixin {
             // Unless "Always Check Initial Collision" is on and Freecam isn't enabled yet
             if (!ModConfig.INSTANCE.collision.alwaysCheck || Freecam.isEnabled()) {
                 // Ignore all collisions
-                if (ModConfig.INSTANCE.collision.ignoreAll && Freecam.canUseCheats()) {
+                if (ModConfig.INSTANCE.collision.ignoreAll && Behaviour.allowCheats()) {
                     cir.setReturnValue(VoxelShapes.empty());
                 }
             }
