@@ -5,3 +5,12 @@ plugins {
 loom {
     accessWidenerPath = file("src/main/resources/freecam.accesswidener")
 }
+
+configureBuildConfig {
+    config = [
+            cheatsRestricted: false,
+            ignoreAllCollisionTooltipCount: 2,
+            ignoreAllCollisionDefault: true,
+            allowInteractTooltipCount: 2
+    ]
+}

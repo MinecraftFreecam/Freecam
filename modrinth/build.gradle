@@ -9,3 +9,12 @@ sourceSets {
         resources.srcDirs = [ project(":common").file("src/main/resources") ]
     }
 }
+
+configureBuildConfig {
+    config = [
+            cheatsRestricted: true,
+            ignoreAllCollisionTooltipCount: 3,
+            ignoreAllCollisionDefault: false,
+            allowInteractTooltipCount: 3
+    ]
+}

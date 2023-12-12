@@ -8,6 +8,7 @@ import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
 
 import static me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDisplayOption;
+import static net.xolt.freecam.BuildConfig.*;
 
 @Config(name = "freecam")
 public class ModConfig implements ConfigData {
@@ -45,8 +46,8 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.Tooltip
         public boolean ignoreOpenable = true;
 
-        @ConfigEntry.Gui.Tooltip(count = 2)
-        public boolean ignoreAll = true;
+        @ConfigEntry.Gui.Tooltip(count = IGNORE_ALL_COLLISION_TOOLTIP_COUNT)
+        public boolean ignoreAll = IGNORE_ALL_COLLISION_DEFAULT;
 
         @ConfigEntry.Gui.Tooltip(count = 2)
         public boolean alwaysCheck = false;
@@ -83,7 +84,7 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.Tooltip(count = 2)
         public boolean freezePlayer = false;
 
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip(count = ALLOW_INTERACT_TOOLTIP_COUNT)
         public boolean allowInteract = false;
 
         @ConfigEntry.Gui.Tooltip
