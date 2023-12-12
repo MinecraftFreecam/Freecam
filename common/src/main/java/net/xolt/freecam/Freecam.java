@@ -19,6 +19,8 @@ import org.lwjgl.glfw.GLFW;
 import java.util.HashMap;
 import java.util.stream.Stream;
 
+import static net.xolt.freecam.BuildConfig.CHEATS_RESTRICTED;
+
 public class Freecam {
 
     public static final MinecraftClient MC = MinecraftClient.getInstance();
@@ -180,7 +182,7 @@ public class Freecam {
     private static void onEnableFreecam() {
         onEnable();
         freeCamera = new FreeCamera(-420);
-        freeCamera.applyPerspective(ModConfig.INSTANCE.visual.perspective, ModConfig.INSTANCE.collision.alwaysCheck || !ModConfig.INSTANCE.collision.ignoreAll);
+        freeCamera.applyPerspective(ModConfig.INSTANCE.visual.perspective, ModConfig.INSTANCE.collision.alwaysCheck || !(ModConfig.INSTANCE.collision.ignoreAll && canUseCheats()));
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
 
@@ -281,5 +283,12 @@ public class Freecam {
 
     public static boolean isPlayerControlEnabled() {
         return playerControlEnabled;
+    }
+
+    @SuppressWarnings("SimplifiableConditionalExpression")
+    public static boolean canUseCheats() {
+        return CHEATS_RESTRICTED
+                ? MC.player.hasPermissionLevel(2) || MC.player.isCreative() || MC.isInSingleplayer()
+                : true;
     }
 }
