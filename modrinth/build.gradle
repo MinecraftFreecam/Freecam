@@ -5,7 +5,7 @@ plugins {
 
 sourceSets {
     main {
-        java.srcDirs = [ project(":common").sourceSets.main.java ]
-        resources.srcDirs = [ project(":common").sourceSets.main.resources ]
+        java.srcDirs = [ project(":common").file("src/main/java") ]
+        resources.srcDirs = [ project(":common").file("src/main/resources") ]
     }
 }

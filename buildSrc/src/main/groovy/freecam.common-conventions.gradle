@@ -1,6 +1,7 @@
 plugins {
     id "freecam.java-conventions"
     id "freecam.minecraft-conventions"
+    id "freecam.build-config"
 }
 
 architectury {

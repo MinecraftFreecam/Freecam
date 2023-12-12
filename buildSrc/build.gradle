@@ -15,5 +15,9 @@ gradlePlugin {
             id = 'freecam.override'
             implementationClass = 'freecam.OverridePlugin'
         }
+        buildConfigPlugin {
+            id = 'freecam.build-config'
+            implementationClass = 'freecam.BuildConfigPlugin'
+        }
     }
 }
