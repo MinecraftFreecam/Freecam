@@ -3,6 +3,11 @@ plugins {
     id "dev.architectury.loom" version "1.3-SNAPSHOT" apply false
 }
 
+tasks.named('wrapper') {
+    // Use "all" so we get sources and javadoc too
+    distributionType = "all"
+}
+
 architectury {
     minecraft = rootProject.minecraft_version
 }
