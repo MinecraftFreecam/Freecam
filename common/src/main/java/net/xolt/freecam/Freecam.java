@@ -80,6 +80,13 @@ public class Freecam {
         });
     }
 
+    public static void onDisconnect() {
+        if (isEnabled()) {
+            toggle();
+        }
+        clearTripods();
+    }
+
     public static void toggle() {
         if (tripodEnabled) {
             toggleTripod(activeTripod);
