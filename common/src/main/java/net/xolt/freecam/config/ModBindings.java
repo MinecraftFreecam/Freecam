@@ -3,6 +3,7 @@ package net.xolt.freecam.config;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import com.mojang.blaze3d.platform.InputConstants;
+import net.minecraft.client.KeyMapping;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.Arrays;
@@ -10,7 +11,6 @@ import java.util.Iterator;
 import java.util.Objects;
 import java.util.Spliterator;
 import java.util.function.Consumer;
-import net.minecraft.client.KeyMapping;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_F4;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_UNKNOWN;
@@ -22,7 +22,7 @@ public enum ModBindings {
     KEY_TRIPOD_RESET("tripodReset"),
     KEY_CONFIG_GUI("configGui");
 
-    private final Supplier<KeyMapping> lazyBinding;
+    private final Supplier<KeyMapping> lazyMapping;
 
     ModBindings(String translationKey) {
         this(translationKey, InputConstants.Type.KEYSYM, GLFW_KEY_UNKNOWN);
@@ -37,7 +37,7 @@ public enum ModBindings {
     }
 
     ModBindings(String translationKey, InputConstants.Type type, int code) {
-        this.lazyBinding = Suppliers.memoize(() ->
+        this.lazyMapping = Suppliers.memoize(() ->
                 new KeyMapping("key.freecam." + translationKey, type, code, "category.freecam.freecam"));
     }
 
@@ -45,7 +45,7 @@ public enum ModBindings {
      * @return the result of calling {@link KeyMapping#isDown()} on the represented {@link KeyMapping}.
      * @see KeyMapping#isDown()
      */
-    public boolean isPressed() {
+    public boolean isDown() {
         return get().isDown();
     }
 
@@ -53,8 +53,19 @@ public enum ModBindings {
      * @return the result of calling {@link KeyMapping#consumeClick()} on the represented {@link KeyMapping}.
      * @see KeyMapping#consumeClick()
      */
-    public boolean wasPressed() {
+    public boolean consumeClick() {
         return get().consumeClick();
+    }
+
+    /**
+     * Reset whether the key was pressed.
+     * <p>
+     * Note: Cannot use {@link KeyMapping#release()} because it doesn't work as expected.
+     */
+    @SuppressWarnings("StatementWithEmptyBody")
+    public void reset() {
+        final KeyMapping key = get();
+        while (key.consumeClick()) {}
     }
 
     /**
@@ -65,7 +76,7 @@ public enum ModBindings {
      * @return the actual {@link KeyMapping}.
      */
     public KeyMapping get() {
-        return lazyBinding.get();
+        return lazyMapping.get();
     }
 
     /**

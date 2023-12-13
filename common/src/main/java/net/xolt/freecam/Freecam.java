@@ -22,11 +22,14 @@ public class Freecam {
 
     public static final Minecraft MC = Minecraft.getInstance();
     public static final String MOD_ID = "freecam";
+    private static final long TOGGLE_KEY_MAX_TICKS = 10;
 
     private static boolean freecamEnabled = false;
     private static boolean tripodEnabled = false;
     private static boolean playerControlEnabled = false;
     private static boolean disableNextTick = false;
+    private static boolean toggleKeyUsedWhileHeld = false;
+    private static long toggleKeyHeldTicks = 0;
     private static Integer activeTripod = null;
     private static FreeCamera freeCamera;
     private static HashMap<Integer, FreecamPosition> overworld_tripods = new HashMap<>();
@@ -54,32 +57,45 @@ public class Freecam {
     }
 
     public static void postTick(Minecraft mc) {
-        if (KEY_TRIPOD_RESET.isPressed()) {
-            for (KeyMapping hotbarKey : mc.options.keyHotbarSlots) {
-                while (hotbarKey.consumeClick()) {
-                    resetCamera(hotbarKey.getDefaultKey().getValue());
-                    while (KEY_TRIPOD_RESET.wasPressed()) {}
+        if (KEY_TOGGLE.isDown()) {
+            // Count held ticks, so we can toggle on release
+            toggleKeyHeldTicks++;
+            KEY_TOGGLE.reset();
+
+            // Handle <toggle_key>+<hotbar_key> combos
+            for (KeyMapping combo : mc.options.keyHotbarSlots) {
+                while (combo.consumeClick()) {
+                    toggleTripod(combo.getDefaultKey().getValue());
+                    toggleKeyUsedWhileHeld = true;
+                }
+            }
+        }
+        // Check if toggle was pressed, and is now released
+        else if (KEY_TOGGLE.consumeClick() || toggleKeyHeldTicks > 0) {
+            // Only toggle if the key wasn't used (or held too long)
+            if (!toggleKeyUsedWhileHeld && toggleKeyHeldTicks < TOGGLE_KEY_MAX_TICKS) {
+                toggle();
+            }
+            // Reset state
+            KEY_TOGGLE.reset();
+            toggleKeyHeldTicks = 0;
+            toggleKeyUsedWhileHeld = false;
+        }
+
+        // Handle <reset_key>+<hotbar_key> combos
+        if (KEY_TRIPOD_RESET.isDown()) {
+            for (KeyMapping key : mc.options.keyHotbarSlots) {
+                while (key.consumeClick()) {
+                    resetCamera(key.getDefaultKey().getValue());
                 }
             }
         }
 
-        if (KEY_TOGGLE.isPressed()) {
-            for (KeyMapping hotbarKey : mc.options.keyHotbarSlots) {
-                while (hotbarKey.consumeClick()) {
-                    toggleTripod(hotbarKey.getDefaultKey().getValue());
-                    while (KEY_TOGGLE.wasPressed()) {}
-                }
-            }
-        } else if (KEY_TOGGLE.wasPressed()) {
-            toggle();
-            while (KEY_TOGGLE.wasPressed()) {}
-        }
-
-        while (KEY_PLAYER_CONTROL.wasPressed()) {
+        while (KEY_PLAYER_CONTROL.consumeClick()) {
             switchControls();
         }
 
-        while (KEY_CONFIG_GUI.wasPressed()) {
+        while (KEY_CONFIG_GUI.consumeClick()) {
             mc.setScreen(AutoConfig.getConfigScreen(ModConfig.class, mc.screen).get());
         }
     }
