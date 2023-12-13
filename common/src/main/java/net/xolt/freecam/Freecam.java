@@ -37,9 +37,8 @@ public class Freecam {
     public static void preTick(Minecraft mc) {
         if (isEnabled()) {
             // Disable if the previous tick asked us to
-            if (disableNextTick()) {
+            if (disableNextTick) {
                 toggle();
-                disableNextTick = false;
             }
 
             // Prevent player from being controlled when freecam is enabled
@@ -51,6 +50,7 @@ public class Freecam {
 
             mc.gameRenderer.setRenderHand(ModConfig.INSTANCE.visual.showHand);
         }
+        disableNextTick = false;
     }
 
     public static void postTick(Minecraft mc) {
@@ -282,12 +282,8 @@ public class Freecam {
         return result;
     }
 
-    public static boolean disableNextTick() {
-        return disableNextTick;
-    }
-
-    public static void setDisableNextTick(boolean damage) {
-        disableNextTick = damage;
+    public static void disableNextTick() {
+        disableNextTick = true;
     }
 
     public static boolean isEnabled() {
