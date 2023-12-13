@@ -47,37 +47,58 @@ public class Freecam {
     public static void init() {
         ModConfig.init();
         Stream.of(KEY_TOGGLE, KEY_PLAYER_CONTROL, KEY_TRIPOD_RESET, KEY_CONFIG_GUI).forEach(KeyMappingRegistry::register);
+        ClientTickEvent.CLIENT_PRE.register(Freecam::preTick);
+        ClientTickEvent.CLIENT_POST.register(Freecam::postTick);
+    }
 
-        ClientTickEvent.CLIENT_POST.register(client -> {
-            if (KEY_TRIPOD_RESET.isPressed()) {
-                for (KeyBinding hotbarKey : MC.options.hotbarKeys) {
-                    while (hotbarKey.wasPressed()) {
-                        resetCamera(hotbarKey.getDefaultKey().getCode());
-                        while (KEY_TRIPOD_RESET.wasPressed()) {}
-                    }
-                }
-            }
-
-            if (KEY_TOGGLE.isPressed()) {
-                for (KeyBinding hotbarKey : MC.options.hotbarKeys) {
-                    while (hotbarKey.wasPressed()) {
-                        toggleTripod(hotbarKey.getDefaultKey().getCode());
-                        while (KEY_TOGGLE.wasPressed()) {}
-                    }
-                }
-            } else if (KEY_TOGGLE.wasPressed()) {
+    private static void preTick(MinecraftClient mc) {
+        if (isEnabled()) {
+            // Disable if the previous tick asked us to
+            if (disableNextTick()) {
                 toggle();
-                while (KEY_TOGGLE.wasPressed()) {}
+                disableNextTick = false;
             }
 
-            while (KEY_PLAYER_CONTROL.wasPressed()) {
-                switchControls();
+            // Prevent player from being controlled when freecam is enabled
+            if (mc.player != null && mc.player.input instanceof KeyboardInput && !isPlayerControlEnabled()) {
+                Input input = new Input();
+                input.sneaking = mc.player.input.sneaking; // Makes player continue to sneak after freecam is enabled.
+                mc.player.input = input;
             }
 
-            while (KEY_CONFIG_GUI.wasPressed()) {
-                MC.setScreen(AutoConfig.getConfigScreen(ModConfig.class, MC.currentScreen).get());
+            mc.gameRenderer.setRenderHand(ModConfig.INSTANCE.visual.showHand);
+        }
+    }
+
+    private static void postTick(MinecraftClient mc) {
+        if (KEY_TRIPOD_RESET.isPressed()) {
+            for (KeyBinding hotbarKey : mc.options.hotbarKeys) {
+                while (hotbarKey.wasPressed()) {
+                    resetCamera(hotbarKey.getDefaultKey().getCode());
+                    while (KEY_TRIPOD_RESET.wasPressed()) {}
+                }
             }
-        });
+        }
+
+        if (KEY_TOGGLE.isPressed()) {
+            for (KeyBinding hotbarKey : mc.options.hotbarKeys) {
+                while (hotbarKey.wasPressed()) {
+                    toggleTripod(hotbarKey.getDefaultKey().getCode());
+                    while (KEY_TOGGLE.wasPressed()) {}
+                }
+            }
+        } else if (KEY_TOGGLE.wasPressed()) {
+            toggle();
+            while (KEY_TOGGLE.wasPressed()) {}
+        }
+
+        while (KEY_PLAYER_CONTROL.wasPressed()) {
+            switchControls();
+        }
+
+        while (KEY_CONFIG_GUI.wasPressed()) {
+            mc.setScreen(AutoConfig.getConfigScreen(ModConfig.class, mc.currentScreen).get());
+        }
     }
 
     public static void onDisconnect() {
