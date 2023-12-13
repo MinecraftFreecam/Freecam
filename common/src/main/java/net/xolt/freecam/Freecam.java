@@ -15,6 +15,8 @@ import net.xolt.freecam.util.FreeCamera;
 import net.xolt.freecam.util.FreecamPosition;
 import net.xolt.freecam.variant.api.BuildVariant;
 
+import java.util.Objects;
+
 import static net.xolt.freecam.config.ModBindings.*;
 
 public class Freecam {
@@ -175,12 +177,8 @@ public class Freecam {
             position = null;
         }
 
-        if (position == null) {
-            freeCamera = new FreeCamera(-420 - tripod.ordinal());
-        } else {
-            freeCamera = new FreeCamera(-420 - tripod.ordinal(), position);
-        }
-
+        freeCamera = new FreeCamera(-420 - tripod.ordinal());
+        freeCamera.applyPosition(Objects.requireNonNullElseGet(position, () -> new FreecamPosition(MC.player)));
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
         activeTripod = tripod;
@@ -205,6 +203,7 @@ public class Freecam {
     private static void onEnableFreecam() {
         onEnable();
         freeCamera = new FreeCamera(-420);
+        freeCamera.applyPosition(new FreecamPosition(MC.player));
         freeCamera.applyPerspective(
                 ModConfig.INSTANCE.visual.perspective,
                 ModConfig.INSTANCE.collision.alwaysCheck || !(ModConfig.INSTANCE.collision.ignoreAll && BuildVariant.getInstance().cheatsPermitted())
