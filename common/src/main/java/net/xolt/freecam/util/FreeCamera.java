@@ -54,6 +54,11 @@ public class FreeCamera extends LocalPlayer {
         input = new KeyboardInput(MC.options);
     }
 
+    @Override
+    public void copyPosition(Entity entity) {
+        applyPosition(new FreecamPosition(entity));
+    }
+
     public void applyPosition(FreecamPosition position) {
         moveTo(position.x, position.y, position.z, position.yaw, position.pitch);
         xBob = getXRot();
