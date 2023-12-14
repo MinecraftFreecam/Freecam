@@ -7,6 +7,7 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.KeyboardInput;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.tripod.TripodRegistry;
@@ -14,8 +15,7 @@ import net.xolt.freecam.tripod.TripodSlot;
 import net.xolt.freecam.util.FreeCamera;
 import net.xolt.freecam.util.FreecamPosition;
 import net.xolt.freecam.variant.api.BuildVariant;
-
-import java.util.Objects;
+import org.jetbrains.annotations.Nullable;
 
 import static net.xolt.freecam.config.ModBindings.*;
 
@@ -178,7 +178,12 @@ public class Freecam {
         }
 
         freeCamera = new FreeCamera(-420 - tripod.ordinal());
-        freeCamera.applyPosition(Objects.requireNonNullElseGet(position, () -> new FreecamPosition(MC.player)));
+        if (position == null) {
+            moveToPlayer();
+        } else {
+            moveToPosition(position);
+        }
+
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
         activeTripod = tripod;
@@ -203,11 +208,7 @@ public class Freecam {
     private static void onEnableFreecam() {
         onEnable();
         freeCamera = new FreeCamera(-420);
-        freeCamera.applyPosition(new FreecamPosition(MC.player));
-        freeCamera.applyPerspective(
-                ModConfig.INSTANCE.visual.perspective,
-                ModConfig.INSTANCE.collision.alwaysCheck || !(ModConfig.INSTANCE.collision.ignoreAll && BuildVariant.getInstance().cheatsPermitted())
-        );
+        moveToPlayer();
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
 
@@ -258,7 +259,7 @@ public class Freecam {
 
     private static void resetCamera(TripodSlot tripod) {
         if (tripodEnabled && activeTripod != TripodSlot.NONE && activeTripod == tripod && freeCamera != null) {
-            freeCamera.copyPosition(MC.player);
+            moveToPlayer();
         } else {
             tripods.put(tripod, null);
         }
@@ -266,6 +267,39 @@ public class Freecam {
         if (ModConfig.INSTANCE.notification.notifyTripod) {
             MC.player.displayClientMessage(Component.translatable("msg.freecam.tripodReset", tripod), true);
         }
+    }
+
+    public static void moveToEntity(@Nullable Entity entity) {
+        if (freeCamera == null) {
+            return;
+        }
+        if (entity == null) {
+            moveToPlayer();
+            return;
+        }
+        freeCamera.copyPosition(entity);
+    }
+
+    public static void moveToPosition(@Nullable FreecamPosition position) {
+        if (freeCamera == null) {
+            return;
+        }
+        if (position == null) {
+            moveToPlayer();
+            return;
+        }
+        freeCamera.applyPosition(position);
+    }
+
+    public static void moveToPlayer() {
+        if (freeCamera == null) {
+            return;
+        }
+        freeCamera.copyPosition(MC.player);
+        freeCamera.applyPerspective(
+                ModConfig.INSTANCE.visual.perspective,
+                ModConfig.INSTANCE.collision.alwaysCheck || !(ModConfig.INSTANCE.collision.ignoreAll && BuildVariant.getInstance().cheatsPermitted())
+        );
     }
 
     public static FreeCamera getFreeCamera() {
