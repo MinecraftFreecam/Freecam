@@ -40,10 +40,29 @@ dependencies {
 }
 
 processResources {
-    inputs.property "version", project.version
+    // Passing properties to inputs.properties will mark this task as "up-to-date" when they're unchanged.
+    inputs.properties([
+            name: project.display_name,
+            base_name: project.base_name,
+            version: project.version,
+            authors: project.authors,
+            description: project.full_description,
+            licence: project.licence,
+            issueTrackerURL: project.issueTrackerURL,
+            forge_mc_req: project.forge_mc_req,
+            forge_loader_req: project.forge_loader_req,
+            forge_req: project.forge_req,
+    ])
+
+    filesMatching("pack.mcmeta") {
+        expand([
+                pack_description: "${inputs.properties.name} Resources",
+                pack_format: 15
+        ])
+    }
 
     filesMatching("META-INF/mods.toml") {
-        expand "version": project.version
+        expand inputs.properties
     }
 }
 

@@ -8,3 +8,12 @@ plugins {
 architectury {
     minecraft = rootProject.minecraft_version
 }
+
+allprojects {
+    project.ext.display_name = rootProject.name.capitalize()
+    project.ext.full_description = rootProject.description
+    if (project.path.contains("modrinth")) {
+        project.ext.display_name += " ${rootProject.modrinth_name}"
+        project.ext.full_description += " ${rootProject.modrinth_description}"
+    }
+}

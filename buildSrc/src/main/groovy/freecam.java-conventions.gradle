@@ -5,11 +5,11 @@ plugins {
 
 base {
     // Name archives e.g. "freecam-fabric-modrinth" or "freecam-forge"
-    archivesName = rootProject.archives_base_name + (project.path == ':' ? '' : project.path.replaceAll(':', '-'))
+    archivesName = rootProject.base_name + (project.path == ':' ? '' : project.path.replaceAll(':', '-'))
 }
 
-version = rootProject.mod_version
-group = rootProject.maven_group
+version = rootProject.version
+group = rootProject.group
 
 repositories {
     // Add repositories to retrieve artifacts from in here.

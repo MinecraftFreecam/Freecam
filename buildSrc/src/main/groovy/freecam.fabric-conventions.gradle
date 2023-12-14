@@ -39,10 +39,28 @@ dependencies {
 }
 
 processResources {
-    inputs.property "version", project.version
+    // Passing properties to inputs.properties will mark this task as "up-to-date" when they're unchanged.
+    inputs.properties([
+            _: project.authors,
+            name: project.display_name,
+            base_name: project.base_name,
+            version: project.version,
+            description: project.full_description,
+            licence: project.licence,
+            homepageURL: project.homepageURL,
+            sourceCodeURL: project.sourceCodeURL,
+            issueTrackerURL: project.issueTrackerURL,
+            fabric_loader_req: project.fabric_loader_req,
+            fabric_mc_req: project.fabric_mc_req,
+    ])
+
+    // FIXME can't inject an actual list because the json is being parsed somewhere before this gets injected...
+    //       (injecting a list would mean our template was invalid JSON)
+    def authors = new TreeMap()
+    project.authors.split(',').eachWithIndex { author, i -> authors["author$i"] = author }
 
     filesMatching("fabric.mod.json") {
-        expand "version": project.version
+        expand inputs.properties + authors
     }
 }
 
