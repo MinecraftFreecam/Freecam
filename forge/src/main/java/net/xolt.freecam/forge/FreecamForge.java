@@ -13,6 +13,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.xolt.freecam.Freecam;
+import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfig;
 
 @Mod(Freecam.MOD_ID)
@@ -31,7 +32,7 @@ public class FreecamForge {
 
     @SubscribeEvent
     public static void registerKeymappings(RegisterKeyMappingsEvent event) {
-        Freecam.ALL_KEYS.forEach(event::register);
+        ModBindings.forEach(event::register);
     }
 
     @Mod.EventBusSubscriber(bus = Bus.FORGE, value = Dist.CLIENT)

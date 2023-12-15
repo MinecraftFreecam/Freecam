@@ -9,6 +9,9 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import static net.xolt.freecam.config.ModBindings.KEY_TOGGLE;
+import static net.xolt.freecam.config.ModBindings.KEY_TRIPOD_RESET;
+
 @Mixin(MinecraftClient.class)
 public class MinecraftClientMixin {
 
@@ -39,7 +42,7 @@ public class MinecraftClientMixin {
     // Prevents hotbar keys from changing selected slot when freecam key is held
     @Inject(method = "handleInputEvents", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/option/KeyBinding;wasPressed()Z", ordinal = 2), cancellable = true)
     private void onHandleInputEvents(CallbackInfo ci) {
-        if (Freecam.KEY_TOGGLE.isPressed() || Freecam.KEY_TRIPOD_RESET.isPressed()) {
+        if (KEY_TOGGLE.isPressed() || KEY_TRIPOD_RESET.isPressed()) {
             ci.cancel();
         }
     }

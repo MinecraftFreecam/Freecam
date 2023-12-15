@@ -6,7 +6,6 @@ import net.minecraft.client.input.Input;
 import net.minecraft.client.input.KeyboardInput;
 import net.minecraft.client.option.KeyBinding;
 import net.minecraft.client.option.Perspective;
-import net.minecraft.client.util.InputUtil;
 import net.minecraft.text.Text;
 import net.minecraft.util.math.ChunkPos;
 import net.xolt.freecam.config.ModConfig;
@@ -15,23 +14,13 @@ import net.xolt.freecam.util.FreecamPosition;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.HashMap;
-import java.util.List;
+
+import static net.xolt.freecam.config.ModBindings.*;
 
 public class Freecam {
 
     public static final MinecraftClient MC = MinecraftClient.getInstance();
     public static final String MOD_ID = "freecam";
-
-    public static final KeyBinding KEY_TOGGLE;
-    public static final KeyBinding KEY_PLAYER_CONTROL;
-    public static final KeyBinding KEY_TRIPOD_RESET;
-    public static final KeyBinding KEY_CONFIG_GUI;
-    public static final List<KeyBinding> ALL_KEYS = List.of(
-            KEY_TOGGLE = new KeyBinding("key.freecam.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F4, "category.freecam.freecam"),
-            KEY_PLAYER_CONTROL = new KeyBinding("key.freecam.playerControl", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam"),
-            KEY_TRIPOD_RESET = new KeyBinding("key.freecam.tripodReset", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam"),
-            KEY_CONFIG_GUI = new KeyBinding("key.freecam.configGui", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam")
-    );
 
     private static boolean freecamEnabled = false;
     private static boolean tripodEnabled = false;
