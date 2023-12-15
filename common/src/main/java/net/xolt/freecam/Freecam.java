@@ -51,7 +51,7 @@ public class Freecam {
         ClientTickEvent.CLIENT_POST.register(Freecam::postTick);
     }
 
-    private static void preTick(MinecraftClient mc) {
+    public static void preTick(MinecraftClient mc) {
         if (isEnabled()) {
             // Disable if the previous tick asked us to
             if (disableNextTick()) {
@@ -70,7 +70,7 @@ public class Freecam {
         }
     }
 
-    private static void postTick(MinecraftClient mc) {
+    public static void postTick(MinecraftClient mc) {
         if (KEY_TRIPOD_RESET.isPressed()) {
             for (KeyBinding hotbarKey : mc.options.hotbarKeys) {
                 while (hotbarKey.wasPressed()) {
