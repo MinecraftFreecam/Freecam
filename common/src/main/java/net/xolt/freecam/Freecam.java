@@ -1,7 +1,5 @@
 package net.xolt.freecam;
 
-import dev.architectury.event.events.client.ClientTickEvent;
-import dev.architectury.registry.client.keymappings.KeyMappingRegistry;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.input.Input;
@@ -17,21 +15,23 @@ import net.xolt.freecam.util.FreecamPosition;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.HashMap;
-import java.util.stream.Stream;
+import java.util.List;
 
 public class Freecam {
 
     public static final MinecraftClient MC = MinecraftClient.getInstance();
     public static final String MOD_ID = "freecam";
 
-    public static final KeyBinding KEY_TOGGLE = new KeyBinding(
-                "key.freecam.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F4, "category.freecam.freecam");
-    public static final KeyBinding KEY_PLAYER_CONTROL = new KeyBinding(
-                "key.freecam.playerControl", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam");
-    public static final KeyBinding KEY_TRIPOD_RESET = new KeyBinding(
-                "key.freecam.tripodReset", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam");
-    public static final KeyBinding KEY_CONFIG_GUI = new KeyBinding(
-                "key.freecam.configGui", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam");
+    public static final KeyBinding KEY_TOGGLE;
+    public static final KeyBinding KEY_PLAYER_CONTROL;
+    public static final KeyBinding KEY_TRIPOD_RESET;
+    public static final KeyBinding KEY_CONFIG_GUI;
+    public static final List<KeyBinding> ALL_KEYS = List.of(
+            KEY_TOGGLE = new KeyBinding("key.freecam.toggle", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_F4, "category.freecam.freecam"),
+            KEY_PLAYER_CONTROL = new KeyBinding("key.freecam.playerControl", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam"),
+            KEY_TRIPOD_RESET = new KeyBinding("key.freecam.tripodReset", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam"),
+            KEY_CONFIG_GUI = new KeyBinding("key.freecam.configGui", InputUtil.Type.KEYSYM, GLFW.GLFW_KEY_UNKNOWN, "category.freecam.freecam")
+    );
 
     private static boolean freecamEnabled = false;
     private static boolean tripodEnabled = false;
@@ -43,13 +43,6 @@ public class Freecam {
     private static HashMap<Integer, FreecamPosition> nether_tripods = new HashMap<>();
     private static HashMap<Integer, FreecamPosition> end_tripods = new HashMap<>();
     private static Perspective rememberedF5 = null;
-
-    public static void init() {
-        ModConfig.init();
-        Stream.of(KEY_TOGGLE, KEY_PLAYER_CONTROL, KEY_TRIPOD_RESET, KEY_CONFIG_GUI).forEach(KeyMappingRegistry::register);
-        ClientTickEvent.CLIENT_PRE.register(Freecam::preTick);
-        ClientTickEvent.CLIENT_POST.register(Freecam::postTick);
-    }
 
     public static void preTick(MinecraftClient mc) {
         if (isEnabled()) {

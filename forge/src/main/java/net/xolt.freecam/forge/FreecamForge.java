@@ -1,26 +1,48 @@
 package net.xolt.freecam.forge;
 
-import dev.architectury.platform.forge.EventBuses;
 import me.shedaniel.autoconfig.AutoConfig;
+import net.minecraft.client.MinecraftClient;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigScreenHandler;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+import net.minecraftforge.event.TickEvent;
+import net.minecraftforge.eventbus.api.EventPriority;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModConfig;
 
 @Mod(Freecam.MOD_ID)
+@Mod.EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
 public class FreecamForge {
-    public FreecamForge() {
-        // Register our event bus with Architectury
-        EventBuses.registerModEventBus(Freecam.MOD_ID, FMLJavaModLoadingContext.get().getModEventBus());
+
+    @SubscribeEvent
+    public static void clientSetup(FMLClientSetupEvent event) {
+        ModConfig.init();
 
         // Register our config screen with Forge
         ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory((client, parent) ->
-            AutoConfig.getConfigScreen(ModConfig.class, parent).get()
+                AutoConfig.getConfigScreen(ModConfig.class, parent).get()
         ));
+    }
 
-        // Call our init
-        Freecam.init();
+    @SubscribeEvent
+    public static void registerKeymappings(RegisterKeyMappingsEvent event) {
+        Freecam.ALL_KEYS.forEach(event::register);
+    }
+
+    @Mod.EventBusSubscriber(bus = Bus.FORGE, value = Dist.CLIENT)
+    public static class GlobalEventHandler {
+        @SubscribeEvent(priority = EventPriority.HIGH)
+        public static void onTick(TickEvent.ClientTickEvent event) {
+            final MinecraftClient client = MinecraftClient.getInstance();
+            switch (event.phase) {
+                case START -> Freecam.preTick(client);
+                case END -> Freecam.postTick(client);
+            }
+        }
     }
 }
