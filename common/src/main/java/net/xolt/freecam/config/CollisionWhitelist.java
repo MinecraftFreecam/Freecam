@@ -8,7 +8,8 @@ import java.util.List;
 public class CollisionWhitelist {
 
     private static final Collection<Class<? extends Block>> transparentWhitelist = List.of(
-            TransparentBlock.class,
+            StainedGlassBlock.class,
+            TintedGlassBlock.class,
             PaneBlock.class,
             BarrierBlock.class);
 
