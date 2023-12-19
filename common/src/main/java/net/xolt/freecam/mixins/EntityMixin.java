@@ -31,7 +31,7 @@ public class EntityMixin {
     }
 
     // Freezes the player's position if freezePlayer is enabled.
-    @Inject(method = "setVelocity", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "setVelocity(DDD)V", at = @At("HEAD"), cancellable = true)
     private void onSetVelocity(CallbackInfo ci) {
         if (Freecam.isEnabled() && ModConfig.INSTANCE.utility.freezePlayer && !Freecam.isPlayerControlEnabled() && this.equals(MC.player)) {
             ci.cancel();
@@ -47,7 +47,7 @@ public class EntityMixin {
     }
 
     // Freezes the player's position if freezePlayer is enabled.
-    @Inject(method = "setPosition", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "setPosition(DDD)V", at = @At("HEAD"), cancellable = true)
     private void onSetPosition(CallbackInfo ci) {
         if (Freecam.isEnabled() && ModConfig.INSTANCE.utility.freezePlayer && !Freecam.isPlayerControlEnabled() && this.equals(MC.player)) {
             ci.cancel();
