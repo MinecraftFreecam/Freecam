@@ -30,9 +30,6 @@ configurations {
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.forge_version}"
 
-    modApi "dev.architectury:architectury-forge:${rootProject.architectury_version}"
-    include "dev.architectury:architectury-forge:${rootProject.architectury_version}"
-
     modApi "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_version}"
     include "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_version}"
 
