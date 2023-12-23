@@ -4,7 +4,6 @@ def variants = rootProject.build_variants.split(',')
 
 base {
     archivesName = "metadata"
-    libsDirectory = layout.buildDirectory.dir("libs")
 }
 
 // For each platform/variant combination, provide a jar containing the generated metadata.

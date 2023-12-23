@@ -110,6 +110,8 @@ variants.each { variant ->
         dependsOn shadowJarTask
         injectAccessWidener = true
         archiveAppendix = appendix
+        // Output in root `build/libs`
+        destinationDirectory = rootProject.layout.buildDirectory.dir "libs"
     }
 
     tasks.build.dependsOn remapJarTask

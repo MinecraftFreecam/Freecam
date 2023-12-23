@@ -131,6 +131,8 @@ variants.each { variant ->
         inputFile = shadowJarTask.archiveFile
         dependsOn shadowJarTask
         archiveAppendix = appendix
+        // Output in root `build/libs`
+        destinationDirectory = rootProject.layout.buildDirectory.dir "libs"
     }
 
     tasks.build.dependsOn remapJarTask
