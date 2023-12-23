@@ -1,16 +1,18 @@
 {
   "schemaVersion": 1,
-  "id": "freecam",
+  "id": "${mod_id}",
   "version": "${version}",
-  "name": "Freecam",
-  "description": "A highly customizable freecam mod.",
-  "authors": ["hashalite"],
+  "name": "${name}",
+  "description": "${description}",
+  "authors": [
+    ${json_authors}
+  ],
   "contact": {
-    "homepage": "https://www.curseforge.com/minecraft/mc-mods/free-cam",
-    "sources": "https://github.com/hashalite/Freecam",
-    "issues": "https://github.com/hashalite/Freecam/issues"
+    "homepage": "${homepage_url}",
+    "sources": "${source_code_url}",
+    "issues": "${issue_tracker_url}"
   },
-  "license": "MIT",
+  "license": "${licence}",
   "icon": "icon.png",
   "environment": "client",
   "entrypoints": {
@@ -26,8 +28,8 @@
     "freecam-common.mixins.json"
   ],
   "depends": {
-    "fabricloader": ">=0.12.11",
+    "fabricloader": "${fabric_loader_req}",
     "fabric": "*",
-    "minecraft": "~1.20.2"
+    "minecraft": "${fabric_mc_req}"
   }
 }

@@ -1,0 +1,78 @@
+
+def platforms = rootProject.enabled_platforms.split(',')
+def variants = rootProject.build_variants.split(',')
+
+base {
+    archivesName = "metadata"
+    libsDirectory = layout.buildDirectory.dir("libs")
+}
+
+// For each platform/variant combination, provide a jar containing the generated metadata.
+// This allows us to include the metadata files as a dependency, which is more flexible.
+platforms.each { platform -> variants.each { variant ->
+
+    def name = platform
+    def classifier = platform
+    def taskDescription = "Generate metadata for ${platform.capitalize()}"
+
+    if (variant != "normal") {
+        name += variant.capitalize()
+        classifier += '-' + variant
+        taskDescription += " (${variant.capitalize()})"
+    }
+
+    def task = tasks.register("${name}Jar", Zip) {
+        // Configure the task
+        group = "build"
+        description = taskDescription
+
+        archiveClassifier = classifier
+        archiveExtension = "jar"
+
+        // Include files under `src/platform`
+        from(layout.projectDirectory.dir("src").dir(platform))
+
+        inputs.properties(
+                mod_id: rootProject.name,
+                modrinth_name: project.modrinth_name,
+                version: project.mod_version,
+                authors: project.authors,
+                description: project.description,
+                modrinth_description: project.modrinth_description,
+                licence: project.licence,
+                homepage_url: project.homepage_url,
+                source_code_url: project.source_code_url,
+                issue_tracker_url: project.issue_tracker_url,
+                fabric_loader_req: project.fabric_loader_req,
+                fabric_mc_req: project.fabric_mc_req,
+                forge_mc_req: project.forge_mc_req,
+                forge_loader_req: project.forge_loader_req,
+                forge_req: project.forge_req,
+        )
+
+        def overrides = new TreeMap()
+        overrides.mod_id = inputs.properties.mod_id.toLowerCase()
+        overrides.name = overrides.mod_id.capitalize()
+        overrides.json_authors = inputs.properties.authors.split(',').collect { "\"$it\"" }.join(", ")
+
+        if (variant == "modrinth") {
+            overrides.name += ' ' + inputs.properties.modrinth_name
+            overrides.description = inputs.properties.description + ' ' + inputs.properties.modrinth_description
+        }
+
+        filesMatching("fabric.mod.json") {
+            expand inputs.properties + overrides
+        }
+
+        filesMatching("META-INF/mods.toml") {
+            expand inputs.properties + overrides
+        }
+    }
+
+    // Make build extend this, for convenience
+    tasks.build.dependsOn task
+
+    // Export the artifact so that other projects can use it
+    configurations.register(name)
+    artifacts.add(name, task)
+}}
