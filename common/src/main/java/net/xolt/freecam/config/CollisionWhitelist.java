@@ -8,16 +8,15 @@ import java.util.List;
 public class CollisionWhitelist {
 
     private static final Collection<Class<? extends Block>> transparentWhitelist = List.of(
-            AbstractGlassBlock.class,
+            StainedGlassBlock.class,
+            TintedGlassBlock.class,
             PaneBlock.class,
-            BarrierBlock.class
-    );
+            BarrierBlock.class);
 
     private static final Collection<Class<? extends Block>> openableWhitelist = List.of(
             FenceGateBlock.class,
             DoorBlock.class,
-            TrapdoorBlock.class
-    );
+            TrapdoorBlock.class);
 
     public static boolean isTransparent(Block block) {
         return isMatch(block, transparentWhitelist);
