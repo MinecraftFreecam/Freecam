@@ -11,6 +11,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.util.FreeCamera;
 import net.xolt.freecam.util.FreecamPosition;
+import net.xolt.freecam.variant.api.BuildVariant;
 import org.lwjgl.glfw.GLFW;
 
 import java.util.HashMap;
@@ -191,7 +192,10 @@ public class Freecam {
     private static void onEnableFreecam() {
         onEnable();
         freeCamera = new FreeCamera(-420);
-        freeCamera.applyPerspective(ModConfig.INSTANCE.visual.perspective, ModConfig.INSTANCE.collision.alwaysCheck || !ModConfig.INSTANCE.collision.ignoreAll);
+        freeCamera.applyPerspective(
+                ModConfig.INSTANCE.visual.perspective,
+                ModConfig.INSTANCE.collision.alwaysCheck || !(ModConfig.INSTANCE.collision.ignoreAll && BuildVariant.getInstance().cheatsPermitted())
+        );
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
 

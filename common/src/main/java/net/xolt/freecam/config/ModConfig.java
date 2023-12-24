@@ -7,8 +7,7 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDisplayOption;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
-
-import static me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDisplayOption;
+import net.xolt.freecam.variant.api.BuildVariant;
 
 @Config(name = "freecam")
 public class ModConfig implements ConfigData {
@@ -47,7 +46,8 @@ public class ModConfig implements ConfigData {
         public boolean ignoreOpenable = true;
 
         @ConfigEntry.Gui.Tooltip(count = 2)
-        public boolean ignoreAll = true;
+        // Default to true, when not running a modrinth build
+        public boolean ignoreAll = !BuildVariant.getInstance().name().equals("modrinth");
 
         @ConfigEntry.Gui.Tooltip(count = 2)
         public boolean alwaysCheck = false;
