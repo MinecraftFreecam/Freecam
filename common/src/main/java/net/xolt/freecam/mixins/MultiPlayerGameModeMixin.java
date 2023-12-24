@@ -20,7 +20,7 @@ import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 
 @Mixin(MultiPlayerGameMode.class)
-public class ClientPlayerInteractionManagerMixin {
+public class MultiPlayerGameModeMixin {
 
     // Prevents interacting with blocks when allowInteract is disabled.
     @Inject(method = "useItemOn", at = @At("HEAD"), cancellable = true)

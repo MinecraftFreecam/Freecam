@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(ClientPacketListener.class)
-public class ClientPlayNetworkHandlerMixin {
+public class ClientPacketListenerMixin {
 
     // Disables freecam when the player respawns/switches dimensions.
     @Inject(method = "handleRespawn", at = @At("HEAD"))

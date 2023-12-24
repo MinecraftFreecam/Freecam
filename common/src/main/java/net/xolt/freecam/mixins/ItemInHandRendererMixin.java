@@ -16,7 +16,7 @@ import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
 
 @Mixin(ItemInHandRenderer.class)
-public class HeldItemRendererMixin {
+public class ItemInHandRendererMixin {
 
     @Unique private float freecam$tickDelta;
 

@@ -11,7 +11,7 @@ import static net.xolt.freecam.Freecam.MC;
 import net.minecraft.client.player.LocalPlayer;
 
 @Mixin(LocalPlayer.class)
-public class ClientPlayerEntityMixin {
+public class LocalPlayerMixin {
 
     // Needed for Baritone compatibility.
     @Inject(method = "isControlledCamera", at = @At("HEAD"), cancellable = true)

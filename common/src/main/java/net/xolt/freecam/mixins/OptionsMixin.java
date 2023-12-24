@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(Options.class)
-public class GameOptionsMixin {
+public class OptionsMixin {
 
     // Prevents switching to third person in freecam.
     @Inject(method = "setCameraType", at = @At("HEAD"), cancellable = true)

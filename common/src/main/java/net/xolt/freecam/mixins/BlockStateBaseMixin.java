@@ -19,7 +19,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(BlockBehaviour.BlockStateBase.class)
-public abstract class AbstractBlockStateMixin {
+public abstract class BlockStateBaseMixin {
 
     @Shadow public abstract Block getBlock();
 

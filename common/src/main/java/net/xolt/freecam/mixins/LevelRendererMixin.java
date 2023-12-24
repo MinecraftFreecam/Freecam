@@ -23,7 +23,7 @@ import static net.xolt.freecam.Freecam.MC;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 @Mixin(LevelRenderer.class)
-public class WorldRendererMixin {
+public class LevelRendererMixin {
 
     @Shadow @Final private RenderBuffers renderBuffers;
 

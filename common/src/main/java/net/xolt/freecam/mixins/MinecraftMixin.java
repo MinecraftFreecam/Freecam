@@ -14,7 +14,7 @@ import static net.xolt.freecam.config.ModBindings.KEY_TRIPOD_RESET;
 import net.minecraft.client.Minecraft;
 
 @Mixin(Minecraft.class)
-public class MinecraftClientMixin {
+public class MinecraftMixin {
 
     // Prevents attacks when allowInteract is disabled.
     @Inject(method = "startAttack", at = @At("HEAD"), cancellable = true)

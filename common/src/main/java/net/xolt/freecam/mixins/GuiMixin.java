@@ -12,7 +12,7 @@ import net.minecraft.client.gui.Gui;
 import net.minecraft.world.entity.player.Player;
 
 @Mixin(Gui.class)
-public class InGameHudMixin {
+public class GuiMixin {
 
     // Makes HUD correspond to the player rather than the FreeCamera.
     @Inject(method = "getCameraPlayer", at = @At("HEAD"), cancellable = true)
