@@ -1,42 +1,42 @@
 package net.xolt.freecam.util;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.piston.PistonBehavior;
-import net.minecraft.client.input.KeyboardInput;
-import net.minecraft.client.network.ClientConnectionState;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
-import net.minecraft.client.network.ClientPlayerEntity;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.entity.effect.StatusEffect;
-import net.minecraft.entity.effect.StatusEffectInstance;
-import net.minecraft.network.packet.Packet;
-import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.registry.tag.FluidTags;
-import net.minecraft.resource.featuretoggle.FeatureSet;
-import net.minecraft.util.math.BlockPos;
+import net.minecraft.client.multiplayer.ClientPacketListener;
+import net.minecraft.client.multiplayer.CommonListenerCookie;
+import net.minecraft.client.player.KeyboardInput;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.tags.FluidTags;
+import net.minecraft.world.effect.MobEffect;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.flag.FeatureFlagSet;
+import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.material.PushReaction;
 import net.xolt.freecam.config.ModConfig;
 
 import java.util.UUID;
 
 import static net.xolt.freecam.Freecam.MC;
 
-public class FreeCamera extends ClientPlayerEntity {
+public class FreeCamera extends LocalPlayer {
 
-    private static final ClientPlayNetworkHandler NETWORK_HANDLER = new ClientPlayNetworkHandler(
+    private static final ClientPacketListener NETWORK_HANDLER = new ClientPacketListener(
             MC,
-            MC.getNetworkHandler().getConnection(),
-            new ClientConnectionState(
+            MC.getConnection().getConnection(),
+            new CommonListenerCookie(
                     new GameProfile(UUID.randomUUID(), "FreeCamera"),
-                    MC.getTelemetryManager().createWorldSession(false, null, null),
-                    DynamicRegistryManager.Immutable.EMPTY,
-                    FeatureSet.empty(),
+                    MC.getTelemetryManager().createWorldSessionManager(false, null, null),
+                    RegistryAccess.Frozen.EMPTY,
+                    FeatureFlagSet.of(),
                     null,
-                    MC.getCurrentServerEntry(),
-                    MC.currentScreen)) {
+                    MC.getCurrentServer(),
+                    MC.screen)) {
         @Override
-        public void sendPacket(Packet<?> packet) {
+        public void send(Packet<?> packet) {
         }
     };
 
@@ -45,7 +45,7 @@ public class FreeCamera extends ClientPlayerEntity {
     }
 
     public FreeCamera(int id, FreecamPosition position) {
-        super(MC, MC.world, NETWORK_HANDLER, MC.player.getStatHandler(), MC.player.getRecipeBook(), false, false);
+        super(MC, MC.level, NETWORK_HANDLER, MC.player.getStats(), MC.player.getRecipeBook(), false, false);
 
         setId(id);
         applyPosition(position);
@@ -55,11 +55,11 @@ public class FreeCamera extends ClientPlayerEntity {
 
     public void applyPosition(FreecamPosition position) {
         super.setPose(position.pose);
-        refreshPositionAndAngles(position.x, position.y, position.z, position.yaw, position.pitch);
-        renderPitch = getPitch();
-        renderYaw = getYaw();
-        lastRenderPitch = renderPitch; // Prevents camera from rotating upon entering freecam.
-        lastRenderYaw = renderYaw;
+        moveTo(position.x, position.y, position.z, position.yaw, position.pitch);
+        xBob = getXRot();
+        yBob = getYRot();
+        xBobO = xBob; // Prevents camera from rotating upon entering freecam.
+        yBobO = yBob;
     }
 
     // Mutate the position and rotation based on perspective
@@ -110,7 +110,7 @@ public class FreeCamera extends ClientPlayerEntity {
             position.moveForward(negative ? -1 * increment : increment);
             applyPosition(position);
 
-            if (!wouldNotSuffocateInPose(getPose())) {
+            if (!wouldNotSuffocateAtTargetPose(getPose())) {
                 // Revert to last non-colliding position and return whether we were unable to move at all
                 applyPosition(oldPosition);
                 return distance > 0;
@@ -121,32 +121,32 @@ public class FreeCamera extends ClientPlayerEntity {
     }
 
     public void spawn() {
-        if (clientWorld != null) {
-            clientWorld.addEntity(this);
+        if (clientLevel != null) {
+            clientLevel.addEntity(this);
         }
     }
 
     public void despawn() {
-        if (clientWorld != null && clientWorld.getEntityById(getId()) != null) {
-            clientWorld.removeEntity(getId(), RemovalReason.DISCARDED);
+        if (clientLevel != null && clientLevel.getEntity(getId()) != null) {
+            clientLevel.removeEntity(getId(), RemovalReason.DISCARDED);
         }
     }
 
     // Prevents fall damage sound when FreeCamera touches ground with noClip disabled.
     @Override
-    protected void fall(double heightDifference, boolean onGround, BlockState landedState, BlockPos landedPosition) {
+    protected void checkFallDamage(double heightDifference, boolean onGround, BlockState landedState, BlockPos landedPosition) {
     }
 
     // Needed for hand swings to be shown in freecam since the player is replaced by FreeCamera in HeldItemRenderer.renderItem()
     @Override
-    public float getHandSwingProgress(float tickDelta) {
-        return MC.player.getHandSwingProgress(tickDelta);
+    public float getAttackAnim(float tickDelta) {
+        return MC.player.getAttackAnim(tickDelta);
     }
 
     // Needed for item use animations to be shown in freecam since the player is replaced by FreeCamera in HeldItemRenderer.renderItem()
     @Override
-    public int getItemUseTimeLeft() {
-        return MC.player.getItemUseTimeLeft();
+    public int getUseItemRemainingTicks() {
+        return MC.player.getUseItemRemainingTicks();
     }
 
     // Also needed for item use animations to be shown in freecam.
@@ -157,66 +157,66 @@ public class FreeCamera extends ClientPlayerEntity {
 
     // Prevents slow down from ladders/vines.
     @Override
-    public boolean isClimbing() {
+    public boolean onClimbable() {
         return false;
     }
 
     // Prevents slow down from water.
     @Override
-    public boolean isTouchingWater() {
+    public boolean isInWater() {
         return false;
     }
 
     // Makes night vision apply to FreeCamera when Iris is enabled.
     @Override
-    public StatusEffectInstance getStatusEffect(StatusEffect effect) {
-        return MC.player.getStatusEffect(effect);
+    public MobEffectInstance getEffect(MobEffect effect) {
+        return MC.player.getEffect(effect);
     }
 
     // Prevents pistons from moving FreeCamera when collision.ignoreAll is enabled.
     @Override
-    public PistonBehavior getPistonBehavior() {
-        return ModConfig.INSTANCE.collision.ignoreAll ? PistonBehavior.IGNORE : PistonBehavior.NORMAL;
+    public PushReaction getPistonPushReaction() {
+        return ModConfig.INSTANCE.collision.ignoreAll ? PushReaction.IGNORE : PushReaction.NORMAL;
     }
 
     // Prevents collision with solid entities (shulkers, boats)
     @Override
-    public boolean collidesWith(Entity other) {
+    public boolean canCollideWith(Entity other) {
         return false;
     }
 
     // Ensures that the FreeCamera is always in the swimming pose.
     @Override
-    public void setPose(EntityPose pose) {
-        super.setPose(EntityPose.SWIMMING);
+    public void setPose(Pose pose) {
+        super.setPose(Pose.SWIMMING);
     }
 
     // Prevents slow down due to being in swimming pose. (Fixes being unable to sprint)
     @Override
-    public boolean shouldSlowDown() {
+    public boolean isMovingSlowly() {
         return false;
     }
 
     // Prevents water submersion sounds from playing.
     @Override
-    protected boolean updateWaterSubmersionState() {
-        this.isSubmergedInWater = this.isSubmergedIn(FluidTags.WATER);
-        return this.isSubmergedInWater;
+    protected boolean updateIsUnderwater() {
+        this.wasUnderwater = this.isEyeInFluid(FluidTags.WATER);
+        return this.wasUnderwater;
     }
 
     // Prevents water submersion sounds from playing.
     @Override
-    protected void onSwimmingStart() {}
+    protected void doWaterSplashEffect() {}
 
     @Override
-    public void tickMovement() {
+    public void aiStep() {
         if (ModConfig.INSTANCE.movement.flightMode.equals(ModConfig.FlightMode.DEFAULT)) {
-            getAbilities().setFlySpeed(0);
+            getAbilities().setFlyingSpeed(0);
             Motion.doMotion(this, ModConfig.INSTANCE.movement.horizontalSpeed, ModConfig.INSTANCE.movement.verticalSpeed);
         } else {
-            getAbilities().setFlySpeed((float) ModConfig.INSTANCE.movement.verticalSpeed / 10);
+            getAbilities().setFlyingSpeed((float) ModConfig.INSTANCE.movement.verticalSpeed / 10);
         }
-        super.tickMovement();
+        super.aiStep();
         getAbilities().flying = true;
         setOnGround(false);
     }

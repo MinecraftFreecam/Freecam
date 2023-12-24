@@ -1,13 +1,13 @@
 package net.xolt.freecam;
 
 import me.shedaniel.autoconfig.AutoConfig;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.input.Input;
-import net.minecraft.client.input.KeyboardInput;
-import net.minecraft.client.option.KeyBinding;
-import net.minecraft.client.option.Perspective;
-import net.minecraft.text.Text;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.client.CameraType;
+import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.player.Input;
+import net.minecraft.client.player.KeyboardInput;
+import net.minecraft.network.chat.Component;
+import net.minecraft.world.level.ChunkPos;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.util.FreeCamera;
 import net.xolt.freecam.util.FreecamPosition;
@@ -19,7 +19,7 @@ import static net.xolt.freecam.config.ModBindings.*;
 
 public class Freecam {
 
-    public static final MinecraftClient MC = MinecraftClient.getInstance();
+    public static final Minecraft MC = Minecraft.getInstance();
     public static final String MOD_ID = "freecam";
 
     private static boolean freecamEnabled = false;
@@ -31,9 +31,9 @@ public class Freecam {
     private static HashMap<Integer, FreecamPosition> overworld_tripods = new HashMap<>();
     private static HashMap<Integer, FreecamPosition> nether_tripods = new HashMap<>();
     private static HashMap<Integer, FreecamPosition> end_tripods = new HashMap<>();
-    private static Perspective rememberedF5 = null;
+    private static CameraType rememberedF5 = null;
 
-    public static void preTick(MinecraftClient mc) {
+    public static void preTick(Minecraft mc) {
         if (isEnabled()) {
             // Disable if the previous tick asked us to
             if (disableNextTick()) {
@@ -44,7 +44,7 @@ public class Freecam {
             // Prevent player from being controlled when freecam is enabled
             if (mc.player != null && mc.player.input instanceof KeyboardInput && !isPlayerControlEnabled()) {
                 Input input = new Input();
-                input.sneaking = mc.player.input.sneaking; // Makes player continue to sneak after freecam is enabled.
+                input.shiftKeyDown = mc.player.input.shiftKeyDown; // Makes player continue to sneak after freecam is enabled.
                 mc.player.input = input;
             }
 
@@ -52,20 +52,20 @@ public class Freecam {
         }
     }
 
-    public static void postTick(MinecraftClient mc) {
+    public static void postTick(Minecraft mc) {
         if (KEY_TRIPOD_RESET.isPressed()) {
-            for (KeyBinding hotbarKey : mc.options.hotbarKeys) {
-                while (hotbarKey.wasPressed()) {
-                    resetCamera(hotbarKey.getDefaultKey().getCode());
+            for (KeyMapping hotbarKey : mc.options.keyHotbarSlots) {
+                while (hotbarKey.consumeClick()) {
+                    resetCamera(hotbarKey.getDefaultKey().getValue());
                     while (KEY_TRIPOD_RESET.wasPressed()) {}
                 }
             }
         }
 
         if (KEY_TOGGLE.isPressed()) {
-            for (KeyBinding hotbarKey : mc.options.hotbarKeys) {
-                while (hotbarKey.wasPressed()) {
-                    toggleTripod(hotbarKey.getDefaultKey().getCode());
+            for (KeyMapping hotbarKey : mc.options.keyHotbarSlots) {
+                while (hotbarKey.consumeClick()) {
+                    toggleTripod(hotbarKey.getDefaultKey().getValue());
                     while (KEY_TOGGLE.wasPressed()) {}
                 }
             }
@@ -79,7 +79,7 @@ public class Freecam {
         }
 
         while (KEY_CONFIG_GUI.wasPressed()) {
-            mc.setScreen(AutoConfig.getConfigScreen(ModConfig.class, mc.currentScreen).get());
+            mc.setScreen(AutoConfig.getConfigScreen(ModConfig.class, mc.screen).get());
         }
     }
 
@@ -153,7 +153,7 @@ public class Freecam {
         boolean chunkLoaded = false;
         if (position != null) {
             ChunkPos chunkPos = position.getChunkPos();
-            chunkLoaded = MC.world.getChunkManager().isChunkLoaded(chunkPos.x, chunkPos.z);
+            chunkLoaded = MC.level.getChunkSource().hasChunk(chunkPos.x, chunkPos.z);
         }
 
         if (!chunkLoaded) {
@@ -172,7 +172,7 @@ public class Freecam {
         activeTripod = keyCode;
 
         if (ModConfig.INSTANCE.notification.notifyTripod) {
-            MC.player.sendMessage(Text.translatable("msg.freecam.openTripod").append("" + activeTripod % GLFW.GLFW_KEY_0), true);
+            MC.player.displayClientMessage(Component.translatable("msg.freecam.openTripod").append("" + activeTripod % GLFW.GLFW_KEY_0), true);
         }
     }
 
@@ -182,7 +182,7 @@ public class Freecam {
 
         if (MC.player != null) {
             if (ModConfig.INSTANCE.notification.notifyTripod) {
-                MC.player.sendMessage(Text.translatable("msg.freecam.closeTripod").append("" + activeTripod % GLFW.GLFW_KEY_0), true);
+                MC.player.displayClientMessage(Component.translatable("msg.freecam.closeTripod").append("" + activeTripod % GLFW.GLFW_KEY_0), true);
             }
         }
         activeTripod = null;
@@ -196,7 +196,7 @@ public class Freecam {
         MC.setCameraEntity(freeCamera);
 
         if (ModConfig.INSTANCE.notification.notifyFreecam) {
-            MC.player.sendMessage(Text.translatable("msg.freecam.enable"), true);
+            MC.player.displayClientMessage(Component.translatable("msg.freecam.enable"), true);
         }
     }
 
@@ -205,23 +205,23 @@ public class Freecam {
 
         if (MC.player != null) {
             if (ModConfig.INSTANCE.notification.notifyFreecam) {
-                MC.player.sendMessage(Text.translatable("msg.freecam.disable"), true);
+                MC.player.displayClientMessage(Component.translatable("msg.freecam.disable"), true);
             }
         }
     }
 
     private static void onEnable() {
-        MC.chunkCullingEnabled = false;
+        MC.smartCull = false;
         MC.gameRenderer.setRenderHand(ModConfig.INSTANCE.visual.showHand);
 
-        rememberedF5 = MC.options.getPerspective();
-        if (MC.gameRenderer.getCamera().isThirdPerson()) {
-            MC.options.setPerspective(Perspective.FIRST_PERSON);
+        rememberedF5 = MC.options.getCameraType();
+        if (MC.gameRenderer.getMainCamera().isDetached()) {
+            MC.options.setCameraType(CameraType.FIRST_PERSON);
         }
     }
 
     private static void onDisable() {
-        MC.chunkCullingEnabled = true;
+        MC.smartCull = true;
         MC.gameRenderer.setRenderHand(true);
         MC.setCameraEntity(MC.player);
         playerControlEnabled = false;
@@ -236,19 +236,19 @@ public class Freecam {
 
     private static void onDisabled() {
         if (rememberedF5 != null) {
-            MC.options.setPerspective(rememberedF5);
+            MC.options.setCameraType(rememberedF5);
         }
     }
 
     private static void resetCamera(int keyCode) {
         if (tripodEnabled && activeTripod != null && activeTripod == keyCode && freeCamera != null) {
-            freeCamera.copyPositionAndRotation(MC.player);
+            freeCamera.copyPosition(MC.player);
         } else {
             getTripodsForDimension().put(keyCode, null);
         }
 
         if (ModConfig.INSTANCE.notification.notifyTripod) {
-            MC.player.sendMessage(Text.translatable("msg.freecam.tripodReset").append("" + keyCode % GLFW.GLFW_KEY_0), true);
+            MC.player.displayClientMessage(Component.translatable("msg.freecam.tripodReset").append("" + keyCode % GLFW.GLFW_KEY_0), true);
         }
     }
 
@@ -264,7 +264,7 @@ public class Freecam {
 
     public static HashMap<Integer, FreecamPosition> getTripodsForDimension() {
         HashMap<Integer, FreecamPosition> result;
-        switch (MC.world.getDimensionKey().getValue().getPath()) {
+        switch (MC.level.dimensionTypeId().location().getPath()) {
             case "the_nether":
                 result = nether_tripods;
                 break;

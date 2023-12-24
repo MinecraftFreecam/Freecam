@@ -1,9 +1,9 @@
 package net.xolt.freecam.mixins;
 
-import net.minecraft.client.render.Camera;
-import net.minecraft.client.render.CameraSubmersionType;
-import net.minecraft.entity.Entity;
-import net.minecraft.world.BlockView;
+import net.minecraft.client.Camera;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.material.FogType;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.util.FreeCamera;
@@ -17,27 +17,27 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(Camera.class)
 public class CameraMixin {
 
-    @Shadow private Entity focusedEntity;
-    @Shadow private float lastCameraY;
-    @Shadow private float cameraY;
+    @Shadow private Entity entity;
+    @Shadow private float eyeHeightOld;
+    @Shadow private float eyeHeight;
 
     // When toggling freecam, update the camera's eye height instantly without any transition.
-    @Inject(method = "update", at = @At("HEAD"))
-    public void onUpdate(BlockView area, Entity newFocusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
-        if (newFocusedEntity == null || this.focusedEntity == null || newFocusedEntity.equals(this.focusedEntity)) {
+    @Inject(method = "setup", at = @At("HEAD"))
+    public void onUpdate(BlockGetter area, Entity newFocusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
+        if (newFocusedEntity == null || this.entity == null || newFocusedEntity.equals(this.entity)) {
             return;
         }
 
-        if (newFocusedEntity instanceof FreeCamera || this.focusedEntity instanceof FreeCamera) {
-            this.lastCameraY = this.cameraY = newFocusedEntity.getStandingEyeHeight();
+        if (newFocusedEntity instanceof FreeCamera || this.entity instanceof FreeCamera) {
+            this.eyeHeightOld = this.eyeHeight = newFocusedEntity.getEyeHeight();
         }
     }
 
     // Removes the submersion overlay when underwater, in lava, or powdered snow.
-    @Inject(method = "getSubmersionType", at = @At("HEAD"), cancellable = true)
-    public void onGetSubmersionType(CallbackInfoReturnable<CameraSubmersionType> cir) {
+    @Inject(method = "getFluidInCamera", at = @At("HEAD"), cancellable = true)
+    public void onGetSubmersionType(CallbackInfoReturnable<FogType> cir) {
         if (Freecam.isEnabled() && !ModConfig.INSTANCE.visual.showSubmersion) {
-            cir.setReturnValue(CameraSubmersionType.NONE);
+            cir.setReturnValue(FogType.NONE);
         }
     }
 }

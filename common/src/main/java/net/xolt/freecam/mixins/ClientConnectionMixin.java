@@ -1,13 +1,13 @@
 package net.xolt.freecam.mixins;
 
-import net.minecraft.network.ClientConnection;
+import net.minecraft.network.Connection;
 import net.xolt.freecam.Freecam;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-@Mixin(ClientConnection.class)
+@Mixin(Connection.class)
 public class ClientConnectionMixin {
 
     // Disables freecam if the player disconnects.

@@ -1,43 +1,43 @@
 package net.xolt.freecam.util;
 
-import net.minecraft.util.math.MathHelper;
-import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.Mth;
+import net.minecraft.world.phys.Vec3;
 
 public class Motion {
 
-    public static final double DIAGONAL_MULTIPLIER = MathHelper.sin((float) Math.toRadians(45));
+    public static final double DIAGONAL_MULTIPLIER = Mth.sin((float) Math.toRadians(45));
 
     public static void doMotion(FreeCamera freeCamera, double hSpeed, double vSpeed) {
-        float yaw = freeCamera.getYaw();
+        float yaw = freeCamera.getYRot();
         double velocityX = 0.0;
         double velocityY = 0.0;
         double velocityZ = 0.0;
 
-        Vec3d forward = Vec3d.fromPolar(0, yaw);
-        Vec3d side = Vec3d.fromPolar(0, yaw + 90);
+        Vec3 forward = Vec3.directionFromRotation(0, yaw);
+        Vec3 side = Vec3.directionFromRotation(0, yaw + 90);
 
         freeCamera.input.tick(false, 0.3F);
         hSpeed = hSpeed * (freeCamera.isSprinting() ? 1.5 : 1.0);
 
         boolean straight = false;
-        if (freeCamera.input.pressingForward) {
+        if (freeCamera.input.up) {
             velocityX += forward.x * hSpeed;
             velocityZ += forward.z * hSpeed;
             straight = true;
         }
-        if (freeCamera.input.pressingBack) {
+        if (freeCamera.input.down) {
             velocityX -= forward.x * hSpeed;
             velocityZ -= forward.z * hSpeed;
             straight = true;
         }
 
         boolean strafing = false;
-        if (freeCamera.input.pressingRight) {
+        if (freeCamera.input.right) {
             velocityZ += side.z * hSpeed;
             velocityX += side.x * hSpeed;
             strafing = true;
         }
-        if (freeCamera.input.pressingLeft) {
+        if (freeCamera.input.left) {
             velocityZ -= side.z * hSpeed;
             velocityX -= side.x * hSpeed;
             strafing = true;
@@ -51,10 +51,10 @@ public class Motion {
         if (freeCamera.input.jumping) {
             velocityY += vSpeed;
         }
-        if (freeCamera.input.sneaking) {
+        if (freeCamera.input.shiftKeyDown) {
             velocityY -= vSpeed;
         }
 
-        freeCamera.setVelocity(velocityX, velocityY, velocityZ);
+        freeCamera.setDeltaMovement(velocityX, velocityY, velocityZ);
     }
 }

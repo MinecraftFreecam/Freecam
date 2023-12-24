@@ -1,8 +1,8 @@
 package net.xolt.freecam.util;
 
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.EntityPose;
-import net.minecraft.util.math.ChunkPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Pose;
+import net.minecraft.world.level.ChunkPos;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
@@ -12,7 +12,7 @@ public class FreecamPosition {
     public double z;
     public float pitch;
     public float yaw;
-    public EntityPose pose;
+    public Pose pose;
 
     private final Quaternionf rotation = new Quaternionf(0.0F, 0.0F, 0.0F, 1.0F);
     private final Vector3f verticalPlane = new Vector3f(0.0F, 1.0F, 0.0F);
@@ -24,7 +24,7 @@ public class FreecamPosition {
         y = entity.getY();
         z = entity.getZ();
         pose = entity.getPose();
-        setRotation(entity.getYaw(), entity.getPitch());
+        setRotation(entity.getYRot(), entity.getXRot());
     }
 
     // From net.minecraft.client.render.Camera.setRotation
@@ -68,9 +68,9 @@ public class FreecamPosition {
         FreecamPosition position = new FreecamPosition(entity);
 
         // Set pose to swimming, adjusting y position so eye-height doesn't change
-        if (position.pose != EntityPose.SWIMMING) {
-            position.y += entity.getEyeHeight(position.pose) - entity.getEyeHeight(EntityPose.SWIMMING);
-            position.pose = EntityPose.SWIMMING;
+        if (position.pose != Pose.SWIMMING) {
+            position.y += entity.getEyeHeight(position.pose) - entity.getEyeHeight(Pose.SWIMMING);
+            position.pose = Pose.SWIMMING;
         }
 
         return position;

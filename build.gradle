@@ -37,18 +37,12 @@ subprojects {
             remove server // We only need client runs
         }
 
-        // TODO consider using to official mappings?
-        // silentMojangMappingsLicense()
+        silentMojangMappingsLicense()
     }
 
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-        mappings loom.layered {
-            mappings "net.fabricmc:yarn:${rootProject.yarn_mappings}:v2"
-            mappings "dev.architectury:yarn-mappings-patch-forge:${rootProject.yarn_mappings_patch}"
-        }
-        // TODO consider using to official mappings?
-        // mappings loom.officialMojangMappings()
+        mappings loom.officialMojangMappings()
         modLocalRuntime "com.ptsmods:devlogin:${rootProject.devlogin_version}"
     }
 }

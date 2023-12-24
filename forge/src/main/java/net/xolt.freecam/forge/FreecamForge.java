@@ -1,7 +1,7 @@
 package net.xolt.freecam.forge;
 
 import me.shedaniel.autoconfig.AutoConfig;
-import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
@@ -39,7 +39,7 @@ public class FreecamForge {
     public static class GlobalEventHandler {
         @SubscribeEvent(priority = EventPriority.HIGH)
         public static void onTick(TickEvent.ClientTickEvent event) {
-            final MinecraftClient client = MinecraftClient.getInstance();
+            final Minecraft client = Minecraft.getInstance();
             switch (event.phase) {
                 case START -> Freecam.preTick(client);
                 case END -> Freecam.postTick(client);
