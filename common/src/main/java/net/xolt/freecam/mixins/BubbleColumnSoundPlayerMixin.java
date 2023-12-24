@@ -13,9 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(BubbleColumnSoundPlayer.class)
 public class BubbleColumnSoundPlayerMixin {
 
-    @Shadow
-    @Final
-    private ClientPlayerEntity player;
+    @Shadow @Final private ClientPlayerEntity player;
 
     // Prevent bubble column sound in freecam
     @Inject(method = "tick", at = @At("HEAD"), cancellable = true)

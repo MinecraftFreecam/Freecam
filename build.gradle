@@ -1,6 +1,12 @@
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
     id "dev.architectury.loom" version "1.4-SNAPSHOT" apply false
+    id "com.github.johnrengelman.shadow" version "7.1.2" apply false
+}
+
+tasks.named('wrapper') {
+    // Use "all" so we get sources and javadoc too
+    distributionType = "all"
 }
 
 architectury {
@@ -11,6 +17,26 @@ subprojects {
     apply plugin: "dev.architectury.loom"
 
     loom {
+        accessWidenerPath = project(":common").file "src/main/resources/freecam.accesswidener"
+
+        runs {
+            client {
+                // Pretty run-config name
+                // Note: we can't disable the (:path) suffix
+                // https://github.com/architectury/architectury-loom/blob/5b3e7c72b665f7eb38c23ceb677027acdc867398/src/main/java/net/fabricmc/loom/configuration/ide/RunConfig.java#L117
+                configName "Run"
+            }
+            loggedIn {
+                inherit client
+                configName "Run logged in"
+                programArg "--msa"
+                if (project.path.contains("forge")) {
+                    forgeTemplate "client"
+                }
+            }
+            remove server // We only need client runs
+        }
+
         // TODO consider using to official mappings?
         // silentMojangMappingsLicense()
     }
@@ -23,6 +49,7 @@ subprojects {
         }
         // TODO consider using to official mappings?
         // mappings loom.officialMojangMappings()
+        modLocalRuntime "com.ptsmods:devlogin:${rootProject.devlogin_version}"
     }
 }
 
@@ -31,15 +58,17 @@ allprojects {
     apply plugin: "architectury-plugin"
     apply plugin: "maven-publish"
 
+    version = "${project.mod_version}+${project.minecraft_version}"
+    group = rootProject.maven_group
     base {
-        archivesName = rootProject.archives_base_name
+        // Format archive names, e.g. 'freecam-fabric-1.2.1.1+1.20.2.jar'
+        archivesName = rootProject.name + project.path.replaceAll(':', '-')
+        // Output all archives in root `build/libs`
+        libsDirectory = rootProject.layout.buildDirectory.dir "libs"
     }
 
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
-
-    version = rootProject.mod_version
-    group = rootProject.maven_group
 
     repositories {
         // Add repositories to retrieve artifacts from in here.
@@ -47,6 +76,7 @@ allprojects {
         // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
         // See https://docs.gradle.org/current/userguide/declaring_repositories.html
         // for more information about repositories.
+        mavenCentral()
         maven { url "https://maven.shedaniel.me/" }
         maven { url "https://maven.terraformersmc.com/" }
     }

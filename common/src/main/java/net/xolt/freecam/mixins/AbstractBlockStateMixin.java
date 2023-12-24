@@ -21,18 +21,18 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 @Mixin(AbstractBlock.AbstractBlockState.class)
 public abstract class AbstractBlockStateMixin {
 
-    @Shadow
-    public abstract Block getBlock();
+    @Shadow public abstract Block getBlock();
 
     @Inject(method = "getCollisionShape(Lnet/minecraft/world/BlockView;Lnet/minecraft/util/math/BlockPos;Lnet/minecraft/block/ShapeContext;)Lnet/minecraft/util/shape/VoxelShape;", at = @At("HEAD"), cancellable = true)
     private void onGetCollisionShape(BlockView world, BlockPos pos, ShapeContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (context instanceof EntityShapeContext && ((EntityShapeContext)context).getEntity() instanceof FreeCamera) {
-            // Unless "Always Check Initial Collision" is on and Freecam isn't enabled yet
-            if (!ModConfig.INSTANCE.collision.alwaysCheck || Freecam.isEnabled()) {
-                // Ignore all collisions
-                if (ModConfig.INSTANCE.collision.ignoreAll) {
-                    cir.setReturnValue(VoxelShapes.empty());
-                }
+        if (context instanceof EntityShapeContext entityShapeContext && entityShapeContext.getEntity() instanceof FreeCamera) {
+            // Return early if "Always Check Initial Collision" is on and Freecam isn't enabled yet
+            if (ModConfig.INSTANCE.collision.alwaysCheck && !Freecam.isEnabled()) {
+                return;
+            }
+            // Ignore all collisions
+            if (ModConfig.INSTANCE.collision.ignoreAll) {
+                cir.setReturnValue(VoxelShapes.empty());
             }
             // Ignore transparent block collisions
             if (ModConfig.INSTANCE.collision.ignoreTransparent && CollisionWhitelist.isTransparent(getBlock())) {

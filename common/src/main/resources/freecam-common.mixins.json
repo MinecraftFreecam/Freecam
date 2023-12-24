@@ -12,7 +12,6 @@
     "ClientPlayerInteractionManagerMixin",
     "ClientPlayNetworkHandlerMixin",
     "EntityMixin",
-    "EntityRenderDispatcherAccessor",
     "EntityRenderDispatcherMixin",
     "EntityRendererMixin",
     "GameOptionsMixin",

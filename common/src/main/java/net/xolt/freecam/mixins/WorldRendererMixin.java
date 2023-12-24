@@ -19,9 +19,9 @@ import static net.xolt.freecam.Freecam.MC;
 @Mixin(WorldRenderer.class)
 public class WorldRendererMixin {
 
-    @Shadow
-    @Final
-    private BufferBuilderStorage bufferBuilders;
+    @Shadow @Final private BufferBuilderStorage bufferBuilders;
+
+    @Shadow private void renderEntity(Entity entity, double cameraX, double cameraY, double cameraZ, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers) {}
 
     // Makes the player render if showPlayer is enabled.
     @Inject(method = "render", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/render/WorldRenderer;checkEmpty(Lnet/minecraft/client/util/math/MatrixStack;)V", ordinal = 0))
@@ -30,9 +30,5 @@ public class WorldRendererMixin {
             Vec3d cameraPos = camera.getPos();
             renderEntity(MC.player, cameraPos.x, cameraPos.y, cameraPos.z, tickDelta, matrices, bufferBuilders.getEntityVertexConsumers());
         }
-    }
-
-    @Shadow
-    private void renderEntity(Entity entity, double cameraX, double cameraY, double cameraZ, float tickDelta, MatrixStack matrices, VertexConsumerProvider vertexConsumers) {
     }
 }

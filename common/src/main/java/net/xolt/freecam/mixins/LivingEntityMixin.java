@@ -15,8 +15,7 @@ import static net.xolt.freecam.Freecam.MC;
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin {
 
-    @Shadow
-    public abstract float getHealth();
+    @Shadow public abstract float getHealth();
 
     // Allows for the horizontal speed of creative flight to be configured separately from vertical speed.
     @Inject(method = "getMovementSpeed(F)F", at = @At("HEAD"), cancellable = true)
