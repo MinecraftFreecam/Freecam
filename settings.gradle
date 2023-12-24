@@ -11,5 +11,6 @@ include("common")
 include("fabric")
 include("forge")
 include("metadata")
+include("variant", "variant:api", "variant:normal", "variant:modrinth")
 
 rootProject.name = "freecam"

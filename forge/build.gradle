@@ -1,5 +1,6 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import net.fabricmc.loom.task.RemapJarTask
+import net.fabricmc.loom.util.aw2at.Aw2At
 
 plugins {
     id "com.github.johnrengelman.shadow"
@@ -22,6 +23,14 @@ loom {
     }
 }
 
+afterEvaluate {
+    // FIXME: arch-loom only does this for tasks.remapJarTask,
+    //      meaning our variant tasks don't get AccessTransformers.
+    tasks.withType(RemapJarTask).each {
+        Aw2At.setup(project, it)
+    }
+}
+
 configurations {
     common
     shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.
@@ -38,6 +47,8 @@ dependencies {
 
     common project(path: ":common", configuration: "namedElements")
     shadowCommon project(path: ":common", configuration: "transformProductionForge")
+
+    shadowCommon project(":variant:api")
 }
 
 variants.each { variant ->
@@ -54,6 +65,11 @@ variants.each { variant ->
     def metadata = dependencies.project(path: ":metadata", configuration: "forge${variant == "normal" ? "" : variant.capitalize()}")
     dependencies.add(set.implementationConfigurationName, metadata)
     dependencies.add(shadowConfig.name, metadata)
+
+    // Add a dependency on variant's service provider
+    def spi = dependencies.project(path: ":variant:${variant}", configuration: "namedElements")
+    dependencies.add(set.implementationConfigurationName, spi)
+    dependencies.add(shadowConfig.name, dependencies.project(path: ":variant:${variant}", configuration: "transformProductionForge"))
 
     // Configure/create a run config
     def run
@@ -74,6 +90,7 @@ variants.each { variant ->
         sourceSet project.sourceSets.main
         sourceSet set
         dependency metadata
+        dependency spi
     }
 
     // Configure/create jar tasks

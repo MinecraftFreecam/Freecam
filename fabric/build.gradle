@@ -35,6 +35,8 @@ dependencies {
 
     common project(path: ":common", configuration: "namedElements")
     shadowCommon project(path: ":common", configuration: "transformProductionFabric")
+
+    shadowCommon project(":variant:api")
 }
 
 variants.each { variant ->
@@ -51,6 +53,10 @@ variants.each { variant ->
     def metadata = dependencies.project(path: ":metadata", configuration: "fabric${variant == "normal" ? "" : variant.capitalize()}")
     dependencies.add(set.implementationConfigurationName, metadata)
     dependencies.add(shadowConfig.name, metadata)
+
+    // Add a dependency on variant's service provider
+    dependencies.add(set.implementationConfigurationName, dependencies.project(path: ":variant:${variant}", configuration: "namedElements"))
+    dependencies.add(shadowConfig.name, dependencies.project(path: ":variant:${variant}", configuration: "transformProductionFabric"))
 
     // Configure/create a run config
     def run
@@ -102,6 +108,7 @@ variants.each { variant ->
         group = "loom"
         inputFile = shadowJarTask.archiveFile
         dependsOn shadowJarTask
+        injectAccessWidener = true
         archiveAppendix = appendix
     }
 
