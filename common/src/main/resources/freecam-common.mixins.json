@@ -20,8 +20,7 @@
     "GuiMixin",
     "LightTextureMixin",
     "LivingEntityMixin",
-    "MinecraftMixin",
-    "LevelRendererMixin"
+    "MinecraftMixin"
   ],
   "injectors": {
     "defaultRequire": 1

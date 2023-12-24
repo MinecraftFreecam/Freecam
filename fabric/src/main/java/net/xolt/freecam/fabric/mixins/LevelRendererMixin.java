@@ -1,11 +1,8 @@
-package net.xolt.freecam.mixins;
+package net.xolt.freecam.fabric.mixins;
 
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
-import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.client.renderer.LevelRenderer;
-import net.minecraft.client.renderer.LightTexture;
-import net.minecraft.client.renderer.MultiBufferSource;
-import net.minecraft.client.renderer.RenderBuffers;
+import net.minecraft.client.renderer.*;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.phys.Vec3;
 import net.xolt.freecam.Freecam;
@@ -19,8 +16,6 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static net.xolt.freecam.Freecam.MC;
-
-import com.mojang.blaze3d.vertex.PoseStack;
 
 @Mixin(LevelRenderer.class)
 public class LevelRendererMixin {
