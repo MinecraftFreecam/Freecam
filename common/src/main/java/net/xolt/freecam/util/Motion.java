@@ -7,7 +7,7 @@ public class Motion {
 
     public static final double DIAGONAL_MULTIPLIER = MathHelper.sin((float) Math.toRadians(45));
 
-    public static void doMotion(FreeCamera freeCamera, double hSpeed, double vSpeed) {
+    public static void doMotion(FreeCamera freeCamera, int horizontalSpeed, int verticalSpeed) {
         float yaw = freeCamera.getYaw();
         double velocityX = 0.0;
         double velocityY = 0.0;
@@ -17,7 +17,8 @@ public class Motion {
         Vec3d side = Vec3d.fromPolar(0, yaw + 90);
 
         freeCamera.input.tick(false, 0.3F);
-        hSpeed = hSpeed * (freeCamera.isSprinting() ? 1.5 : 1.0);
+        double hSpeed = horizontalSpeed * 0.01 * (freeCamera.isSprinting() ? 1.5 : 1.0);
+        double vSpeed = verticalSpeed * 0.01;
 
         boolean straight = false;
         if (freeCamera.input.pressingForward) {

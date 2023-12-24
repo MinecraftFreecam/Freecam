@@ -17,6 +17,7 @@ public class ModConfig implements ConfigData {
 
     public static void init() {
         AutoConfig.register(ModConfig.class, JanksonConfigSerializer::new);
+        ConfigRequirements.init(AutoConfig.getGuiRegistry(ModConfig.class));
         INSTANCE = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
     }
 
@@ -29,10 +30,12 @@ public class ModConfig implements ConfigData {
         public FlightMode flightMode = FlightMode.DEFAULT;
 
         @ConfigEntry.Gui.Tooltip
-        public double horizontalSpeed = 1.0;
+        @ConfigEntry.BoundedDiscrete(min = 1, max = 500)
+        public int horizontalSpeed = 100;
 
         @ConfigEntry.Gui.Tooltip
-        public double verticalSpeed = 1.0;
+        @ConfigEntry.BoundedDiscrete(min = 1, max = 500)
+        public int verticalSpeed = 100;
     }
 
     @ConfigEntry.Gui.Tooltip
@@ -40,10 +43,10 @@ public class ModConfig implements ConfigData {
     public CollisionConfig collision = new CollisionConfig();
     public static class CollisionConfig {
         @ConfigEntry.Gui.Tooltip
-        public boolean ignoreTransparent = true;
+        public boolean ignoreTransparent = false;
 
         @ConfigEntry.Gui.Tooltip
-        public boolean ignoreOpenable = true;
+        public boolean ignoreOpenable = false;
 
         @ConfigEntry.Gui.Tooltip(count = 2)
         public boolean ignoreAll = true;
@@ -103,49 +106,52 @@ public class ModConfig implements ConfigData {
     }
 
     public enum FlightMode implements SelectionListEntry.Translatable {
-        CREATIVE("text.autoconfig.freecam.option.movement.flightMode.creative"),
-        DEFAULT("text.autoconfig.freecam.option.movement.flightMode.default");
+        CREATIVE("creative"),
+        DEFAULT("default");
 
-        private final String name;
+        private final String key;
 
         FlightMode(String name) {
-            this.name = name;
+            this.key = "text.autoconfig.freecam.option.movement.flightMode." + name;
         }
 
-        public String getKey() {
-            return name;
+        @Override
+        public @NotNull String getKey() {
+            return key;
         }
     }
 
     public enum InteractionMode implements SelectionListEntry.Translatable {
-        CAMERA("text.autoconfig.freecam.option.utility.interactionMode.camera"),
-        PLAYER("text.autoconfig.freecam.option.utility.interactionMode.player");
+        CAMERA("camera"),
+        PLAYER("player");
 
-        private final String name;
+        private final String key;
 
         InteractionMode(String name) {
-            this.name = name;
+            this.key = "text.autoconfig.freecam.option.utility.interactionMode." + name;
         }
 
-        public String getKey() {
-            return name;
+        @Override
+        public @NotNull String getKey() {
+            return key;
         }
     }
 
     public enum Perspective implements SelectionListEntry.Translatable {
-        FIRST_PERSON("text.autoconfig.freecam.option.visual.perspective.firstPerson"),
-        THIRD_PERSON("text.autoconfig.freecam.option.visual.perspective.thirdPerson"),
-        THIRD_PERSON_MIRROR("text.autoconfig.freecam.option.visual.perspective.thirdPersonMirror"),
-        INSIDE("text.autoconfig.freecam.option.visual.perspective.inside");
+        FIRST_PERSON("firstPerson"),
+        THIRD_PERSON("thirdPerson"),
+        THIRD_PERSON_MIRROR("thirdPersonMirror"),
+        INSIDE("inside");
 
-        private final String name;
+        private final String key;
 
         Perspective(String name) {
-            this.name = name;
+            this.key = "text.autoconfig.freecam.option.visual.perspective." + name;
         }
 
-        public String getKey() {
-            return name;
+        @Override
+        public @NotNull String getKey() {
+            return key;
         }
     }
 }
