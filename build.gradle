@@ -1,75 +1,97 @@
 plugins {
-    id 'fabric-loom' version '1.0-SNAPSHOT'
-    id 'maven-publish'
+    id "architectury-plugin" version "3.4-SNAPSHOT"
+    id "dev.architectury.loom" version "1.4-SNAPSHOT" apply false
+    id "com.github.johnrengelman.shadow" version "7.1.2" apply false
 }
 
-sourceCompatibility = JavaVersion.VERSION_17
-targetCompatibility = JavaVersion.VERSION_17
-
-archivesBaseName = project.archives_base_name
-version = project.mod_version + "+" + project.mc_major_version
-group = project.maven_group
-
-repositories {
-    maven { url "https://maven.shedaniel.me/" }
-    maven { url "https://maven.terraformersmc.com/" }
+tasks.named('wrapper') {
+    // Use "all" so we get sources and javadoc too
+    distributionType = "all"
 }
 
-dependencies {
-    //to change the versions see the gradle.properties file
-    minecraft "com.mojang:minecraft:${project.mc_version}"
-    mappings "net.fabricmc:yarn:${project.yarn_mappings}:v2"
-    modImplementation "net.fabricmc:fabric-loader:${project.loader_version}"
-
-    // Fabric API. This is technically optional, but you probably want it anyway.
-    modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
-
-    modImplementation ("com.terraformersmc:modmenu:${project.modmenu_version}") {
-        exclude module: "fabric-api"
-    }
-
-    modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_version}") {
-        exclude(group: "net.fabricmc.fabric-api")
-    }
-    include "me.shedaniel.cloth:cloth-config-fabric:${project.cloth_version}"
-
-    // PSA: Some older mods, compiled on Loom 0.2.1, might have outdated Maven POMs.
-    // You may need to force-disable transitiveness on them.
+// Don't need these on the root project
+afterEvaluate {
+    tasks.jar.enabled = false
+    tasks.sourcesJar.enabled = false
 }
 
-processResources {
-    inputs.property "version", project.version
-
-    filesMatching("fabric.mod.json") {
-        expand "version": project.version
-    }
+architectury {
+    minecraft = rootProject.minecraft_version
 }
 
-// ensure that the encoding is set to UTF-8, no matter what the system default is
-// this fixes some edge cases with special characters not displaying correctly
-// see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
-tasks.withType(JavaCompile) {
-    options.encoding = "UTF-8"
-}
+subprojects {
+    apply plugin: "dev.architectury.loom"
 
-jar {
-    from "LICENSE"
-}
+    loom {
+        accessWidenerPath = project(":common").file "src/main/resources/freecam.accesswidener"
 
-// configure the maven publication
-publishing {
-    publications {
-        mavenJava(MavenPublication) {
-            // add all the jars that should be included when publishing to maven
-            artifact(remapJar) {
-                builtBy remapJar
+        runs {
+            client {
+                // Pretty run-config name
+                // Note: we can't disable the (:path) suffix
+                // https://github.com/architectury/architectury-loom/blob/5b3e7c72b665f7eb38c23ceb677027acdc867398/src/main/java/net/fabricmc/loom/configuration/ide/RunConfig.java#L117
+                configName "Run"
             }
+            loggedIn {
+                inherit client
+                configName "Run logged in"
+                programArg "--msa"
+                if (project.path.contains("forge")) {
+                    forgeTemplate "client"
+                }
+            }
+            remove server // We only need client runs
         }
+
+        silentMojangMappingsLicense()
     }
 
-    // select the repositories you want to publish to
+    dependencies {
+        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+        mappings loom.officialMojangMappings()
+        modLocalRuntime "com.ptsmods:devlogin:${rootProject.devlogin_version}"
+    }
+}
+
+allprojects {
+    apply plugin: "java"
+    apply plugin: "architectury-plugin"
+    apply plugin: "maven-publish"
+
+    version = "${project.mod_version}+${project.minecraft_version}"
+    group = rootProject.maven_group
+    base {
+        // Format archive names, e.g. 'freecam-fabric-1.2.1.1+1.20.2.jar'
+        archivesName = rootProject.name + project.path.replaceAll(':', '-')
+    }
+
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+
     repositories {
-        // uncomment to publish to the local maven
-        // mavenLocal()
+        // Add repositories to retrieve artifacts from in here.
+        // You should only use this when depending on other mods because
+        // Loom adds the essential maven repositories to download Minecraft and libraries from automatically.
+        // See https://docs.gradle.org/current/userguide/declaring_repositories.html
+        // for more information about repositories.
+        mavenCentral()
+        maven { url "https://maven.shedaniel.me/" }
+        maven { url "https://maven.terraformersmc.com/" }
+    }
+
+    // ensure that the encoding is set to UTF-8, no matter what the system default is
+    // this fixes some edge cases with special characters not displaying correctly
+    // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
+    tasks.withType(JavaCompile) {
+        options.encoding = "UTF-8"
+        options.release = 17
+    }
+
+    java {
+        withSourcesJar()
+    }
+
+    jar {
+        from "LICENSE"
     }
 }
