@@ -9,6 +9,12 @@ tasks.named('wrapper') {
     distributionType = "all"
 }
 
+// Don't need these on the root project
+afterEvaluate {
+    tasks.jar.enabled = false
+    tasks.sourcesJar.enabled = false
+}
+
 architectury {
     minecraft = rootProject.minecraft_version
 }
@@ -57,8 +63,6 @@ allprojects {
     base {
         // Format archive names, e.g. 'freecam-fabric-1.2.1.1+1.20.2.jar'
         archivesName = rootProject.name + project.path.replaceAll(':', '-')
-        // Output all archives in root `build/libs`
-        libsDirectory = rootProject.layout.buildDirectory.dir "libs"
     }
 
     sourceCompatibility = JavaVersion.VERSION_17

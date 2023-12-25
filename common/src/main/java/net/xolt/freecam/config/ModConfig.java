@@ -7,8 +7,7 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDisplayOption;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
-
-import static me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDisplayOption;
+import net.xolt.freecam.variant.api.BuildVariant;
 
 @Config(name = "freecam")
 public class ModConfig implements ConfigData {
@@ -18,6 +17,7 @@ public class ModConfig implements ConfigData {
 
     public static void init() {
         AutoConfig.register(ModConfig.class, JanksonConfigSerializer::new);
+        ConfigExtensions.init(AutoConfig.getGuiRegistry(ModConfig.class));
         INSTANCE = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
     }
 
@@ -46,8 +46,10 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.Tooltip
         public boolean ignoreOpenable = true;
 
-        @ConfigEntry.Gui.Tooltip(count = 2)
-        public boolean ignoreAll = true;
+        @VariantTooltip(variant = "normal", count = 2)
+        @VariantTooltip(variant = "modrinth", count = 3)
+        // Default to true, when not running a modrinth build
+        public boolean ignoreAll = !BuildVariant.getInstance().name().equals("modrinth");
 
         @ConfigEntry.Gui.Tooltip(count = 2)
         public boolean alwaysCheck = false;
@@ -81,10 +83,11 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.Tooltip
         public boolean disableOnDamage = true;
 
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @VariantTooltip(count = 2)
         public boolean freezePlayer = false;
 
-        @ConfigEntry.Gui.Tooltip(count = 2)
+        @VariantTooltip(variant = "normal", count = 2)
+        @VariantTooltip(variant = "modrinth", count = 3)
         public boolean allowInteract = false;
 
         @ConfigEntry.Gui.Tooltip

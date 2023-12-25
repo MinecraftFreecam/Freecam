@@ -12,6 +12,7 @@ import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.CollisionWhitelist;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.util.FreeCamera;
+import net.xolt.freecam.variant.api.BuildVariant;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,7 +32,7 @@ public abstract class BlockStateBaseMixin {
                 return;
             }
             // Ignore all collisions
-            if (ModConfig.INSTANCE.collision.ignoreAll) {
+            if (ModConfig.INSTANCE.collision.ignoreAll && BuildVariant.getInstance().cheatsPermitted()) {
                 cir.setReturnValue(Shapes.empty());
             }
             // Ignore transparent block collisions

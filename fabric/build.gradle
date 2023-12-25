@@ -1,6 +1,11 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import net.fabricmc.loom.task.RemapJarTask
+
 plugins {
     id "com.github.johnrengelman.shadow"
 }
+
+def variants = rootProject.build_variants.split(',')
 
 architectury {
     platformSetupLoomIde()
@@ -28,35 +33,88 @@ dependencies {
     }
     include "me.shedaniel.cloth:cloth-config-fabric:${rootProject.cloth_version}"
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
+    common project(path: ":common", configuration: "namedElements")
+    shadowCommon project(path: ":common", configuration: "transformProductionFabric")
+
+    shadowCommon project(":variant:api")
 }
 
-processResources {
-    inputs.property "version", project.mod_version
-
-    filesMatching("fabric.mod.json") {
-        expand "version": project.mod_version
+variants.each { variant ->
+    // Create a variant source set & shadow config
+    def set = sourceSets.create(variant) {
+        java.srcDirs = [ ]
+        resources.srcDirs = [ ]
+        compileClasspath += sourceSets.main.compileClasspath
+        runtimeClasspath += sourceSets.main.runtimeClasspath
     }
-}
+    def shadowConfig = configurations.create("${variant}Shadow")
 
-shadowJar {
-    exclude "architectury.common.json"
+    // Add a dependency on metadata
+    def metadata = dependencies.project(path: ":metadata", configuration: "fabric${variant == "normal" ? "" : variant.capitalize()}")
+    dependencies.add(set.implementationConfigurationName, metadata)
+    dependencies.add(shadowConfig.name, metadata)
 
-    configurations = [project.configurations.shadowCommon]
-    archiveClassifier = "dev-shadow"
-}
+    // Add a dependency on variant's service provider
+    dependencies.add(set.implementationConfigurationName, dependencies.project(path: ":variant:${variant}", configuration: "namedElements"))
+    dependencies.add(shadowConfig.name, dependencies.project(path: ":variant:${variant}", configuration: "transformProductionFabric"))
 
-remapJar {
-    injectAccessWidener = true
-    input.set shadowJar.archiveFile
-    dependsOn shadowJar
-}
+    // Configure/create a run config
+    def run
+    if (variant == "normal") {
+        run = loom.runs.client
+    } else {
+        run = loom.runs.create("${variant}Client") {
+            inherit loom.runs.client
+            configName = "Run $variant"
+            source set
+        }
+    }
+    run.source set
 
-sourcesJar {
-    def commonSources = project(":common").sourcesJar
-    dependsOn commonSources
-    from commonSources.archiveFile.map { zipTree(it) }
+    // Configure/create jar tasks
+    def shadowJarTask
+    def remapJarTask
+    def appendix
+    if (variant == "normal") {
+        shadowJarTask = tasks.shadowJar
+        remapJarTask = tasks.remapJar
+        appendix = ""
+    } else {
+        shadowJarTask = tasks.create("shadow${variant.capitalize()}Jar", ShadowJar)
+        remapJarTask = tasks.create("remap${variant.capitalize()}Jar", RemapJarTask)
+        appendix = variant
+    }
+
+    shadowJarTask.configure {
+        group = "shadow"
+        from sourceSets.main.output
+        from set.output
+        exclude "architectury.common.json"
+
+        manifest {
+            inheritFrom tasks.jar.manifest
+        }
+
+        configurations = [
+                project.configurations.shadowCommon,
+                shadowConfig
+        ]
+
+        archiveAppendix = appendix
+        archiveClassifier = "dev-shadow"
+    }
+
+    remapJarTask.configure {
+        group = "loom"
+        inputFile = shadowJarTask.archiveFile
+        dependsOn shadowJarTask
+        injectAccessWidener = true
+        archiveAppendix = appendix
+        // Output in root `build/libs`
+        destinationDirectory = rootProject.layout.buildDirectory.dir "libs"
+    }
+
+    tasks.build.dependsOn remapJarTask
 }
 
 components.java {
