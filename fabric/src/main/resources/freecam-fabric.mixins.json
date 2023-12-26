@@ -1,0 +1,12 @@
+{
+  "required": true,
+  "package": "net.xolt.freecam.fabric.mixins",
+  "compatibilityLevel": "JAVA_16",
+  "minVersion": "0.8",
+  "client": [
+    "LevelRendererMixin"
+  ],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}
