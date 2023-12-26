@@ -1,0 +1,35 @@
+{
+  "schemaVersion": 1,
+  "id": "${mod_id}",
+  "version": "${version}",
+  "name": "${name}",
+  "description": "${description}",
+  "authors": [
+    ${json_authors}
+  ],
+  "contact": {
+    "homepage": "${homepage_url}",
+    "sources": "${source_code_url}",
+    "issues": "${issue_tracker_url}"
+  },
+  "license": "${licence}",
+  "icon": "icon.png",
+  "environment": "client",
+  "entrypoints": {
+    "client": [
+      "net.xolt.freecam.fabric.FreecamFabric"
+    ],
+    "modmenu": [
+      "net.xolt.freecam.fabric.ModMenuIntegration"
+    ]
+  },
+  "mixins": [
+    "freecam-fabric.mixins.json",
+    "freecam-common.mixins.json"
+  ],
+  "depends": {
+    "fabricloader": "${fabric_loader_req}",
+    "fabric": "*",
+    "minecraft": "${fabric_mc_req}"
+  }
+}
