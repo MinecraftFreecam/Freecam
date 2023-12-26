@@ -5,8 +5,7 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DoorBlock;
 import net.minecraft.world.level.block.FenceGateBlock;
 import net.minecraft.world.level.block.IronBarsBlock;
-import net.minecraft.world.level.block.StainedGlassBlock;
-import net.minecraft.world.level.block.TintedGlassBlock;
+import net.minecraft.world.level.block.TransparentBlock;
 import net.minecraft.world.level.block.TrapDoorBlock;
 import java.util.Collection;
 import java.util.List;
@@ -14,8 +13,7 @@ import java.util.List;
 public class CollisionWhitelist {
 
     private static final Collection<Class<? extends Block>> transparentWhitelist = List.of(
-            StainedGlassBlock.class,
-            TintedGlassBlock.class,
+            TransparentBlock.class,
             IronBarsBlock.class,
             BarrierBlock.class);
 
