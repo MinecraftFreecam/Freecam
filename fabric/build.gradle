@@ -30,7 +30,6 @@ dependencies {
 
     modApi("me.shedaniel.cloth:cloth-config-fabric:${rootProject.cloth_version}") {
         exclude(group: "net.fabricmc.fabric-api")
-        // Cloth includes fabric-loader 0.13.1 for some reason?
         exclude(group: "net.fabricmc", module: "fabric-loader")
     }
     include "me.shedaniel.cloth:cloth-config-fabric:${rootProject.cloth_version}"
