@@ -28,3 +28,10 @@ mandatory = true
 versionRange = "${forge_mc_req}"
 ordering = "NONE"
 side = "CLIENT"
+
+[[dependencies.${mod_id}]]
+modId = "cloth-config"
+mandatory = true
+versionRange = "${forge_cloth_req}"
+ordering = "NONE"
+side = "CLIENT"
