@@ -12,7 +12,6 @@ public class FreecamPosition {
     public double z;
     public float pitch;
     public float yaw;
-    public Pose pose;
 
     private final Quaternion rotation = new Quaternion(0.0F, 0.0F, 0.0F, 1.0F);
     private final Vector3f verticalPlane = new Vector3f(0.0F, 1.0F, 0.0F);
@@ -21,9 +20,8 @@ public class FreecamPosition {
 
     public FreecamPosition(Entity entity) {
         x = entity.getX();
-        y = entity.getY();
+        y = getSwimmingY(entity);
         z = entity.getZ();
-        pose = entity.getPose();
         setRotation(entity.getYRot(), entity.getXRot());
     }
 
@@ -69,19 +67,14 @@ public class FreecamPosition {
            + (double) diagonalPlane.z()   * right;
     }
 
-    public static FreecamPosition getSwimmingPosition(Entity entity) {
-        FreecamPosition position = new FreecamPosition(entity);
-
-        // Set pose to swimming, adjusting y position so eye-height doesn't change
-        if (position.pose != Pose.SWIMMING) {
-            position.y += entity.getEyeHeight(position.pose) - entity.getEyeHeight(Pose.SWIMMING);
-            position.pose = Pose.SWIMMING;
-        }
-
-        return position;
-    }
-
     public ChunkPos getChunkPos() {
         return new ChunkPos((int) (x / 16), (int) (z / 16));
+    }
+
+    private static double getSwimmingY(Entity entity) {
+        if (entity.getPose() == Pose.SWIMMING) {
+            return entity.getY();
+        }
+        return entity.getY() - entity.getEyeHeight(Pose.SWIMMING) + entity.getEyeHeight(entity.getPose());
     }
 }

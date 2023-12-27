@@ -1,3 +1,4 @@
 accessWidener   v2  named
 
+#Used by EntityRendererMixin
 accessible field net/minecraft/client/renderer/entity/EntityRenderDispatcher shouldRenderShadow Z

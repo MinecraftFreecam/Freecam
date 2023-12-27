@@ -32,7 +32,7 @@ public abstract class LivingEntityMixin {
     private void onSetHealth(float health, CallbackInfo ci) {
         if (Freecam.isEnabled() && ModConfig.INSTANCE.utility.disableOnDamage && this.equals(MC.player)) {
             if (!MC.player.isCreative() && getHealth() > health) {
-                Freecam.setDisableNextTick(true);
+                Freecam.disableNextTick();
             }
         }
     }
