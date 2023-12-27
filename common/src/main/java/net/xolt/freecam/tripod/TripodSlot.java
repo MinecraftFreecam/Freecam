@@ -10,7 +10,7 @@ public enum TripodSlot {
 
     @Override
     public String toString() {
-        return this == NONE ? "None" : "#%d".formatted(ordinal());
+        return this == NONE ? "None" : String.format("#%d", ordinal());
     }
 
     public static boolean inRange(int number) {
@@ -19,7 +19,7 @@ public enum TripodSlot {
 
     public static TripodSlot valueOf(int number) throws IndexOutOfBoundsException {
         if (inRange(number)) {
-            throw new IndexOutOfBoundsException("Cannot get TripodSlot for number %d: must be %d-%d.".formatted(number, MIN, MAX));
+            throw new IndexOutOfBoundsException(String.format("Cannot get TripodSlot for number %d: must be %d-%d.", number, MIN, MAX));
         }
         return valueOfUnsafe(number);
     }
