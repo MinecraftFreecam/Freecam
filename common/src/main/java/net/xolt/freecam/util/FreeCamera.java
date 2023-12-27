@@ -33,20 +33,20 @@ public class FreeCamera extends LocalPlayer {
     };
 
     public FreeCamera(int id) {
-        this(id, FreecamPosition.getSwimmingPosition(MC.player));
-    }
-
-    public FreeCamera(int id, FreecamPosition position) {
         super(MC, MC.level, NETWORK_HANDLER, MC.player.getStats(), MC.player.getRecipeBook(), false, false);
 
         setId(id);
-        applyPosition(position);
+        setPose(Pose.SWIMMING);
         abilities.flying = true;
         input = new KeyboardInput(MC.options);
     }
 
+    @Override
+    public void copyPosition(Entity entity) {
+        applyPosition(new FreecamPosition(entity));
+    }
+
     public void applyPosition(FreecamPosition position) {
-        super.setPose(position.pose);
         moveTo(position.x, position.y, position.z, position.yaw, position.pitch);
         xBob = xRot;
         yBob = yRot;
