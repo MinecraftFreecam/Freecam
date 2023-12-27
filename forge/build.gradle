@@ -43,7 +43,7 @@ dependencies {
     forge "net.minecraftforge:forge:${rootProject.forge_version}"
 
     modApi "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_version}"
-    include "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_version}"
+    //include "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_version}"
 
     common project(path: ":common", configuration: "namedElements")
     shadowCommon project(path: ":common", configuration: "transformProductionForge")
