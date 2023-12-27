@@ -3,12 +3,12 @@ package net.xolt.freecam.forge;
 import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
-import net.minecraftforge.fml.ExtensionPoint;
-import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
+import net.minecraftforge.fml.ExtensionPoint;
 import net.minecraftforge.fml.ModLoadingContext;
+import net.minecraftforge.fml.client.registry.ClientRegistry;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
@@ -39,8 +39,8 @@ public class FreecamForge {
         public static void onTick(TickEvent.ClientTickEvent event) {
             final Minecraft client = Minecraft.getInstance();
             switch (event.phase) {
-                case START -> Freecam.preTick(client);
-                case END -> Freecam.postTick(client);
+                case START: Freecam.preTick(client); break;
+                case END: Freecam.postTick(client); break;
             }
         }
     }

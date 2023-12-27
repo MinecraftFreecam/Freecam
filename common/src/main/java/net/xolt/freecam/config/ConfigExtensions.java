@@ -66,7 +66,7 @@ public class ConfigExtensions {
     @Contract(mutates = "param1")
     private static void applyVariantTooltip(List<AbstractConfigListEntry> guis, List<VariantTooltip> tooltipVariants, String i18n) {
         String variant = BuildVariant.getInstance().name();
-        List<String> variants = List.of(variant, "all");
+        List<String> variants = Arrays.asList(variant, "all");
 
         // Number of tooltip lines defined for the current build variant (or "all")
         // (throw if there isn't exactly one matching definition)
@@ -74,9 +74,9 @@ public class ConfigExtensions {
                 .filter(entry -> variants.contains(entry.variant()))
                 .mapToInt(VariantTooltip::count)
                 .reduce((prev, next) -> {
-                    throw new IllegalArgumentException("%s: Multiple variants matching \"%s\" declared on \"%s\".".formatted(VariantTooltip.class.getSimpleName(), variant, i18n));
+                    throw new IllegalArgumentException(String.format("%s: Multiple variants matching \"%s\" declared on \"%s\".", VariantTooltip.class.getSimpleName(), variant, i18n));
                 })
-                .orElseThrow(() -> new IllegalStateException("%s: No variants matching \"%s\" declared on \"%s\".".formatted(VariantTooltip.class.getSimpleName(), variant, i18n)));
+                .orElseThrow(() -> new IllegalStateException(String.format("%s: No variants matching \"%s\" declared on \"%s\".", VariantTooltip.class.getSimpleName(), variant, i18n)));
 
         // Add tooltip to each of the fields guis that support tooltips
         // (except text entries)
@@ -125,9 +125,9 @@ public class ConfigExtensions {
      * @see #getVariantTooltip(String, String, int)
      */
     private static Component getVariantTooltipLine(String variant, String i18n, int index) {
-        String key = "%s.@%sTooltip".formatted(i18n, StringUtils.capitalize(variant));
+        String key = String.format("%s.@%sTooltip", i18n, StringUtils.capitalize(variant));
         if (index > -1) {
-            key += "[%d]".formatted(index);
+            key += String.format("[%d]", index);
         }
         // FIXME how will this behave for untranslated languages?
         if (Language.getInstance().has(key)) {
