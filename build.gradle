@@ -49,7 +49,7 @@ subprojects {
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
         mappings loom.officialMojangMappings()
-        modLocalRuntime "com.ptsmods:devlogin:${rootProject.devlogin_version}"
+//        modLocalRuntime "com.ptsmods:devlogin:${rootProject.devlogin_version}"
     }
 }
 
