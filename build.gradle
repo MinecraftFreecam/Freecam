@@ -47,8 +47,22 @@ subprojects {
     }
 
     dependencies {
+        def parchmentAppendix
+        def parchmentVersion
+        def parts = rootProject.parchment_version.split('-')
+        if (parts.size() == 2) {
+            parchmentAppendix = parts[0]
+            parchmentVersion = parts[1]
+        } else {
+            parchmentAppendix = rootProject.minecraft_version
+            parchmentVersion = parts[0]
+        }
+
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-        mappings loom.officialMojangMappings()
+        mappings loom.layered() {
+            officialMojangMappings()
+            parchment("org.parchmentmc.data:parchment-${parchmentAppendix}:${parchmentVersion}@zip")
+        }
 //        modLocalRuntime "com.ptsmods:devlogin:${rootProject.devlogin_version}"
     }
 }
@@ -75,6 +89,7 @@ allprojects {
         // See https://docs.gradle.org/current/userguide/declaring_repositories.html
         // for more information about repositories.
         mavenCentral()
+        maven { url "https://maven.parchmentmc.org/" }
         maven { url "https://maven.neoforged.net/releases/" }
         maven { url "https://maven.shedaniel.me/" }
         maven { url "https://maven.terraformersmc.com/" }
