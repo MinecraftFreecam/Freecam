@@ -1,6 +1,9 @@
+import net.fabricmc.loom.task.RemapJarTask
+
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
     id "dev.architectury.loom" version "1.4-SNAPSHOT" apply false
+    id "com.hypherionmc.modutils.modpublisher" version "2.0.5" apply false
     id "com.github.johnrengelman.shadow" version "7.1.2" apply false
     id "org.jetbrains.changelog" version "2.2.0"
 }
@@ -125,5 +128,41 @@ subprojects {
             officialMojangMappings()
             parchment("org.parchmentmc.data:parchment-${parchmentAppendix}:${parchmentVersion}@zip")
         }
+    }
+
+    if (rootProject.enabled_platforms.split(',').contains project.name) {
+        apply plugin: "com.hypherionmc.modutils.modpublisher"
+
+        // Ensure this task exists, since we need to publish its output
+        tasks.maybeCreate("remapModrinthJar", RemapJarTask)
+
+        publisher {
+            curseID = "557076"
+            modrinthID = "XeEZ3fK2"
+
+            // Format display name "[Fabric] Freecam 1.2.2 for MC 1.20.4"
+            displayName = "[${project.name.capitalize()}] ${rootProject.name.capitalize()} ${rootProject.mod_version} for MC ${rootProject.minecraft_version}"
+            version = project.version
+            versionType = rootProject.release_type
+            // TODO we could set a list of compatible versions, not just the one we're building against:
+            gameVersions = [ rootProject.minecraft_version ]
+            curseEnvironment = "client"
+            loaders = [ project.name ]
+            changelog = ""
+
+            artifact = tasks.remapJar
+            setPlatformArtifact "modrinth", tasks.remapModrinthJar
+
+            [ curseDepends, modrinthDepends ].each {
+                it.embedded "cloth-config"
+            }
+
+            apiKeys {
+                curseforge findProperty("curseforge_token") ?: System.getenv("CURSEFORGE_TOKEN") ?: ""
+                modrinth findProperty("modrinth_token") ?: System.getenv("MODRINTH_TOKEN") ?: ""
+            }
+        }
+
+        tasks.publish.dependsOn tasks.publishMod
     }
 }
