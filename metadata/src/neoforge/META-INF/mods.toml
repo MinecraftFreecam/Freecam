@@ -23,14 +23,14 @@ config = "freecam-neoforge.mixins.json"
 
 [[dependencies.${mod_id}]]
 modId = "neoforge"
-mandatory = true
 versionRange = "${forge_req}"
+type = "required"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.${mod_id}]]
 modId = "minecraft"
-mandatory = true
 versionRange = "${forge_mc_req}"
+type = "required"
 ordering = "NONE"
 side = "CLIENT"
