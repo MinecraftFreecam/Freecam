@@ -15,8 +15,14 @@ description = '''
 ${description}
 '''
 
+[[mixins]]
+config = "freecam-common.mixins.json"
+
+[[mixins]]
+config = "freecam-neoforge.mixins.json"
+
 [[dependencies.${mod_id}]]
-modId = "forge"
+modId = "neoforge"
 mandatory = true
 versionRange = "${forge_req}"
 ordering = "NONE"

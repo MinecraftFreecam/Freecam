@@ -1,6 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import net.fabricmc.loom.task.RemapJarTask
-import net.fabricmc.loom.util.aw2at.Aw2At
 
 plugins {
     id "com.github.johnrengelman.shadow"
@@ -10,25 +9,7 @@ def variants = rootProject.build_variants.split(',')
 
 architectury {
     platformSetupLoomIde()
-    forge()
-}
-
-loom {
-    forge {
-        convertAccessWideners = true
-        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
-
-        mixinConfig "freecam-common.mixins.json"
-        mixinConfig "freecam-forge.mixins.json"
-    }
-}
-
-afterEvaluate {
-    // FIXME: arch-loom only does this for tasks.remapJarTask,
-    //      meaning our variant tasks don't get AccessTransformers.
-    tasks.withType(RemapJarTask).each {
-        Aw2At.setup(project, it)
-    }
+    neoForge()
 }
 
 configurations {
@@ -36,17 +17,17 @@ configurations {
     shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
-    developmentForge.extendsFrom common
+    developmentNeoForge.extendsFrom common
 }
 
 dependencies {
-    forge "net.minecraftforge:forge:${rootProject.forge_version}"
+    neoForge "net.neoforged:neoforge:${rootProject.forge_version}"
 
-    modApi "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_version}"
-    include "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_version}"
+    modApi "me.shedaniel.cloth:cloth-config-neoforge:${rootProject.cloth_version}"
+    include "me.shedaniel.cloth:cloth-config-neoforge:${rootProject.cloth_version}"
 
     common project(path: ":common", configuration: "namedElements")
-    shadowCommon project(path: ":common", configuration: "transformProductionForge")
+    shadowCommon project(path: ":common", configuration: "transformProductionNeoForge")
 
     shadowCommon project(":variant:api")
 }
@@ -62,14 +43,14 @@ variants.each { variant ->
     def shadowConfig = configurations.create("${variant}Shadow")
 
     // Add a dependency on metadata
-    def metadata = dependencies.project(path: ":metadata", configuration: "forge${variant == "normal" ? "" : variant.capitalize()}")
+    def metadata = dependencies.project(path: ":metadata", configuration: "neoforge${variant == "normal" ? "" : variant.capitalize()}")
     dependencies.add(set.implementationConfigurationName, metadata)
     dependencies.add(shadowConfig.name, metadata)
 
     // Add a dependency on variant's service provider
     def spi = dependencies.project(path: ":variant:${variant}", configuration: "namedElements")
     dependencies.add(set.implementationConfigurationName, spi)
-    dependencies.add(shadowConfig.name, dependencies.project(path: ":variant:${variant}", configuration: "transformProductionForge"))
+    dependencies.add(shadowConfig.name, dependencies.project(path: ":variant:${variant}", configuration: "transformProductionNeoForge"))
 
     // Configure/create a run config
     def run
@@ -131,6 +112,10 @@ variants.each { variant ->
         inputFile = shadowJarTask.archiveFile
         dependsOn shadowJarTask
         archiveAppendix = appendix
+
+        // Transform the AccessWidener into an AccessTransformer
+        atAccessWideners.add loom.accessWidenerPath.get().asFile.name
+
         // Output in root `build/libs`
         destinationDirectory = rootProject.layout.buildDirectory.dir "libs"
     }
