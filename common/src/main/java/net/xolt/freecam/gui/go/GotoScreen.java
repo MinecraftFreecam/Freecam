@@ -2,7 +2,6 @@ package net.xolt.freecam.gui.go;
 
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
-import net.minecraft.client.gui.components.CycleButton;
 import net.minecraft.client.gui.components.Tooltip;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.layouts.FrameLayout;
@@ -16,6 +15,7 @@ import net.minecraft.util.FastColor;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.gui.textures.ScaledTexture;
+import net.xolt.freecam.gui.go.tabs.GotoScreenTab;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
@@ -35,7 +35,6 @@ public class GotoScreen extends Screen {
     private TargetsPane targets;
     private Button buttonBack;
     private Button buttonJump;
-    private CycleButton<ModConfig.Perspective> buttonPerspective;
     private boolean initialized;
 
     public GotoScreen() {
@@ -47,27 +46,17 @@ public class GotoScreen extends Screen {
         super.init();
 
         if (!initialized) {
-            targets = new TargetsPane(LIST_TOP, width, height);
+            targets = new TargetsPane(LIST_TOP, width, height, ModConfig.get().hidden.currentTab);
 
             buttonJump = Button.builder(Component.translatable("gui.freecam.goto.button.go"), button -> targets.gotoTarget())
                     .tooltip(Tooltip.create(Component.translatable("gui.freecam.goto.button.go.@Tooltip")))
                     .width(48)
                     .build();
 
-            buttonPerspective = CycleButton
-                    .builder((ModConfig.Perspective value) -> Component.translatable(value.getKey()))
-                    .withValues(ModConfig.Perspective.values())
-                    .withInitialValue(ModConfig.get().hidden.gotoPlayerPerspective)
-                    .withTooltip(value -> Tooltip.create(Component.translatable("gui.freecam.goto.button.perspective.@Tooltip")))
-                    .displayOnlyValue()
-                    .create(0, 0, 80, 20, null, (button, value) -> {
-                        ModConfig.get().hidden.gotoPlayerPerspective = value;
-                        ModConfig.save();
-                    });
-
             buttonBack = Button.builder(CommonComponents.GUI_BACK, button -> onClose()).width(48).build();
         }
 
+        targets.setTab(ModConfig.get().hidden.currentTab);
         targets.setSize(width, getListHeight());
 
         int innerWidth = GUI_WIDTH - 10;
@@ -82,7 +71,7 @@ public class GotoScreen extends Screen {
                 .paddingHorizontal(2);
 
         layout.addChild(buttonBack);
-        layout.addChild(buttonPerspective);
+        ModConfig.get().hidden.currentTab.extraButtons().forEach(layout::addChild);
         layout.addChild(buttonJump);
 
         positioner.arrangeElements();
@@ -137,6 +126,12 @@ public class GotoScreen extends Screen {
     @Override
     public boolean isPauseScreen() {
         return false;
+    }
+
+    public void setTab(GotoScreenTab tab) {
+        ModConfig.get().hidden.currentTab = tab;
+        ModConfig.save();
+        init();
     }
 
     // GUI height

@@ -9,6 +9,7 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDispla
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
 import net.minecraft.client.gui.screens.Screen;
+import net.xolt.freecam.gui.go.tabs.GotoScreenTab;
 import net.xolt.freecam.variant.api.BuildVariant;
 import org.jetbrains.annotations.NotNull;
 
@@ -125,6 +126,7 @@ public class ModConfig implements ConfigData {
     @ConfigEntry.Gui.Excluded
     public Hidden hidden = new Hidden();
     public static class Hidden {
+        public GotoScreenTab currentTab = GotoScreenTab.PLAYER;
         public Perspective gotoPlayerPerspective = Perspective.THIRD_PERSON;
     }
 

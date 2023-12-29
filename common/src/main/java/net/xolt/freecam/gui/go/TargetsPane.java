@@ -12,14 +12,15 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.gui.textures.ScaledTexture;
-import net.xolt.freecam.util.FreeCamera;
-import net.xolt.freecam.variant.api.BuildVariant;
+import net.xolt.freecam.gui.go.tabs.GotoScreenTab;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.glfw.GLFW;
 
-import java.util.*;
-import java.util.stream.Collectors;
+import java.util.List;
+import java.util.Locale;
+import java.util.Objects;
+import java.util.Optional;
 
 import static net.xolt.freecam.Freecam.MC;
 
@@ -39,11 +40,13 @@ public class TargetsPane extends AbstractContainerWidget implements Tickable {
     private final TargetListWidget list;
     private final List<AbstractWidget> children;
 
+    private GotoScreenTab currentTab;
     private String currentSearch;
 
-    public TargetsPane(int top, int width, int height) {
+    public TargetsPane(int top, int width, int height, GotoScreenTab tab) {
         super(0, top, width, height, Component.empty());
 
+        this.currentTab = tab;
         this.list = new TargetListWidget(top + LIST_Y_OFFSET, width, height - LIST_Y_OFFSET - 1, LIST_ITEM_HEIGHT);
         this.searchBox = new EditBox(MC.font, list.getRowWidth() - SEARCH_X_OFFSET - 1, SEARCH_HEIGHT, SEARCH_TEXT);
         this.searchBox.setPosition(renderX() + SEARCH_X_OFFSET, getY() + SEARCH_Y_OFFSET);
@@ -80,7 +83,7 @@ public class TargetsPane extends AbstractContainerWidget implements Tickable {
 
     @Override
     public void tick() {
-        list.replaceEntries(calculatePlayerEntries().stream()
+        list.replaceEntries(currentTab.provideEntriesFor(list).stream()
                 .filter(entry -> currentSearch == null
                         || currentSearch.isEmpty()
                         || entry.matchesSearch(currentSearch))
@@ -161,33 +164,16 @@ public class TargetsPane extends AbstractContainerWidget implements Tickable {
         return false;
     }
 
-    private List<TargetListEntry> calculatePlayerEntries() {
-        // Store the existing entries in a UUID map for easy lookup
-        Map<UUID, PlayerListEntry> currentEntries = list.children()
-                .parallelStream()
-                .filter(PlayerListEntry.class::isInstance)
-                .map(PlayerListEntry.class::cast)
-                .collect(Collectors.toUnmodifiableMap(PlayerListEntry::getUUID, entry -> entry));
-
-        // Map the in-range players into PlayerListEntries
-        // Use existing entries if possible
-        return MC.level.players()
-                .parallelStream()
-                .filter(player -> !(player instanceof FreeCamera))
-                .filter(player -> BuildVariant.getInstance().cheatsPermitted() || Objects.equals(MC.player, player)) // TODO check if player is visible
-                .map(player -> Objects.requireNonNullElseGet(
-                        currentEntries.get(player.getUUID()),
-                        () -> new PlayerListEntry(list, player)))
-                .map(TargetListEntry.class::cast)
-                .toList();
-    }
-
     private int renderWidth() {
         return list.getRowWidth() + 2;
     }
 
     private int renderX() {
         return (width - renderWidth()) / 2;
+    }
+
+    public void setTab(GotoScreenTab tab) {
+        this.currentTab = tab;
     }
 
     /**
