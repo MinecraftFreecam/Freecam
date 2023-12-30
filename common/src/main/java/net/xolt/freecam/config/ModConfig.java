@@ -9,6 +9,7 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDispla
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
 import net.xolt.freecam.config.gui.AutoConfigExtensions;
+import net.xolt.freecam.config.gui.ValidateRegex;
 import net.xolt.freecam.config.gui.VariantTooltip;
 import net.xolt.freecam.variant.api.BuildVariant;
 
@@ -64,6 +65,7 @@ public class ModConfig implements ConfigData {
         public static class CollisionWhitelist {
             @ConfigEntry.Gui.Tooltip(count = 2)
             public List<String> ids = new ArrayList<>();
+            @ValidateRegex
             @ConfigEntry.Gui.Tooltip(count = 2)
             public List<String> patterns = new ArrayList<>();
         }
