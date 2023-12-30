@@ -20,6 +20,7 @@ public class AutoConfigExtensions {
 
     public static void apply(Class<? extends ConfigData> configClass) {
         GuiRegistry registry = AutoConfig.getGuiRegistry(configClass);
+        ModBindingsConfigImpl.apply(registry);
         VariantTooltipImpl.apply(registry);
     }
 }
