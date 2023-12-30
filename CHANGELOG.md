@@ -9,6 +9,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Added
 
+- Added a way to configure key bindings from Freecam's config menu ([#143](https://github.com/MinecraftFreecam/Freecam/pull/143)).
+
 ### Changed
 
 - Movement speed options now use sliders instead of text fields ([#190](https://github.com/MinecraftFreecam/Freecam/pull/190)).

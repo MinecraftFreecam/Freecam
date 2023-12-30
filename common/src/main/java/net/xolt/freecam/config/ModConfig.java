@@ -9,6 +9,7 @@ import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
 import net.xolt.freecam.config.gui.AutoConfigExtensions;
 import net.xolt.freecam.config.gui.BoundedContinuous;
+import net.xolt.freecam.config.gui.ModBindingsConfig;
 import net.xolt.freecam.config.gui.VariantTooltip;
 import net.xolt.freecam.variant.api.BuildVariant;
 
@@ -22,6 +23,14 @@ public class ModConfig implements ConfigData {
         AutoConfig.register(ModConfig.class, JanksonConfigSerializer::new);
         AutoConfigExtensions.apply(ModConfig.class);
         INSTANCE = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+    }
+
+    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.CollapsibleObject
+    public ControlsConfig controls = new ControlsConfig();
+    public static class ControlsConfig {
+        @ModBindingsConfig
+        private Object keys;
     }
 
     @ConfigEntry.Gui.Tooltip
