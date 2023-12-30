@@ -21,7 +21,7 @@ configurations {
 }
 
 dependencies {
-    neoForge "net.neoforged:neoforge:${rootProject.forge_version}"
+    neoForge "net.neoforged:neoforge:${rootProject.neoforge_version}"
 
     modApi "me.shedaniel.cloth:cloth-config-neoforge:${rootProject.cloth_version}"
     include "me.shedaniel.cloth:cloth-config-neoforge:${rootProject.cloth_version}"

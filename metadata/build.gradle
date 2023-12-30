@@ -44,9 +44,9 @@ platforms.each { platform -> variants.each { variant ->
                 issue_tracker_url: project.issue_tracker_url,
                 fabric_loader_req: project.fabric_loader_req,
                 fabric_mc_req: project.fabric_mc_req,
-                forge_mc_req: project.forge_mc_req,
-                forge_loader_req: project.forge_loader_req,
-                forge_req: project.forge_req,
+                neoforge_mc_req: project.neoforge_mc_req,
+                neoforge_loader_req: project.neoforge_loader_req,
+                neoforge_req: project.neoforge_req,
         )
 
         def overrides = new TreeMap()

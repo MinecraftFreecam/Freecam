@@ -1,5 +1,5 @@
 modLoader = "javafml"
-loaderVersion = "${forge_loader_req}"
+loaderVersion = "${neoforge_loader_req}"
 issueTrackerURL = "${issue_tracker_url}"
 license = "${licence}"
 
@@ -23,14 +23,14 @@ config = "freecam-neoforge.mixins.json"
 
 [[dependencies.${mod_id}]]
 modId = "neoforge"
-versionRange = "${forge_req}"
+versionRange = "${neoforge_req}"
 type = "required"
 ordering = "NONE"
 side = "CLIENT"
 
 [[dependencies.${mod_id}]]
 modId = "minecraft"
-versionRange = "${forge_mc_req}"
+versionRange = "${neoforge_mc_req}"
 type = "required"
 ordering = "NONE"
 side = "CLIENT"
