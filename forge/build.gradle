@@ -1,6 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import net.fabricmc.loom.task.RemapJarTask
-import net.fabricmc.loom.util.aw2at.Aw2At
 
 plugins {
     id "com.github.johnrengelman.shadow"
@@ -15,19 +14,8 @@ architectury {
 
 loom {
     forge {
-        convertAccessWideners = true
-        extraAccessWideners.add loom.accessWidenerPath.get().asFile.name
-
         mixinConfig "freecam-common.mixins.json"
         mixinConfig "freecam-forge.mixins.json"
-    }
-}
-
-afterEvaluate {
-    // FIXME: arch-loom only does this for tasks.remapJarTask,
-    //      meaning our variant tasks don't get AccessTransformers.
-    tasks.withType(RemapJarTask).each {
-        Aw2At.setup(project, it)
     }
 }
 
@@ -131,6 +119,10 @@ variants.each { variant ->
         inputFile = shadowJarTask.archiveFile
         dependsOn shadowJarTask
         archiveAppendix = appendix
+
+        // Transform the AccessWidener into an AccessTransformer
+        atAccessWideners.add loom.accessWidenerPath.get().asFile.name
+
         // Output in root `build/libs`
         destinationDirectory = rootProject.layout.buildDirectory.dir "libs"
     }
