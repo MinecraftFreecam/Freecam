@@ -10,6 +10,8 @@
   "msg.freecam.closeTripod": "Closing camera %s",
   "msg.freecam.tripodReset": "Reset camera %s",
   "text.autoconfig.freecam.title": "Freecam Options",
+  "text.autoconfig.freecam.option.controls": "Key Bindings",
+  "text.autoconfig.freecam.option.controls.@Tooltip": "Freecam key bindings.",
   "text.autoconfig.freecam.option.movement": "Movement Options",
   "text.autoconfig.freecam.option.movement.@Tooltip": "How the camera moves.",
   "text.autoconfig.freecam.option.movement.flightMode": "Flight Mode",
