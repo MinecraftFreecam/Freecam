@@ -7,20 +7,21 @@
     "BlockStateBaseMixin",
     "BubbleColumnAmbientSoundHandlerMixin",
     "CameraMixin",
-    "ConnectionMixin",
-    "LocalPlayerMixin",
-    "MultiPlayerGameModeMixin",
     "ClientPacketListenerMixin",
+    "ConnectionMixin",
     "EntityMixin",
     "EntityRenderDispatcherMixin",
     "EntityRendererMixin",
-    "OptionsMixin",
     "GameRendererMixin",
-    "ItemInHandRendererMixin",
     "GuiMixin",
+    "ItemInHandRendererMixin",
+    "LevelRendererMixin",
     "LightTextureMixin",
     "LivingEntityMixin",
-    "MinecraftMixin"
+    "LocalPlayerMixin",
+    "MinecraftMixin",
+    "MultiPlayerGameModeMixin",
+    "OptionsMixin"
   ],
   "injectors": {
     "defaultRequire": 1
