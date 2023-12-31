@@ -35,6 +35,7 @@ public class AutoConfigExtensions {
         VariantTooltipImpl.apply(registry);
         ValidateRegexImpl.apply(registry);
         BoundedContinuousImpl.apply(registry);
+        CollisionWhitelistDependencies.apply(registry);
         ServerRestrictionDependencies.apply(registry);
     }
 
