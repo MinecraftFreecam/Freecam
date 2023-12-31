@@ -12,6 +12,10 @@ import net.xolt.freecam.config.gui.BoundedContinuous;
 import net.xolt.freecam.config.gui.ModBindingsConfig;
 import net.xolt.freecam.config.gui.VariantTooltip;
 import net.xolt.freecam.variant.api.BuildVariant;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Config(name = "freecam")
 public class ModConfig implements ConfigData {
@@ -111,6 +115,19 @@ public class ModConfig implements ConfigData {
 
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.CollapsibleObject
+    public ServerConfig servers = new ServerConfig();
+    public static class ServerConfig {
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
+        public ServerRestriction mode = ServerRestriction.NONE;
+
+        // These must be mutable lists, so no Collections.emptyList()
+        public List<String> whitelist = new ArrayList<>();
+        public List<String> blacklist = new ArrayList<>();
+    }
+
+    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.CollapsibleObject
     public NotificationConfig notification = new NotificationConfig();
     public static class NotificationConfig {
         @ConfigEntry.Gui.Tooltip
@@ -167,6 +184,15 @@ public class ModConfig implements ConfigData {
         @Override
         public @NotNull String getKey() {
             return key;
+        }
+    }
+
+    public enum ServerRestriction implements SelectionListEntry.Translatable {
+        NONE, WHITELIST, BLACKLIST;
+
+        @Override
+        public @NotNull String getKey() {
+            return "text.autoconfig.freecam.option.servers.mode." + toString().toLowerCase();
         }
     }
 }
