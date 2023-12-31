@@ -7,6 +7,9 @@ import me.shedaniel.autoconfig.gui.DefaultGuiTransformers;
 import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 
+import java.lang.reflect.Field;
+import java.util.function.Predicate;
+
 /**
  * Extensions and modifications to AutoConfig.
  *
@@ -21,5 +24,10 @@ public class AutoConfigExtensions {
     public static void apply(Class<? extends ConfigData> configClass) {
         GuiRegistry registry = AutoConfig.getGuiRegistry(configClass);
         VariantTooltipImpl.apply(registry);
+        ServerRestrictionDependencies.apply(registry);
+    }
+
+    static Predicate<Field> isField(Class<?> declaringClass, String fieldName) {
+        return field -> field.getDeclaringClass().equals(declaringClass) && field.getName().equals(fieldName);
     }
 }
