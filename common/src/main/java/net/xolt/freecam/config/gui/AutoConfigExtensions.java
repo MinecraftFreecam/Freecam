@@ -30,6 +30,11 @@ public class AutoConfigExtensions {
         GuiRegistry registry = AutoConfig.getGuiRegistry(configClass);
         VariantTooltipImpl.apply(registry);
         ValidateRegexImpl.apply(registry);
+        CollisionWhitelistDependencies.apply(registry);
+    }
+
+    static Predicate<Field> isField(Class<?> declaringClass, String... fieldNames) {
+        return field -> field.getDeclaringClass().equals(declaringClass) && Arrays.asList(fieldNames).contains(field.getName());
     }
 
     static Predicate<Field> isArrayOrListOfType(Type... types) {
