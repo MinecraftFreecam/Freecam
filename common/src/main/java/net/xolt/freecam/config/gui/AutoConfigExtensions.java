@@ -8,6 +8,10 @@ import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.network.chat.Component;
 
+import java.lang.reflect.Field;
+import java.util.Arrays;
+import java.util.function.Predicate;
+
 /**
  * Extensions and modifications to AutoConfig.
  *
@@ -26,5 +30,10 @@ public class AutoConfigExtensions {
         ModBindingsConfigImpl.apply(registry);
         VariantTooltipImpl.apply(registry);
         BoundedContinuousImpl.apply(registry);
+        ServerRestrictionDependencies.apply(registry);
+    }
+
+    static Predicate<Field> isField(Class<?> declaringClass, String... fieldNames) {
+        return field -> field.getDeclaringClass().equals(declaringClass) && Arrays.asList(fieldNames).contains(field.getName());
     }
 }
