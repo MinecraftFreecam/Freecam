@@ -67,6 +67,7 @@ variants.each { variant ->
         }
     }
     run.source set
+    run.property "devauth.enabled", "false"
 
     // Tell forge all this is part of one mod
     run.mods.register(rootProject.name) {
