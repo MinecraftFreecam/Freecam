@@ -76,6 +76,13 @@ variants.each { variant ->
         dependency spi
     }
 
+    loom.runs.create("${variant == "normal" ? "" : variant}LoggedInClient") {
+        inherit run
+        forgeTemplate "client"
+        configName += " (logged in)"
+        property "devauth.enabled", "true"
+    }
+
     // Configure/create jar tasks
     def shadowJarTask
     def remapJarTask
