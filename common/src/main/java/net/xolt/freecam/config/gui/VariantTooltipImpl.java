@@ -68,13 +68,18 @@ class VariantTooltipImpl {
                 })
                 .orElseThrow(() -> new IllegalStateException("%s: No variants matching \"%s\" declared on \"%s\".".formatted(VariantTooltip.class.getSimpleName(), variant, i18n)));
 
+        // True if _any_ variant has multiple lines
+        boolean multiline = tooltipVariants.stream()
+                .mapToInt(VariantTooltip::count)
+                .anyMatch(c -> c > 1);
+
         // Add tooltip to each of the fields guis that support tooltips
         // (except text entries)
         guis.stream()
                 .filter(gui -> !(gui instanceof TextListEntry))
                 .filter(TooltipListEntry.class::isInstance)
                 .map(gui -> (TooltipListEntry<?>) gui)
-                .forEach(gui -> gui.setTooltipSupplier(getVariantTooltip(variant, i18n, count)));
+                .forEach(gui -> gui.setTooltipSupplier(getVariantTooltip(variant, i18n, count, multiline)));
     }
 
     /**
@@ -83,23 +88,20 @@ class VariantTooltipImpl {
      * @param variant the current build variant.
      * @param i18n    the config entry's translation key.
      * @param count   the number of lines in the tooltip.
+     * @param indexed whether the tooltip should use indexed syntax.
      * @return A tooltip supplier accepted by {@link TooltipListEntry#setTooltipSupplier(Supplier)}.
      * @see TooltipListEntry
      */
-    private static Supplier<Optional<Component[]>> getVariantTooltip(String variant, String i18n, int count) {
+    private static Supplier<Optional<Component[]>> getVariantTooltip(String variant, String i18n, int count, boolean indexed) {
         if (count == 0) {
             return Optional::empty;
         }
 
         // We can cache the tooltip since language can't change while config GUI is open.
-        Optional<Component[]> tooltip;
-        if (count == 1) {
-            tooltip = Optional.of(new Component[] { getVariantTooltipLine(variant, i18n, -1) });
-        } else {
-            tooltip = Optional.of(IntStream.range(0, count)
-                    .mapToObj(i -> getVariantTooltipLine(variant, i18n, i))
-                    .toArray(Component[]::new));
-        }
+        Optional<Component[]> tooltip = Optional.of(IntStream.range(0, count)
+                .mapToObj(i -> getVariantTooltipLine(variant, i18n, i, indexed))
+                .toArray(Component[]::new));
+
         return () -> tooltip;
     }
 
@@ -110,13 +112,14 @@ class VariantTooltipImpl {
      *
      * @param variant the current build variant.
      * @param i18n    the config entry's translation key.
-     * @param index   the line's index (or {@code -1}).
+     * @param index   the line's index.
+     * @param indexed whether to use indexed syntax.
      * @return A line of {@link Component text} to be included in a wider tooltip.
-     * @see #getVariantTooltip(String, String, int)
+     * @see #getVariantTooltip(String, String, int, boolean)
      */
-    private static Component getVariantTooltipLine(String variant, String i18n, int index) {
+    private static Component getVariantTooltipLine(String variant, String i18n, int index, boolean indexed) {
         String key = "%s.@%sTooltip".formatted(i18n, StringUtils.capitalize(variant));
-        if (index > -1) {
+        if (indexed) {
             key += "[%d]".formatted(index);
         }
         // FIXME how will this behave for untranslated languages?
@@ -127,6 +130,6 @@ class VariantTooltipImpl {
             return Component.empty();
         }
         // Fallback to default "@Tooltip" translation
-        return getVariantTooltipLine("", i18n, index);
+        return getVariantTooltipLine("", i18n, index, indexed);
     }
 }
