@@ -32,14 +32,6 @@ subprojects {
                 // https://github.com/architectury/architectury-loom/blob/5b3e7c72b665f7eb38c23ceb677027acdc867398/src/main/java/net/fabricmc/loom/configuration/ide/RunConfig.java#L117
                 configName "Run"
             }
-            loggedIn {
-                inherit client
-                configName "Run logged in"
-                programArg "--msa"
-                if (project.path.contains("forge")) {
-                    forgeTemplate "client"
-                }
-            }
             remove server // We only need client runs
         }
 
@@ -49,7 +41,6 @@ subprojects {
     dependencies {
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
         mappings loom.officialMojangMappings()
-//        modLocalRuntime "com.ptsmods:devlogin:${rootProject.devlogin_version}"
     }
 }
 
@@ -78,6 +69,7 @@ allprojects {
         maven { url "https://maven.neoforged.net/releases/" }
         maven { url "https://maven.shedaniel.me/" }
         maven { url "https://maven.terraformersmc.com/" }
+        maven { url "https://pkgs.dev.azure.com/djtheredstoner/DevAuth/_packaging/public/maven/v1" }
     }
 
     // ensure that the encoding is set to UTF-8, no matter what the system default is
