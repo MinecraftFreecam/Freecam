@@ -57,7 +57,7 @@ class Requirements {
                     .map(BooleanListEntry.class::cast)
                     .forEach(gui -> gui.setRequirement(Requirements::notIgnoreAll));
             return guis;
-        }, field -> List.of("ignoreTransparent", "ignoreOpenable").contains(field.getName()));
+        }, field -> List.of("ignoreTransparent", "ignoreOpenable", "ignoreCustom").contains(field.getName()));
     }
 
     // Requirement handler: require ignoreAll is set to "No"

@@ -11,6 +11,7 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 - Added a way to configure key bindings from Freecam's config menu ([#143](https://github.com/MinecraftFreecam/Freecam/pull/143)).
 - Added an optional server whitelist/blacklist ([#146](https://github.com/MinecraftFreecam/Freecam/pull/146)).
+- A custom "ignore collision" list, using block IDs or regular expressions ([#148](https://github.com/MinecraftFreecam/Freecam/pull/148)).
 
 ### Changed
 
