@@ -2,23 +2,35 @@ package net.xolt.freecam.config;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
+import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDisplayOption;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
+import net.minecraft.client.gui.screens.Screen;
 import net.xolt.freecam.variant.api.BuildVariant;
 
 @Config(name = "freecam")
 public class ModConfig implements ConfigData {
 
-    @ConfigEntry.Gui.Excluded
-    public static ModConfig INSTANCE;
+    private static ConfigHolder<ModConfig> CONFIG_HOLDER;
 
     public static void init() {
-        AutoConfig.register(ModConfig.class, JanksonConfigSerializer::new);
+        CONFIG_HOLDER = AutoConfig.register(ModConfig.class, JanksonConfigSerializer::new);
         ConfigExtensions.init(AutoConfig.getGuiRegistry(ModConfig.class));
-        INSTANCE = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+    }
+
+    public static ModConfig get() {
+        return CONFIG_HOLDER.get();
+    }
+
+    public static void save() {
+        CONFIG_HOLDER.save();
+    }
+
+    public static Screen getScreen(Screen parent) {
+        return AutoConfig.getConfigScreen(ModConfig.class, parent).get();
     }
 
     @ConfigEntry.Gui.Tooltip

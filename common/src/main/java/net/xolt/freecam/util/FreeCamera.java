@@ -176,7 +176,7 @@ public class FreeCamera extends LocalPlayer {
     // Prevents pistons from moving FreeCamera when collision.ignoreAll is enabled.
     @Override
     public PushReaction getPistonPushReaction() {
-        return ModConfig.INSTANCE.collision.ignoreAll ? PushReaction.IGNORE : PushReaction.NORMAL;
+        return ModConfig.get().collision.ignoreAll ? PushReaction.IGNORE : PushReaction.NORMAL;
     }
 
     // Prevents collision with solid entities (shulkers, boats)
@@ -210,11 +210,11 @@ public class FreeCamera extends LocalPlayer {
 
     @Override
     public void aiStep() {
-        if (ModConfig.INSTANCE.movement.flightMode.equals(ModConfig.FlightMode.DEFAULT)) {
+        if (ModConfig.get().movement.flightMode.equals(ModConfig.FlightMode.DEFAULT)) {
             getAbilities().setFlyingSpeed(0);
-            Motion.doMotion(this, ModConfig.INSTANCE.movement.horizontalSpeed, ModConfig.INSTANCE.movement.verticalSpeed);
+            Motion.doMotion(this, ModConfig.get().movement.horizontalSpeed, ModConfig.get().movement.verticalSpeed);
         } else {
-            getAbilities().setFlyingSpeed((float) ModConfig.INSTANCE.movement.verticalSpeed / 10);
+            getAbilities().setFlyingSpeed((float) ModConfig.get().movement.verticalSpeed / 10);
         }
         super.aiStep();
         getAbilities().flying = true;

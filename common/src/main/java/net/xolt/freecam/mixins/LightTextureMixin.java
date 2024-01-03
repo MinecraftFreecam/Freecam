@@ -12,7 +12,7 @@ public class LightTextureMixin {
 
     @ModifyArg(method = "updateLightTexture", at = @At(value = "INVOKE", target = "Lcom/mojang/blaze3d/platform/NativeImage;setPixelRGBA(III)V"), index = 2)
     private int onSetColor(int color) {
-        if (Freecam.isEnabled() && ModConfig.INSTANCE.visual.fullBright) {
+        if (Freecam.isEnabled() && ModConfig.get().visual.fullBright) {
             return 0xFFFFFFFF;
         }
         return color;

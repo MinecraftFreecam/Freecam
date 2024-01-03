@@ -28,19 +28,19 @@ public abstract class BlockStateBaseMixin {
     private void onGetCollisionShape(BlockGetter world, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
         if (context instanceof EntityCollisionContext entityShapeContext && entityShapeContext.getEntity() instanceof FreeCamera) {
             // Return early if "Always Check Initial Collision" is on and Freecam isn't enabled yet
-            if (ModConfig.INSTANCE.collision.alwaysCheck && !Freecam.isEnabled()) {
+            if (ModConfig.get().collision.alwaysCheck && !Freecam.isEnabled()) {
                 return;
             }
             // Ignore all collisions
-            if (ModConfig.INSTANCE.collision.ignoreAll && BuildVariant.getInstance().cheatsPermitted()) {
+            if (ModConfig.get().collision.ignoreAll && BuildVariant.getInstance().cheatsPermitted()) {
                 cir.setReturnValue(Shapes.empty());
             }
             // Ignore transparent block collisions
-            if (ModConfig.INSTANCE.collision.ignoreTransparent && CollisionWhitelist.isTransparent(getBlock())) {
+            if (ModConfig.get().collision.ignoreTransparent && CollisionWhitelist.isTransparent(getBlock())) {
                 cir.setReturnValue(Shapes.empty());
             }
             // Ignore openable block collisions
-            if (ModConfig.INSTANCE.collision.ignoreOpenable && CollisionWhitelist.isOpenable(getBlock())) {
+            if (ModConfig.get().collision.ignoreOpenable && CollisionWhitelist.isOpenable(getBlock())) {
                 cir.setReturnValue(Shapes.empty());
             }
         }

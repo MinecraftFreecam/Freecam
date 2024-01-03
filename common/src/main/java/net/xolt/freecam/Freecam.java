@@ -1,6 +1,5 @@
 package net.xolt.freecam;
 
-import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -50,7 +49,7 @@ public class Freecam {
                 mc.player.input = input;
             }
 
-            mc.gameRenderer.setRenderHand(ModConfig.INSTANCE.visual.showHand);
+            mc.gameRenderer.setRenderHand(ModConfig.get().visual.showHand);
         }
         disableNextTick = false;
     }
@@ -95,7 +94,7 @@ public class Freecam {
         }
 
         while (KEY_CONFIG_GUI.consumeClick()) {
-            mc.setScreen(AutoConfig.getConfigScreen(ModConfig.class, mc.screen).get());
+            mc.setScreen(ModConfig.getScreen(mc.screen));
         }
     }
 
@@ -188,7 +187,7 @@ public class Freecam {
         MC.setCameraEntity(freeCamera);
         activeTripod = tripod;
 
-        if (ModConfig.INSTANCE.notification.notifyTripod) {
+        if (ModConfig.get().notification.notifyTripod) {
             MC.player.displayClientMessage(Component.translatable("msg.freecam.openTripod", tripod), true);
         }
     }
@@ -198,7 +197,7 @@ public class Freecam {
         onDisable();
 
         if (MC.player != null) {
-            if (ModConfig.INSTANCE.notification.notifyTripod) {
+            if (ModConfig.get().notification.notifyTripod) {
                 MC.player.displayClientMessage(Component.translatable("msg.freecam.closeTripod", activeTripod), true);
             }
         }
@@ -212,7 +211,7 @@ public class Freecam {
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
 
-        if (ModConfig.INSTANCE.notification.notifyFreecam) {
+        if (ModConfig.get().notification.notifyFreecam) {
             MC.player.displayClientMessage(Component.translatable("msg.freecam.enable"), true);
         }
     }
@@ -221,7 +220,7 @@ public class Freecam {
         onDisable();
 
         if (MC.player != null) {
-            if (ModConfig.INSTANCE.notification.notifyFreecam) {
+            if (ModConfig.get().notification.notifyFreecam) {
                 MC.player.displayClientMessage(Component.translatable("msg.freecam.disable"), true);
             }
         }
@@ -229,7 +228,7 @@ public class Freecam {
 
     private static void onEnable() {
         MC.smartCull = false;
-        MC.gameRenderer.setRenderHand(ModConfig.INSTANCE.visual.showHand);
+        MC.gameRenderer.setRenderHand(ModConfig.get().visual.showHand);
 
         rememberedF5 = MC.options.getCameraType();
         if (MC.gameRenderer.getMainCamera().isDetached()) {
@@ -264,7 +263,7 @@ public class Freecam {
             tripods.put(tripod, null);
         }
 
-        if (ModConfig.INSTANCE.notification.notifyTripod) {
+        if (ModConfig.get().notification.notifyTripod) {
             MC.player.displayClientMessage(Component.translatable("msg.freecam.tripodReset", tripod), true);
         }
     }
@@ -297,8 +296,8 @@ public class Freecam {
         }
         freeCamera.copyPosition(MC.player);
         freeCamera.applyPerspective(
-                ModConfig.INSTANCE.visual.perspective,
-                ModConfig.INSTANCE.collision.alwaysCheck || !(ModConfig.INSTANCE.collision.ignoreAll && BuildVariant.getInstance().cheatsPermitted())
+                ModConfig.get().visual.perspective,
+                ModConfig.get().collision.alwaysCheck || !(ModConfig.get().collision.ignoreAll && BuildVariant.getInstance().cheatsPermitted())
         );
     }
 
