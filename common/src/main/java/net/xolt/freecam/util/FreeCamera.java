@@ -17,6 +17,7 @@ import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.variant.api.BuildVariant;
 
 import java.util.UUID;
 
@@ -51,7 +52,7 @@ public class FreeCamera extends LocalPlayer {
 
     @Override
     public void copyPosition(Entity entity) {
-        applyPosition(new FreecamPosition(entity));
+        applyPosition(FreecamPosition.of(entity));
     }
 
     public void applyPosition(FreecamPosition position) {
@@ -60,12 +61,13 @@ public class FreeCamera extends LocalPlayer {
         yBob = getYRot();
         xBobO = xBob; // Prevents camera from rotating upon entering freecam.
         yBobO = yBob;
+        applyPerspective(position.perspective, ModConfig.get().collision.alwaysCheck || !(ModConfig.get().collision.ignoreAll && BuildVariant.getInstance().cheatsPermitted()));
     }
 
     // Mutate the position and rotation based on perspective
     // If checkCollision is true, move as far as possible without colliding
-    public void applyPerspective(ModConfig.Perspective perspective, boolean checkCollision) {
-        FreecamPosition position = new FreecamPosition(this);
+    private void applyPerspective(ModConfig.Perspective perspective, boolean checkCollision) {
+        FreecamPosition position = FreecamPosition.of(this);
 
         switch (perspective) {
             case INSIDE:
@@ -105,7 +107,7 @@ public class FreeCamera extends LocalPlayer {
 
         // Move forward by increment until we reach maxDistance or hit a collision
         for (double distance = 0.0; distance < maxDistance; distance += increment) {
-            FreecamPosition oldPosition = new FreecamPosition(this);
+            FreecamPosition oldPosition = FreecamPosition.of(this);
 
             position.moveForward(negative ? -1 * increment : increment);
             applyPosition(position);
@@ -176,7 +178,7 @@ public class FreeCamera extends LocalPlayer {
     // Prevents pistons from moving FreeCamera when collision.ignoreAll is enabled.
     @Override
     public PushReaction getPistonPushReaction() {
-        return ModConfig.INSTANCE.collision.ignoreAll ? PushReaction.IGNORE : PushReaction.NORMAL;
+        return ModConfig.get().collision.ignoreAll ? PushReaction.IGNORE : PushReaction.NORMAL;
     }
 
     // Prevents collision with solid entities (shulkers, boats)
@@ -210,11 +212,11 @@ public class FreeCamera extends LocalPlayer {
 
     @Override
     public void aiStep() {
-        if (ModConfig.INSTANCE.movement.flightMode.equals(ModConfig.FlightMode.DEFAULT)) {
+        if (ModConfig.get().movement.flightMode.equals(ModConfig.FlightMode.DEFAULT)) {
             getAbilities().setFlyingSpeed(0);
-            Motion.doMotion(this, ModConfig.INSTANCE.movement.horizontalSpeed, ModConfig.INSTANCE.movement.verticalSpeed);
+            Motion.doMotion(this, ModConfig.get().movement.horizontalSpeed, ModConfig.get().movement.verticalSpeed);
         } else {
-            getAbilities().setFlyingSpeed((float) ModConfig.INSTANCE.movement.verticalSpeed / 10);
+            getAbilities().setFlyingSpeed((float) ModConfig.get().movement.verticalSpeed / 10);
         }
         super.aiStep();
         getAbilities().flying = true;

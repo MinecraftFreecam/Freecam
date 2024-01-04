@@ -2,23 +2,37 @@ package net.xolt.freecam.config;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
+import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDisplayOption;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
+import net.minecraft.client.gui.screens.Screen;
+import net.xolt.freecam.gui.go.tabs.GotoScreenTab;
 import net.xolt.freecam.variant.api.BuildVariant;
+import org.jetbrains.annotations.NotNull;
 
 @Config(name = "freecam")
 public class ModConfig implements ConfigData {
 
-    @ConfigEntry.Gui.Excluded
-    public static ModConfig INSTANCE;
+    private static ConfigHolder<ModConfig> CONFIG_HOLDER;
 
     public static void init() {
-        AutoConfig.register(ModConfig.class, JanksonConfigSerializer::new);
+        CONFIG_HOLDER = AutoConfig.register(ModConfig.class, JanksonConfigSerializer::new);
         ConfigExtensions.init(AutoConfig.getGuiRegistry(ModConfig.class));
-        INSTANCE = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+    }
+
+    public static ModConfig get() {
+        return CONFIG_HOLDER.get();
+    }
+
+    public static void save() {
+        CONFIG_HOLDER.save();
+    }
+
+    public static Screen getScreen(Screen parent) {
+        return AutoConfig.getConfigScreen(ModConfig.class, parent).get();
     }
 
     @ConfigEntry.Gui.Tooltip
@@ -104,52 +118,65 @@ public class ModConfig implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         public boolean notifyTripod = true;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean notifyGoto = true;
+    }
+
+    @ConfigEntry.Gui.Excluded
+    public Hidden hidden = new Hidden();
+    public static class Hidden {
+        public GotoScreenTab currentTab = GotoScreenTab.PLAYER;
+        public Perspective gotoPlayerPerspective = Perspective.THIRD_PERSON;
     }
 
     public enum FlightMode implements SelectionListEntry.Translatable {
-        CREATIVE("text.autoconfig.freecam.option.movement.flightMode.creative"),
-        DEFAULT("text.autoconfig.freecam.option.movement.flightMode.default");
+        CREATIVE("creative"),
+        DEFAULT("default");
 
-        private final String name;
+        private final String key;
 
         FlightMode(String name) {
-            this.name = name;
+            this.key = "text.autoconfig.freecam.option.movement.flightMode." + name;
         }
 
-        public String getKey() {
-            return name;
+        @Override
+        public @NotNull String getKey() {
+            return key;
         }
     }
 
     public enum InteractionMode implements SelectionListEntry.Translatable {
-        CAMERA("text.autoconfig.freecam.option.utility.interactionMode.camera"),
-        PLAYER("text.autoconfig.freecam.option.utility.interactionMode.player");
+        CAMERA("camera"),
+        PLAYER("player");
 
-        private final String name;
+        private final String key;
 
         InteractionMode(String name) {
-            this.name = name;
+            this.key = "text.autoconfig.freecam.option.utility.interactionMode." + name;
         }
 
-        public String getKey() {
-            return name;
+        @Override
+        public @NotNull String getKey() {
+            return key;
         }
     }
 
     public enum Perspective implements SelectionListEntry.Translatable {
-        FIRST_PERSON("text.autoconfig.freecam.option.visual.perspective.firstPerson"),
-        THIRD_PERSON("text.autoconfig.freecam.option.visual.perspective.thirdPerson"),
-        THIRD_PERSON_MIRROR("text.autoconfig.freecam.option.visual.perspective.thirdPersonMirror"),
-        INSIDE("text.autoconfig.freecam.option.visual.perspective.inside");
+        FIRST_PERSON("firstPerson"),
+        THIRD_PERSON("thirdPerson"),
+        THIRD_PERSON_MIRROR("thirdPersonMirror"),
+        INSIDE("inside");
 
-        private final String name;
+        private final String key;
 
         Perspective(String name) {
-            this.name = name;
+            this.key = "text.autoconfig.freecam.option.visual.perspective." + name;
         }
 
-        public String getKey() {
-            return name;
+        @Override
+        public @NotNull String getKey() {
+            return key;
         }
     }
 }

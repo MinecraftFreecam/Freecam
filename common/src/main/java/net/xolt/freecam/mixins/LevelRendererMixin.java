@@ -27,7 +27,7 @@ public class LevelRendererMixin {
     // Makes the player render if showPlayer is enabled.
     @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;checkPoseStack(Lcom/mojang/blaze3d/vertex/PoseStack;)V", ordinal = 0))
     private void onRender(PoseStack matrices, float tickDelta, long limitTime, boolean renderBlockOutline, Camera camera, GameRenderer gameRenderer, LightTexture lightmapTextureManager, Matrix4f positionMatrix, CallbackInfo ci) {
-        if (Freecam.isEnabled() && ModConfig.INSTANCE.visual.showPlayer) {
+        if (Freecam.isEnabled() && ModConfig.get().visual.showPlayer) {
             Vec3 cameraPos = camera.getPosition();
             renderEntity(MC.player, cameraPos.x, cameraPos.y, cameraPos.z, tickDelta, matrices, renderBuffers.bufferSource());
         }
