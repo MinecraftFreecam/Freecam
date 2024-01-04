@@ -6,15 +6,11 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.KeyboardInput;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.ChunkPos;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.tripod.TripodRegistry;
 import net.xolt.freecam.tripod.TripodSlot;
 import net.xolt.freecam.util.FreeCamera;
 import net.xolt.freecam.util.FreecamPosition;
-import net.xolt.freecam.variant.api.BuildVariant;
-import org.jetbrains.annotations.Nullable;
 
 import static net.xolt.freecam.config.ModBindings.*;
 
@@ -164,24 +160,14 @@ public class Freecam {
     private static void onEnableTripod(TripodSlot tripod) {
         onEnable();
 
-        FreecamPosition position = tripods.get(tripod);
-        boolean chunkLoaded = false;
-        if (position != null) {
-            ChunkPos chunkPos = position.getChunkPos();
-            chunkLoaded = MC.level.getChunkSource().hasChunk(chunkPos.x, chunkPos.z);
-        }
-
-        if (!chunkLoaded) {
+        FreecamPosition position = FreecamPosition.of(tripod);
+        while (!position.isInRange()) {
             resetCamera(tripod);
-            position = null;
+            position = FreecamPosition.of(tripod);
         }
 
         freeCamera = new FreeCamera(-420 - tripod.ordinal());
-        if (position == null) {
-            moveToPlayer();
-        } else {
-            moveToPosition(position);
-        }
+        freeCamera.applyPosition(position);
 
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
@@ -193,7 +179,7 @@ public class Freecam {
     }
 
     private static void onDisableTripod() {
-        tripods.put(activeTripod, new FreecamPosition(freeCamera));
+        tripods.put(activeTripod, FreecamPosition.of(freeCamera));
         onDisable();
 
         if (MC.player != null) {
@@ -207,7 +193,7 @@ public class Freecam {
     private static void onEnableFreecam() {
         onEnable();
         freeCamera = new FreeCamera(-420);
-        moveToPlayer();
+        freeCamera.applyPosition(FreecamPosition.defaultPosition());
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
 
@@ -258,7 +244,7 @@ public class Freecam {
 
     private static void resetCamera(TripodSlot tripod) {
         if (tripodEnabled && activeTripod != TripodSlot.NONE && activeTripod == tripod && freeCamera != null) {
-            moveToPlayer();
+            freeCamera.applyPosition(FreecamPosition.defaultPosition());
         } else {
             tripods.put(tripod, null);
         }
@@ -266,39 +252,6 @@ public class Freecam {
         if (ModConfig.get().notification.notifyTripod) {
             MC.player.displayClientMessage(Component.translatable("msg.freecam.tripodReset", tripod), true);
         }
-    }
-
-    public static void moveToEntity(@Nullable Entity entity) {
-        if (freeCamera == null) {
-            return;
-        }
-        if (entity == null) {
-            moveToPlayer();
-            return;
-        }
-        freeCamera.copyPosition(entity);
-    }
-
-    public static void moveToPosition(@Nullable FreecamPosition position) {
-        if (freeCamera == null) {
-            return;
-        }
-        if (position == null) {
-            moveToPlayer();
-            return;
-        }
-        freeCamera.applyPosition(position);
-    }
-
-    public static void moveToPlayer() {
-        if (freeCamera == null) {
-            return;
-        }
-        freeCamera.copyPosition(MC.player);
-        freeCamera.applyPerspective(
-                ModConfig.get().visual.perspective,
-                ModConfig.get().collision.alwaysCheck || !(ModConfig.get().collision.ignoreAll && BuildVariant.getInstance().cheatsPermitted())
-        );
     }
 
     public static FreeCamera getFreeCamera() {
@@ -315,5 +268,9 @@ public class Freecam {
 
     public static boolean isPlayerControlEnabled() {
         return playerControlEnabled;
+    }
+
+    public static FreecamPosition getTripod(TripodSlot tripod) {
+        return tripods.get(tripod);
     }
 }
