@@ -17,6 +17,8 @@ import net.xolt.freecam.util.FreecamPosition;
 import net.xolt.freecam.variant.api.BuildVariant;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.Objects;
+
 import static net.xolt.freecam.config.ModBindings.*;
 
 public class Freecam {
@@ -38,8 +40,9 @@ public class Freecam {
 
     public static void preTick(Minecraft mc) {
         if (isEnabled()) {
-            // Disable if the previous tick asked us to
-            if (disableNextTick) {
+            // Disable if the previous tick asked us to,
+            // or Freecam is restricted on the current server
+            if (disableNextTick || isRestrictedOnServer()) {
                 toggle();
             }
 
@@ -107,6 +110,13 @@ public class Freecam {
     }
 
     public static void toggle() {
+        if (isRestrictedOnServer()) {
+            if (ModConfig.INSTANCE.notification.notifyFreecam) {
+                MC.player.displayClientMessage(Component.translatable("msg.freecam.restrictedByConfig", MC.getCurrentServer().ip), true);
+            }
+            return;
+        }
+
         if (tripodEnabled) {
             toggleTripod(activeTripod);
             return;
@@ -125,6 +135,13 @@ public class Freecam {
 
     private static void toggleTripod(TripodSlot tripod) {
         if (tripod == TripodSlot.NONE) {
+            return;
+        }
+
+        if (isRestrictedOnServer()) {
+            if (ModConfig.INSTANCE.notification.notifyTripod) {
+                MC.player.displayClientMessage(Component.translatable("msg.freecam.restrictedByConfig", MC.getCurrentServer().ip), true);
+            }
             return;
         }
 
@@ -316,5 +333,25 @@ public class Freecam {
 
     public static boolean isPlayerControlEnabled() {
         return playerControlEnabled;
+    }
+
+    public static boolean isRestrictedOnServer() {
+        ModConfig.ServerRestriction mode = ModConfig.INSTANCE.servers.mode;
+        if (mode == ModConfig.ServerRestriction.NONE || MC.isSingleplayer()) {
+            return false;
+        }
+
+        String ip = Objects.requireNonNull(MC.getCurrentServer()).ip.trim().toLowerCase();
+        return switch (mode) {
+            case WHITELIST -> ModConfig.INSTANCE.servers.whitelist.stream()
+                    .map(String::trim)
+                    .map(String::toLowerCase)
+                    .noneMatch(ip::equals);
+            case BLACKLIST -> ModConfig.INSTANCE.servers.blacklist.stream()
+                    .map(String::trim)
+                    .map(String::toLowerCase)
+                    .anyMatch(ip::equals);
+            default -> throw new IllegalStateException("Unexpected mode value in Freecam.isRestrictedOnServer: " + mode);
+        };
     }
 }

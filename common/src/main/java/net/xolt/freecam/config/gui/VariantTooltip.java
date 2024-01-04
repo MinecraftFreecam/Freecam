@@ -1,4 +1,4 @@
-package net.xolt.freecam.config;
+package net.xolt.freecam.config.gui;
 
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 

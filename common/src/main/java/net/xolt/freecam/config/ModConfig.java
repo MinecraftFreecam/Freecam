@@ -7,7 +7,13 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDisplayOption;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
+import net.xolt.freecam.config.gui.AutoConfigExtensions;
+import net.xolt.freecam.config.gui.VariantTooltip;
 import net.xolt.freecam.variant.api.BuildVariant;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Collections;
+import java.util.List;
 
 @Config(name = "freecam")
 public class ModConfig implements ConfigData {
@@ -17,7 +23,7 @@ public class ModConfig implements ConfigData {
 
     public static void init() {
         AutoConfig.register(ModConfig.class, JanksonConfigSerializer::new);
-        ConfigExtensions.init(AutoConfig.getGuiRegistry(ModConfig.class));
+        AutoConfigExtensions.apply(ModConfig.class);
         INSTANCE = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
     }
 
@@ -97,6 +103,17 @@ public class ModConfig implements ConfigData {
 
     @ConfigEntry.Gui.Tooltip
     @ConfigEntry.Gui.CollapsibleObject
+    public ServerConfig servers = new ServerConfig();
+    public static class ServerConfig {
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
+        public ServerRestriction mode = ServerRestriction.NONE;
+        public List<String> whitelist = Collections.emptyList();
+        public List<String> blacklist = Collections.emptyList();
+    }
+
+    @ConfigEntry.Gui.Tooltip
+    @ConfigEntry.Gui.CollapsibleObject
     public NotificationConfig notification = new NotificationConfig();
     public static class NotificationConfig {
         @ConfigEntry.Gui.Tooltip
@@ -150,6 +167,15 @@ public class ModConfig implements ConfigData {
 
         public String getKey() {
             return name;
+        }
+    }
+
+    public enum ServerRestriction implements SelectionListEntry.Translatable {
+        NONE, WHITELIST, BLACKLIST;
+
+        @Override
+        public @NotNull String getKey() {
+            return "text.autoconfig.freecam.option.servers.mode." + toString().toLowerCase();
         }
     }
 }
