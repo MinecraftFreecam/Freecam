@@ -47,16 +47,8 @@ subprojects {
     }
 
     dependencies {
-        def parchmentAppendix
-        def parchmentVersion
-        def parts = rootProject.parchment_version.split('-')
-        if (parts.size() == 2) {
-            parchmentAppendix = parts[0]
-            parchmentVersion = parts[1]
-        } else {
-            parchmentAppendix = rootProject.minecraft_version
-            parchmentVersion = parts[0]
-        }
+        def parchmentAppendix = rootProject.parchment_version.split('-')[0]
+        def parchmentVersion = rootProject.parchment_version.split('-')[1]
 
         minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
         mappings loom.layered() {
