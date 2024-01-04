@@ -118,6 +118,29 @@ public class Freecam {
         }
     }
 
+    public static void gotoPosition(FreecamPosition position) {
+        boolean wasEnabled = isEnabled();
+        if (!wasEnabled) {
+            // FIXME this will move the camera to the default position and show a notification,
+            //  even though we'll move the camera and show our own notification immediately after.
+            toggle();
+        }
+
+        freeCamera.applyPosition(position);
+
+        if (ModConfig.get().notification.notifyGoto) {
+            Component notification;
+            if (!wasEnabled) {
+                notification = Component.translatable("msg.freecam.gotoPosition.enable", position.getName());
+            } else if (tripodEnabled) {
+                notification = Component.translatable("msg.freecam.gotoPosition.moveTripod", activeTripod, position.getName());
+            } else {
+                notification = Component.translatable("msg.freecam.gotoPosition.move", position.getName());
+            }
+            MC.player.displayClientMessage(notification, true);
+        }
+    }
+
     private static void toggleTripod(TripodSlot tripod) {
         if (tripod == TripodSlot.NONE) {
             return;

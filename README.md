@@ -53,10 +53,11 @@ This mod works in multiplayer, but may be considered cheating on some servers, s
 
 ## Notification Options
 
-| Name                  | Description                                             | Default Value |
-|-----------------------|---------------------------------------------------------|---------------|
-| Freecam Notifications | Notifies you when entering/exiting freecam.             | `true`        |
-| Tripod Notifications  | Notifies you when entering/exiting tripod cameras.<br/> | `true`        |
+| Name                  | Description                                               | Default Value |
+|-----------------------|-----------------------------------------------------------|---------------|
+| Freecam Notifications | Notifies you when entering/exiting freecam.               | `true`        |
+| Tripod Notifications  | Notifies you when entering/exiting tripod cameras.        | `true`        |
+| Goto Notifications    | Notifies you when using "Goto" to teleport the camera.    | `true`        |
 
 ## Requirements
 

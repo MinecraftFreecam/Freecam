@@ -1,5 +1,6 @@
 package net.xolt.freecam.util;
 
+import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.ChunkPos;
@@ -10,6 +11,7 @@ import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import static net.xolt.freecam.Freecam.MC;
 
@@ -21,6 +23,7 @@ public class FreecamPosition {
     public float pitch;
     public float yaw;
 
+    private Supplier<Component> nameSupplier = null;
     private final Quaternionf rotation = new Quaternionf(0.0F, 0.0F, 0.0F, 1.0F);
     private final Vector3f verticalPlane = new Vector3f(0.0F, 1.0F, 0.0F);
     private final Vector3f diagonalPlane = new Vector3f(1.0F, 0.0F, 0.0F);
@@ -47,11 +50,15 @@ public class FreecamPosition {
     }
 
     public static FreecamPosition of(Entity entity, ModConfig.Perspective perspective) {
-        return new FreecamPosition(entity.getX(), getSwimmingY(entity), entity.getZ(), entity.getYRot(), entity.getXRot(), perspective);
+        FreecamPosition position = new FreecamPosition(entity.getX(), getSwimmingY(entity), entity.getZ(), entity.getYRot(), entity.getXRot(), perspective);
+        position.setNameSupplier(() -> entity.getName().plainCopy());
+        return position;
     }
 
     public static FreecamPosition of(TripodSlot tripod) {
-        return Optional.ofNullable(Freecam.getTripod(tripod)).orElseGet(FreecamPosition::defaultPosition);
+        FreecamPosition position = Optional.ofNullable(Freecam.getTripod(tripod)).orElseGet(FreecamPosition::defaultPosition);
+        position.setNameSupplier(() -> Component.literal(tripod.toString()));
+        return position;
     }
 
     public static FreecamPosition copyOf(FreecamPosition position) {
@@ -102,6 +109,20 @@ public class FreecamPosition {
     public boolean isInRange() {
         ChunkPos chunk = getChunkPos();
         return MC.level.getChunkSource().hasChunk(chunk.x, chunk.z);
+    }
+
+    public Component getName() {
+        return Optional.ofNullable(nameSupplier)
+                .map(Supplier::get)
+                .orElseGet(() -> Component.translatable("msg.freecamPosition.coords", x, y, z));
+    }
+
+    public void setNameSupplier(Supplier<Component> supplier) {
+        this.nameSupplier = supplier;
+    }
+
+    public void setName(Component name) {
+        this.nameSupplier = () -> name;
     }
 
     private static double getSwimmingY(Entity entity) {

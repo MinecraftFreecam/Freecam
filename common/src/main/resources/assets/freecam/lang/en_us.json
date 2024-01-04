@@ -9,6 +9,10 @@
   "msg.freecam.openTripod": "Opening camera %s",
   "msg.freecam.closeTripod": "Closing camera %s",
   "msg.freecam.tripodReset": "Reset camera %s",
+  "msg.freecam.gotoPosition.enable": "Freecam enabled at %s.",
+  "msg.freecam.gotoPosition.move": "Freecam moved to %s.",
+  "msg.freecam.gotoPosition.moveTripod": "Tripod %s moved to %s.",
+  "msg.freecamPosition.coords": "x: %1.2f, y: %1.2f, z: %1.2f",
   "text.autoconfig.freecam.title": "Freecam Options",
   "text.autoconfig.freecam.option.movement": "Movement Options",
   "text.autoconfig.freecam.option.movement.@Tooltip": "How the camera moves.",
@@ -71,5 +75,7 @@
   "text.autoconfig.freecam.option.notification.notifyFreecam": "Freecam Notifications",
   "text.autoconfig.freecam.option.notification.notifyFreecam.@Tooltip": "Notifies you when entering/exiting freecam.",
   "text.autoconfig.freecam.option.notification.notifyTripod": "Tripod Notifications",
-  "text.autoconfig.freecam.option.notification.notifyTripod.@Tooltip": "Notifies you when entering/exiting tripod cameras."
+  "text.autoconfig.freecam.option.notification.notifyTripod.@Tooltip": "Notifies you when entering/exiting tripod cameras.",
+  "text.autoconfig.freecam.option.notification.notifyGoto": "Goto Notifications",
+  "text.autoconfig.freecam.option.notification.notifyGoto.@Tooltip": "Notifies you when using \"Goto\" to teleport the camera."
 }
