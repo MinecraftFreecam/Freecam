@@ -6,11 +6,9 @@ import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_F4;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_UNKNOWN;
@@ -88,24 +86,27 @@ public enum ModBindings {
      */
     public static void forEach(@NotNull Consumer<KeyMapping> action) {
         Objects.requireNonNull(action);
-        iterator().forEachRemaining(action);
+        stream().forEach(action);
+    }
+
+    /**
+     * Static implementation of {@link Collection#stream()}.
+     */
+    public static @NotNull Stream<KeyMapping> stream() {
+        return Arrays.stream(values()).map(ModBindings::get);
     }
 
     /**
      * Static implementation of {@link Iterable#iterator()}.
      */
     public static @NotNull Iterator<KeyMapping> iterator() {
-        return Arrays.stream(values())
-                .map(ModBindings::get)
-                .iterator();
+        return stream().iterator();
     }
 
     /**
      * Static implementation of {@link Iterable#spliterator()}.
      */
     public static @NotNull Spliterator<KeyMapping> spliterator() {
-        return Arrays.stream(values())
-                .map(ModBindings::get)
-                .spliterator();
+        return stream().spliterator();
     }
 }
