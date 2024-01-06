@@ -50,6 +50,8 @@ subprojects {
 
         testImplementation(platform("org.junit:junit-bom:${rootProject.junit_version}"))
         testImplementation("org.junit.jupiter:junit-jupiter")
+        testImplementation "org.mockito:mockito-core:${rootProject.mockito_version}"
+        testImplementation "org.mockito:mockito-junit-jupiter:${rootProject.mockito_version}"
     }
 
     test {
