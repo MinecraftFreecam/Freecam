@@ -47,6 +47,13 @@ subprojects {
             officialMojangMappings()
             parchment("org.parchmentmc.data:parchment-${parchmentAppendix}:${parchmentVersion}@zip")
         }
+
+        testImplementation(platform("org.junit:junit-bom:${rootProject.junit_version}"))
+        testImplementation("org.junit.jupiter:junit-jupiter")
+    }
+
+    test {
+        useJUnitPlatform()
     }
 }
 
