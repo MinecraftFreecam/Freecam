@@ -3,7 +3,6 @@ package net.xolt.freecam.config;
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import me.shedaniel.autoconfig.AutoConfig;
-import net.minecraft.client.KeyMapping;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.keys.FreecamKeyMapping;
 import org.jetbrains.annotations.NotNull;
@@ -39,29 +38,6 @@ public enum ModBindings {
 
     ModBindings(Supplier<FreecamKeyMapping> mappingSupplier) {
         lazyMapping = Suppliers.memoize(mappingSupplier);
-    }
-
-    /**
-     * @return the result of calling {@link KeyMapping#isDown()} on the represented {@link FreecamKeyMapping}.
-     * @see KeyMapping#isDown()
-     */
-    public boolean isDown() {
-        return get().isDown();
-    }
-
-    /**
-     * @return the result of calling {@link KeyMapping#consumeClick()} on the represented {@link FreecamKeyMapping}.
-     * @see KeyMapping#consumeClick()
-     */
-    public boolean consumeClick() {
-        return get().consumeClick();
-    }
-
-    /**
-     * Calls {@link FreecamKeyMapping#reset()} on the represented {@link FreecamKeyMapping}.
-     */
-    public void reset() {
-        get().reset();
     }
 
     /**
