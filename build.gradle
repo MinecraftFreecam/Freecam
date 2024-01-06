@@ -55,6 +55,9 @@ subprojects {
     }
 
     test {
+        def dir = project.file "run"
+        dir.mkdirs()
+        workingDir dir
         useJUnitPlatform()
     }
 }
