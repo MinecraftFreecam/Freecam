@@ -1,0 +1,14 @@
+project_id_env: CROWDIN_PROJECT_ID
+api_token_env: CROWDIN_PERSONAL_TOKEN
+preserve_hierarchy: true
+
+files:
+  - source: '/**/lang/en_us.json'
+    translation: '/**/lang/%locale%.json'
+    languages_mapping:
+      locale:
+        # Valid keys: https://developer.crowdin.com/language-codes
+        # Valid values ("in-game" locale column): https://minecraft.wiki/w/Language
+        it: it_it
+        ja: ja_jp
+        zh-CN: zh_cn
