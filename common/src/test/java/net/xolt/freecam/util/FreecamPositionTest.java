@@ -3,12 +3,16 @@ package net.xolt.freecam.util;
 import net.minecraft.client.player.RemotePlayer;
 import net.xolt.freecam.test.extension.BootstrapMinecraft;
 import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 @BootstrapMinecraft
 @ExtendWith(MockitoExtension.class)
@@ -26,12 +30,27 @@ class FreecamPositionTest {
     void tearDown() {
     }
 
-    @Test
-    void setRotation() {
-        position.setRotation(10, 20);
-        Assertions.assertAll(
-                () -> Assertions.assertEquals(10, position.yaw),
-                () -> Assertions.assertEquals(20, position.pitch));
+    @ParameterizedTest
+    @DisplayName("setRotation correctly sets yaw & pitch")
+    @ValueSource(floats = { -16.456f, 0, 10, 2.5f, 2000008896.546f })
+    void setRotation_YawPitch(float number) {
+        final float constant = 10;
+        assertThat(position).isNotNull().satisfies(
+                position -> {
+                    position.setRotation(number, constant);
+                    assertThat(position).as("Yaw is set correctly").satisfies(
+                            p -> assertThat(p.yaw).as("Yaw is set to (var) " + number).isEqualTo(number),
+                            p -> assertThat(p.pitch).as("Pitch is set to (const) " + constant).isEqualTo(constant)
+                    );
+                },
+                position -> {
+                    position.setRotation(constant, number);
+                    assertThat(position).as("Pitch is set correctly").satisfies(
+                            p -> assertThat(p.yaw).as("Yaw is set to (const) " + constant).isEqualTo(constant),
+                            p -> assertThat(p.pitch).as("Pitch is set to (var) " + number).isEqualTo(number)
+                    );
+                }
+        );
     }
 
     @Test
