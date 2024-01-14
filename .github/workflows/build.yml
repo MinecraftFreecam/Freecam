@@ -1,0 +1,31 @@
+name: Gradle build
+
+on:
+  push:
+    branches: &branches
+    - 'main'
+    - '1.16'
+    - '1.17'
+    - '1.18'
+    - '1.19'
+  pull_request:
+    branches: *branches
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: microsoft
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: build
+    # TODO: run gradle test
