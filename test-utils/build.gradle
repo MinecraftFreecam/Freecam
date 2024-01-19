@@ -1,0 +1,11 @@
+architectury {
+    common(rootProject.enabled_platforms.split(','))
+}
+
+dependencies {
+    // Needed for Environment annotation
+    modCompileOnly "net.fabricmc:fabric-loader:${rootProject.fabric_loader_version}"
+    implementation(platform("org.junit:junit-bom:${rootProject.junit_version}"))
+    implementation("org.junit.jupiter:junit-jupiter-api")
+    implementation "org.mockito:mockito-junit-jupiter:${rootProject.mockito_version}"
+}

@@ -1,4 +1,4 @@
-package net.xolt.freecam.test.extension;
+package net.xolt.freecam.testing.extension;
 
 import net.minecraft.SharedConstants;
 import net.minecraft.server.Bootstrap;

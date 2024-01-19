@@ -1,4 +1,4 @@
-package net.xolt.freecam.test.util;
+package net.xolt.freecam.testing.util;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InaccessibleObjectException;

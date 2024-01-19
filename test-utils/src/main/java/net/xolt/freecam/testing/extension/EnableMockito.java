@@ -1,4 +1,4 @@
-package net.xolt.freecam.test.extension;
+package net.xolt.freecam.testing.extension;
 
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;

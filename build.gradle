@@ -54,6 +54,10 @@ subprojects {
         testImplementation "org.assertj:assertj-core:${rootProject.assertj_version}"
         testImplementation "org.mockito:mockito-core:${rootProject.mockito_version}"
         testImplementation "org.mockito:mockito-junit-jupiter:${rootProject.mockito_version}"
+
+        if (project.name != "test-util") {
+            dependencies.testImplementation dependencies.project(path: ":test-utils", configuration: "namedElements")
+        }
     }
 
     test {
