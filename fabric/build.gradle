@@ -37,6 +37,9 @@ dependencies {
     shadowCommon project(path: ":common", configuration: "transformProductionFabric")
 
     shadowCommon project(":variant:api")
+
+    // Use fabric's Knot classloader in tests
+    testImplementation "net.fabricmc:fabric-loader-junit:${rootProject.fabric_loader_version}"
 }
 
 variants.each { variant ->
@@ -57,6 +60,15 @@ variants.each { variant ->
     // Add a dependency on variant's service provider
     dependencies.add(set.implementationConfigurationName, dependencies.project(path: ":variant:${variant}", configuration: "namedElements"))
     dependencies.add(shadowConfig.name, dependencies.project(path: ":variant:${variant}", configuration: "transformProductionFabric"))
+
+    // Add the normal variant to the test classpath
+    // TODO consider testing other variants too
+    sourceSets {
+        if (variant == "normal") {
+            test.compileClasspath += set.compileClasspath
+            test.runtimeClasspath += set.runtimeClasspath
+        }
+    }
 
     // Configure/create a run config
     def run
