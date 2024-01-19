@@ -56,8 +56,8 @@ class FreecamPositionTest {
 
     @ParameterizedTest
     @EnumSource(Pose.class)
-    @DisplayName("Adjust entity position for pose")
-    void init_pose(Pose pose) {
+    @DisplayName("Use entity position, adjusted for pose")
+    void init_position(Pose pose) {
         entity.setPose(pose);
         double diff = entity.getEyeHeight(pose) - entity.getEyeHeight(Pose.SWIMMING);
         FreecamPosition swimPos = new FreecamPosition(entity);
