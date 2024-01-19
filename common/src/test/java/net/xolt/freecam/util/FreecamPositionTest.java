@@ -2,22 +2,21 @@ package net.xolt.freecam.util;
 
 import net.minecraft.client.player.RemotePlayer;
 import net.xolt.freecam.test.extension.BootstrapMinecraft;
+import net.xolt.freecam.test.extension.EnableMockito;
 import org.joml.Quaternionf;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
-import org.mockito.junit.jupiter.MockitoExtension;
 
 import static net.xolt.freecam.test.util.TestUtils.getFieldValue;
 import static org.assertj.core.api.Assertions.assertThat;
 
+@EnableMockito
 @BootstrapMinecraft
-@ExtendWith(MockitoExtension.class)
 class FreecamPositionTest {
 
     @Mock RemotePlayer player;
