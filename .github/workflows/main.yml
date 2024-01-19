@@ -1,4 +1,4 @@
-name: Gradle build
+name: Gradle (build & test)
 
 on:
   push:
@@ -15,7 +15,7 @@ permissions:
   contents: read
 
 jobs:
-  build:
+  build_and_test:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
@@ -24,8 +24,12 @@ jobs:
       with:
         java-version: '17'
         distribution: microsoft
-    - name: Build with Gradle
+    - name: Build
       uses: gradle/gradle-build-action@v2
       with:
         arguments: build
-    # TODO: run gradle test
+    - name: Test
+      uses: gradle/gradle-build-action@v2
+      with:
+        # We could run `check` instead, but we may want to add checks we don't want to use in CI...?
+        arguments: test
