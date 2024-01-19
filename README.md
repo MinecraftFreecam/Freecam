@@ -1,4 +1,5 @@
 # Freecam
+![CI](https://github.com/MinecraftFreecam/Freecam/actions/workflows/main.yml/badge.svg?event=push)
 [![Crowdin](https://badges.crowdin.net/freecam/localized.svg)](https://crowdin.com/project/freecam)
 
 This mod allows you to control your camera separately from your player. While it is enabled, you can fly around and travel through blocks within your render distance. Disabling it will restore you to your original position. This can be useful for quickly inspecting builds and exploring your world. 
