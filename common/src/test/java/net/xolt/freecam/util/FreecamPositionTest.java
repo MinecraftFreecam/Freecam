@@ -6,13 +6,14 @@ import net.minecraft.client.player.RemotePlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.level.ChunkPos;
 import net.minecraft.world.phys.Vec2;
+import net.minecraft.world.phys.Vec3;
 import net.xolt.freecam.testing.extension.BootstrapMinecraft;
 import net.xolt.freecam.testing.extension.EnableMockito;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -38,6 +39,10 @@ class FreecamPositionTest {
 
     static Vec2[] rotations() {
         return new Vec2[] { Vec2.ZERO, Vec2.MIN, Vec2.MAX, Vec2.UNIT_X, Vec2.UNIT_Y, Vec2.NEG_UNIT_X, Vec2.NEG_UNIT_Y };
+    }
+
+    static Vec3[] positions() {
+        return new Vec3[] { Vec3.ZERO, new Vec3(1, 1, 1), new Vec3(1000, 100, 10) };
     }
 
     @BeforeEach
@@ -183,7 +188,18 @@ class FreecamPositionTest {
         );
     }
 
-    @Test
-    void getChunkPos() {
+    @ParameterizedTest
+    @MethodSource("positions")
+    @DisplayName("ChunkPos should be 16 times smaller than position")
+    void chunkPos(Vec3 pos) {
+        position.x = pos.x;
+        position.y = pos.y;
+        position.z = pos.z;
+        // Should be 16 times smaller than x y z position, rounded down
+        int x = (int) (pos.x / 16);
+        int z = (int) (pos.z / 16);
+        ChunkPos chunkPos = position.getChunkPos();
+        assertThat(chunkPos.x).isEqualTo(x);
+        assertThat(chunkPos.z).isEqualTo(z);
     }
 }
