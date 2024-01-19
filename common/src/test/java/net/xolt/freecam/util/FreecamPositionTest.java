@@ -1,6 +1,11 @@
 package net.xolt.freecam.util;
 
+import com.mojang.authlib.GameProfile;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.RemotePlayer;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.Pose;
 import net.xolt.freecam.testing.extension.BootstrapMinecraft;
 import net.xolt.freecam.testing.extension.EnableMockito;
 import org.junit.jupiter.api.AfterEach;
@@ -8,17 +13,24 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 
+import java.util.UUID;
+
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.withPrecision;
+import static org.mockito.Mockito.when;
 
 @EnableMockito
 @BootstrapMinecraft
 class FreecamPositionTest {
 
-    @Mock RemotePlayer player;
+    @Mock ClientLevel level;
+    @Mock GameProfile profile;
+    Entity entity;
     private FreecamPosition position;
 
     static double[] distances() {
@@ -27,11 +39,28 @@ class FreecamPositionTest {
 
     @BeforeEach
     void setUp() {
-        position = new FreecamPosition(player);
+        when(profile.getId()).thenReturn(UUID.fromString("00000000-0000-0000-0000-000000000000"));
+        when(level.getSharedSpawnPos()).thenReturn(BlockPos.ZERO);
+        when(level.getSharedSpawnAngle()).thenReturn(0f);
+        entity = new RemotePlayer(level, profile);
+        position = new FreecamPosition(entity);
     }
 
     @AfterEach
     void tearDown() {
+    }
+
+    @ParameterizedTest
+    @EnumSource(Pose.class)
+    @DisplayName("Adjust entity position for pose")
+    void init_standing(Pose pose) {
+        entity.setPose(pose);
+        double diff = entity.getEyeHeight(pose) - entity.getEyeHeight(Pose.SWIMMING);
+        FreecamPosition swimPos = new FreecamPosition(entity);
+
+        assertThat(swimPos.x).as("Correct x").isEqualTo(entity.getX());
+        assertThat(swimPos.y).as("y is %01.2f higher".formatted(diff)).isEqualTo(entity.getY() + diff, withPrecision(0.0000004));
+        assertThat(swimPos.z).as("Correct z").isEqualTo(entity.getZ());
     }
 
     @ParameterizedTest
