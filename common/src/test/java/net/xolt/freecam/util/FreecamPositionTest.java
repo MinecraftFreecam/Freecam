@@ -16,22 +16,20 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.EnumSource;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
-import org.mockito.Mock;
 
 import java.util.UUID;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.withPrecision;
+import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 @EnableMockito
 @BootstrapMinecraft
 class FreecamPositionTest {
 
-    @Mock ClientLevel level;
-    @Mock GameProfile profile;
     Entity entity;
-    private FreecamPosition position;
+    FreecamPosition position;
 
     static double[] distances() {
         return new double[] { 1, -1, 2_000_000_001, 0.00456789, -0.0000445646456456060456, 2.5 };
@@ -39,9 +37,10 @@ class FreecamPositionTest {
 
     @BeforeEach
     void setUp() {
-        when(profile.getId()).thenReturn(UUID.fromString("00000000-0000-0000-0000-000000000000"));
+        ClientLevel level = mock(ClientLevel.class);
         when(level.getSharedSpawnPos()).thenReturn(BlockPos.ZERO);
         when(level.getSharedSpawnAngle()).thenReturn(0f);
+        GameProfile profile = new GameProfile(new UUID(0, 0), "TestPlayer");
         entity = new RemotePlayer(level, profile);
         position = new FreecamPosition(entity);
     }
@@ -53,14 +52,14 @@ class FreecamPositionTest {
     @ParameterizedTest
     @EnumSource(Pose.class)
     @DisplayName("Adjust entity position for pose")
-    void init_standing(Pose pose) {
+    void init_pose(Pose pose) {
         entity.setPose(pose);
         double diff = entity.getEyeHeight(pose) - entity.getEyeHeight(Pose.SWIMMING);
         FreecamPosition swimPos = new FreecamPosition(entity);
 
-        assertThat(swimPos.x).as("Correct x").isEqualTo(entity.getX());
-        assertThat(swimPos.y).as("y is %01.2f higher".formatted(diff)).isEqualTo(entity.getY() + diff, withPrecision(0.0000004));
-        assertThat(swimPos.z).as("Correct z").isEqualTo(entity.getZ());
+        assertThat(swimPos.x).as("x is %01.2f".formatted(entity.getX())).isEqualTo(entity.getX());
+        assertThat(swimPos.y).as("y is %01.2f higher than %01.2f".formatted(diff, entity.getY())).isEqualTo(entity.getY() + diff, withPrecision(0.0000004));
+        assertThat(swimPos.z).as("z is %01.2f".formatted(entity.getZ())).isEqualTo(entity.getZ());
     }
 
     @ParameterizedTest
