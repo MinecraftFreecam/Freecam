@@ -6,6 +6,7 @@ import net.minecraft.client.player.RemotePlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.phys.Vec2;
 import net.xolt.freecam.testing.extension.BootstrapMinecraft;
 import net.xolt.freecam.testing.extension.EnableMockito;
 import org.junit.jupiter.api.AfterEach;
@@ -35,6 +36,10 @@ class FreecamPositionTest {
         return new double[] { 1, -1, 2_000_000_001, 0.00456789, -0.0000445646456456060456, 2.5 };
     }
 
+    static Vec2[] rotations() {
+        return new Vec2[] { Vec2.ZERO, Vec2.MIN, Vec2.MAX, Vec2.UNIT_X, Vec2.UNIT_Y, Vec2.NEG_UNIT_X, Vec2.NEG_UNIT_Y };
+    }
+
     @BeforeEach
     void setUp() {
         ClientLevel level = mock(ClientLevel.class);
@@ -60,6 +65,18 @@ class FreecamPositionTest {
         assertThat(swimPos.x).as("x is %01.2f".formatted(entity.getX())).isEqualTo(entity.getX());
         assertThat(swimPos.y).as("y is %01.2f higher than %01.2f".formatted(diff, entity.getY())).isEqualTo(entity.getY() + diff, withPrecision(0.0000004));
         assertThat(swimPos.z).as("z is %01.2f".formatted(entity.getZ())).isEqualTo(entity.getZ());
+    }
+
+    @ParameterizedTest
+    @MethodSource("rotations")
+    @DisplayName("Uses entity rotation")
+    void init_rotation(Vec2 rotation) {
+        entity.setXRot(rotation.x);
+        entity.setYRot(rotation.y);
+        FreecamPosition rotatedPos = new FreecamPosition(entity);
+
+        assertThat(rotatedPos.yaw).as("yaw is %01.2f".formatted(rotation.y)).isEqualTo(rotation.y);
+        assertThat(rotatedPos.pitch).as("pitch is %01.2f".formatted(rotation.x)).isEqualTo(rotation.x);
     }
 
     @ParameterizedTest
