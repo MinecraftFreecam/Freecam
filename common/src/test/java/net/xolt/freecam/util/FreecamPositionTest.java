@@ -1,8 +1,8 @@
 package net.xolt.freecam.util;
 
 import net.minecraft.client.player.RemotePlayer;
-import net.xolt.freecam.test.extension.BootstrapMinecraft;
-import net.xolt.freecam.test.extension.EnableMockito;
+import net.xolt.freecam.testing.extension.BootstrapMinecraft;
+import net.xolt.freecam.testing.extension.EnableMockito;
 import org.joml.Quaternionf;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,7 +12,7 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 import org.mockito.Mock;
 
-import static net.xolt.freecam.test.util.TestUtils.getFieldValue;
+import static net.xolt.freecam.testing.util.TestUtils.getFieldValue;
 import static org.assertj.core.api.Assertions.assertThat;
 
 @EnableMockito
