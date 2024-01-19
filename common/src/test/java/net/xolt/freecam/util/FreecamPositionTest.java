@@ -96,6 +96,14 @@ class FreecamPositionTest {
         assertThat(position.x).as("x increased by " + distance).isEqualTo(x + distance);
         assertThat(position.y).as("y is unchanged").isEqualTo(y);
         assertThat(position.z).as("z is unchanged").isEqualTo(z);
+
+        // Moving the same distance after a mirror should revert
+        position.mirrorRotation();
+        position.moveForward(distance);
+
+        assertThat(position.x).as("x is reverted").isEqualTo(x);
+        assertThat(position.y).as("y is unchanged").isEqualTo(y);
+        assertThat(position.z).as("z is unchanged").isEqualTo(z);
     }
 
     @ParameterizedTest
@@ -114,6 +122,14 @@ class FreecamPositionTest {
 
         assertThat(position.x).as("x is unchanged").isEqualTo(x);
         assertThat(position.y).as("y increased by " + distance).isEqualTo(y + distance);
+        assertThat(position.z).as("z is unchanged").isEqualTo(z);
+
+        // Moving the same distance after a mirror should revert
+        position.mirrorRotation();
+        position.moveForward(distance);
+
+        assertThat(position.x).as("x is unchanged").isEqualTo(x);
+        assertThat(position.y).as("y is reverted").isEqualTo(y);
         assertThat(position.z).as("z is unchanged").isEqualTo(z);
     }
 
@@ -134,6 +150,14 @@ class FreecamPositionTest {
         assertThat(position.x).as("x is unchanged").isEqualTo(x);
         assertThat(position.y).as("y is unchanged").isEqualTo(y);
         assertThat(position.z).as("z increased by " + distance).isEqualTo(z + distance);
+
+        // Moving the same distance after a mirror should revert
+        position.mirrorRotation();
+        position.moveForward(distance);
+
+        assertThat(position.x).as("x is unchanged").isEqualTo(x);
+        assertThat(position.y).as("y is unchanged").isEqualTo(y);
+        assertThat(position.z).as("z is reverted").isEqualTo(z);
     }
 
     @ParameterizedTest
@@ -157,10 +181,6 @@ class FreecamPositionTest {
                     );
                 }
         );
-    }
-
-    @Test
-    void mirrorRotation() {
     }
 
     @Test
