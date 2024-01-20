@@ -37,12 +37,13 @@ public class Freecam {
     private static CameraType rememberedF5 = null;
 
     public static void preTick(Minecraft mc) {
-        if (isEnabled()) {
-            // Disable if the previous tick asked us to
-            if (disableNextTick) {
-                toggle();
-            }
+        // Disable if the previous tick asked us to
+        if (disableNextTick && isEnabled()) {
+            toggle();
+        }
+        disableNextTick = false;
 
+        if (isEnabled()) {
             // Prevent player from being controlled when freecam is enabled
             if (mc.player != null && mc.player.input instanceof KeyboardInput && !isPlayerControlEnabled()) {
                 Input input = new Input();
@@ -52,7 +53,6 @@ public class Freecam {
 
             mc.gameRenderer.setRenderHand(ModConfig.INSTANCE.visual.showHand);
         }
-        disableNextTick = false;
     }
 
     public static void postTick(Minecraft mc) {
