@@ -1,14 +1,15 @@
 package net.xolt.freecam;
 
-import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.player.Input;
 import net.minecraft.client.player.KeyboardInput;
+import net.minecraft.client.renderer.texture.Tickable;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
+import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.tripod.TripodRegistry;
 import net.xolt.freecam.tripod.TripodSlot;
@@ -17,32 +18,28 @@ import net.xolt.freecam.util.FreecamPosition;
 import net.xolt.freecam.variant.api.BuildVariant;
 import org.jetbrains.annotations.Nullable;
 
-import static net.xolt.freecam.config.ModBindings.*;
-
 public class Freecam {
 
     public static final Minecraft MC = Minecraft.getInstance();
     public static final String MOD_ID = "freecam";
-    private static final long TOGGLE_KEY_MAX_TICKS = 10;
 
     private static boolean freecamEnabled = false;
     private static boolean tripodEnabled = false;
     private static boolean playerControlEnabled = false;
     private static boolean disableNextTick = false;
-    private static boolean toggleKeyUsedWhileHeld = false;
-    private static long toggleKeyHeldTicks = 0;
     private static final TripodRegistry tripods = new TripodRegistry();
     private static TripodSlot activeTripod = TripodSlot.NONE;
     private static FreeCamera freeCamera;
     private static CameraType rememberedF5 = null;
 
     public static void preTick(Minecraft mc) {
-        if (isEnabled()) {
-            // Disable if the previous tick asked us to
-            if (disableNextTick) {
-                toggle();
-            }
+        // Disable if the previous tick asked us to
+        if (disableNextTick && isEnabled()) {
+            toggle();
+        }
+        disableNextTick = false;
 
+        if (isEnabled()) {
             // Prevent player from being controlled when freecam is enabled
             if (mc.player != null && mc.player.input instanceof KeyboardInput && !isPlayerControlEnabled()) {
                 Input input = new Input();
@@ -52,51 +49,10 @@ public class Freecam {
 
             mc.gameRenderer.setRenderHand(ModConfig.INSTANCE.visual.showHand);
         }
-        disableNextTick = false;
     }
 
     public static void postTick(Minecraft mc) {
-        if (KEY_TOGGLE.isDown()) {
-            // Count held ticks, so we can toggle on release
-            toggleKeyHeldTicks++;
-            KEY_TOGGLE.reset();
-
-            // Handle <toggle_key>+<hotbar_key> combos
-            for (KeyMapping combo : mc.options.keyHotbarSlots) {
-                while (combo.consumeClick()) {
-                    toggleTripod(TripodSlot.ofKeyCode(combo.getDefaultKey().getValue()));
-                    toggleKeyUsedWhileHeld = true;
-                }
-            }
-        }
-        // Check if toggle was pressed, and is now released
-        else if (KEY_TOGGLE.consumeClick() || toggleKeyHeldTicks > 0) {
-            // Only toggle if the key wasn't used (or held too long)
-            if (!toggleKeyUsedWhileHeld && toggleKeyHeldTicks < TOGGLE_KEY_MAX_TICKS) {
-                toggle();
-            }
-            // Reset state
-            KEY_TOGGLE.reset();
-            toggleKeyHeldTicks = 0;
-            toggleKeyUsedWhileHeld = false;
-        }
-
-        // Handle <reset_key>+<hotbar_key> combos
-        if (KEY_TRIPOD_RESET.isDown()) {
-            for (KeyMapping key : mc.options.keyHotbarSlots) {
-                while (key.consumeClick()) {
-                    resetCamera(TripodSlot.ofKeyCode(key.getDefaultKey().getValue()));
-                }
-            }
-        }
-
-        while (KEY_PLAYER_CONTROL.consumeClick()) {
-            switchControls();
-        }
-
-        while (KEY_CONFIG_GUI.consumeClick()) {
-            mc.setScreen(AutoConfig.getConfigScreen(ModConfig.class, mc.screen).get());
-        }
+        ModBindings.forEach(Tickable::tick);
     }
 
     public static void onDisconnect() {
@@ -104,6 +60,28 @@ public class Freecam {
             toggle();
         }
         tripods.clear();
+    }
+
+    public static boolean activateTripodHandler() {
+        boolean activated = false;
+        for (KeyMapping combo : MC.options.keyHotbarSlots) {
+            while (combo.consumeClick()) {
+                toggleTripod(TripodSlot.ofKeyCode(combo.getDefaultKey().getValue()));
+                activated = true;
+            }
+        }
+        return activated;
+    }
+
+    public static boolean resetTripodHandler() {
+        boolean reset = false;
+        for (KeyMapping key : MC.options.keyHotbarSlots) {
+            while (key.consumeClick()) {
+                resetCamera(TripodSlot.ofKeyCode(key.getDefaultKey().getValue()));
+                reset = true;
+            }
+        }
+        return reset;
     }
 
     public static void toggle() {
