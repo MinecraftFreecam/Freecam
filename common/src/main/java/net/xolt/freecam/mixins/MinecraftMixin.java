@@ -45,7 +45,7 @@ public class MinecraftMixin {
     // Prevents hotbar keys from changing selected slot when freecam key is held
     @Inject(method = "handleKeybinds", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/KeyMapping;consumeClick()Z", ordinal = 2), cancellable = true)
     private void onHandleInputEvents(CallbackInfo ci) {
-        if (KEY_TOGGLE.isDown() || KEY_TRIPOD_RESET.isDown()) {
+        if (KEY_TOGGLE.get().isDown() || KEY_TRIPOD_RESET.get().isDown()) {
             ci.cancel();
         }
     }
