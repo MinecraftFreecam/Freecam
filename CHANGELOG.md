@@ -9,11 +9,31 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Added
 
+- Neoforge support.
+  - Replaces legacy Forge support.
+- Translations can now be submitted using [Crowdin](https://crowdin.com/project/freecam).
+- Japanese translations (Thanks, @Greenjp0025 !).
+- This changelog document!
+
 ### Changed
+
+- Improved "combo key" behavior.
+  - The _toggle key_ no longer needs to be pressed at exactly the same time as the _tripod key_
+    to toggle a tripod. Instead, it can be _held indefinitely_ before pressing a tripod key.
+  - Freecam is now toggled when the toggle key is **released**.
+  - Freecam is **not** toggled if the keypress was used to toggle a tripod.
+- Various internal changes.
 
 ### Removed
 
+- Forge support.
+  - Removed in favor of Neoforge.
+
 ### Fixed
+
+- "Ignore Transparent" collision not affecting glass blocks.
+- Tripods can be set in non-vanilla dimensions.
+- "Disable on Damage" preventing player movement ([#155](https://github.com/MinecraftFreecam/Freecam/issues/155)).
 
 ## [1.2.2] - 2023-12-25
 
