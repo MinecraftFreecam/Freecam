@@ -52,37 +52,6 @@ changelog {
     headerParserRegex = ~/(\d+(?:\.\d+)+)/
 }
 
-subprojects {
-    apply plugin: "dev.architectury.loom"
-
-    loom {
-        accessWidenerPath = project(":common").file "src/main/resources/freecam.accesswidener"
-
-        runs {
-            client {
-                // Pretty run-config name
-                // Note: we can't disable the (:path) suffix
-                // https://github.com/architectury/architectury-loom/blob/5b3e7c72b665f7eb38c23ceb677027acdc867398/src/main/java/net/fabricmc/loom/configuration/ide/RunConfig.java#L117
-                configName "Run"
-            }
-            remove server // We only need client runs
-        }
-
-        silentMojangMappingsLicense()
-    }
-
-    dependencies {
-        def parchmentAppendix = rootProject.parchment_version.split('-')[0]
-        def parchmentVersion = rootProject.parchment_version.split('-')[1]
-
-        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
-        mappings loom.layered() {
-            officialMojangMappings()
-            parchment("org.parchmentmc.data:parchment-${parchmentAppendix}:${parchmentVersion}@zip")
-        }
-    }
-}
-
 allprojects {
     apply plugin: "java"
     apply plugin: "architectury-plugin"
@@ -125,5 +94,36 @@ allprojects {
 
     jar {
         from "LICENSE"
+    }
+}
+
+subprojects {
+    apply plugin: "dev.architectury.loom"
+
+    loom {
+        accessWidenerPath = project(":common").file "src/main/resources/freecam.accesswidener"
+
+        runs {
+            client {
+                // Pretty run-config name
+                // Note: we can't disable the (:path) suffix
+                // https://github.com/architectury/architectury-loom/blob/5b3e7c72b665f7eb38c23ceb677027acdc867398/src/main/java/net/fabricmc/loom/configuration/ide/RunConfig.java#L117
+                configName "Run"
+            }
+            remove server // We only need client runs
+        }
+
+        silentMojangMappingsLicense()
+    }
+
+    dependencies {
+        def parchmentAppendix = rootProject.parchment_version.split('-')[0]
+        def parchmentVersion = rootProject.parchment_version.split('-')[1]
+
+        minecraft "com.mojang:minecraft:${rootProject.minecraft_version}"
+        mappings loom.layered() {
+            officialMojangMappings()
+            parchment("org.parchmentmc.data:parchment-${parchmentAppendix}:${parchmentVersion}@zip")
+        }
     }
 }
