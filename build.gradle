@@ -157,10 +157,12 @@ subprojects {
                 it.embedded "cloth-config"
             }
 
+            def dummy = "default"
             apiKeys {
-                curseforge findProperty("curseforge_token") ?: System.getenv("CURSEFORGE_TOKEN") ?: ""
-                modrinth findProperty("modrinth_token") ?: System.getenv("MODRINTH_TOKEN") ?: ""
+                curseforge findProperty("curseforge_token") ?: System.getenv("CURSEFORGE_TOKEN") ?: dummy
+                modrinth findProperty("modrinth_token") ?: System.getenv("MODRINTH_TOKEN") ?: dummy
             }
+            debug = [ apiKeys.curseforge, apiKeys.modrinth ].contains dummy
         }
 
         tasks.publish.dependsOn tasks.publishMod
