@@ -194,12 +194,13 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 - Made more strings translatable.
 - Updated Italian and Chinese translations (credits to @Loweredgames and @GodGun968).
 - Updated license to MIT in mod list screen.
+- Tripods are now stored separately per-dimension.
 
 ### Fixed
 
 - Fixed crash when enabling freecam whilst on fire or in lava with 'Disable on Damage' set to true.
 - Disable on damage now ignores damage received in creative mode.
-- Tripods are no-longer cleared when switching dimensions, and are now stored separately per-dimension.
+- Tripods are no-longer cleared when switching dimensions.
 - Fixed being able to hit tripods.
 
 ## [1.1.7] - 2022-12-10
@@ -533,9 +534,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 ### Changed
 
 - Holding jump and sneak at the same time will now make you hover in place.
-
-### Fixed
-
 - Player now remains sneaking if freecam is enabled while sneak is held.
 
 ## [0.4.8] - 2022-03-03
@@ -623,7 +621,7 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 - Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.3-mc1.17).
 - Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.3-mc1.16).
 
-### Added
+### Fixed
 
 - Ok Zoomer compatibility.
 
@@ -733,9 +731,13 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 - Minecraft 1.18.1: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.3.2-mc1.18.1).
 - Minecraft 1.17.1: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.3.2-mc1.17.1).
 
+### Changed
+
+- Improved config screen.
+
 ### Fixed
 
-- Fixed movement bug and improved config screen.
+- Fixed movement bug.
 
 ## [0.3.1] - 2021-12-19
 
