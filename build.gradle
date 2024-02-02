@@ -1,4 +1,5 @@
 import net.fabricmc.loom.task.RemapJarTask
+import org.jetbrains.changelog.Changelog
 
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
@@ -148,7 +149,23 @@ subprojects {
             gameVersions = [ rootProject.minecraft_version ]
             curseEnvironment = "client"
             loaders = [ project.name ]
-            changelog = ""
+
+            // Get the changelog entry using the changelog plugin
+            changelog = provider {
+                def plugin = rootProject.changelog
+                def version = rootProject.mod_version
+                if (!plugin.has(version)) {
+                    logger.warn "No changelog for \"${version}\". Using \"unreleased\" instead."
+                }
+
+                def logEntry = (plugin.getOrNull(version) ?: plugin.getUnreleased())
+                        .withHeader(false)
+                        .withLinks(false)
+                        .withEmptySections(false)
+                        .withSummary(true)
+
+                return plugin.renderItem(logEntry, Changelog.OutputType.MARKDOWN)
+            }
 
             artifact = tasks.remapJar
             setPlatformArtifact "modrinth", tasks.remapModrinthJar
