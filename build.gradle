@@ -2,6 +2,7 @@ plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
     id "dev.architectury.loom" version "1.4-SNAPSHOT" apply false
     id "com.github.johnrengelman.shadow" version "7.1.2" apply false
+    id "org.jetbrains.changelog" version "2.2.0"
 }
 
 tasks.named('wrapper') {
@@ -17,6 +18,38 @@ afterEvaluate {
 
 architectury {
     minecraft = rootProject.minecraft_version
+}
+
+changelog {
+    // Use the mod_version in gradle.properties as the release version/tag,
+    // without any prefix such as "v".
+    // Build tag/diff links using the github repo URL.
+    version = project.mod_version
+    versionPrefix = ""
+    repositoryUrl = project.source_code_url
+
+    // Title & intro are printed right at the start of the changelog.
+    // The values here will replace whatever exists in the file when patching.
+    title = "Changelog"
+    introduction = """
+        All notable changes to this project will be documented in this file.
+        
+        This file is formatted as per [Keep a Changelog](https://keepachangelog.com/en/1.0.0),
+        and Freecam's versioning is based on [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+        """.stripIndent()
+
+    // Group sub-headings added to the "unreleased" section when patching the changelog.
+    // Other sub-headings can still be added manually, if required.
+    groups = [
+            "Added",
+            "Changed",
+            "Removed",
+            "Fixed",
+    ]
+
+    // Regex used to find versions in headings.
+    // The default regex only supports semantic versions, this one is more lenient.
+    headerParserRegex = ~/(\d+(?:\.\d+)+)/
 }
 
 subprojects {
