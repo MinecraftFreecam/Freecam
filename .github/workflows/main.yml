@@ -1,0 +1,35 @@
+name: Gradle (build & test)
+
+on:
+  push:
+    branches: &branches
+    - 'main'
+    - '1.16'
+    - '1.17'
+    - '1.18'
+    - '1.19'
+  pull_request:
+    branches: *branches
+
+permissions:
+  contents: read
+
+jobs:
+  build_and_test:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up JDK
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: microsoft
+    - name: Build
+      uses: gradle/gradle-build-action@v2
+      with:
+        arguments: build
+    - name: Test
+      uses: gradle/gradle-build-action@v2
+      with:
+        # We could run `check` instead, but we may want to add checks we don't want to use in CI...?
+        arguments: test

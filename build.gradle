@@ -80,6 +80,24 @@ subprojects {
             officialMojangMappings()
             parchment("org.parchmentmc.data:parchment-${parchmentAppendix}:${parchmentVersion}@zip")
         }
+
+        testImplementation(platform("org.junit:junit-bom:${rootProject.junit_version}"))
+        testImplementation("org.junit.jupiter:junit-jupiter")
+        testImplementation("org.junit.jupiter:junit-jupiter-params")
+        testImplementation "org.assertj:assertj-core:${rootProject.assertj_version}"
+        testImplementation "org.mockito:mockito-core:${rootProject.mockito_version}"
+        testImplementation "org.mockito:mockito-junit-jupiter:${rootProject.mockito_version}"
+
+        if (project.name != "test-util") {
+            dependencies.testImplementation dependencies.project(path: ":test-utils", configuration: "namedElements")
+        }
+    }
+
+    test {
+        def dir = project.file "run"
+        dir.mkdirs()
+        workingDir dir
+        useJUnitPlatform()
     }
 }
 
