@@ -145,8 +145,6 @@ subprojects {
             displayName = "[${project.name.capitalize()}] ${rootProject.name.capitalize()} ${rootProject.mod_version} for MC ${rootProject.minecraft_version}"
             version = project.version
             versionType = rootProject.release_type
-            // TODO we could set a list of compatible versions, not just the one we're building against:
-            gameVersions = [ rootProject.minecraft_version ]
             curseEnvironment = "client"
             loaders = [ project.name ]
 
@@ -165,6 +163,21 @@ subprojects {
                         .withSummary(true)
 
                 return plugin.renderItem(logEntry, Changelog.OutputType.MARKDOWN)
+            }
+
+            // List the current `minecraft_version`, everything in `supported_mc_versions`, &
+            // everything in the current mod loader's `*_supported_mc_versions` as a supported version
+            gameVersions = provider {
+                String prop = "supported_mc_versions"
+                String primary = rootProject.property("minecraft_version")
+                String common = rootProject.findProperty(prop) ?: ""
+                String specific = rootProject.findProperty("${project.name}_${prop}") ?: ""
+
+                return (common.split(",") + specific.split(",") + [ primary ])
+                        .findAll { it != null }
+                        .findAll { it != "" }
+                        .collect { it.trim() }
+                        .unique()
             }
 
             artifact = tasks.remapJar
