@@ -147,6 +147,7 @@ subprojects {
             versionType = rootProject.release_type
             curseEnvironment = "client"
             loaders = [ project.name ]
+            javaVersions = ["Java ${project.java.targetCompatibility}"]
 
             // Get the changelog entry using the changelog plugin
             changelog = provider {
