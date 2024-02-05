@@ -25,9 +25,8 @@ public class FreeCamera extends LocalPlayer {
             MC,
             MC.screen,
             MC.getConnection().getConnection(),
-            MC.getCurrentServer(),
             new GameProfile(UUID.randomUUID(), "FreeCamera"),
-            MC.getTelemetryManager().createWorldSessionManager(false, null)
+            MC.createTelemetryManager()
     ) {
         @Override
         public void send(Packet<?> packet) {

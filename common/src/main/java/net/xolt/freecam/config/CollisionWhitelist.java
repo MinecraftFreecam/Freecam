@@ -1,6 +1,6 @@
 package net.xolt.freecam.config;
 
-import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.core.Registry;
 import net.minecraft.world.level.block.*;
 
 import java.util.ArrayList;
@@ -31,7 +31,7 @@ public class CollisionWhitelist {
     }
 
     private static String getBlockId(Block block) {
-        return BuiltInRegistries.BLOCK.getKey(block).toString();
+        return Registry.BLOCK.getKey(block).toString();
     }
 
     private static class Builder {
