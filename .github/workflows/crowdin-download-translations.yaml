@@ -1,10 +1,9 @@
 name: Crowdin (Download Translations)
 
+# Allow running manually,
+# including triggering via webhooks
 on:
-  workflow_dispatch: # Allow running manually
-  schedule:
-    # https://crontab.guru
-    - cron: '0 */12 * * *' # Every 12 hours
+  workflow_dispatch:
 
 # Queue this workflow after others in the 'crowdin' group, to avoid concurrency issues.
 concurrency:
