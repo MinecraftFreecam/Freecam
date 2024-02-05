@@ -9,6 +9,16 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Added
 
+### Changed
+
+### Removed
+
+### Fixed
+
+## [1.2.3] - 2024-02-04
+
+### Added
+
 - Neoforge support.
   - Replaces legacy Forge support.
 - Translations can now be submitted using [Crowdin](https://crowdin.com/project/freecam).
@@ -820,7 +830,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 - Minecraft 1.18 support.
 - Minecraft 1.17 support.
 
-[Unreleased]: https://github.com/MinecraftFreecam/Freecam/compare/1.2.2-mc1.20...HEAD
+[Unreleased]: https://github.com/MinecraftFreecam/Freecam/compare/1.2.3...HEAD
+[1.2.3]: https://github.com/MinecraftFreecam/Freecam/compare/1.2.2-mc1.20...1.2.3
 [1.2.2]: https://github.com/MinecraftFreecam/Freecam/compare/1.2.1.1-mc1.20...1.2.2-mc1.20
 [1.2.1]: https://github.com/MinecraftFreecam/Freecam/compare/1.2.0-mc1.20...1.2.1-mc1.20
 [1.2.0]: https://github.com/MinecraftFreecam/Freecam/compare/1.1.10-mc1.20...1.2.0-mc1.20
