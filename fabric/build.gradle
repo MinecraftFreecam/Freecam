@@ -3,6 +3,7 @@ import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
     id "com.github.johnrengelman.shadow"
+    id "com.hypherionmc.modutils.modpublisher"
 }
 
 def variants = rootProject.build_variants.split(',')
@@ -80,8 +81,8 @@ variants.each { variant ->
         remapJarTask = tasks.remapJar
         appendix = ""
     } else {
-        shadowJarTask = tasks.create("shadow${variant.capitalize()}Jar", ShadowJar)
-        remapJarTask = tasks.create("remap${variant.capitalize()}Jar", RemapJarTask)
+        shadowJarTask = tasks.maybeCreate("shadow${variant.capitalize()}Jar", ShadowJar)
+        remapJarTask = tasks.maybeCreate("remap${variant.capitalize()}Jar", RemapJarTask)
         appendix = variant
     }
 
@@ -123,15 +124,9 @@ components.java {
     }
 }
 
-publishing {
-    publications {
-        mavenFabric(MavenPublication) {
-            from components.java
-        }
-    }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
+publisher {
+    [ curseDepends, modrinthDepends ].each {
+        it.required "fabric-api"
+        it.optional "modmenu"
     }
 }
