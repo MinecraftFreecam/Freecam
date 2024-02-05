@@ -90,8 +90,8 @@ variants.each { variant ->
         remapJarTask = tasks.remapJar
         appendix = ""
     } else {
-        shadowJarTask = tasks.create("shadow${variant.capitalize()}Jar", ShadowJar)
-        remapJarTask = tasks.create("remap${variant.capitalize()}Jar", RemapJarTask)
+        shadowJarTask = tasks.maybeCreate("shadow${variant.capitalize()}Jar", ShadowJar)
+        remapJarTask = tasks.maybeCreate("remap${variant.capitalize()}Jar", RemapJarTask)
         appendix = variant
     }
 
@@ -133,18 +133,5 @@ variants.each { variant ->
 components.java {
     withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
         skip()
-    }
-}
-
-publishing {
-    publications {
-        mavenForge(MavenPublication) {
-            from components.java
-        }
-    }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
     }
 }
