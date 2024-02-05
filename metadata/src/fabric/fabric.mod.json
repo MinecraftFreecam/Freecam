@@ -31,5 +31,15 @@
     "fabricloader": "${fabric_loader_req}",
     "fabric": "*",
     "minecraft": "${fabric_mc_req}"
+  },
+  "custom": {
+    "modmenu": {
+      "links": {
+        "modmenu.crowdin": "${crowdin_url}",
+        "modmenu.curseforge": "${curseforge_url}",
+        "modmenu.modrinth": "${modrinth_url}",
+        "modmenu.github_releases": "${gh_releases_url}"
+      }
+    }
   }
 }
