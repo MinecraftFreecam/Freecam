@@ -34,7 +34,7 @@ platforms.each { platform -> variants.each { variant ->
         inputs.properties(
                 mod_id: rootProject.name,
                 modrinth_name: project.modrinth_name,
-                version: project.mod_version,
+                version: project.version,
                 authors: project.authors,
                 description: project.description,
                 modrinth_description: project.modrinth_description,
