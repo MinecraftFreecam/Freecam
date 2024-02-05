@@ -61,10 +61,10 @@ allprojects {
     apply plugin: "architectury-plugin"
     apply plugin: "maven-publish"
 
-    version = "${project.mod_version}+${project.minecraft_version}"
+    version = "${project.mod_version}+mc${project.minecraft_version}"
     group = rootProject.maven_group
     base {
-        // Format archive names, e.g. 'freecam-fabric-1.2.1.1+1.20.2.jar'
+        // Format archive names, e.g. 'freecam-fabric-1.2.3+mc1.20.4.jar'
         archivesName = rootProject.name + project.path.replaceAll(':', '-')
     }
 
