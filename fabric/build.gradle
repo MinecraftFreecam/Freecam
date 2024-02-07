@@ -50,10 +50,10 @@ variants.each { variant ->
     }
     def shadowConfig = configurations.create("${variant}Shadow")
 
-    // Add a dependency on metadata
-    def metadata = dependencies.project(path: ":metadata", configuration: "fabric${variant == "normal" ? "" : variant.capitalize()}")
-    dependencies.add(set.implementationConfigurationName, metadata)
-    dependencies.add(shadowConfig.name, metadata)
+    // Add a dependency on mod data
+    def data = dependencies.project(path: ":data", configuration: "fabric${variant == "normal" ? "" : variant.capitalize()}")
+    dependencies.add(set.implementationConfigurationName, data)
+    dependencies.add(shadowConfig.name, data)
 
     // Add a dependency on variant's service provider
     dependencies.add(set.implementationConfigurationName, dependencies.project(path: ":variant:${variant}", configuration: "namedElements"))

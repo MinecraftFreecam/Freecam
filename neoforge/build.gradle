@@ -42,10 +42,10 @@ variants.each { variant ->
     }
     def shadowConfig = configurations.create("${variant}Shadow")
 
-    // Add a dependency on metadata
-    def metadata = dependencies.project(path: ":metadata", configuration: "neoforge${variant == "normal" ? "" : variant.capitalize()}")
-    dependencies.add(set.implementationConfigurationName, metadata)
-    dependencies.add(shadowConfig.name, metadata)
+    // Add a dependency on mod data
+    def data = dependencies.project(path: ":data", configuration: "neoforge${variant == "normal" ? "" : variant.capitalize()}")
+    dependencies.add(set.implementationConfigurationName, data)
+    dependencies.add(shadowConfig.name, data)
 
     // Add a dependency on variant's service provider
     def spi = dependencies.project(path: ":variant:${variant}", configuration: "namedElements")
@@ -70,7 +70,7 @@ variants.each { variant ->
     run.mods.register(rootProject.name) {
         sourceSet project.sourceSets.main
         sourceSet set
-        dependency metadata
+        dependency data
         dependency spi
     }
 
