@@ -9,6 +9,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Added
 
+- \[Fabric]: The name & description shown in the Mod Menu can now be translated ([#172](https://github.com/MinecraftFreecam/Freecam/issues/172)).
+
 ### Changed
 
 ### Removed

@@ -25,24 +25,18 @@ variants.each { variant ->
             kebabName += "-$variant"
         }
 
-        def metadataTask = tasks.register("${name}GenMetadata", Copy) {
+        def metadataTask = tasks.register("${name}GenMetadata") {
             group = "metadata"
             description = {
                 def file = platform.endsWith "forge" ? "mods.toml" : "${platform}.mods.json"
                 return "Build $variant $file file"
             }()
 
-            // Include files under `src/platform`
-            from layout.projectDirectory.dir("src").dir(platform)
-            into layout.buildDirectory.dir("metadata/${kebabName}")
-
+            // Depend on langTask and the following properties
+            dependsOn langTask
             inputs.properties(
-                    mod_id: rootProject.name,
-                    modrinth_name: project.modrinth_name,
                     version: project.mod_version,
                     authors: project.authors,
-                    description: project.description,
-                    modrinth_description: project.modrinth_description,
                     licence: project.licence,
                     homepage_url: project.homepage_url,
                     source_code_url: project.source_code_url,
@@ -54,22 +48,33 @@ variants.each { variant ->
                     neoforge_req: project.neoforge_req,
             )
 
-            def overrides = new TreeMap()
-            overrides.mod_id = inputs.properties.mod_id.toLowerCase()
-            overrides.name = overrides.mod_id.capitalize()
-            overrides.json_authors = inputs.properties.authors.split(',').collect { "\"$it\"" }.join(", ")
+            def inputDir = layout.projectDirectory.dir("src").dir(platform)
+            def outputDir = layout.buildDirectory.dir("metadata/${kebabName}")
 
-            if (variant == "modrinth") {
-                overrides.name += ' ' + inputs.properties.modrinth_name
-                overrides.description = inputs.properties.description + ' ' + inputs.properties.modrinth_description
-            }
+            // Declare task outputs so they can be used by other tasks
+            outputs.dir outputDir
 
-            filesMatching("fabric.mod.json") {
-                expand inputs.properties + overrides
-            }
+            // Need to do this at execution time;
+            // LangTask.getTranslation() can't be used at configuration time...
+            doLast {
+                def values = new TreeMap(inputs.properties)
+                values.mod_id = rootProject.name.toLowerCase()
+                values.name = langTask.get().getTranslation("freecam.name")
+                values.description = langTask.get().getTranslation("freecam.description")
+                values.json_authors = values.authors.split(',').collect { "\"$it\"" }.join(", ")
 
-            filesMatching("META-INF/mods.toml") {
-                expand inputs.properties + overrides
+                copy {
+                    from inputDir
+                    into outputDir
+
+                    filesMatching("fabric.mod.json") {
+                        expand values
+                    }
+
+                    filesMatching("META-INF/mods.toml") {
+                        expand values
+                    }
+                }
             }
         }
 
