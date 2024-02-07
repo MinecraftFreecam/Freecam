@@ -7,8 +7,7 @@ import java.lang.annotation.*;
 /**
  * Applies a tooltip to list entries that support it, defined in your lang file.
  * <p>
- * Will try to use translations defined for the current build variant (e.g. {@code @ModrinthTooltip}), but will
- * fall back to using the default {@code @Tooltip} translations if variant-specific ones are not defined.
+ * Should be used over {@link ConfigEntry.Gui.Tooltip} when {@link #count()} varies between variants.
  * <p>
  * Can be declared multiple times on the same field.
  *
@@ -19,7 +18,7 @@ import java.lang.annotation.*;
 @Repeatable(VariantTooltip.List.class)
 public @interface VariantTooltip {
 
-    String variant() default "all";
+    String variant();
 
     int count() default 1;
 

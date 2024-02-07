@@ -61,7 +61,7 @@ abstract class LangTask : DefaultTask() {
     private val json = Json { prettyPrint = true }
     private val localeRegex = "^[a-z]{2}-[A-Z]{2}$".toRegex()
     private val processors = listOf<LangProcessor>(
-
+        VariantTooltipProcessor()
     )
 
     init {
