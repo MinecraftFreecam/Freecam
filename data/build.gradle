@@ -1,35 +1,38 @@
 
-def platforms = rootProject.enabled_platforms.split(',')
-def variants = rootProject.build_variants.split(',')
+def platforms = (rootProject.enabled_platforms as String).split(',')
+def variants = (rootProject.build_variants as String).split(',')
 
-base {
-    archivesName = "metadata"
-}
-
-// For each platform/variant combination, provide a jar containing the generated metadata.
-// This allows us to include the metadata files as a dependency, which is more flexible.
+// For each platform/variant combination, provide a jar containing the generated data.
+// This allows each build to depend on slightly different data.
 platforms.each { platform -> variants.each { variant ->
 
     def name = platform
-    def classifier = platform
-    def taskDescription = "Generate metadata for ${platform.capitalize()}"
+    def kebabName = platform
 
     if (variant != "normal") {
         name += variant.capitalize()
-        classifier += '-' + variant
-        taskDescription += " (${variant.capitalize()})"
+        kebabName += "-$variant"
     }
 
-    def task = tasks.register("${name}Jar", Zip) {
-        // Configure the task
-        group = "build"
-        description = taskDescription
+    def metadataTask = tasks.register("${name}GenMetadata", Copy) {
+        def modFile
+        switch (platform) {
+            case "fabric":
+                modFile = "fabric.mod.json"
+                break
+            case "forge":
+            case "neoforge":
+                modFile = "mods.toml"
+                break
+            default: modFile = ""
+        }
 
-        archiveClassifier = classifier
-        archiveExtension = "jar"
+        group = "metadata"
+        description = "Build ${modFile} file"
 
         // Include files under `src/platform`
-        from(layout.projectDirectory.dir("src").dir(platform))
+        from layout.projectDirectory.dir("src").dir(platform)
+        into layout.buildDirectory.dir("metadata/${kebabName}")
 
         inputs.properties(
                 mod_id: rootProject.name,
@@ -68,10 +71,20 @@ platforms.each { platform -> variants.each { variant ->
         }
     }
 
+    def jarTask = tasks.register("${name}Jar", Zip) {
+        group = "build"
+        description = "Build ${kebabName} mod data"
+
+        archiveClassifier = kebabName
+        archiveExtension = "jar"
+
+        from metadataTask
+    }
+
     // Make build extend this, for convenience
-    tasks.build.dependsOn task
+    tasks.build.dependsOn jarTask
 
     // Export the artifact so that other projects can use it
     configurations.register(name)
-    artifacts.add(name, task)
+    artifacts.add(name, jarTask)
 }}
