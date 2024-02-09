@@ -1,90 +1,94 @@
+import net.xolt.freecam.gradle.LangTask
 
 def platforms = (rootProject.enabled_platforms as String).split(',')
 def variants = (rootProject.build_variants as String).split(',')
 
 // For each platform/variant combination, provide a jar containing the generated data.
 // This allows each build to depend on slightly different data.
-platforms.each { platform -> variants.each { variant ->
+variants.each { variant ->
 
-    def name = platform
-    def kebabName = platform
-
-    if (variant != "normal") {
-        name += variant.capitalize()
-        kebabName += "-$variant"
+    def langTask = tasks.register("${variant}LangFiles", LangTask) {
+        group = "i18n"
+        description = "Build ${variant} lang files"
+        inputDirectory = layout.projectDirectory.dir("src").dir("lang")
+        outputDirectory = layout.buildDirectory.dir("i18n/${variant}")
+        modId = rootProject.name
+        setVariant(variant)
     }
 
-    def metadataTask = tasks.register("${name}GenMetadata", Copy) {
-        def modFile
-        switch (platform) {
-            case "fabric":
-                modFile = "fabric.mod.json"
-                break
-            case "forge":
-            case "neoforge":
-                modFile = "mods.toml"
-                break
-            default: modFile = ""
+    platforms.each { platform ->
+        def name = platform
+        def kebabName = platform
+
+        if (variant != "normal") {
+            name += variant.capitalize()
+            kebabName += "-$variant"
         }
 
-        group = "metadata"
-        description = "Build ${modFile} file"
+        def metadataTask = tasks.register("${name}GenMetadata", Copy) {
+            group = "metadata"
+            description = {
+                def file = platform.endsWith "forge" ? "mods.toml" : "${platform}.mods.json"
+                return "Build $variant $file file"
+            }()
 
-        // Include files under `src/platform`
-        from layout.projectDirectory.dir("src").dir(platform)
-        into layout.buildDirectory.dir("metadata/${kebabName}")
+            // Include files under `src/platform`
+            from layout.projectDirectory.dir("src").dir(platform)
+            into layout.buildDirectory.dir("metadata/${kebabName}")
 
-        inputs.properties(
-                mod_id: rootProject.name,
-                modrinth_name: project.modrinth_name,
-                version: project.mod_version,
-                authors: project.authors,
-                description: project.description,
-                modrinth_description: project.modrinth_description,
-                licence: project.licence,
-                homepage_url: project.homepage_url,
-                source_code_url: project.source_code_url,
-                issue_tracker_url: project.issue_tracker_url,
-                fabric_loader_req: project.fabric_loader_req,
-                fabric_mc_req: project.fabric_mc_req,
-                neoforge_mc_req: project.neoforge_mc_req,
-                neoforge_loader_req: project.neoforge_loader_req,
-                neoforge_req: project.neoforge_req,
-        )
+            inputs.properties(
+                    mod_id: rootProject.name,
+                    modrinth_name: project.modrinth_name,
+                    version: project.mod_version,
+                    authors: project.authors,
+                    description: project.description,
+                    modrinth_description: project.modrinth_description,
+                    licence: project.licence,
+                    homepage_url: project.homepage_url,
+                    source_code_url: project.source_code_url,
+                    issue_tracker_url: project.issue_tracker_url,
+                    fabric_loader_req: project.fabric_loader_req,
+                    fabric_mc_req: project.fabric_mc_req,
+                    neoforge_mc_req: project.neoforge_mc_req,
+                    neoforge_loader_req: project.neoforge_loader_req,
+                    neoforge_req: project.neoforge_req,
+            )
 
-        def overrides = new TreeMap()
-        overrides.mod_id = inputs.properties.mod_id.toLowerCase()
-        overrides.name = overrides.mod_id.capitalize()
-        overrides.json_authors = inputs.properties.authors.split(',').collect { "\"$it\"" }.join(", ")
+            def overrides = new TreeMap()
+            overrides.mod_id = inputs.properties.mod_id.toLowerCase()
+            overrides.name = overrides.mod_id.capitalize()
+            overrides.json_authors = inputs.properties.authors.split(',').collect { "\"$it\"" }.join(", ")
 
-        if (variant == "modrinth") {
-            overrides.name += ' ' + inputs.properties.modrinth_name
-            overrides.description = inputs.properties.description + ' ' + inputs.properties.modrinth_description
+            if (variant == "modrinth") {
+                overrides.name += ' ' + inputs.properties.modrinth_name
+                overrides.description = inputs.properties.description + ' ' + inputs.properties.modrinth_description
+            }
+
+            filesMatching("fabric.mod.json") {
+                expand inputs.properties + overrides
+            }
+
+            filesMatching("META-INF/mods.toml") {
+                expand inputs.properties + overrides
+            }
         }
 
-        filesMatching("fabric.mod.json") {
-            expand inputs.properties + overrides
+        def jarTask = tasks.register("${name}Jar", Zip) {
+            group = "build"
+            description = "Build ${kebabName} mod data"
+
+            archiveClassifier = kebabName
+            archiveExtension = "jar"
+
+            from langTask
+            from metadataTask
         }
 
-        filesMatching("META-INF/mods.toml") {
-            expand inputs.properties + overrides
-        }
+        // Make build extend this, for convenience
+        tasks.build.dependsOn jarTask
+
+        // Export the artifact so that other projects can use it
+        configurations.register(name)
+        artifacts.add(name, jarTask)
     }
-
-    def jarTask = tasks.register("${name}Jar", Zip) {
-        group = "build"
-        description = "Build ${kebabName} mod data"
-
-        archiveClassifier = kebabName
-        archiveExtension = "jar"
-
-        from metadataTask
-    }
-
-    // Make build extend this, for convenience
-    tasks.build.dependsOn jarTask
-
-    // Export the artifact so that other projects can use it
-    configurations.register(name)
-    artifacts.add(name, jarTask)
-}}
+}
