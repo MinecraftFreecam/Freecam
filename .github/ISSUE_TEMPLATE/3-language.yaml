@@ -1,0 +1,37 @@
+name: New Language
+description: Request we enable a new language in Crowdin
+title: "[New Language]: "
+labels: ["i18n"]
+body:
+  - type: input
+    id: name
+    attributes:
+      label: Language name
+      placeholder: English (US)
+    validations:
+      required: true
+  - type: input
+    id: locale
+    attributes:
+      label: Locale code
+      placeholder: en_us
+      description: You can find a list of Minecraft locale codes [here](https://minecraft.wiki/w/Language#Languages).
+    validations:
+      required: true
+  - type: markdown
+    attributes:
+      value: |
+        Please don't request we enable a language if you don't intend to help translate it.
+
+        If you're unfamiliar with Crowdin, you can read their [getting started as a volunteer translator guide](https://support.crowdin.com/enterprise/getting-started-for-volunteers).
+  - type: checkboxes
+    id: already-enabled
+    attributes:
+      label: Please check if the language is already enabled
+      description: |
+        Before opening this request, please check that we don't already target your language on our [Crowdin project](https://crowdin.com/project/freecam).
+
+        If we do, you can use Crowdin to submit new translations or propose changes.
+      options:
+        - label: I have checked this language isn't enabled on Crowdin
+          required: true
