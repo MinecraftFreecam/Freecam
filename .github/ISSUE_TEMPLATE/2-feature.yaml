@@ -1,0 +1,41 @@
+name: Feature request
+description: Suggest a new feature
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Please check if an issue already exists
+
+        You can use the search box on our [issues page](https://github.com/MinecraftFreecam/Freecam/issues). Ensure you check both open issues as well as closed issues.
+
+        If you find your idea has already been suggested, you can:
+        - **Subscribe** for updates on the issue
+        - **React** "👍" to show your interest
+        - Or **comment** if you have extra details to add
+
+        ----
+  - type: textarea
+    id: description
+    attributes:
+      label: Description of the feature
+      description: |
+        What is your idea and how should it work?
+
+        The more detail you provide, the more likely we'll understand your idea and be able to implemnt it.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Why is this useful?
+      description: What problem does it solve? How would it help you?
+  - type: input
+    id: mod-version
+    attributes:
+      label: Freecam version
+      placeholder: 1.2.3
+      description: What version of Freecam are you currently using?
+    validations:
+      required: true
+  
