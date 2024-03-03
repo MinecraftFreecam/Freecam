@@ -47,10 +47,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [1.2.2] - 2023-12-25
 
-### Platforms
-
-- [Minecraft 1.20.4](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.2-mc1.20).
-
 ### Added
 
 - Minecraft 1.20.4 support.
@@ -62,29 +58,11 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [1.2.1.1] - 2023-10-05
 
-### Platforms
-
-- Minecraft 1.20: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.1.1-mc1.20),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.1.1-forge-mc1.20).
-
 ### Added
 
 - Minecraft 1.20.2 support (Thank you @jmolloy19 !).
 
 ## [1.2.1] - 2023-07-13
-
-### Platforms
-
-- Minecraft 1.20: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.1-mc1.20),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.1-forge-mc1.20).
-- Minecraft 1.19: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.1-mc1.19),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.1-forge-mc1.19).
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.1-mc1.18),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.1-forge-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.1-mc1.17),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.1-forge-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.1-mc1.16),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.1-forge-mc1.16).
 
 ### Changed
 
@@ -99,19 +77,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 - Fixed crash on Fabric 1.16 version.
 
 ## [1.2.0] - 2023-06-18
-
-### Platforms
-
-- Minecraft 1.20: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.0-mc1.20),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.0-forge-mc1.20).
-- Minecraft 1.19: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.0-mc1.19),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.0-forge-mc1.19).
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.0-mc1.18),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.0-forge-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.0-mc1.17),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.0-forge-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.0-mc1.16),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.2.0-forge-mc1.16).
 
 ### Added
 
@@ -131,19 +96,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [1.1.10] - 2023-06-15
 
-### Platforms
-
-- Minecraft 1.20: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.10-mc1.20),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.10-forge-mc1.20).
-- Minecraft 1.19: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.10-mc1.19),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.10-forge-mc1.19).
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.10-mc1.18),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.10-forge-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.10-mc1.17),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.10-forge-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.10-mc1.16),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.10-forge-mc1.16).
-
 ### Added
 
 - Minecraft 1.20 support.
@@ -159,17 +111,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [1.1.9] - 2023-03-19
 
-### Platforms
-
-- Minecraft 1.19: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.9-mc1.19),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.9-forge-mc1.19).
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.9-mc1.18),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.9-forge-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.9-mc1.17),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.9-forge-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.9-mc1.16),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.9-forge-mc1.16).
-
 ### Added
 
 - Minecraft 1.19.4 support.
@@ -182,17 +123,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 - Fixed water submersion sounds playing while in Freecam.
 
 ## [1.1.8] - 2022-12-19
-
-### Platforms
-
-- Minecraft 1.19: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.8-mc1.19),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.8-forge-mc1.19).
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.8-mc1.18),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.8-forge-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.8-mc1.17),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.8-forge-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.8-mc1.16),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.8-forge-mc1.16).
 
 ### Added
 
@@ -215,17 +145,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [1.1.7] - 2022-12-10
 
-### Platforms
-
-- Minecraft 1.19: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.7-mc1.19),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.7-forge-mc1.19).
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.7-mc1.18),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.7-forge-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.7-mc1.17),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.7-forge-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.7-mc1.16),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.7-forge-mc1.16).
-
 ### Added
 
 - Minecraft 1.19.3 support.
@@ -239,17 +158,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [1.1.6] - 2022-09-11
 
-### Platforms
-
-- Minecraft 1.19: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.6-mc1.19),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.6-forge-mc1.19).
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.6-mc1.18),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.6-forge-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.6-mc1.17),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.6-forge-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.6-mc1.16),
-                  [Forge](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.6-forge-mc1.16).
-
 ### Added
 
 - Initial forge release.
@@ -262,13 +170,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [1.1.5] - 2022-08-28
 
-### Platforms
-
-- Minecraft 1.19: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.5-mc1.19).
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.5-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.5-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.5-mc1.16).
-
 ### Added
 
 - Added Chinese and Italian translations.
@@ -279,13 +180,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 - Fixed water/ladders affecting flight speed.
 
 ## [1.1.4] - 2022-07-21
-
-### Platforms
-
-- Minecraft 1.19: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.4-mc1.19).
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.4-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.4-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.4-mc1.16).
 
 ### Changed
 
@@ -298,13 +192,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [1.1.3] - 2022-07-20
 
-### Platforms
-
-- Minecraft 1.19: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.3-mc1.19).
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.3-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.3-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.3-mc1.16).
-
 ### Added
 
 - Added new 'Interaction Mode' setting.
@@ -316,25 +203,11 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [1.1.2] - 2022-07-06
 
-### Platforms
-
-- Minecraft 1.19: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.2-mc1.19).
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.2-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.2-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.2-mc1.16).
-
 ### Fixed
 
 - Fixed freecam pose changing when clipping through blocks.
 
 ## [1.1.1] - 2022-07-05
-
-### Platforms
-
-- Minecraft 1.19: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.1-mc1.19).
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.1-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.1-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.1-mc1.16).
 
 ### Fixed
 
@@ -342,13 +215,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 - Fixed getting stuck when entering freecam in 1-block-tall spaces with noclip disabled.
 
 ## [1.1.0] - 2022-07-04
-
-### Platforms
-
-- Minecraft 1.19: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.0-mc1.19).
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.0-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.0-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.1.0-mc1.16).
 
 ### Added
 
@@ -359,13 +225,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 - Fixed Optifabric incompatibility.
 
 ## [1.0.9] - 2022-06-26
-
-### Platforms
-
-- Minecraft 1.19: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.9-mc1.19).
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.9-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.9-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.9-mc1.16).
 
 ### Added
 
@@ -380,13 +239,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [1.0.8] - 2022-06-10
 
-### Platforms
-
-- Minecraft 1.19: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.8-mc1.19).
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.8-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.8-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.8-mc1.16).
-
 ### Changed
 
 - Changed default bind to F4 (X is taken by default).
@@ -400,13 +252,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [1.0.7] - 2022-06-09
 
-### Platforms
-
-- Minecraft 1.19: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.7-mc1.19).
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.7-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.7-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.7-mc1.16).
-
 ### Added
 
 - Added 'Freeze Player' option.
@@ -416,13 +261,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 - Fixed crash on launch.
 
 ## [1.0.6] - 2022-06-08
-
-### Platforms
-
-- Minecraft 1.19: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.6-mc1.19).
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.6-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.6-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.6-mc1.16).
 
 ### Added
 
@@ -437,12 +275,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [1.0.5] - 2022-05-14
 
-### Platforms
-
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.5-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.5-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.5-mc1.16).
-
 ### Fixed
 
 - Fixed chunk borders highlighting the wrong chunk if 'Show Player' is enabled.
@@ -450,23 +282,11 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [1.0.4] - 2022-04-11
 
-### Platforms
-
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.4-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.4-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.4-mc1.16).
-
 ### Fixed
 
 - Fixed Freecam entity projecting a shadow when Iris is installed.
 
 ## [1.0.3] - 2022-04-05
-
-### Platforms
-
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.3-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.3-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.3-mc1.16).
 
 ### Fixed
 
@@ -474,12 +294,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 - Fixed fov changing when touching ground with noclip disabled.
 
 ## [1.0.2] - 2022-04-03
-
-### Platforms
-
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.2-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.2-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.2-mc1.16).
 
 ### Changed
 
@@ -491,12 +305,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 - Fixed being able to open chests with Allow Interaction disabled.
 
 ## [1.0.1] - 2022-04-02
-
-### Platforms
-
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.1-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.1-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.1-mc1.16).
 
 ### Added
 
@@ -514,12 +322,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [1.0.0] - 2022-03-18
 
-### Platforms
-
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.0-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.0-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/1.0.0-mc1.16).
-
 ### Added
 
 - Added 'Control Player' keybind that allows you to control your player while freecam is enabled.
@@ -535,24 +337,12 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [0.4.9] - 2022-03-14
 
-### Platforms
-
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.9-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.9-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.9-mc1.16).
-
 ### Changed
 
 - Holding jump and sneak at the same time will now make you hover in place.
 - Player now remains sneaking if freecam is enabled while sneak is held.
 
 ## [0.4.8] - 2022-03-03
-
-### Platforms
-
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.8-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.8-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.8-mc1.16).
 
 ### Added
 
@@ -565,23 +355,11 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [0.4.7] - 2022-02-27
 
-### Platforms
-
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.7-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.7-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.7-mc1.16).
-
 ### Fixed
 
 - Fixed OptiFabric crash.
 
 ## [0.4.6] - 2022-02-26
-
-### Platforms
-
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.6-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.6-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.6-mc1.16).
 
 ### Fixed
 
@@ -590,22 +368,11 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [0.4.5] - 2022-02-25
 
-### Platforms
-
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.5-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.5-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.5-mc1.16).
-
 ### Added
 
 - Added back Flight Mode option.
 
 ## [0.4.4.1] - 2022-02-12
-
-### Platforms
-
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.4.1-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.4.1-mc1.16).
 
 ### Fixed
 
@@ -613,23 +380,11 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [0.4.4] - 2022-02-12
 
-### Platforms
-
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.4-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.4-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.4-mc1.16).
-
 ### Changed
 
 - Made entities and block entities outside of entity view distance render while freecam is enabled.
 
 ## [0.4.3] - 2022-02-11
-
-### Platforms
-
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.3-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.3-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.3-mc1.16).
 
 ### Fixed
 
@@ -637,35 +392,17 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [0.4.2] - 2022-02-10
 
-### Platforms
-
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.2-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.2-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.2-mc1.16).
-
 ### Added
 
 - Added 'Allow Entity Interaction' setting.
 
 ## [0.4.1] - 2022-02-10
 
-### Platforms
-
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.1-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.1-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.1-mc1.16).
-
 ### Fixed
 
 - Fixes for 'Allow Breaking Blocks'.
 
 ## [0.4.0] - 2022-02-10
-
-### Platforms
-
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.0-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.0-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.4.0-mc1.16).
 
 ### Added
 
@@ -682,24 +419,12 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [0.3.5] - 2022-01-10
 
-### Platforms
-
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.3.5-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.3.5-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.3.5-mc1.16).
-
 ### Fixed
 
 - Clone now updates its vehicle when the player rides a new entity.
 - Clone now shows damage when the player is hurt.
 
 ## [0.3.4] - 2021-12-29
-
-### Platforms
-
-- Minecraft 1.18: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.3.4-mc1.18).
-- Minecraft 1.17: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.3.4-mc1.17).
-- Minecraft 1.16: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.3.4-mc1.16).
 
 ### Changed
 
@@ -720,12 +445,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [0.3.3] - 2021-12-25
 
-### Platforms
-
-- Minecraft 1.18.1: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.3.3-mc1.18.1).
-- Minecraft 1.17.1: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.3.3-mc1.17.1).
-- Minecraft 1.16.5: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.3.3-mc1.16.5).
-
 ### Added
 
 - Minecraft 1.16 support.
@@ -735,11 +454,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 - Fixes item pickup sounds being blocked.
 
 ## [0.3.2] - 2021-12-21
-
-### Platforms
-
-- Minecraft 1.18.1: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.3.2-mc1.18.1).
-- Minecraft 1.17.1: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.3.2-mc1.17.1).
 
 ### Changed
 
@@ -751,21 +465,11 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [0.3.1] - 2021-12-19
 
-### Platforms
-
-- Minecraft 1.18.1: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.3.1-mc1.18.1).
-- Minecraft 1.17.1: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.3.1-mc1.17.1).
-
 ### Fixed
 
 - Fixed crash on disconnect if freecam is enabled.
 
 ## [0.3] - 2021-12-17
-
-### Platforms
-
-- Minecraft 1.18.1: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.3-mc1.18.1).
-- Minecraft 1.17.1: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.3-mc1.17.1).
 
 ### Changed
 
@@ -778,11 +482,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 - Fixed yaw resetting after using freecam in a vehicle.
 
 ## [0.2.5] - 2021-12-16
-
-### Platforms
-
-- Minecraft 1.18.1: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.2.5-mc1.18.1).
-- Minecraft 1.17.1: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.2.5-mc1.17.1).
 
 ### Added
 
@@ -798,21 +497,11 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [0.2.4] - 2021-12-14
 
-### Platforms
-
-- Minecraft 1.18.1: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.2.4-mc1.18.1).
-- Minecraft 1.17.1: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.2.4-mc1.17.1).
-
 ### Fixed
 
 - Visual fixes.
 
 ## [0.2.3] - 2021-12-14
-
-### Platforms
-
-- Minecraft 1.18.1: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.2.3-mc1.18.1).
-- Minecraft 1.17.1: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.2.3-mc1.17.1).
 
 ### Fixed
 
@@ -820,61 +509,56 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ## [0.2.2] - 2021-12-14
 
-### Platforms
-
-- Minecraft 1.18.1: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.2.2-mc1.18.1).
-- Minecraft 1.17.1: [Fabric](https://github.com/MinecraftFreecam/Freecam/releases/tag/0.2.2-mc1.17.1).
-
 ### Added
 
 - Minecraft 1.18 support.
 - Minecraft 1.17 support.
 
-[Unreleased]: https://github.com/MinecraftFreecam/Freecam/compare/1.2.3...HEAD
-[1.2.3]: https://github.com/MinecraftFreecam/Freecam/compare/1.2.2-mc1.20...1.2.3
-[1.2.2]: https://github.com/MinecraftFreecam/Freecam/compare/1.2.1.1-mc1.20...1.2.2-mc1.20
-[1.2.1]: https://github.com/MinecraftFreecam/Freecam/compare/1.2.0-mc1.20...1.2.1-mc1.20
-[1.2.0]: https://github.com/MinecraftFreecam/Freecam/compare/1.1.10-mc1.20...1.2.0-mc1.20
-[1.1.10]: https://github.com/MinecraftFreecam/Freecam/compare/1.1.9-mc1.19...1.1.10-mc1.20
-[1.1.9]: https://github.com/MinecraftFreecam/Freecam/compare/1.1.8-mc1.19...1.1.9-mc1.19
-[1.1.8]: https://github.com/MinecraftFreecam/Freecam/compare/1.1.7-mc1.19...1.1.8-mc1.19
-[1.1.7]: https://github.com/MinecraftFreecam/Freecam/compare/1.1.6-mc1.19...1.1.7-mc1.19
-[1.1.6]: https://github.com/MinecraftFreecam/Freecam/compare/1.1.5-mc1.19...1.1.6-mc1.19
-[1.1.5]: https://github.com/MinecraftFreecam/Freecam/compare/1.1.4-mc1.19...1.1.5-mc1.19
-[1.1.4]: https://github.com/MinecraftFreecam/Freecam/compare/1.1.3-mc1.19...1.1.4-mc1.19
-[1.1.3]: https://github.com/MinecraftFreecam/Freecam/compare/1.1.2-mc1.19...1.1.3-mc1.19
-[1.1.2]: https://github.com/MinecraftFreecam/Freecam/compare/1.1.1-mc1.19...1.1.2-mc1.19
-[1.1.1]: https://github.com/MinecraftFreecam/Freecam/compare/1.1.0-mc1.19...1.1.1-mc1.19
-[1.1.0]: https://github.com/MinecraftFreecam/Freecam/compare/1.0.9-mc1.19...1.1.0-mc1.19
-[1.0.9]: https://github.com/MinecraftFreecam/Freecam/compare/1.0.8-mc1.19...1.0.9-mc1.19
-[1.0.8]: https://github.com/MinecraftFreecam/Freecam/compare/1.0.7-mc1.19...1.0.8-mc1.19
-[1.0.7]: https://github.com/MinecraftFreecam/Freecam/compare/1.0.6-mc1.19...1.0.7-mc1.19
-[1.0.6]: https://github.com/MinecraftFreecam/Freecam/compare/1.0.5-mc1.18...1.0.6-mc1.19
-[1.0.5]: https://github.com/MinecraftFreecam/Freecam/compare/1.0.4-mc1.18...1.0.5-mc1.18
-[1.0.4]: https://github.com/MinecraftFreecam/Freecam/compare/1.0.3-mc1.18...1.0.4-mc1.18
-[1.0.3]: https://github.com/MinecraftFreecam/Freecam/compare/1.0.2-mc1.18...1.0.3-mc1.18
-[1.0.2]: https://github.com/MinecraftFreecam/Freecam/compare/1.0.1-mc1.18...1.0.2-mc1.18
-[1.0.1]: https://github.com/MinecraftFreecam/Freecam/compare/1.0.0-mc1.18...1.0.1-mc1.18
-[1.0.0]: https://github.com/MinecraftFreecam/Freecam/compare/0.4.9-mc1.18...1.0.0-mc1.18
-[0.4.9]: https://github.com/MinecraftFreecam/Freecam/compare/0.4.8-mc1.18...0.4.9-mc1.18
-[0.4.8]: https://github.com/MinecraftFreecam/Freecam/compare/0.4.7-mc1.18...0.4.8-mc1.18
-[0.4.7]: https://github.com/MinecraftFreecam/Freecam/compare/0.4.6-mc1.18...0.4.7-mc1.18
-[0.4.6]: https://github.com/MinecraftFreecam/Freecam/compare/0.4.5-mc1.18...0.4.6-mc1.18
-[0.4.5]: https://github.com/MinecraftFreecam/Freecam/compare/0.4.4.1-mc1.17...0.4.5-mc1.18
-[0.4.4]: https://github.com/MinecraftFreecam/Freecam/compare/0.4.3-mc1.18...0.4.4-mc1.18
-[0.4.3]: https://github.com/MinecraftFreecam/Freecam/compare/0.4.2-mc1.18...0.4.3-mc1.18
-[0.4.2]: https://github.com/MinecraftFreecam/Freecam/compare/0.4.1-mc1.18...0.4.2-mc1.18
-[0.4.1]: https://github.com/MinecraftFreecam/Freecam/compare/0.4.0-mc1.18...0.4.1-mc1.18
-[0.4.0]: https://github.com/MinecraftFreecam/Freecam/compare/0.3.5-mc1.18...0.4.0-mc1.18
-[0.3.5]: https://github.com/MinecraftFreecam/Freecam/compare/0.3.4-mc1.18...0.3.5-mc1.18
-[0.3.4]: https://github.com/MinecraftFreecam/Freecam/compare/0.3.3-mc1.18.1...0.3.4-mc1.18
-[0.3.3]: https://github.com/MinecraftFreecam/Freecam/compare/0.3.2-mc1.18.1...0.3.3-mc1.18.1
-[0.3.2]: https://github.com/MinecraftFreecam/Freecam/compare/0.3.1-mc1.18.1...0.3.2-mc1.18.1
-[0.3.1]: https://github.com/MinecraftFreecam/Freecam/compare/0.3-mc1.18.1...0.3.1-mc1.18.1
-[0.2.5]: https://github.com/MinecraftFreecam/Freecam/compare/0.2.4-mc1.18.1...0.2.5-mc1.18.1
-[0.2.4]: https://github.com/MinecraftFreecam/Freecam/compare/0.2.3-mc1.18.1...0.2.4-mc1.18.1
-[0.2.3]: https://github.com/MinecraftFreecam/Freecam/compare/0.2.2-mc1.18.1...0.2.3-mc1.18.1
-[0.2.2]: https://github.com/MinecraftFreecam/Freecam/releases/tag/0.2.2-mc1.18.1
-[0.3]: https://github.com/MinecraftFreecam/Freecam/compare/0.2.5-mc1.18.1...0.3-mc1.18.1
-[0.4.4.1]: https://github.com/MinecraftFreecam/Freecam/compare/0.4.4-mc1.18...0.4.4.1-mc1.17
-[1.2.1.1]: https://github.com/MinecraftFreecam/Freecam/compare/1.2.1-mc1.20...1.2.1.1-mc1.20
+[Unreleased]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.3...HEAD
+[1.2.3]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.2...v1.2.3
+[1.2.2]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.1.1...v1.2.2
+[1.2.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.0...v1.2.1
+[1.2.0]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.10...v1.2.0
+[1.1.10]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.9...v1.1.10
+[1.1.9]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.8...v1.1.9
+[1.1.8]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.7...v1.1.8
+[1.1.7]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.6...v1.1.7
+[1.1.6]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.5...v1.1.6
+[1.1.5]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.4...v1.1.5
+[1.1.4]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.3...v1.1.4
+[1.1.3]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.2...v1.1.3
+[1.1.2]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.1...v1.1.2
+[1.1.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.0...v1.1.1
+[1.1.0]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.9...v1.1.0
+[1.0.9]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.8...v1.0.9
+[1.0.8]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.7...v1.0.8
+[1.0.7]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.6...v1.0.7
+[1.0.6]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.5...v1.0.6
+[1.0.5]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.4...v1.0.5
+[1.0.4]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.3...v1.0.4
+[1.0.3]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.2...v1.0.3
+[1.0.2]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.1...v1.0.2
+[1.0.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.0...v1.0.1
+[1.0.0]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.9...v1.0.0
+[0.4.9]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.8...v0.4.9
+[0.4.8]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.7...v0.4.8
+[0.4.7]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.6...v0.4.7
+[0.4.6]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.5...v0.4.6
+[0.4.5]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.4.1...v0.4.5
+[0.4.4]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.3...v0.4.4
+[0.4.3]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.2...v0.4.3
+[0.4.2]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.1...v0.4.2
+[0.4.1]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.0...v0.4.1
+[0.4.0]: https://github.com/MinecraftFreecam/Freecam/compare/v0.3.5...v0.4.0
+[0.3.5]: https://github.com/MinecraftFreecam/Freecam/compare/v0.3.4...v0.3.5
+[0.3.4]: https://github.com/MinecraftFreecam/Freecam/compare/v0.3.3...v0.3.4
+[0.3.3]: https://github.com/MinecraftFreecam/Freecam/compare/v0.3.2...v0.3.3
+[0.3.2]: https://github.com/MinecraftFreecam/Freecam/compare/v0.3.1...v0.3.2
+[0.3.1]: https://github.com/MinecraftFreecam/Freecam/compare/v0.3...v0.3.1
+[0.2.5]: https://github.com/MinecraftFreecam/Freecam/compare/v0.2.4...v0.2.5
+[0.2.4]: https://github.com/MinecraftFreecam/Freecam/compare/v0.2.3...v0.2.4
+[0.2.3]: https://github.com/MinecraftFreecam/Freecam/compare/v0.2.2...v0.2.3
+[0.2.2]: https://github.com/MinecraftFreecam/Freecam/releases/tag/v0.2.2
+[0.3]: https://github.com/MinecraftFreecam/Freecam/compare/v0.2.5...v0.3
+[0.4.4.1]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.4...v0.4.4.1
+[1.2.1.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.1...v1.2.1.1
