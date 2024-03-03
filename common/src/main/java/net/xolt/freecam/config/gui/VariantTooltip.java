@@ -1,4 +1,4 @@
-package net.xolt.freecam.config;
+package net.xolt.freecam.config.gui;
 
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 
@@ -9,6 +9,9 @@ import java.lang.annotation.*;
  * <p>
  * Will try to use translations defined for the current build variant (e.g. {@code @ModrinthTooltip}), but will
  * fall back to using the default {@code @Tooltip} translations if variant-specific ones are not defined.
+ * <p>
+ * If <strong>any</strong> variant has a {@code count} greater than 1, all variants must use the indexed syntax,
+ * e.g. {@code @Tooltip[0]}.
  * <p>
  * Can be declared multiple times on the same field.
  *

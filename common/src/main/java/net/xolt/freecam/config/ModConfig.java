@@ -2,12 +2,19 @@ package net.xolt.freecam.config;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
+import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDisplayOption;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
+import net.xolt.freecam.config.gui.AutoConfigExtensions;
+import net.xolt.freecam.config.gui.ValidateRegex;
+import net.xolt.freecam.config.gui.VariantTooltip;
 import net.xolt.freecam.variant.api.BuildVariant;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Config(name = "freecam")
 public class ModConfig implements ConfigData {
@@ -16,9 +23,12 @@ public class ModConfig implements ConfigData {
     public static ModConfig INSTANCE;
 
     public static void init() {
-        AutoConfig.register(ModConfig.class, JanksonConfigSerializer::new);
-        ConfigExtensions.init(AutoConfig.getGuiRegistry(ModConfig.class));
-        INSTANCE = AutoConfig.getConfigHolder(ModConfig.class).getConfig();
+        ConfigHolder<ModConfig> holder = AutoConfig.register(ModConfig.class, JanksonConfigSerializer::new);
+        AutoConfigExtensions.apply(ModConfig.class);
+        holder.registerSaveListener(CollisionBehavior::onConfigChange);
+        holder.registerLoadListener(CollisionBehavior::onConfigChange);
+        INSTANCE = holder.getConfig();
+        CollisionBehavior.onConfigChange(holder, INSTANCE); // Listener isn't called on initial load...
     }
 
     @ConfigEntry.Gui.Tooltip
@@ -45,6 +55,20 @@ public class ModConfig implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         public boolean ignoreOpenable = true;
+
+        @VariantTooltip(variant = "normal", count = 1)
+        @VariantTooltip(variant = "modrinth", count = 2)
+        public boolean ignoreCustom = false;
+
+        @ConfigEntry.Gui.TransitiveObject
+        public CollisionWhitelist whitelist = new CollisionWhitelist();
+        public static class CollisionWhitelist {
+            @ConfigEntry.Gui.Tooltip(count = 2)
+            public List<String> ids = new ArrayList<>();
+            @ValidateRegex
+            @ConfigEntry.Gui.Tooltip(count = 2)
+            public List<String> patterns = new ArrayList<>();
+        }
 
         @VariantTooltip(variant = "normal", count = 2)
         @VariantTooltip(variant = "modrinth", count = 3)
