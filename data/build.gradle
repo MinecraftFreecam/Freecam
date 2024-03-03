@@ -1,0 +1,99 @@
+import net.xolt.freecam.gradle.LangTask
+
+def platforms = (rootProject.enabled_platforms as String).split(',')
+def variants = (rootProject.build_variants as String).split(',')
+
+// For each platform/variant combination, provide a jar containing the generated data.
+// This allows each build to depend on slightly different data.
+variants.each { variant ->
+
+    def langTask = tasks.register("${variant}LangFiles", LangTask) {
+        group = "i18n"
+        description = "Build ${variant} lang files"
+        inputDirectory = layout.projectDirectory.dir("src").dir("lang")
+        outputDirectory = layout.buildDirectory.dir("i18n/${variant}")
+        modId = rootProject.name
+        setVariant(variant)
+    }
+
+    platforms.each { platform ->
+        def name = platform
+        def kebabName = platform
+
+        if (variant != "normal") {
+            name += variant.capitalize()
+            kebabName += "-$variant"
+        }
+
+        def metadataTask = tasks.register("${name}GenMetadata") {
+            group = "metadata"
+            description = {
+                def file = platform.endsWith "forge" ? "mods.toml" : "${platform}.mods.json"
+                return "Build $variant $file file"
+            }()
+
+            // Depend on langTask and the following properties
+            dependsOn langTask
+            inputs.properties(
+                    version: project.mod_version,
+                    authors: project.authors,
+                    licence: project.licence,
+                    homepage_url: project.homepage_url,
+                    source_code_url: project.source_code_url,
+                    issue_tracker_url: project.issue_tracker_url,
+                    fabric_loader_req: project.fabric_loader_req,
+                    fabric_mc_req: project.fabric_mc_req,
+                    neoforge_mc_req: project.neoforge_mc_req,
+                    neoforge_loader_req: project.neoforge_loader_req,
+                    neoforge_req: project.neoforge_req,
+            )
+
+            def inputDir = layout.projectDirectory.dir("src").dir(platform)
+            def outputDir = layout.buildDirectory.dir("metadata/${kebabName}")
+
+            // Declare task outputs so they can be used by other tasks
+            outputs.dir outputDir
+
+            // Need to do this at execution time;
+            // LangTask.getTranslation() can't be used at configuration time...
+            doLast {
+                def values = new TreeMap(inputs.properties)
+                values.mod_id = rootProject.name.toLowerCase()
+                values.name = langTask.get().getTranslation("freecam.name")
+                values.description = langTask.get().getTranslation("freecam.description")
+                values.json_authors = values.authors.split(',').collect { "\"$it\"" }.join(", ")
+
+                copy {
+                    from inputDir
+                    into outputDir
+
+                    filesMatching("fabric.mod.json") {
+                        expand values
+                    }
+
+                    filesMatching("META-INF/mods.toml") {
+                        expand values
+                    }
+                }
+            }
+        }
+
+        def jarTask = tasks.register("${name}Jar", Zip) {
+            group = "build"
+            description = "Build ${kebabName} mod data"
+
+            archiveClassifier = kebabName
+            archiveExtension = "jar"
+
+            from langTask
+            from metadataTask
+        }
+
+        // Make build extend this, for convenience
+        tasks.build.dependsOn jarTask
+
+        // Export the artifact so that other projects can use it
+        configurations.register(name)
+        artifacts.add(name, jarTask)
+    }
+}

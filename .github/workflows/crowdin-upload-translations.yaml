@@ -7,8 +7,8 @@ on:
 #    branches:
 #      - main
 #    paths:
-#      - '**/lang/*.json'
-#      - '!**/lang/en_us.json'
+#      - 'data/src/lang/*/*.json'
+#      - '!data/src/lang/en-US/*'
 
 # Queue this workflow after others in the 'crowdin' group, to avoid concurrency issues.
 concurrency:

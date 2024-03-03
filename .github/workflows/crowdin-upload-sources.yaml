@@ -6,7 +6,7 @@ on:
     branches:
       - main
     paths:
-      - '**/lang/en_us.json'
+      - 'data/src/lang/en-US/*.json'
 
 # Queue this workflow after others in the 'crowdin' group, to avoid concurrency issues.
 concurrency:

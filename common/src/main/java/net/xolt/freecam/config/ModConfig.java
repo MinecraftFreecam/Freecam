@@ -83,7 +83,7 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.Tooltip
         public boolean disableOnDamage = true;
 
-        @VariantTooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip(count = 2)
         public boolean freezePlayer = false;
 
         @VariantTooltip(variant = "normal", count = 2)
