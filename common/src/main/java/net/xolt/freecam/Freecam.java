@@ -276,7 +276,7 @@ public class Freecam {
         freeCamera.copyPosition(MC.player);
         freeCamera.applyPerspective(
                 ModConfig.INSTANCE.visual.perspective,
-                ModConfig.INSTANCE.collision.alwaysCheck || !(ModConfig.INSTANCE.collision.ignoreAll && BuildVariant.getInstance().cheatsPermitted())
+                ModConfig.INSTANCE.collision.alwaysCheck || !(ModConfig.INSTANCE.collision.ignoreAll) // Removed Operator Check
         );
     }
 
