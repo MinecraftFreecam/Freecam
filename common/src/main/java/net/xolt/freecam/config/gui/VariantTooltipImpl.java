@@ -1,8 +1,6 @@
-package net.xolt.freecam.config;
+package net.xolt.freecam.config.gui;
 
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
-import me.shedaniel.autoconfig.gui.DefaultGuiProviders;
-import me.shedaniel.autoconfig.gui.DefaultGuiTransformers;
 import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
 import me.shedaniel.clothconfig2.api.AbstractConfigListEntry;
 import me.shedaniel.clothconfig2.gui.entries.TextListEntry;
@@ -20,17 +18,11 @@ import java.util.Optional;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
-/**
- * Extensions and modifications to AutoConfig.
- *
- * @see DefaultGuiProviders
- * @see DefaultGuiTransformers
- */
-public class ConfigExtensions {
+class VariantTooltipImpl {
 
-    private ConfigExtensions() {}
+    private VariantTooltipImpl() {}
 
-    public static void init(GuiRegistry registry) {
+    static void apply(GuiRegistry registry) {
 
         registry.registerAnnotationTransformer(
                 (guis, i18n, field, config, defaults, guiProvider) -> {

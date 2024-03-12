@@ -11,6 +11,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Changed
 
+- Movement speed options now use sliders instead of text fields.
+
 ### Removed
 
 ### Fixed
