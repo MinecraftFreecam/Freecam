@@ -1,5 +1,7 @@
 import net.fabricmc.loom.task.RemapJarTask
+import net.xolt.freecam.gradle.BumpVersionTask
 import org.jetbrains.changelog.Changelog
+import org.jetbrains.changelog.tasks.BaseChangelogTask
 
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
@@ -12,6 +14,18 @@ plugins {
 tasks.named('wrapper') {
     // Use "all" so we get sources and javadoc too
     distributionType = "all"
+}
+
+// Helper task that bumps the version number
+tasks.register("bumpVersion", BumpVersionTask) {
+    group = "version"
+    input = file("gradle.properties")
+    key = "mod_version"
+}
+
+// Move the changelog tasks to the "version" group
+tasks.withType(BaseChangelogTask).configureEach {
+    group = "version"
 }
 
 // Don't need these on the root project
