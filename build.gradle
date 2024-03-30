@@ -25,11 +25,9 @@ architectury {
 }
 
 changelog {
-    // Use the mod_version in gradle.properties as the release version/tag,
-    // without any prefix such as "v".
+    // Use the mod_version in gradle.properties as the release version/tag.
     // Build tag/diff links using the github repo URL.
     version = project.mod_version
-    versionPrefix = ""
     repositoryUrl = project.source_code_url
 
     // Title & intro are printed right at the start of the changelog.
