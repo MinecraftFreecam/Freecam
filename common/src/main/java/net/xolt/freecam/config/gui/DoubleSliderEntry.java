@@ -25,6 +25,9 @@ import java.util.function.Supplier;
 
 import static net.xolt.freecam.Freecam.MC;
 
+/**
+ * {@link IntegerSliderEntry} ported from {@code int} to {@code double}.
+ */
 class DoubleSliderEntry extends TooltipListEntry<Double> {
     private final Slider sliderWidget;
     private final Button resetButton;
