@@ -160,6 +160,17 @@ subprojects {
             curseID = "557076"
             modrinthID = "XeEZ3fK2"
 
+            github {
+                // Extract our repo slug from the github URL
+                repo = rootProject.source_code_url.replaceFirst("^https?://github\\.com/", "")
+                // GitHub releases must be associated with a git tag
+                // We want this to be the canonical tag, not the annotated build tag
+                tag = "v${rootProject.mod_version}"
+                // Create a draft release, so that GitHub doesn't actually create the tag
+                // does not affect already published releases
+                draft = true
+            }
+
             // Format display name, e.g. "1.2.4 for MC 1.20.4 (fabric)"
             displayName = "${rootProject.mod_version} for MC ${rootProject.minecraft_version} (${project.name})"
             version = project.version
@@ -209,10 +220,11 @@ subprojects {
 
             def dummy = "default"
             apiKeys {
+                github findProperty("github_token") ?: System.getenv("GITHUB_TOKEN") ?: System.getenv("GH_TOKEN") ?: dummy
                 curseforge findProperty("curseforge_token") ?: System.getenv("CURSEFORGE_TOKEN") ?: dummy
                 modrinth findProperty("modrinth_token") ?: System.getenv("MODRINTH_TOKEN") ?: dummy
             }
-            debug = [ apiKeys.curseforge, apiKeys.modrinth ].contains dummy
+            debug = [ apiKeys.github, apiKeys.curseforge, apiKeys.modrinth ].contains dummy
         }
 
         tasks.publish.dependsOn tasks.publishMod
