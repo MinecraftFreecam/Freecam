@@ -218,13 +218,14 @@ subprojects {
                 it.embedded "cloth-config"
             }
 
-            def dummy = "default"
+            def ci = System.getenv("CI") != null
+            def dummy = ci ? "" : "default"
             apiKeys {
                 github findProperty("github_token") ?: System.getenv("GITHUB_TOKEN") ?: System.getenv("GH_TOKEN") ?: dummy
                 curseforge findProperty("curseforge_token") ?: System.getenv("CURSEFORGE_TOKEN") ?: dummy
                 modrinth findProperty("modrinth_token") ?: System.getenv("MODRINTH_TOKEN") ?: dummy
             }
-            debug = [ apiKeys.github, apiKeys.curseforge, apiKeys.modrinth ].contains dummy
+            debug = !ci
         }
 
         tasks.publish.dependsOn tasks.publishMod
