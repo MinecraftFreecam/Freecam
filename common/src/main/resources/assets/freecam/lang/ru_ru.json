@@ -1,0 +1,14 @@
+{
+  "category.freecam.freecam": "Фрикам",
+  "key.freecam.toggle": "Переключить Свободную Камеру",
+  "key.freecam.playerControl": "Управлять игроком",
+  "key.freecam.tripodReset": "Сбросить штатив",
+  "key.freecam.configGui": "Настроить интерфейс",
+  "msg.freecam.enable": "Свободная камера включена.",
+  "msg.freecam.disable": "Свободная камера выключена.",
+  "msg.freecam.openTripod": "Открытие камеры %s",
+  "msg.freecam.closeTripod": "Закрытие камеры %s",
+  "msg.freecam.tripodReset": "Сбросить камеру %s",
+  "text.autoconfig.freecam.title": "Настройки свободной камеры",
+  "text.autoconfig.freecam.option.controls": "Привязки клавиш"
+}
