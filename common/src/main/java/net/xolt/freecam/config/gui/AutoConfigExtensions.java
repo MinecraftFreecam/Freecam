@@ -30,11 +30,13 @@ public class AutoConfigExtensions {
 
     public static void apply(Class<? extends ConfigData> configClass) {
         GuiRegistry registry = AutoConfig.getGuiRegistry(configClass);
-        Requirements.apply(registry);
+
         ModBindingsConfigImpl.apply(registry);
         VariantTooltipImpl.apply(registry);
         ValidateRegexImpl.apply(registry);
         BoundedContinuousImpl.apply(registry);
+
+        CollisionDependencies.apply(registry);
         CollisionWhitelistDependencies.apply(registry);
         ServerRestrictionDependencies.apply(registry);
     }

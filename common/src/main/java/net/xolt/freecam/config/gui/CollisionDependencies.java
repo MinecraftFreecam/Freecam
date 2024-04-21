@@ -12,12 +12,12 @@ import java.util.List;
 import static java.lang.Boolean.FALSE;
 
 @SuppressWarnings("UnstableApiUsage")
-class Requirements {
+class CollisionDependencies {
 
     private static final Logger LOGGER = LogManager.getLogger();
     private static ValueHolder<Boolean> ignoreAllWidget;
 
-    private Requirements() {}
+    private CollisionDependencies() {}
 
     static void apply(GuiRegistry guiRegistry) {
         // FIXME These transformers assume that no subsequent GUI transformers will replace
@@ -55,7 +55,7 @@ class Requirements {
             guis.stream()
                     .filter(BooleanListEntry.class::isInstance)
                     .map(BooleanListEntry.class::cast)
-                    .forEach(gui -> gui.setRequirement(Requirements::notIgnoreAll));
+                    .forEach(gui -> gui.setRequirement(CollisionDependencies::notIgnoreAll));
             return guis;
         }, field -> List.of("ignoreTransparent", "ignoreOpenable", "ignoreCustom").contains(field.getName()));
     }
