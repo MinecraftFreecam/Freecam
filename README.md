@@ -3,7 +3,16 @@
 
 This mod allows you to control your camera separately from your player. While it is enabled, you can fly around and travel through blocks within your render distance. Disabling it will restore you to your original position. This can be useful for quickly inspecting builds and exploring your world. 
 
-This mod works in multiplayer, but may be considered cheating on some servers, so use it at your own risk.
+This mod works in multiplayer, but may be considered cheating on some servers.
+It is your responsibility to check **all** relevant rules **before** using this mod.
+
+While Freecam should only affect the client, it **may be possible** for servers to detect the mod being installed through various exploits in Minecraft,
+modding platforms, or this mod.  
+Here's a [real example](https://github.com/MinecraftFreecam/Freecam/issues/196) that exploited translation keys. 
+
+To paraphrase our license, we are not responsible for any damages or liability related to Freecam.
+Among other things, this means it's not our fault if you get banned from a server.
+Here's the [full license](./LICENSE).
 
 ## Translation
 
