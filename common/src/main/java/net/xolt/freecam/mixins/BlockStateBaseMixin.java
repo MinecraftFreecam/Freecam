@@ -9,10 +9,9 @@ import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.xolt.freecam.Freecam;
-import net.xolt.freecam.config.CollisionWhitelist;
+import net.xolt.freecam.config.CollisionBehavior;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.util.FreeCamera;
-import net.xolt.freecam.variant.api.BuildVariant;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -31,16 +30,8 @@ public abstract class BlockStateBaseMixin {
             if (ModConfig.INSTANCE.collision.alwaysCheck && !Freecam.isEnabled()) {
                 return;
             }
-            // Ignore all collisions
-            if (ModConfig.INSTANCE.collision.ignoreAll && BuildVariant.getInstance().cheatsPermitted()) {
-                cir.setReturnValue(Shapes.empty());
-            }
-            // Ignore transparent block collisions
-            if (ModConfig.INSTANCE.collision.ignoreTransparent && CollisionWhitelist.isTransparent(getBlock())) {
-                cir.setReturnValue(Shapes.empty());
-            }
-            // Ignore openable block collisions
-            if (ModConfig.INSTANCE.collision.ignoreOpenable && CollisionWhitelist.isOpenable(getBlock())) {
+            // Otherwise, check the collision config
+            if (CollisionBehavior.isIgnored(getBlock())) {
                 cir.setReturnValue(Shapes.empty());
             }
         }

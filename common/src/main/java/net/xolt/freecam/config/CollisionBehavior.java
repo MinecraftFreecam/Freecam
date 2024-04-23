@@ -1,7 +1,10 @@
 package net.xolt.freecam.config;
 
+import me.shedaniel.autoconfig.ConfigHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.block.*;
+import net.xolt.freecam.variant.api.BuildVariant;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -10,7 +13,7 @@ import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CollisionWhitelist {
+public class CollisionBehavior {
 
     private static final Predicate<Block> transparent = Builder.builder()
             .matching(AbstractGlassBlock.class, IronBarsBlock.class)
@@ -22,12 +25,46 @@ public class CollisionWhitelist {
             .matching(DoorBlock.class, TrapDoorBlock.class)
             .build();
 
-    public static boolean isTransparent(Block block) {
-        return transparent.test(block);
+    private static Predicate<Block> custom = block -> false;
+
+    @SuppressWarnings("RedundantIfStatement")
+    public static boolean isIgnored(Block block) {
+        if (ModConfig.INSTANCE.collision.ignoreAll && BuildVariant.getInstance().cheatsPermitted()) {
+            return true;
+        }
+
+        System.out.println("Checking " + BuiltInRegistries.BLOCK.getKey(block));
+
+        if (ModConfig.INSTANCE.collision.ignoreTransparent && transparent.test(block)) {
+            return true;
+        }
+
+        if (ModConfig.INSTANCE.collision.ignoreOpenable && openable.test(block)) {
+            return true;
+        }
+
+        if (ModConfig.INSTANCE.collision.ignoreCustom && custom.test(block)) {
+            return true;
+        }
+
+        return false;
     }
 
-    public static boolean isOpenable(Block block) {
-        return openable.test(block);
+    static InteractionResult onConfigChange(ConfigHolder<ModConfig> holder, ModConfig config) {
+        String[] ids = config.collision.whitelist.ids.stream()
+                .map(id -> id.contains(":") ? id : "minecraft:" + id)
+                .toArray(String[]::new);
+
+        Pattern[] patterns = config.collision.whitelist.patterns.stream()
+                .map(Pattern::compile)
+                .toArray(Pattern[]::new);
+
+        custom = Builder.builder()
+                .matching(ids)
+                .matching(patterns)
+                .build();
+
+        return InteractionResult.PASS;
     }
 
     private static String getBlockId(Block block) {
