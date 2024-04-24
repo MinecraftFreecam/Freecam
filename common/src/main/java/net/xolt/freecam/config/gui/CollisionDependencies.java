@@ -1,7 +1,7 @@
 package net.xolt.freecam.config.gui;
 
 import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
-import me.shedaniel.clothconfig2.api.ValueHolder;
+import me.shedaniel.clothconfig2.api.ReferenceProvider;
 import me.shedaniel.clothconfig2.gui.entries.BooleanListEntry;
 import net.xolt.freecam.variant.api.BuildVariant;
 import org.apache.logging.log4j.LogManager;
@@ -15,7 +15,7 @@ import static java.lang.Boolean.FALSE;
 class CollisionDependencies {
 
     private static final Logger LOGGER = LogManager.getLogger();
-    private static ValueHolder<Boolean> ignoreAllWidget;
+    private static ReferenceProvider<Boolean> ignoreAllWidget;
 
     private CollisionDependencies() {}
 
@@ -52,16 +52,19 @@ class CollisionDependencies {
                 // Disabling doesn't make sense on the modrinth build
                 return guis;
             }
+            // FIXME requirements not supported by cloth 5.3.63
+            /**
             guis.stream()
                     .filter(BooleanListEntry.class::isInstance)
                     .map(BooleanListEntry.class::cast)
                     .forEach(gui -> gui.setRequirement(CollisionDependencies::notIgnoreAll));
+             **/
             return guis;
         }, field -> List.of("ignoreTransparent", "ignoreOpenable", "ignoreCustom").contains(field.getName()));
     }
 
     // Requirement handler: require ignoreAll is set to "No"
     private static boolean notIgnoreAll() {
-        return ignoreAllWidget == null || FALSE.equals(ignoreAllWidget.getValue());
+        return ignoreAllWidget == null || FALSE.equals(ignoreAllWidget.provideReferenceEntry().getValue());
     }
 }

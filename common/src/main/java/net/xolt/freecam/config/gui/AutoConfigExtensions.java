@@ -37,9 +37,10 @@ public class AutoConfigExtensions {
         ValidateRegexImpl.apply(registry);
         BoundedContinuousImpl.apply(registry);
 
-        CollisionDependencies.apply(registry);
-        CollisionWhitelistDependencies.apply(registry);
-        ServerRestrictionDependencies.apply(registry);
+        // FIXME requirements not supported by cloth 5.3.63
+        //CollisionDependencies.apply(registry);
+        //CollisionWhitelistDependencies.apply(registry);
+        //ServerRestrictionDependencies.apply(registry);
     }
 
     static Predicate<Field> isField(Class<?> declaringClass, String... fieldNames) {

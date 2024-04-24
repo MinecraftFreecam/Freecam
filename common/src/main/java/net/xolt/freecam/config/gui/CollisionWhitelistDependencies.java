@@ -28,7 +28,8 @@ class CollisionWhitelistDependencies {
         // Whitelist group dependency
         registry.registerPredicateTransformer(
                 (guis, i18n, field, config, defaults, guiProvider) -> {
-                    guis.forEach(gui -> gui.setDisplayRequirement(() -> ignoreCustom == null || ignoreCustom.getValue()));
+                    // FIXME requirements not supported by cloth 5.3.63
+                    //guis.forEach(gui -> gui.setDisplayRequirement(() -> ignoreCustom == null || ignoreCustom.getValue()));
                     return guis;
                 },
                 isField(ModConfig.CollisionConfig.class, "whitelist")

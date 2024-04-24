@@ -55,7 +55,7 @@ class ValidateRegexImpl {
             Pattern.compile(text);
             return Optional.empty();
         } catch (PatternSyntaxException e) {
-            String message = substringBefore(e.getLocalizedMessage(), '\n');
+            String message = substringBefore(e.getLocalizedMessage(), "\n");
             return Optional.of(new TranslatableComponent("text.autoconfig.freecam.error.invalidRegex", message));
         }
     }

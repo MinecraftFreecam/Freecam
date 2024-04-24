@@ -32,7 +32,8 @@ class ServerRestrictionDependencies {
         // Whitelist dependency
         registry.registerPredicateTransformer(
                 (guis, i18n, field, config, defaults, guiProvider) -> {
-                    guis.forEach(gui -> gui.setDisplayRequirement(() -> mode == null || mode.getValue() == WHITELIST));
+                    // FIXME requirements not supported by cloth 5.3.63
+                    //guis.forEach(gui -> gui.setDisplayRequirement(() -> mode == null || mode.getValue() == WHITELIST));
                     return guis;
                 },
                 isField(ModConfig.ServerConfig.class, "whitelist")
@@ -41,7 +42,8 @@ class ServerRestrictionDependencies {
         // Blacklist dependency
         registry.registerPredicateTransformer(
                 (guis, i18n, field, config, defaults, guiProvider) -> {
-                    guis.forEach(gui -> gui.setDisplayRequirement(() -> mode == null || mode.getValue() == BLACKLIST));
+                    // FIXME requirements not supported by cloth 5.3.63
+                    //guis.forEach(gui -> gui.setDisplayRequirement(() -> mode == null || mode.getValue() == BLACKLIST));
                     return guis;
                 },
                 isField(ModConfig.ServerConfig.class, "blacklist")
