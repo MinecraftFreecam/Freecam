@@ -33,8 +33,6 @@ public class CollisionBehavior {
             return true;
         }
 
-        System.out.println("Checking " + BuiltInRegistries.BLOCK.getKey(block));
-
         if (ModConfig.INSTANCE.collision.ignoreTransparent && transparent.test(block)) {
             return true;
         }
