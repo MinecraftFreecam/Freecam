@@ -7,11 +7,9 @@ import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.keys.FreecamKeyMapping;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Objects;
-import java.util.Spliterator;
+import java.util.*;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 import static net.xolt.freecam.Freecam.MC;
 import static net.xolt.freecam.config.keys.FreecamKeyMappingBuilder.builder;
@@ -67,17 +65,20 @@ public enum ModBindings {
      * Static implementation of {@link Iterable#iterator()}.
      */
     public static @NotNull Iterator<FreecamKeyMapping> iterator() {
-        return Arrays.stream(values())
-                .map(ModBindings::get)
-                .iterator();
+        return stream().iterator();
     }
 
     /**
      * Static implementation of {@link Iterable#spliterator()}.
      */
     public static @NotNull Spliterator<FreecamKeyMapping> spliterator() {
-        return Arrays.stream(values())
-                .map(ModBindings::get)
-                .spliterator();
+        return stream().spliterator();
+    }
+
+    /**
+     * Static implementation of {@link Collection#stream()}.
+     */
+    public static @NotNull Stream<FreecamKeyMapping> stream() {
+        return Arrays.stream(values()).map(ModBindings::get);
     }
 }
