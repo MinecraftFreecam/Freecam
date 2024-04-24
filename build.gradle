@@ -5,15 +5,16 @@ import org.jetbrains.changelog.tasks.BaseChangelogTask
 
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.4-SNAPSHOT" apply false
+    id "dev.architectury.loom" version "1.6-SNAPSHOT" apply false
     id "com.hypherionmc.modutils.modpublisher" version "2.0.5" apply false
-    id "com.github.johnrengelman.shadow" version "7.1.2" apply false
+    id "com.github.johnrengelman.shadow" version "8.1.1" apply false
     id "org.jetbrains.changelog" version "2.2.0"
 }
 
 tasks.named('wrapper') {
     // Use "all" so we get sources and javadoc too
     distributionType = "all"
+    gradleVersion = "8.6"
 }
 
 // Helper task that bumps the version number
@@ -92,6 +93,12 @@ allprojects {
         mavenCentral()
         maven { url "https://maven.parchmentmc.org/" }
         maven { url "https://maven.neoforged.net/releases/" }
+        if (rootProject.neoforge_pr != "") {
+            maven {
+                url "https://prmaven.neoforged.net/NeoForge/pr${rootProject.neoforge_pr}"
+                content { includeModule("net.neoforged", "neoforge") }
+            }
+        }
         maven { url "https://maven.shedaniel.me/" }
         maven { url "https://maven.terraformersmc.com/" }
     }
@@ -101,7 +108,7 @@ allprojects {
     // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
-        options.release = 17
+        options.release = 21
     }
 
     java {

@@ -6,6 +6,7 @@ import net.minecraft.client.multiplayer.CommonListenerCookie;
 import net.minecraft.client.player.KeyboardInput;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
+import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.tags.FluidTags;
@@ -18,6 +19,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.xolt.freecam.config.ModConfig;
 
+import java.util.Collections;
 import java.util.UUID;
 
 import static net.xolt.freecam.Freecam.MC;
@@ -34,7 +36,10 @@ public class FreeCamera extends LocalPlayer {
                     FeatureFlagSet.of(),
                     null,
                     MC.getCurrentServer(),
-                    MC.screen)) {
+                    MC.screen,
+                    Collections.emptyMap(),
+                    MC.gui.getChat().storeState(),
+                    false)) {
         @Override
         public void send(Packet<?> packet) {
         }
@@ -169,8 +174,8 @@ public class FreeCamera extends LocalPlayer {
 
     // Makes night vision apply to FreeCamera when Iris is enabled.
     @Override
-    public MobEffectInstance getEffect(MobEffect effect) {
-        return MC.player.getEffect(effect);
+    public MobEffectInstance getEffect(Holder<MobEffect> holder) {
+        return MC.player.getEffect(holder);
     }
 
     // Prevents pistons from moving FreeCamera when collision.ignoreAll is enabled.

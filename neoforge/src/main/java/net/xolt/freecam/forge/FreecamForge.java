@@ -7,17 +7,17 @@ import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModLoadingContext;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.common.Mod.EventBusSubscriber.Bus;
+import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
-import net.neoforged.neoforge.client.ConfigScreenHandler;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
+import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.neoforged.neoforge.event.TickEvent;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfig;
 
 @Mod(Freecam.MOD_ID)
-@Mod.EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
 @SuppressWarnings("unused")
 public class FreecamForge {
 
@@ -26,9 +26,9 @@ public class FreecamForge {
         ModConfig.init();
 
         // Register our config screen with Forge
-        ModLoadingContext.get().registerExtensionPoint(ConfigScreenHandler.ConfigScreenFactory.class, () -> new ConfigScreenHandler.ConfigScreenFactory((client, parent) ->
+        ModLoadingContext.get().registerExtensionPoint(IConfigScreenFactory.class, () -> (client, parent) ->
                 AutoConfig.getConfigScreen(ModConfig.class, parent).get()
-        ));
+        );
     }
 
     @SubscribeEvent
@@ -36,7 +36,7 @@ public class FreecamForge {
         ModBindings.forEach(event::register);
     }
 
-    @Mod.EventBusSubscriber(bus = Bus.FORGE, value = Dist.CLIENT)
+    @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
     public static class GlobalEventHandler {
         @SubscribeEvent(priority = EventPriority.HIGH)
         public static void onTick(TickEvent.ClientTickEvent event) {
