@@ -32,9 +32,7 @@ public class CollisionBehavior {
         if (ModConfig.INSTANCE.collision.ignoreAll && BuildVariant.getInstance().cheatsPermitted()) {
             return true;
         }
-
-        System.out.println("Checking " + Registry.BLOCK.getKey(block));
-
+        
         if (ModConfig.INSTANCE.collision.ignoreTransparent && transparent.test(block)) {
             return true;
         }
