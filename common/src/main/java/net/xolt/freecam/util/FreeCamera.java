@@ -37,8 +37,8 @@ public class FreeCamera extends LocalPlayer {
                     null,
                     MC.getCurrentServer(),
                     MC.screen,
-                    Collections.emptyMap(), //TODO cookies
-                    MC.gui.getChat().storeState(), //TODO state
+                    Collections.emptyMap(),
+                    MC.gui.getChat().storeState(),
                     false)) {
         @Override
         public void send(Packet<?> packet) {
