@@ -9,6 +9,16 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Added
 
+### Changed
+
+### Removed
+
+### Fixed
+
+## [1.2.4] - 2024-04-23
+
+### Added
+
 - 1.20.5 support ([#200](https://github.com/MinecraftFreecam/Freecam/pull/200)).
 - Added a way to configure key bindings from Freecam's config menu ([#143](https://github.com/MinecraftFreecam/Freecam/pull/143)).
 - Added an optional server whitelist/blacklist ([#146](https://github.com/MinecraftFreecam/Freecam/pull/146)).
@@ -18,10 +28,6 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 - Movement speed options now use sliders instead of text fields ([#190](https://github.com/MinecraftFreecam/Freecam/pull/190)).
 - Redundant collision options are now dynamically hidden ([#121](https://github.com/MinecraftFreecam/Freecam/pull/121)).
-
-### Removed
-
-### Fixed
 
 ## [1.2.3] - 2024-02-04
 
@@ -522,7 +528,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 - Minecraft 1.18 support.
 - Minecraft 1.17 support.
 
-[Unreleased]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.3...HEAD
+[Unreleased]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.4...HEAD
+[1.2.4]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.3...v1.2.4
 [1.2.3]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.1.1...v1.2.2
 [1.2.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.0...v1.2.1
