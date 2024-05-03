@@ -336,7 +336,7 @@ public class Freecam {
     public static boolean isRestrictedOnServer() {
         ServerData server = MC.getCurrentServer();
         ModConfig.ServerRestriction mode = ModConfig.INSTANCE.servers.mode;
-        if (mode == ModConfig.ServerRestriction.NONE || server == null || MC.isSingleplayer()) {
+        if (mode == ModConfig.ServerRestriction.NONE || server == null || MC.hasSingleplayerServer()) {
             return false;
         }
 
