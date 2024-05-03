@@ -14,6 +14,6 @@ public class ModrinthBuild implements BuildVariant {
 
     @Override
     public boolean cheatsPermitted() {
-        return MC.player.hasPermissions(2) || MC.player.isCreative() || MC.isSingleplayer();
+        return MC.player.hasPermissions(2) || MC.player.isCreative() || MC.hasSingleplayerServer();
     }
 }
