@@ -50,6 +50,12 @@ public class MinecraftMixin {
         }
     }
 
+    // Disables freecam if the player disconnects.
+    @Inject(method = "disconnect()V", at = @At(value = "HEAD"))
+    private void onDisconnect(CallbackInfo ci) {
+        Freecam.onDisconnect();
+    }
+
     @Unique
     private static boolean freecam$disableInteract() {
         return Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !freecam$allowInteract();

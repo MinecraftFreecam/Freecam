@@ -8,7 +8,6 @@
     "BubbleColumnAmbientSoundHandlerMixin",
     "CameraMixin",
     "ClientPacketListenerMixin",
-    "ConnectionMixin",
     "EntityMixin",
     "EntityRenderDispatcherMixin",
     "EntityRendererMixin",

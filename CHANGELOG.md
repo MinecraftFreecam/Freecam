@@ -15,6 +15,9 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Fixed
 
+- Issues specific to hosting LAN worlds ([#207](https://github.com/MinecraftFreecam/Freecam/pull/207)).
+  - Compatibility issue with Lunar Client ([#206](https://github.com/MinecraftFreecam/Freecam/issues/206)).
+
 ## [1.2.4] - 2024-04-23
 
 ### Added
