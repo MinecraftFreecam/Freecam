@@ -1,3 +1,11 @@
 {
-  "text.autoconfig.freecam.option.movement.flightMode": "Flygläge"
+  "text.autoconfig.freecam.option.movement.flightMode": "Flygläge",
+  "text.autoconfig.freecam.option.movement.flightMode.default": "Standard",
+  "text.autoconfig.freecam.option.movement.flightMode.creative": "Kreativt",
+  "text.autoconfig.freecam.option.visual": "Visuella Alternativ",
+  "text.autoconfig.freecam.option.visual.perspective.firstPerson": "Första person",
+  "text.autoconfig.freecam.option.visual.perspective.thirdPerson": "Tredje person",
+  "text.autoconfig.freecam.option.visual.perspective.thirdPersonMirror": "Spegel",
+  "text.autoconfig.freecam.option.servers.mode.whitelist": "Vitlista",
+  "text.autoconfig.freecam.option.servers.mode.blacklist": "Svartlista"
 }
