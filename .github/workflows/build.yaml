@@ -2,6 +2,7 @@ name: Build
 
 on:
   push:
+  pull_request:
 
 # Only allow running one build job at a time to optimise cache hits
 concurrency:
