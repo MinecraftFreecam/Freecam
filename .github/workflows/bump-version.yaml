@@ -21,9 +21,9 @@ on:
 concurrency:
   group: builds
 
-# Grant GITHUB_TOKEN write access
+# GITHUB_TOKEN only needs read access because we'll use a PAT to push
 permissions:
-  contents: write
+  contents: read
 
 env:
   # sed expression to strip whitespace from property keys
@@ -63,6 +63,9 @@ jobs:
         id: commit
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
+          # We need to commit as a user to ensure CI is run on the commit
+          # We need to push as an admin/owner to bypass branch-protection
+          token: ${{ secrets.HASHALITE_PAT }}
           commit_message: Bump version to ${{ steps.new_props.outputs.mod_version }}
 
       - name: Summarize
