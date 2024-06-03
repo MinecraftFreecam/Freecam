@@ -66,6 +66,11 @@ jobs:
           # We need to commit as a user to ensure CI is run on the commit
           # We need to push as an admin/owner to bypass branch-protection
           token: ${{ secrets.HASHALITE_PAT }}
+          # Ensure we commit as a bot, since we can't reliably get an author slug from `github.actor`
+          commit_user_name: github-actions[bot]
+          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_author: ${{ github.actor }} <41898282+github-actions[bot]@users.noreply.github.com>
+          # The commit message, specify the new version
           commit_message: Bump version to ${{ steps.new_props.outputs.mod_version }}
 
       - name: Summarize
