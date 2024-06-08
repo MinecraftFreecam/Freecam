@@ -160,8 +160,8 @@ subprojects {
             curseID = "557076"
             modrinthID = "XeEZ3fK2"
 
-            // Format display name "[Fabric] Freecam 1.2.2 for MC 1.20.4"
-            displayName = "[${project.name.capitalize()}] ${rootProject.name.capitalize()} ${rootProject.mod_version} for MC ${rootProject.minecraft_version}"
+            // Format display name, e.g. "1.2.4 for MC 1.20.4 (fabric)"
+            displayName = "${rootProject.mod_version} for MC ${rootProject.minecraft_version} (${project.name})"
             version = project.version
             versionType = rootProject.release_type
             curseEnvironment = "client"
