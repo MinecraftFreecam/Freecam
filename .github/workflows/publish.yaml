@@ -28,7 +28,7 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: microsoft
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
