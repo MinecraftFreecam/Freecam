@@ -4,10 +4,6 @@ name: Publish Release Build
 
 on:
   push:
-    # tags should be in a release branch
-    branches:
-      - 'main'
-      - '1.*' # e.g. 1.20
     tags:
       - 'v*\+mc*' # e.g. v1.2.3+mc1.20.4
 
