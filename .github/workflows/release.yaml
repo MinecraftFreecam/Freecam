@@ -4,9 +4,6 @@ name: Publish GitHub Release
 
 on:
   push:
-    # Only release tags on the main branch
-    branches:
-      - 'main'
     tags:
       - 'v*' # e.g. v1.2.3
       - '!v*\+mc*' # exclude tags handled by publish.yaml
