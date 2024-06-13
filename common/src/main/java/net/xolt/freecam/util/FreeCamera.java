@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.server.ServerLinks;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -33,16 +34,30 @@ public class FreeCamera extends LocalPlayer {
             MC,
             MC.getConnection().getConnection(),
             new CommonListenerCookie(
+                    // localGameProfile
                     new GameProfile(UUID.randomUUID(), "FreeCamera"),
+                    // worldSessionTelemetryManager
                     MC.getTelemetryManager().createWorldSessionManager(false, null, null),
+                    // receivedRegistries
                     RegistryAccess.Frozen.EMPTY,
+                    // enabledFeatures
                     FeatureFlagSet.of(),
+                    // serverBrand
                     null,
+                    // serverData
                     MC.getCurrentServer(),
+                    // postDisconnectScreen
                     MC.screen,
+                    // serverCookies
                     Collections.emptyMap(),
+                    // chatState
                     MC.gui.getChat().storeState(),
-                    false)) {
+                    // strictErrorHandling
+                    false,
+                    // customReportDetails
+                    Collections.emptyMap(),
+                    // serverLinks
+                    ServerLinks.EMPTY)) {
         @Override
         public void send(Packet<?> packet) {
         }
