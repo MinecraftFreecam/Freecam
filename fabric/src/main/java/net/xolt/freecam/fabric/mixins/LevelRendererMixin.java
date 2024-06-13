@@ -1,4 +1,4 @@
-package net.xolt.freecam.mixins;
+package net.xolt.freecam.fabric.mixins;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.Camera;
