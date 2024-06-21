@@ -37,11 +37,18 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          # Set git's auth to use the owner's Personal Access Token:
+          # We need to commit as a user to ensure CI is run on the commit
+          # We need to push as an admin/owner to bypass branch-protection
+          token: ${{ secrets.HASHALITE_PAT }}
+
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
           java-version: '21'
           distribution: microsoft
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
@@ -63,9 +70,6 @@ jobs:
         id: commit
         uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          # We need to commit as a user to ensure CI is run on the commit
-          # We need to push as an admin/owner to bypass branch-protection
-          token: ${{ secrets.HASHALITE_PAT }}
           # Ensure we commit as a bot, since we can't reliably get an author slug from `github.actor`
           commit_user_name: github-actions[bot]
           commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
