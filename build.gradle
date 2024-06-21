@@ -66,7 +66,7 @@ changelog {
 
     // Regex used to find versions in headings.
     // The default regex only supports semantic versions, this one is more lenient.
-    headerParserRegex = ~/(\d+(?:\.\d+)+)/
+    headerParserRegex = ~/(\d+(?:\.\d+)+(?:-[-a-z]+\d*)?)/
 }
 
 allprojects {
