@@ -17,6 +17,7 @@ import net.xolt.freecam.tripod.TripodSlot;
 import net.xolt.freecam.util.FreeCamera;
 import net.xolt.freecam.util.FreecamPosition;
 import net.xolt.freecam.variant.api.BuildVariant;
+import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
 public class Freecam {
@@ -33,6 +34,7 @@ public class Freecam {
     private static FreeCamera freeCamera;
     private static CameraType rememberedF5 = null;
 
+    @ApiStatus.Internal
     public static void preTick(Minecraft mc) {
         // Disable if the previous tick asked us to,
         // or Freecam is restricted on the current server
@@ -53,10 +55,12 @@ public class Freecam {
         }
     }
 
+    @ApiStatus.Internal
     public static void postTick(Minecraft mc) {
         ModBindings.forEach(Tickable::tick);
     }
 
+    @ApiStatus.Internal
     public static void onDisconnect() {
         if (isEnabled()) {
             toggle();
@@ -64,6 +68,7 @@ public class Freecam {
         tripods.clear();
     }
 
+    @ApiStatus.Internal
     public static boolean activateTripodHandler() {
         boolean activated = false;
         for (KeyMapping combo : MC.options.keyHotbarSlots) {
@@ -75,6 +80,7 @@ public class Freecam {
         return activated;
     }
 
+    @ApiStatus.Internal
     public static boolean resetTripodHandler() {
         boolean reset = false;
         for (KeyMapping key : MC.options.keyHotbarSlots) {
@@ -86,6 +92,7 @@ public class Freecam {
         return reset;
     }
 
+    @ApiStatus.AvailableSince("0.3.1")
     public static void toggle() {
         if (isRestrictedOnServer()) {
             if (ModConfig.INSTANCE.notification.notifyFreecam) {
@@ -142,6 +149,7 @@ public class Freecam {
         }
     }
 
+    @ApiStatus.AvailableSince("1.1.8")
     public static void switchControls() {
         if (!isEnabled()) {
             return;
@@ -263,6 +271,8 @@ public class Freecam {
         }
     }
 
+    @ApiStatus.Experimental
+    @ApiStatus.AvailableSince("1.2.3")
     public static void moveToEntity(@Nullable Entity entity) {
         if (freeCamera == null) {
             return;
@@ -274,6 +284,8 @@ public class Freecam {
         freeCamera.copyPosition(entity);
     }
 
+    @ApiStatus.Experimental
+    @ApiStatus.AvailableSince("1.2.3")
     public static void moveToPosition(@Nullable FreecamPosition position) {
         if (freeCamera == null) {
             return;
@@ -285,6 +297,8 @@ public class Freecam {
         freeCamera.applyPosition(position);
     }
 
+    @ApiStatus.Experimental
+    @ApiStatus.AvailableSince("1.2.3")
     public static void moveToPlayer() {
         if (freeCamera == null) {
             return;
@@ -296,26 +310,33 @@ public class Freecam {
         );
     }
 
+    @ApiStatus.AvailableSince("0.4.0")
     public static FreeCamera getFreeCamera() {
         return freeCamera;
     }
 
+    @ApiStatus.AvailableSince("1.2.3")
     public static void disableNextTick() {
         disableNextTick = true;
     }
 
+    @ApiStatus.AvailableSince("0.2.2")
     public static boolean isEnabled() {
         return freecamEnabled || tripodEnabled;
     }
 
+    @ApiStatus.Experimental
+    @ApiStatus.AvailableSince("1.0.0")
     public static boolean isPlayerControlEnabled() {
         return playerControlEnabled;
     }
 
+    @ApiStatus.Experimental
+    @ApiStatus.AvailableSince("1.2.4")
     public static boolean isRestrictedOnServer() {
         ServerData server = MC.getCurrentServer();
         ModConfig.ServerRestriction mode = ModConfig.INSTANCE.servers.mode;
-        if (mode == ModConfig.ServerRestriction.NONE || server == null || MC.isSingleplayer()) {
+        if (mode == ModConfig.ServerRestriction.NONE || server == null || MC.hasSingleplayerServer()) {
             return false;
         }
 

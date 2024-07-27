@@ -1,0 +1,40 @@
+# This CI Workflow builds any tags pushed,
+# and releases them to a (draft) GitHub release, CurseForge, & Modrinth.
+name: Publish Release Build
+
+on:
+  push:
+    tags:
+      - 'v*\+mc*' # e.g. v1.2.3+mc1.20.4
+
+# Only allow running one build job at a time to optimise cache hits
+concurrency:
+  group: builds
+
+# Grant permission to create/update releases
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: microsoft
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+        # TODO assert tag matches project version
+        # TODO cache build output between jobs/workflows
+
+      - name: Build & publish
+        run: ./gradlew publishMod
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN || '' }}
+          MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN || '' }}

@@ -14,11 +14,14 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.xolt.freecam.config.ModConfig;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.util.UUID;
 
 import static net.xolt.freecam.Freecam.MC;
 
+@ApiStatus.Internal
+@ApiStatus.AvailableSince("0.4.0")
 public class FreeCamera extends LocalPlayer {
 
     private static final ClientPacketListener NETWORK_HANDLER = new ClientPacketListener(
