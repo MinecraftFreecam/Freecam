@@ -27,7 +27,7 @@ public abstract class LevelRendererMixin {
 
     @Shadow @Final private RenderBuffers renderBuffers;
 
-    @Shadow private void renderEntity(Entity entity, double cameraX, double cameraY, double cameraZ, float tickDelta, PoseStack matrices, MultiBufferSource vertexConsumers) {}
+    @Shadow protected abstract void renderEntity(Entity entity, double camX, double camY, double camZ, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource);
 
     // Makes the player render if showPlayer is enabled.
     @Inject(method = "renderLevel", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/renderer/LevelRenderer;checkPoseStack(Lcom/mojang/blaze3d/vertex/PoseStack;)V", ordinal = 0), locals = CAPTURE_FAILHARD)
@@ -40,6 +40,7 @@ public abstract class LevelRendererMixin {
                           Matrix4f matrix4f,
                           Matrix4f matrix4f2,
                           CallbackInfo ci,
+                          // Local capture needed for poseStack
                           TickRateManager tickRateManager,
                           float g,
                           ProfilerFiller profilerFiller,

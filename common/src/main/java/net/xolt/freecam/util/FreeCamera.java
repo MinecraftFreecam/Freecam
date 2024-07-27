@@ -33,15 +33,25 @@ public class FreeCamera extends LocalPlayer {
             MC,
             MC.getConnection().getConnection(),
             new CommonListenerCookie(
+                    // localGameProfile
                     new GameProfile(UUID.randomUUID(), "FreeCamera"),
+                    // worldSessionTelemetryManager
                     MC.getTelemetryManager().createWorldSessionManager(false, null, null),
+                    // receivedRegistries
                     RegistryAccess.Frozen.EMPTY,
+                    // enabledFeatures
                     FeatureFlagSet.of(),
+                    // serverBrand
                     null,
+                    // serverData
                     MC.getCurrentServer(),
+                    // postDisconnectScreen
                     MC.screen,
+                    // serverCookies
                     Collections.emptyMap(),
+                    // chatState
                     MC.gui.getChat().storeState(),
+                    // strictErrorHandling
                     false)) {
         @Override
         public void send(Packet<?> packet) {
