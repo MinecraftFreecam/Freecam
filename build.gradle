@@ -208,7 +208,6 @@ subprojects {
             setPlatformArtifact "modrinth", tasks.remapModrinthJar
 
             [ curseDepends, modrinthDepends ].each {
-                it.embedded "cloth-config"
             }
 
             def ci = System.getenv("CI") != null
