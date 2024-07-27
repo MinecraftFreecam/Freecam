@@ -1,6 +1,5 @@
 package net.xolt.freecam.mixins;
 
-import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.resources.ResourceLocation;
 import net.xolt.freecam.Freecam;
 import org.spongepowered.asm.mixin.Final;
@@ -33,8 +32,8 @@ public class GuiMixin {
 
     // Don't render pumpkin overlay while Freecam is active
     @Inject(method = "renderTextureOverlay", at = @At("HEAD"), cancellable = true)
-    private void onRenderTextureOverlay(PoseStack poseStack, ResourceLocation shaderLocation, float alpha, CallbackInfo ci) {
-        if (Freecam.isEnabled() && shaderLocation.equals(PUMPKIN_BLUR_LOCATION)) {
+    private void onRenderTextureOverlay(ResourceLocation textureLocation, float alpha, CallbackInfo ci) {
+        if (Freecam.isEnabled() && textureLocation.equals(PUMPKIN_BLUR_LOCATION)) {
             ci.cancel();
         }
     }
