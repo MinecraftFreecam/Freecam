@@ -18,12 +18,12 @@ import net.xolt.freecam.config.ModConfig;
 
 @Mod(Freecam.MOD_ID)
 @Mod.EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
+@SuppressWarnings("unused")
 public class FreecamForge {
 
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
         ModConfig.init();
-
         // Register our config screen with Forge
         ModLoadingContext.get().registerExtensionPoint(ExtensionPoint.CONFIGGUIFACTORY, () -> (client, parent) ->
                 AutoConfig.getConfigScreen(ModConfig.class, parent).get()

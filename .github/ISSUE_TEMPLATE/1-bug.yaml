@@ -1,0 +1,96 @@
+name: Bug report
+description: Report something not working as expected
+labels: ["bug", "unverified"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Please check if an issue already exists
+
+        You can use the search box on our [issues page](https://github.com/MinecraftFreecam/Freecam/issues). Ensure you check both open issues as well as closed issues.
+
+        If you find the bug has already been reported, you can:
+        - **Subscribe** for updates on the issue
+        - **React** "👍" to show your interest
+        - Or **comment** if you have extra details to add
+
+        ----
+  - type: textarea
+    id: description
+    attributes:
+      label: Description of the issue
+      placeholder: e.g. Nothing happens when I press the toggle key (`F4`)...
+      description: What happens?
+    validations:
+      required: true
+  - type: textarea
+    id: expected-behavior
+    attributes:
+      label: Expected behavior
+      placeholder: e.g. I expected Freecam to activate when pressing `F4`...
+      description: What did you expect to happen instead?
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Steps to reproduce the issue
+      value: |
+        1. Open a singleplayer world
+        2. Enable Freecam by pressing `F4`
+        3. ...
+  - type: textarea
+    id: logs
+    attributes:
+      label: Log output
+      placeholder: Logs may help us to identify the issue
+      description: You can find logs in `.minecfaft/logs/latest.log`
+      render: shell
+  - type: textarea
+    id: crash-report
+    attributes:
+      label: Crash report
+      placeholder: If the game crashes, include your crash-report
+      description: You may find reports in `.minecfaft/crash-reports/crash-<date+time>-client.txt`
+      render: shell
+  - type: input
+    id: prevalence
+    attributes:
+      label: How prevalent is the issue?
+      description: How often do you or others encounter this issue?
+      placeholder: e.g. every time I press the key
+  - type: input
+    id: mod-version
+    attributes:
+      label: Freecam version
+      placeholder: 1.2.3
+      description: What version of Freecam are you usign?
+    validations:
+      required: true
+  - type: dropdown
+    id: modrinth
+    attributes:
+      label: Are you using "Modrinth Edition"?
+      description: Modrinth Edition has some additional restrictions, e.g. it will not allowing you to clip through blocks unless you are `op`, in creative, or in singleplayer.
+      options: [ "Yes", "No" ]
+      default: 1
+    validations:
+      required: true
+  - type: input
+    id: mc-version
+    attributes:
+      label: Minecraft version
+      placeholder: 1.20.4
+      description: What version of Minecraft are you using?
+    validations:
+      required: true
+  - type: checkboxes
+    id: mod-platform
+    attributes:
+      label: Modding platform
+      description: Select the platform(s) you've seen this issue on
+      options:
+        - label: Fabric
+        - label: Neoforge
+        - label: Forge
+    validations:
+      required: true

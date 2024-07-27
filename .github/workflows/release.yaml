@@ -1,0 +1,67 @@
+# This CI workflow marks the draft release as "published".
+# If there is no draft yet the run will fail (and can be re-run later)
+name: Publish GitHub Release
+
+on:
+  push:
+    tags:
+      - 'v*' # e.g. v1.2.3
+      - '!v*\+mc*' # exclude tags handled by publish.yaml
+
+# Only allow running one build job at a time to optimise cache hits
+concurrency:
+  group: builds
+
+# Grant permission to create/update releases
+permissions:
+  contents: write
+
+env:
+  TAG: ${{ github.ref_name }}
+  REPO: ${{ github.repository }}
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    env:
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+      - name: Check release exists
+        run: |
+          # Lookup a release using this tag:
+          # Print stdout to `response` and stderr to `errors`
+          if gh api /repos/"$REPO"/releases/tags/"$TAG" \
+              -H "Accept: application/vnd.github+json" \
+              -H "X-GitHub-Api-Version: 2022-11-28" \
+              1> response 2> errors
+          then
+            # API request returned OK, double check the response's tag_name
+            if [[ "$(jq '.tag_name' < response)" == "$TAG" ]]; then
+              # Found a release:
+              echo "Found a release with a tag_name matching \"$TAG\""
+            else
+              echo "Error: response returned the wrong tag!" >& 2
+              cat response >& 2
+              exit 2
+            fi
+          else
+            # Double check we got a "Not Found" response
+            msg="$(jq '.message' < response)"
+            if [[ "$msg" == "Not Found" ]]; then
+              echo "Release not found for \"$TAG\""
+              exit 1
+            else
+              echo "Error getting GitHub Release:" >& 2
+              [[ -n "$msg" ]] && echo "Error: $msg"
+              cat errors >& 2
+              exit 2
+            fi
+          fi
+
+        # Publish the release by setting draft=false
+        # Also ensure the release title is correct
+      - name: Publish release
+        run: |
+          gh release edit "$TAG" \
+            --title="Freecam ${TAG#v}" \
+            --draft="false"

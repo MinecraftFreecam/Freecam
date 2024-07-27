@@ -9,7 +9,6 @@
     "CameraMixin",
     "ClientPacketListenerMixin",
     "EntityCollisionContextMixin",
-    "ConnectionMixin",
     "EntityMixin",
     "EntityRenderDispatcherMixin",
     "EntityRendererMixin",

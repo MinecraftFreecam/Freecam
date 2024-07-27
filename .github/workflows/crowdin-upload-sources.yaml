@@ -1,0 +1,31 @@
+name: Crowdin (Upload Sources)
+
+on:
+  workflow_dispatch: # Allow running manually
+  push: # Run when en_us is modified on the main branch
+    branches:
+      - main
+    paths:
+      - '**/lang/en_us.json'
+
+# Queue this workflow after others in the 'crowdin' group, to avoid concurrency issues.
+concurrency:
+  group: crowdin
+
+jobs:
+  upload_sources:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Upload Sources
+        uses: crowdin/github-action@v1
+        with:
+          upload_sources: true
+          upload_translations: false
+          download_translations: false
+          crowdin_branch_name: ${{ github.ref_name }}
+        env:
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
