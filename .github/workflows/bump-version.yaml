@@ -1,0 +1,98 @@
+name: Bump project version
+
+on:
+  workflow_dispatch:
+    inputs:
+      bump:
+        description: Version level to be bumped
+        required: true
+        default: minor
+        type: choice
+        options:
+          - major
+          - minor
+          - patch
+#      pre:
+#        description: 'pre-release version'
+#        required: false
+#        type: string
+
+# Only allow running one build job at a time to optimise cache hits
+concurrency:
+  group: builds
+
+# GITHUB_TOKEN only needs read access because we'll use a PAT to push
+permissions:
+  contents: read
+
+env:
+  # sed expression to strip whitespace from property keys
+  # will not match comment lines
+  # prints result, so use with -n
+  replace_key_whitespace: 's/^\s*\([^=#][^=]*\)\s*=\s*/\1=/p'
+
+jobs:
+  bump_version:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # Set git's auth to use the owner's Personal Access Token:
+          # We need to commit as a user to ensure CI is run on the commit
+          # We need to push as an admin/owner to bypass branch-protection
+          token: ${{ secrets.HASHALITE_PAT }}
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: microsoft
+
+      - name: Setup Gradle
+        uses: gradle/actions/setup-gradle@v3
+
+      - name: Get current metadata
+        id: old_props
+        run: sed -ne "$replace_key_whitespace" gradle.properties >> $GITHUB_OUTPUT
+
+      - name: Bump version
+        run: ./gradlew bumpVersion --${{ inputs.bump }}
+
+      - name: Bump changelog
+        run: ./gradlew patchChangelog
+
+      - name: Get updated metadata
+        id: new_props
+        run: sed -ne "$replace_key_whitespace" gradle.properties >> $GITHUB_OUTPUT
+
+      - name: Commit changes
+        id: commit
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          # Ensure we commit as a bot, since we can't reliably get an author slug from `github.actor`
+          commit_user_name: github-actions[bot]
+          commit_user_email: 41898282+github-actions[bot]@users.noreply.github.com
+          commit_author: ${{ github.actor }} <41898282+github-actions[bot]@users.noreply.github.com>
+          # The commit message, specify the new version
+          commit_message: Bump version to ${{ steps.new_props.outputs.mod_version }}
+
+      - name: Summarize
+        run: |
+          version="${{ steps.new_props.outputs.mod_version }}"
+          old="${{ steps.old_props.outputs.mod_version }}"
+          sha="${{ steps.commit.outputs.commit_hash }}"
+          url="${{ github.server_url }}/${{ github.repository }}/commit/$sha"
+          
+          echo "## Summary" >> $GITHUB_STEP_SUMMARY
+          echo "Version was bumped from \`$old\` to \`$version\`." >> $GITHUB_STEP_SUMMARY
+          echo >> $GITHUB_STEP_SUMMARY
+          
+          if [[ -z "$sha" ]]; then
+            echo "**Error**: Nothing to commit!" >> $GITHUB_STEP_SUMMARY
+          else
+            echo "[\`${sha:0:6}\`]($url) pushed to \`${{ github.ref_name }}\`." >> $GITHUB_STEP_SUMMARY
+          fi
+          
+          echo >> $GITHUB_STEP_SUMMARY
+          

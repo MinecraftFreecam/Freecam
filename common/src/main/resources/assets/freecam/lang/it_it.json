@@ -66,10 +66,12 @@
   "text.autoconfig.freecam.option.utility.interactionMode.@Tooltip": "L'origine delle interazioni blocco/entità.",
   "text.autoconfig.freecam.option.utility.interactionMode.camera": "Camera",
   "text.autoconfig.freecam.option.utility.interactionMode.player": "Giocatore",
+  "text.autoconfig.freecam.option.servers.mode.none": "Nessuna restrizione",
   "text.autoconfig.freecam.option.notification": "Opzioni di Notifica",
   "text.autoconfig.freecam.option.notification.@Tooltip": "Mostra o nascondi le notifiche.",
   "text.autoconfig.freecam.option.notification.notifyFreecam": "Notifiche Camera libera",
   "text.autoconfig.freecam.option.notification.notifyFreecam.@Tooltip": "Ti avvisa quando entri/esci dalla Camera libera.",
   "text.autoconfig.freecam.option.notification.notifyTripod": "Notifiche Treppiedi",
-  "text.autoconfig.freecam.option.notification.notifyTripod.@Tooltip": "Ti avvisa quando entri/esci dalla Camera libera a Treppiedi."
+  "text.autoconfig.freecam.option.notification.notifyTripod.@Tooltip": "Ti avvisa quando entri/esci dalla Camera libera a Treppiedi.",
+  "text.autoconfig.freecam.error.invalidRegex": "Regex non valido: %s"
 }

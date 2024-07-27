@@ -5,15 +5,16 @@ import org.jetbrains.changelog.tasks.BaseChangelogTask
 
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.4-SNAPSHOT" apply false
-    id "com.hypherionmc.modutils.modpublisher" version "2.0.5" apply false
-    id "com.github.johnrengelman.shadow" version "7.1.2" apply false
+    id "dev.architectury.loom" version "1.7-SNAPSHOT" apply false
+    id "com.hypherionmc.modutils.modpublisher" version "2.1.2" apply false
+    id "com.github.johnrengelman.shadow" version "8.1.1" apply false
     id "org.jetbrains.changelog" version "2.2.0"
 }
 
 tasks.named('wrapper') {
     // Use "all" so we get sources and javadoc too
     distributionType = "all"
+    gradleVersion = "8.6"
 }
 
 // Helper task that bumps the version number
@@ -65,7 +66,7 @@ changelog {
 
     // Regex used to find versions in headings.
     // The default regex only supports semantic versions, this one is more lenient.
-    headerParserRegex = ~/(\d+(?:\.\d+)+)/
+    headerParserRegex = ~/(\d+(?:\.\d+)+(?:-[-a-z]+\d*)?)/
 }
 
 allprojects {
@@ -152,13 +153,24 @@ subprojects {
             curseID = "557076"
             modrinthID = "XeEZ3fK2"
 
-            // Format display name "[Fabric] Freecam 1.2.2 for MC 1.20.4"
-            displayName = "[${project.name.capitalize()}] ${rootProject.name.capitalize()} ${rootProject.mod_version} for MC ${rootProject.minecraft_version}"
+            github {
+                // Extract our repo slug from the github URL
+                repo = rootProject.source_code_url.replaceFirst("^https?://github\\.com/", "")
+                // GitHub releases must be associated with a git tag
+                // We want this to be the canonical tag, not the annotated build tag
+                tag = "v${rootProject.mod_version}"
+                // Create a draft release, so that GitHub doesn't actually create the tag
+                // does not affect already published releases
+                draft = true
+            }
+
+            // Format display name, e.g. "1.2.4 for MC 1.20.4 (fabric)"
+            displayName = "${rootProject.mod_version} for MC ${rootProject.minecraft_version} (${project.name})"
             version = project.version
             versionType = rootProject.release_type
             curseEnvironment = "client"
             loaders = [ project.name ]
-            javaVersions = ["Java ${project.java.targetCompatibility.getMajorVersion()}"]
+            javaVersions = [ project.java.targetCompatibility ]
 
             // Get the changelog entry using the changelog plugin
             changelog = provider {
@@ -195,12 +207,18 @@ subprojects {
             artifact = tasks.remapJar
             setPlatformArtifact "modrinth", tasks.remapModrinthJar
 
-            def dummy = "default"
+            [ curseDepends, modrinthDepends ].each {
+                it.embedded "cloth-config"
+            }
+
+            def ci = System.getenv("CI") != null
+            def dummy = ci ? "" : "default"
             apiKeys {
+                github findProperty("github_token") ?: System.getenv("GITHUB_TOKEN") ?: System.getenv("GH_TOKEN") ?: dummy
                 curseforge findProperty("curseforge_token") ?: System.getenv("CURSEFORGE_TOKEN") ?: dummy
                 modrinth findProperty("modrinth_token") ?: System.getenv("MODRINTH_TOKEN") ?: dummy
             }
-            debug = [ apiKeys.curseforge, apiKeys.modrinth ].contains dummy
+            debug = !ci
         }
 
         tasks.publish.dependsOn tasks.publishMod

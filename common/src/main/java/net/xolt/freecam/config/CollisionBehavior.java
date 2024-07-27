@@ -32,7 +32,7 @@ public class CollisionBehavior {
         if (ModConfig.INSTANCE.collision.ignoreAll && BuildVariant.getInstance().cheatsPermitted()) {
             return true;
         }
-        
+
         if (ModConfig.INSTANCE.collision.ignoreTransparent && transparent.test(block)) {
             return true;
         }
