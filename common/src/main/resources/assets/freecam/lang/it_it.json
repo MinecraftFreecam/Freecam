@@ -15,7 +15,7 @@
   "text.autoconfig.freecam.option.movement.flightMode": "Modalità Aereo",
   "text.autoconfig.freecam.option.movement.flightMode.@Tooltip": "Il tipo di volo utilizzato della Camera libera.",
   "text.autoconfig.freecam.option.movement.flightMode.default": "Predefinito",
-  "text.autoconfig.freecam.option.movement.flightMode.creative": "Creativo",
+  "text.autoconfig.freecam.option.movement.flightMode.creative": "Creativa",
   "text.autoconfig.freecam.option.movement.horizontalSpeed": "Velocità Orizzontale",
   "text.autoconfig.freecam.option.movement.horizontalSpeed.@Tooltip": "La velocità orizzontale della Camera libera.",
   "text.autoconfig.freecam.option.movement.verticalSpeed": "Velocità Verticale",
@@ -39,7 +39,7 @@
   "text.autoconfig.freecam.option.visual.perspective.@Tooltip": "La prospettiva iniziale della Camera libera.",
   "text.autoconfig.freecam.option.visual.perspective.firstPerson": "La Prima Persona",
   "text.autoconfig.freecam.option.visual.perspective.thirdPerson": "Terza Persona",
-  "text.autoconfig.freecam.option.visual.perspective.thirdPersonMirror": "Rispecchiato",
+  "text.autoconfig.freecam.option.visual.perspective.thirdPersonMirror": "Specchio",
   "text.autoconfig.freecam.option.visual.perspective.inside": "Dentro",
   "text.autoconfig.freecam.option.visual.showPlayer": "Mostra Giocatore",
   "text.autoconfig.freecam.option.visual.showPlayer.@Tooltip": "Mostra il giocatore nella sua posizione originale.",
@@ -64,11 +64,14 @@
   "text.autoconfig.freecam.option.utility.allowInteract.@ModrinthTooltip[2]": "§c*A meno che, utilizzi la modalità di interazione 'Giocatore'",
   "text.autoconfig.freecam.option.utility.interactionMode": "Modalità Interazioni",
   "text.autoconfig.freecam.option.utility.interactionMode.@Tooltip": "L'origine delle interazioni blocco/entità.",
+  "text.autoconfig.freecam.option.utility.interactionMode.camera": "Camera",
   "text.autoconfig.freecam.option.utility.interactionMode.player": "Giocatore",
+  "text.autoconfig.freecam.option.servers.mode.none": "Nessuna restrizione",
   "text.autoconfig.freecam.option.notification": "Opzioni di Notifica",
   "text.autoconfig.freecam.option.notification.@Tooltip": "Mostra o nascondi le notifiche.",
   "text.autoconfig.freecam.option.notification.notifyFreecam": "Notifiche Camera libera",
   "text.autoconfig.freecam.option.notification.notifyFreecam.@Tooltip": "Ti avvisa quando entri/esci dalla Camera libera.",
   "text.autoconfig.freecam.option.notification.notifyTripod": "Notifiche Treppiedi",
-  "text.autoconfig.freecam.option.notification.notifyTripod.@Tooltip": "Ti avvisa quando entri/esci dalla Camera libera a Treppiedi."
+  "text.autoconfig.freecam.option.notification.notifyTripod.@Tooltip": "Ti avvisa quando entri/esci dalla Camera libera a Treppiedi.",
+  "text.autoconfig.freecam.error.invalidRegex": "Regex non valido: %s"
 }
