@@ -1,0 +1,48 @@
+name: Crowdin (Download Translations)
+
+# Allow running manually,
+# including triggering via webhooks
+on:
+  workflow_dispatch:
+
+# Queue this workflow after others in the 'crowdin' group, to avoid concurrency issues.
+concurrency:
+  group: crowdin
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  download_translations:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Download to PR
+        uses: crowdin/github-action@v1
+        with:
+          upload_sources: false
+          upload_translations: false
+          download_translations: true
+          skip_untranslated_strings: true
+          crowdin_branch_name: ${{ github.ref_name }}
+
+          create_pull_request: true
+          pull_request_title: Crowdin translations for ${{ github.ref_name }}
+          pull_request_body: |
+            New pull request with translations from [Crowdin](https://crowdin.com/project/freecam).
+            
+            Powered by [Crowdin's GitHub Action](https://github.com/crowdin/github-action).
+          pull_request_labels: enhancement, i18n
+          pull_request_base_branch_name: ${{ github.ref_name }}
+          localization_branch_name: i18n/${{ github.ref_name }}
+          commit_message: |
+            i18n: New translations from Crowdin
+            
+            [skip ci]
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}

@@ -2,3 +2,5 @@ accessWidener   v2  named
 
 #Used by EntityRendererMixin
 accessible field net/minecraft/client/renderer/entity/EntityRenderDispatcher shouldRenderShadow Z
+
+accessible field net/minecraft/client/KeyMapping key Lcom/mojang/blaze3d/platform/InputConstants$Key;
