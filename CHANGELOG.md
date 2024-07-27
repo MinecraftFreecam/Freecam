@@ -9,12 +9,22 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Added
 
-- 1.21 Support ([#222](https://github.com/MinecraftFreecam/Freecam/pull/222)).
-- 1.20.6 Support ([#223](https://github.com/MinecraftFreecam/Freecam/pull/223)).
-
 ### Changed
 
 ### Removed
+
+### Fixed
+
+- Config is now initialized before config screen is registered (fixes #234)
+- Build against NeoForge 21.0.139-beta (fixes opening config screen through Forge modlist crashing)
+- Pumpkin overlay rendering while Freecam is enabled (#239)
+
+## [1.3.0-beta1] - 2024-07-26
+
+### Added
+
+- 1.21 Support ([#222](https://github.com/MinecraftFreecam/Freecam/pull/222)).
+- 1.20.6 Support ([#223](https://github.com/MinecraftFreecam/Freecam/pull/223)).
 
 ### Fixed
 
@@ -535,7 +545,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 - Minecraft 1.18 support.
 - Minecraft 1.17 support.
 
-[Unreleased]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.4...HEAD
+[Unreleased]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.0-beta1...HEAD
+[1.3.0-beta1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.4...v1.3.0-beta1
 [1.2.4]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.3...v1.2.4
 [1.2.3]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.2...v1.2.3
 [1.2.2]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.1.1...v1.2.2

@@ -22,14 +22,10 @@ import net.xolt.freecam.config.ModConfig;
 public class FreecamForge {
 
     public FreecamForge(ModContainer container) {
+        ModConfig.init();
         // Register our config screen with Forge
         container.registerExtensionPoint(IConfigScreenFactory.class, (client, parent) ->
                 AutoConfig.getConfigScreen(ModConfig.class, parent).get());
-    }
-
-    @SubscribeEvent
-    public static void clientSetup(FMLClientSetupEvent event) {
-        ModConfig.init();
     }
 
     @SubscribeEvent
