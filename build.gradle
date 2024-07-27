@@ -14,7 +14,7 @@ plugins {
 tasks.named('wrapper') {
     // Use "all" so we get sources and javadoc too
     distributionType = "all"
-    gradleVersion = "8.6"
+    gradleVersion = "8.8"
 }
 
 // Helper task that bumps the version number
