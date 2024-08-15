@@ -38,6 +38,7 @@
   "text.autoconfig.freecam.option.collision.whitelist.patterns": "Reguläre Ausdrücke ignorieren",
   "text.autoconfig.freecam.option.collision.ignoreAll": "Alle Kollision ignorieren",
   "text.autoconfig.freecam.option.visual": "Visuelle Optionen",
+  "text.autoconfig.freecam.option.visual.@Tooltip": "Das Aussehen von freecam.",
   "text.autoconfig.freecam.option.visual.perspective": "Ursprüngliche Perspektive",
   "text.autoconfig.freecam.option.visual.perspective.@Tooltip": "Ursprüngliche Perspektive der Kamera."
 }
