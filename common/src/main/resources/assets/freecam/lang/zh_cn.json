@@ -10,6 +10,8 @@
   "msg.freecam.closeTripod": "禁用视角 %s",
   "msg.freecam.tripodReset": "重置视角 %s",
   "text.autoconfig.freecam.title": "自由视角(Freecam)选项",
+  "text.autoconfig.freecam.option.controls": "Translation is empty\nTerm translation inconsistency translate thm as freecam (propn) freecam",
+  "text.autoconfig.freecam.option.controls.@Tooltip": "Translation is empty\nTerm translation inconsistency translate the following term as freecam (propn) freecam ",
   "text.autoconfig.freecam.option.movement": "移动选项",
   "text.autoconfig.freecam.option.movement.@Tooltip": "视角如何移动。",
   "text.autoconfig.freecam.option.movement.flightMode": "飞行模式",
