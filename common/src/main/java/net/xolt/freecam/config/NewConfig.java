@@ -185,6 +185,7 @@ public class NewConfig {
                 .setTooltip(
                         Component.translatable("text.autoconfig.freecam.option.collision.whitelist.ids.@Tooltip[0]"),
                         Component.translatable("text.autoconfig.freecam.option.collision.whitelist.ids.@Tooltip[1]"))
+                .setDisplayRequirement(ignoreCustom::getValue)
                 .setDefaultValue(Collections.emptyList())
                 // .setSaveConsumer() // TODO
                 .build();
@@ -193,6 +194,7 @@ public class NewConfig {
                 .setTooltip(
                         Component.translatable("text.autoconfig.freecam.option.collision.whitelist.patterns.@Tooltip[0]"),
                         Component.translatable("text.autoconfig.freecam.option.collision.whitelist.patterns.@Tooltip[1]"))
+                .setDisplayRequirement(ignoreCustom::getValue)
                 .setDefaultValue(Collections.emptyList())
                 // .setSaveConsumer() // TODO
                 .build();
@@ -364,12 +366,14 @@ public class NewConfig {
 
         StringListListEntry whitelist = entryBuilder.startStrList(Component.translatable("text.autoconfig.freecam.option.servers.whitelist"), new ArrayList<>())
                 // .setTooltip()
+                .setDisplayRequirement(() -> mode.getValue() == ModConfig.ServerRestriction.WHITELIST)
                 .setDefaultValue(Collections.emptyList()) // TODO get from config api
                 // .setSaveConsumer() // TODO
                 .build();
 
         StringListListEntry blacklist = entryBuilder.startStrList(Component.translatable("text.autoconfig.freecam.option.servers.blacklist"), new ArrayList<>())
                 // .setTooltip()
+                .setDisplayRequirement(() -> mode.getValue() == ModConfig.ServerRestriction.BLACKLIST)
                 .setDefaultValue(Collections.emptyList()) // TODO get from config api
                 // .setSaveConsumer() // TODO
                 .build();
