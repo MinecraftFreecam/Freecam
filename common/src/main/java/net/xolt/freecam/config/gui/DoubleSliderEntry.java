@@ -28,7 +28,7 @@ import static net.xolt.freecam.Freecam.MC;
 /**
  * {@link IntegerSliderEntry} ported from {@code int} to {@code double}.
  */
-class DoubleSliderEntry extends TooltipListEntry<Double> {
+public class DoubleSliderEntry extends TooltipListEntry<Double> {
     private final Slider sliderWidget;
     private final Button resetButton;
     private final AtomicDouble value;
@@ -39,7 +39,7 @@ class DoubleSliderEntry extends TooltipListEntry<Double> {
     private final Supplier<Double> defaultValue;
     private final List<AbstractWidget> widgets;
 
-    DoubleSliderEntry(Component fieldName, int precision, double minimum, double maximum, double value, Component resetText, Supplier<Double> defaultValue, @Nullable Consumer<Double> save) {
+    public DoubleSliderEntry(Component fieldName, int precision, double minimum, double maximum, double value, Component resetText, Supplier<Double> defaultValue, @Nullable Consumer<Double> save) {
         //noinspection deprecation,UnstableApiUsage
         super(fieldName, null);
         this.value = new AtomicDouble(value);
