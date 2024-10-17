@@ -46,6 +46,10 @@ public class NewConfig {
         // TODO
         // Serialise the config into the config file.
         // This will be called last after all variables are updated.
+
+        // Invoke "on save" listeners
+        // TODO: consider having a Collection<Runnable> to store handlers
+        CollisionBehavior.onConfigChange(ModConfig.INSTANCE);
     }
 
     // TODO: do we need separate `builder` and `getConfigScreen` methods,
