@@ -23,6 +23,9 @@ import java.util.List;
 public class ModConfig implements ConfigData {
 
     @ConfigEntry.Gui.Excluded
+    public static final ModConfig DEFAULTS = new ModConfig();
+
+    @ConfigEntry.Gui.Excluded
     public static ModConfig INSTANCE;
 
     public static void init() {

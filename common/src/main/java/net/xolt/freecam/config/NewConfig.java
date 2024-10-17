@@ -15,7 +15,6 @@ import net.xolt.freecam.config.gui.DoubleSliderEntry;
 import net.xolt.freecam.variant.api.BuildVariant;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
@@ -104,10 +103,10 @@ public class NewConfig {
         EnumListEntry<ModConfig.FlightMode> flightMode = entryBuilder.startEnumSelector(
                         Component.translatable("text.autoconfig.freecam.option.movement.flightMode"),
                         ModConfig.FlightMode.class,
-                        ModConfig.FlightMode.DEFAULT) // FIXME load from a real config
+                        ModConfig.INSTANCE.movement.flightMode)
                 .setTooltip(Component.translatable("text.autoconfig.freecam.option.movement.flightMode.@Tooltip"))
-                .setDefaultValue(ModConfig.FlightMode.DEFAULT) // FIXME load from a config API
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.movement.flightMode)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.movement.flightMode = value)
                 .build();
 
         DoubleSliderEntry horizontalSpeed = new DoubleSliderEntry(
@@ -115,11 +114,10 @@ public class NewConfig {
                 2,
                 0,
                 10,
-                1, // FIXME load from config
+                ModConfig.INSTANCE.movement.horizontalSpeed,
                 Component.translatable("text.cloth-config.reset_value"),
-                () -> 1.0, // TODO get from config system
-                val -> { } // TODO save to config
-
+                () -> ModConfig.DEFAULTS.movement.horizontalSpeed,
+                value -> ModConfig.INSTANCE.movement.horizontalSpeed = value
         );
         horizontalSpeed.setTooltipSupplier(() -> Optional.of(new Component[]{
                 Component.translatable("text.autoconfig.freecam.option.movement.horizontalSpeed.@Tooltip")
@@ -130,10 +128,10 @@ public class NewConfig {
                 2,
                 0,
                 10,
-                1, // FIXME load from config
+                ModConfig.INSTANCE.movement.verticalSpeed,
                 Component.translatable("text.cloth-config.reset_value"),
-                () -> 1.0, // TODO get from config system
-                val -> { } // TODO save to config
+                () -> ModConfig.DEFAULTS.movement.verticalSpeed,
+                value -> ModConfig.INSTANCE.movement.verticalSpeed = value
 
         );
         verticalSpeed.setTooltipSupplier(() -> Optional.of(new Component[]{
@@ -158,16 +156,20 @@ public class NewConfig {
         SubCategoryBuilder builder = entryBuilder.startSubCategory(Component.translatable("text.autoconfig.freecam.option.collision"))
                 .setTooltip(Component.translatable("text.autoconfig.freecam.option.collision.@Tooltip"));
 
-        BooleanListEntry ignoreTransparent = entryBuilder.startBooleanToggle(Component.translatable("text.autoconfig.freecam.option.collision.ignoreTransparent"), false)
+        BooleanListEntry ignoreTransparent = entryBuilder.startBooleanToggle(
+                        Component.translatable("text.autoconfig.freecam.option.collision.ignoreTransparent"),
+                        ModConfig.INSTANCE.collision.ignoreTransparent)
                 .setTooltip(Component.translatable("text.autoconfig.freecam.option.collision.ignoreTransparent.@Tooltip"))
-                .setDefaultValue(false) // TODO get from config system
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.collision.ignoreTransparent)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.collision.ignoreTransparent = value)
                 .build();
 
-        BooleanListEntry ignoreOpenable = entryBuilder.startBooleanToggle(Component.translatable("text.autoconfig.freecam.option.collision.ignoreOpenable"), false)
+        BooleanListEntry ignoreOpenable = entryBuilder.startBooleanToggle(
+                        Component.translatable("text.autoconfig.freecam.option.collision.ignoreOpenable"),
+                        ModConfig.INSTANCE.collision.ignoreOpenable)
                 .setTooltip(Component.translatable("text.autoconfig.freecam.option.collision.ignoreOpenable.@Tooltip"))
-                .setDefaultValue(false) // TODO get from config
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.collision.ignoreOpenable)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.collision.ignoreOpenable = value)
                 .build();
 
         List<Component> ignoreCustomTooltip = new ArrayList<>();
@@ -175,28 +177,34 @@ public class NewConfig {
         if (BuildVariant.getInstance().name().equals("modrinth")) {
             ignoreCustomTooltip.add(Component.translatable("text.autoconfig.freecam.option.collision.ignoreCustom.@ModrinthTooltip[1]"));
         }
-        BooleanListEntry ignoreCustom = entryBuilder.startBooleanToggle(Component.translatable("text.autoconfig.freecam.option.collision.ignoreCustom"), !BuildVariant.getInstance().name().equals("modrinth"))
+        BooleanListEntry ignoreCustom = entryBuilder.startBooleanToggle(
+                        Component.translatable("text.autoconfig.freecam.option.collision.ignoreCustom"),
+                        ModConfig.INSTANCE.collision.ignoreCustom)
                 .setTooltip(ignoreCustomTooltip.toArray(Component[]::new))
-                .setDefaultValue(!BuildVariant.getInstance().name().equals("modrinth")) // TODO get from config api
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.collision.ignoreCustom)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.collision.ignoreCustom = value)
                 .build();
 
-        StringListListEntry idWhitelist = entryBuilder.startStrList(Component.translatable("text.autoconfig.freecam.option.collision.whitelist.ids"), new ArrayList<>())
+        StringListListEntry idWhitelist = entryBuilder.startStrList(
+                        Component.translatable("text.autoconfig.freecam.option.collision.whitelist.ids"),
+                        ModConfig.INSTANCE.collision.whitelist.ids)
                 .setTooltip(
                         Component.translatable("text.autoconfig.freecam.option.collision.whitelist.ids.@Tooltip[0]"),
                         Component.translatable("text.autoconfig.freecam.option.collision.whitelist.ids.@Tooltip[1]"))
                 .setDisplayRequirement(ignoreCustom::getValue)
-                .setDefaultValue(Collections.emptyList())
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.collision.whitelist.ids)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.collision.whitelist.ids = value)
                 .build();
 
-        StringListListEntry patternWhitelist = entryBuilder.startStrList(Component.translatable("text.autoconfig.freecam.option.collision.whitelist.patterns"), new ArrayList<>())
+        StringListListEntry patternWhitelist = entryBuilder.startStrList(
+                        Component.translatable("text.autoconfig.freecam.option.collision.whitelist.patterns"),
+                        ModConfig.INSTANCE.collision.whitelist.patterns)
                 .setTooltip(
                         Component.translatable("text.autoconfig.freecam.option.collision.whitelist.patterns.@Tooltip[0]"),
                         Component.translatable("text.autoconfig.freecam.option.collision.whitelist.patterns.@Tooltip[1]"))
                 .setDisplayRequirement(ignoreCustom::getValue)
-                .setDefaultValue(Collections.emptyList())
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.collision.whitelist.patterns)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.collision.whitelist.patterns = value)
                 .build();
 
         List<Component> ignoreAllTooltip = new ArrayList<>();
@@ -205,18 +213,22 @@ public class NewConfig {
         if (BuildVariant.getInstance().name().equals("modrinth")) {
             ignoreAllTooltip.add(Component.translatable("text.autoconfig.freecam.option.collision.ignoreAll.@ModrinthTooltip[2]"));
         }
-        BooleanListEntry ignoreAll = entryBuilder.startBooleanToggle(Component.translatable("text.autoconfig.freecam.option.collision.ignoreAll"), !BuildVariant.getInstance().name().equals("modrinth"))
+        BooleanListEntry ignoreAll = entryBuilder.startBooleanToggle(
+                        Component.translatable("text.autoconfig.freecam.option.collision.ignoreAll"),
+                        ModConfig.INSTANCE.collision.ignoreAll)
                 .setTooltip(ignoreAllTooltip.toArray(Component[]::new))
-                .setDefaultValue(!BuildVariant.getInstance().name().equals("modrinth")) // TODO get from config system
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.collision.ignoreAll)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.collision.ignoreAll = value)
                 .build();
 
-        BooleanListEntry alwaysCheck = entryBuilder.startBooleanToggle(Component.translatable("text.autoconfig.freecam.option.collision.alwaysCheck"), false)
+        BooleanListEntry alwaysCheck = entryBuilder.startBooleanToggle(
+                        Component.translatable("text.autoconfig.freecam.option.collision.alwaysCheck"),
+                        ModConfig.INSTANCE.collision.alwaysCheck)
                 .setTooltip(
                         Component.translatable("text.autoconfig.freecam.option.collision.alwaysCheck.@Tooltip[0]"),
                         Component.translatable("text.autoconfig.freecam.option.collision.alwaysCheck.@Tooltip[1]"))
-                .setDefaultValue(false) // TODO get from config api
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.collision.alwaysCheck)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.collision.alwaysCheck = value)
                 .build();
 
         // Add entries to the sub-category
@@ -244,34 +256,42 @@ public class NewConfig {
         EnumListEntry<ModConfig.Perspective> perspective = entryBuilder.startEnumSelector(
                         Component.translatable("text.autoconfig.freecam.option.visual.perspective"),
                         ModConfig.Perspective.class,
-                        ModConfig.Perspective.INSIDE) // FIXME load from a real config
+                        ModConfig.INSTANCE.visual.perspective)
                 .setTooltip(Component.translatable("text.autoconfig.freecam.option.visual.perspective.@Tooltip"))
-                .setDefaultValue(ModConfig.Perspective.INSIDE) // TODO get from config system
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.visual.perspective)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.visual.perspective = value)
                 .build();
 
-        BooleanListEntry showPlayer = entryBuilder.startBooleanToggle(Component.translatable("text.autoconfig.freecam.option.visual.showPlayer"), true)
+        BooleanListEntry showPlayer = entryBuilder.startBooleanToggle(
+                        Component.translatable("text.autoconfig.freecam.option.visual.showPlayer"),
+                        ModConfig.INSTANCE.visual.showPlayer)
                 .setTooltip(Component.translatable("text.autoconfig.freecam.option.visual.showPlayer.@Tooltip"))
-                .setDefaultValue(true) // TODO get from config api
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.visual.showPlayer)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.visual.showPlayer = value)
                 .build();
 
-        BooleanListEntry showHand = entryBuilder.startBooleanToggle(Component.translatable("text.autoconfig.freecam.option.visual.showHand"), false)
+        BooleanListEntry showHand = entryBuilder.startBooleanToggle(
+                        Component.translatable("text.autoconfig.freecam.option.visual.showHand"),
+                        ModConfig.INSTANCE.visual.showHand)
                 .setTooltip(Component.translatable("text.autoconfig.freecam.option.visual.showHand.@Tooltip"))
-                .setDefaultValue(false) // TODO get from config api
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.visual.showHand)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.visual.showHand = value)
                 .build();
 
-        BooleanListEntry fullBright = entryBuilder.startBooleanToggle(Component.translatable("text.autoconfig.freecam.option.visual.fullBright"), false)
+        BooleanListEntry fullBright = entryBuilder.startBooleanToggle(
+                        Component.translatable("text.autoconfig.freecam.option.visual.fullBright"),
+                        ModConfig.INSTANCE.visual.fullBright)
                 .setTooltip(Component.translatable("text.autoconfig.freecam.option.visual.fullBright.@Tooltip"))
-                .setDefaultValue(false) // TODO get from config api
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.visual.fullBright)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.visual.fullBright = value)
                 .build();
 
-        BooleanListEntry showSubmersion = entryBuilder.startBooleanToggle(Component.translatable("text.autoconfig.freecam.option.visual.showSubmersion"), false)
+        BooleanListEntry showSubmersion = entryBuilder.startBooleanToggle(
+                        Component.translatable("text.autoconfig.freecam.option.visual.showSubmersion"),
+                        ModConfig.INSTANCE.visual.showSubmersion)
                 .setTooltip(Component.translatable("text.autoconfig.freecam.option.visual.showSubmersion.@Tooltip"))
-                .setDefaultValue(false) // TODO get from config api
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.visual.showSubmersion)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.visual.showSubmersion = value)
                 .build();
 
         // Add entries to the sub-category
@@ -294,13 +314,17 @@ public class NewConfig {
         SubCategoryBuilder builder = entryBuilder.startSubCategory(Component.translatable("text.autoconfig.freecam.option.utility"))
                 .setTooltip(Component.translatable("text.autoconfig.freecam.option.utility.@Tooltip"));
 
-        BooleanListEntry disableOnDamage = entryBuilder.startBooleanToggle(Component.translatable("text.autoconfig.freecam.option.utility.disableOnDamage"), true)
+        BooleanListEntry disableOnDamage = entryBuilder.startBooleanToggle(
+                        Component.translatable("text.autoconfig.freecam.option.utility.disableOnDamage"),
+                        ModConfig.INSTANCE.utility.disableOnDamage)
                 .setTooltip(Component.translatable("text.autoconfig.freecam.option.utility.disableOnDamage.@Tooltip"))
-                .setDefaultValue(true) // TODO get from config api
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.utility.disableOnDamage)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.utility.disableOnDamage = value)
                 .build();
 
-        BooleanListEntry freezePlayer = entryBuilder.startBooleanToggle(Component.translatable("text.autoconfig.freecam.option.utility.freezePlayer"), false)
+        BooleanListEntry freezePlayer = entryBuilder.startBooleanToggle(
+                        Component.translatable("text.autoconfig.freecam.option.utility.freezePlayer"),
+                        ModConfig.INSTANCE.utility.freezePlayer)
                 .setTooltip(
                         Component.translatable("text.autoconfig.freecam.option.utility.freezePlayer.@Tooltip[0]"),
                         Component.translatable(
@@ -309,8 +333,8 @@ public class NewConfig {
                                 : "text.autoconfig.freecam.option.utility.freezePlayer.@Tooltip[1]"
                         )
                 )
-                .setDefaultValue(false) // TODO get from config api
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.utility.freezePlayer)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.utility.freezePlayer = value)
                 .build();
 
         List<Component> allowInteractTooltip = new ArrayList<>();
@@ -319,19 +343,21 @@ public class NewConfig {
         if (BuildVariant.getInstance().name().equals("modrinth")) {
             allowInteractTooltip.add(Component.translatable("text.autoconfig.freecam.option.utility.allowInteract.@ModrinthTooltip[2]"));
         }
-        BooleanListEntry allowInteract = entryBuilder.startBooleanToggle(Component.translatable("text.autoconfig.freecam.option.utility.allowInteract"), false)
+        BooleanListEntry allowInteract = entryBuilder.startBooleanToggle(
+                        Component.translatable("text.autoconfig.freecam.option.utility.allowInteract"),
+                        ModConfig.INSTANCE.utility.allowInteract)
                 .setTooltip(allowInteractTooltip.toArray(Component[]::new))
-                .setDefaultValue(false) // TODO get from config api
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.utility.allowInteract)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.utility.allowInteract = value)
                 .build();
 
         EnumListEntry<ModConfig.InteractionMode> interactionMode = entryBuilder.startEnumSelector(
                         Component.translatable("text.autoconfig.freecam.option.utility.interactionMode"),
                         ModConfig.InteractionMode.class,
-                        ModConfig.InteractionMode.CAMERA) // FIXME load from a real config
+                        ModConfig.INSTANCE.utility.interactionMode)
                 .setTooltip(Component.translatable("text.autoconfig.freecam.option.utility.interactionMode.@Tooltip"))
-                .setDefaultValue(ModConfig.InteractionMode.CAMERA) // TODO get from config api
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.utility.interactionMode)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.utility.interactionMode = value)
                 .build();
 
         // Add entries to the sub-category
@@ -356,26 +382,30 @@ public class NewConfig {
         EnumListEntry<ModConfig.ServerRestriction> mode = entryBuilder.startEnumSelector(
                         Component.translatable("text.autoconfig.freecam.option.servers.mode"),
                         ModConfig.ServerRestriction.class,
-                        ModConfig.ServerRestriction.NONE) // FIXME load from a real config
+                        ModConfig.INSTANCE.servers.mode)
                 .setTooltip(
                         Component.translatable("text.autoconfig.freecam.option.servers.mode.@Tooltip[0]"),
                         Component.translatable("text.autoconfig.freecam.option.servers.mode.@Tooltip[1]"))
-                .setDefaultValue(ModConfig.ServerRestriction.NONE) // TODO get from config api
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.servers.mode)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.servers.mode = value)
                 .build();
 
-        StringListListEntry whitelist = entryBuilder.startStrList(Component.translatable("text.autoconfig.freecam.option.servers.whitelist"), new ArrayList<>())
+        StringListListEntry whitelist = entryBuilder.startStrList(
+                        Component.translatable("text.autoconfig.freecam.option.servers.whitelist"),
+                        ModConfig.INSTANCE.servers.whitelist)
                 // .setTooltip()
                 .setDisplayRequirement(() -> mode.getValue() == ModConfig.ServerRestriction.WHITELIST)
-                .setDefaultValue(Collections.emptyList()) // TODO get from config api
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.servers.whitelist)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.servers.whitelist = value)
                 .build();
 
-        StringListListEntry blacklist = entryBuilder.startStrList(Component.translatable("text.autoconfig.freecam.option.servers.blacklist"), new ArrayList<>())
+        StringListListEntry blacklist = entryBuilder.startStrList(
+                        Component.translatable("text.autoconfig.freecam.option.servers.blacklist"),
+                        ModConfig.INSTANCE.servers.blacklist)
                 // .setTooltip()
                 .setDisplayRequirement(() -> mode.getValue() == ModConfig.ServerRestriction.BLACKLIST)
-                .setDefaultValue(Collections.emptyList()) // TODO get from config api
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.servers.whitelist)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.servers.whitelist = value)
                 .build();
 
         // Add entries to the sub-category
@@ -396,16 +426,20 @@ public class NewConfig {
         SubCategoryBuilder builder = entryBuilder.startSubCategory(Component.translatable("text.autoconfig.freecam.option.notification"))
                 .setTooltip(Component.translatable("text.autoconfig.freecam.option.notification.@Tooltip"));
 
-        BooleanListEntry notifyFreecam = entryBuilder.startBooleanToggle(Component.translatable("text.autoconfig.freecam.option.notification.notifyFreecam"), true)
+        BooleanListEntry notifyFreecam = entryBuilder.startBooleanToggle(
+                        Component.translatable("text.autoconfig.freecam.option.notification.notifyFreecam"),
+                        ModConfig.INSTANCE.notification.notifyFreecam)
                 .setTooltip(Component.translatable("text.autoconfig.freecam.option.notification.notifyFreecam.@Tooltip"))
-                .setDefaultValue(true) // TODO get from config api
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.notification.notifyFreecam)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.notification.notifyFreecam = value)
                 .build();
 
-        BooleanListEntry notifyTripod = entryBuilder.startBooleanToggle(Component.translatable("text.autoconfig.freecam.option.notification.notifyTripod"), true)
+        BooleanListEntry notifyTripod = entryBuilder.startBooleanToggle(
+                        Component.translatable("text.autoconfig.freecam.option.notification.notifyTripod"),
+                        ModConfig.INSTANCE.notification.notifyTripod)
                 .setTooltip(Component.translatable("text.autoconfig.freecam.option.notification.notifyTripod.@Tooltip"))
-                .setDefaultValue(true) // TODO get from config api
-                // .setSaveConsumer() // TODO
+                .setDefaultValue(ModConfig.DEFAULTS.notification.notifyTripod)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.notification.notifyTripod = value)
                 .build();
 
         // Add entries to the sub-category
