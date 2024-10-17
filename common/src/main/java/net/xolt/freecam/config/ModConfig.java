@@ -8,6 +8,7 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDisplayOption;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
+import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.gui.AutoConfigExtensions;
 import net.xolt.freecam.config.gui.ValidateRegex;
 import net.xolt.freecam.config.gui.BoundedContinuous;
@@ -21,6 +22,11 @@ import java.util.List;
 
 @Config(name = "freecam")
 public class ModConfig implements ConfigData {
+
+    // Additional to autoconfig's serializer, here's one we can use with our NewConfig
+    @ConfigEntry.Gui.Excluded
+    static final JsonConfigSerializer<ModConfig> NEW_SERIALIZER =
+            new JsonConfigSerializer<>(ModConfig.class, Freecam.MOD_ID);
 
     @ConfigEntry.Gui.Excluded
     public static final ModConfig DEFAULTS = new ModConfig();

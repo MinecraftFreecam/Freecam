@@ -42,10 +42,15 @@ public class NewConfig {
         return builder;
     }
 
+    // Serialise the config into the config file.
+    // This will be called last after all variables are updated.
     private static void save() {
-        // TODO
-        // Serialise the config into the config file.
-        // This will be called last after all variables are updated.
+        try {
+            ModConfig.NEW_SERIALIZER.serialize(ModConfig.INSTANCE);
+        } catch (Exception e) {
+            // TODO: do we need to handle this?
+            throw new RuntimeException(e);
+        }
 
         // Invoke "on save" listeners
         // TODO: consider having a Collection<Runnable> to store handlers
