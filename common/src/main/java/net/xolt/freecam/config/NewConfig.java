@@ -118,34 +118,27 @@ public class NewConfig {
                 .setSaveConsumer(value -> ModConfig.INSTANCE.movement.flightMode = value)
                 .build();
 
-        DoubleSliderEntry horizontalSpeed = new DoubleSliderEntry(
-                Component.translatable("text.autoconfig.freecam.option.movement.horizontalSpeed"),
-                2,
-                0,
-                10,
-                ModConfig.INSTANCE.movement.horizontalSpeed,
-                Component.translatable("text.cloth-config.reset_value"),
-                () -> ModConfig.DEFAULTS.movement.horizontalSpeed,
-                value -> ModConfig.INSTANCE.movement.horizontalSpeed = value
-        );
-        horizontalSpeed.setTooltipSupplier(() -> Optional.of(new Component[]{
-                Component.translatable("text.autoconfig.freecam.option.movement.horizontalSpeed.@Tooltip")
-        }));
+        DoubleSliderEntry horizontalSpeed = DoubleSliderEntry.builder(
+                        Component.translatable("text.autoconfig.freecam.option.movement.horizontalSpeed"),
+                        entryBuilder.getResetButtonKey())
+                .setPrecision(2)
+                .setMax(10)
+                .setValue(ModConfig.INSTANCE.movement.horizontalSpeed)
+                .setDefaultValue(() -> ModConfig.DEFAULTS.movement.horizontalSpeed)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.movement.horizontalSpeed = value)
+                .setTooltip(Component.translatable("text.autoconfig.freecam.option.movement.horizontalSpeed.@Tooltip"))
+                .build();
 
-        DoubleSliderEntry verticalSpeed = new DoubleSliderEntry(
-                Component.translatable("text.autoconfig.freecam.option.movement.verticalSpeed"),
-                2,
-                0,
-                10,
-                ModConfig.INSTANCE.movement.verticalSpeed,
-                Component.translatable("text.cloth-config.reset_value"),
-                () -> ModConfig.DEFAULTS.movement.verticalSpeed,
-                value -> ModConfig.INSTANCE.movement.verticalSpeed = value
-
-        );
-        verticalSpeed.setTooltipSupplier(() -> Optional.of(new Component[]{
-                Component.translatable("text.autoconfig.freecam.option.movement.verticalSpeed.@Tooltip")
-        }));
+        DoubleSliderEntry verticalSpeed = DoubleSliderEntry.builder(
+                        Component.translatable("text.autoconfig.freecam.option.movement.verticalSpeed"),
+                        entryBuilder.getResetButtonKey())
+                .setPrecision(2)
+                .setMax(10)
+                .setValue(ModConfig.INSTANCE.movement.verticalSpeed)
+                .setDefaultValue(() -> ModConfig.DEFAULTS.movement.verticalSpeed)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.movement.verticalSpeed = value)
+                .setTooltip(Component.translatable("text.autoconfig.freecam.option.movement.verticalSpeed.@Tooltip"))
+                .build();
 
         // Add entries to the sub-category
         Stream.of(
