@@ -165,9 +165,24 @@ public class NewConfig {
         SubCategoryBuilder builder = entryBuilder.startSubCategory(Component.translatable("text.autoconfig.freecam.option.collision"))
                 .setTooltip(Component.translatable("text.autoconfig.freecam.option.collision.@Tooltip"));
 
+        List<Component> ignoreAllTooltip = new ArrayList<>();
+        ignoreAllTooltip.add(Component.translatable("text.autoconfig.freecam.option.collision.ignoreAll.@Tooltip[0]"));
+        ignoreAllTooltip.add(Component.translatable("text.autoconfig.freecam.option.collision.ignoreAll.@Tooltip[1]"));
+        if (BuildVariant.getInstance().name().equals("modrinth")) {
+            ignoreAllTooltip.add(Component.translatable("text.autoconfig.freecam.option.collision.ignoreAll.@ModrinthTooltip[2]"));
+        }
+        BooleanListEntry ignoreAll = entryBuilder.startBooleanToggle(
+                        Component.translatable("text.autoconfig.freecam.option.collision.ignoreAll"),
+                        ModConfig.INSTANCE.collision.ignoreAll)
+                .setTooltip(ignoreAllTooltip.toArray(Component[]::new))
+                .setDefaultValue(ModConfig.DEFAULTS.collision.ignoreAll)
+                .setSaveConsumer(value -> ModConfig.INSTANCE.collision.ignoreAll = value)
+                .build();
+
         BooleanListEntry ignoreTransparent = entryBuilder.startBooleanToggle(
                         Component.translatable("text.autoconfig.freecam.option.collision.ignoreTransparent"),
                         ModConfig.INSTANCE.collision.ignoreTransparent)
+                .setRequirement(() -> !ignoreAll.getValue())
                 .setTooltip(Component.translatable("text.autoconfig.freecam.option.collision.ignoreTransparent.@Tooltip"))
                 .setDefaultValue(ModConfig.DEFAULTS.collision.ignoreTransparent)
                 .setSaveConsumer(value -> ModConfig.INSTANCE.collision.ignoreTransparent = value)
@@ -176,6 +191,7 @@ public class NewConfig {
         BooleanListEntry ignoreOpenable = entryBuilder.startBooleanToggle(
                         Component.translatable("text.autoconfig.freecam.option.collision.ignoreOpenable"),
                         ModConfig.INSTANCE.collision.ignoreOpenable)
+                .setRequirement(() -> !ignoreAll.getValue())
                 .setTooltip(Component.translatable("text.autoconfig.freecam.option.collision.ignoreOpenable.@Tooltip"))
                 .setDefaultValue(ModConfig.DEFAULTS.collision.ignoreOpenable)
                 .setSaveConsumer(value -> ModConfig.INSTANCE.collision.ignoreOpenable = value)
@@ -189,6 +205,7 @@ public class NewConfig {
         BooleanListEntry ignoreCustom = entryBuilder.startBooleanToggle(
                         Component.translatable("text.autoconfig.freecam.option.collision.ignoreCustom"),
                         ModConfig.INSTANCE.collision.ignoreCustom)
+                .setRequirement(() -> !ignoreAll.getValue())
                 .setTooltip(ignoreCustomTooltip.toArray(Component[]::new))
                 .setDefaultValue(ModConfig.DEFAULTS.collision.ignoreCustom)
                 .setSaveConsumer(value -> ModConfig.INSTANCE.collision.ignoreCustom = value)
@@ -214,20 +231,6 @@ public class NewConfig {
                 .setDisplayRequirement(ignoreCustom::getValue)
                 .setDefaultValue(ModConfig.DEFAULTS.collision.whitelist.patterns)
                 .setSaveConsumer(value -> ModConfig.INSTANCE.collision.whitelist.patterns = value)
-                .build();
-
-        List<Component> ignoreAllTooltip = new ArrayList<>();
-        ignoreAllTooltip.add(Component.translatable("text.autoconfig.freecam.option.collision.ignoreAll.@Tooltip[0]"));
-        ignoreAllTooltip.add(Component.translatable("text.autoconfig.freecam.option.collision.ignoreAll.@Tooltip[1]"));
-        if (BuildVariant.getInstance().name().equals("modrinth")) {
-            ignoreAllTooltip.add(Component.translatable("text.autoconfig.freecam.option.collision.ignoreAll.@ModrinthTooltip[2]"));
-        }
-        BooleanListEntry ignoreAll = entryBuilder.startBooleanToggle(
-                        Component.translatable("text.autoconfig.freecam.option.collision.ignoreAll"),
-                        ModConfig.INSTANCE.collision.ignoreAll)
-                .setTooltip(ignoreAllTooltip.toArray(Component[]::new))
-                .setDefaultValue(ModConfig.DEFAULTS.collision.ignoreAll)
-                .setSaveConsumer(value -> ModConfig.INSTANCE.collision.ignoreAll = value)
                 .build();
 
         BooleanListEntry alwaysCheck = entryBuilder.startBooleanToggle(
