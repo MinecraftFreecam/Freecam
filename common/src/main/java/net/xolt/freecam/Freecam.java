@@ -4,11 +4,12 @@ import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.client.player.Input;
+import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.KeyboardInput;
 import net.minecraft.client.renderer.texture.Tickable;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.player.Input;
 import net.minecraft.world.level.ChunkPos;
 import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfig;
@@ -46,8 +47,17 @@ public class Freecam {
         if (isEnabled()) {
             // Prevent player from being controlled when freecam is enabled
             if (mc.player != null && mc.player.input instanceof KeyboardInput && !isPlayerControlEnabled()) {
-                Input input = new Input();
-                input.shiftKeyDown = mc.player.input.shiftKeyDown; // Makes player continue to sneak after freecam is enabled.
+                ClientInput input = new ClientInput();
+                Input keyPresses = mc.player.input.keyPresses;
+                input.keyPresses = new Input(
+                        false,
+                        false,
+                        false,
+                        false,
+                        false,
+                        keyPresses.shift(),
+                        false
+                );
                 mc.player.input = input;
             }
 
@@ -159,7 +169,7 @@ public class Freecam {
             freeCamera.input = new KeyboardInput(MC.options);
         } else {
             MC.player.input = new KeyboardInput(MC.options);
-            freeCamera.input = new Input();
+            freeCamera.input = new ClientInput();
         }
         playerControlEnabled = !playerControlEnabled;
     }
@@ -245,7 +255,7 @@ public class Freecam {
         MC.setCameraEntity(MC.player);
         playerControlEnabled = false;
         freeCamera.despawn();
-        freeCamera.input = new Input();
+        freeCamera.input = new ClientInput();
         freeCamera = null;
 
         if (MC.player != null) {
