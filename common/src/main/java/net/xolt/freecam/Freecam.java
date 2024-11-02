@@ -14,6 +14,7 @@ import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.tripod.TripodRegistry;
 import net.xolt.freecam.tripod.TripodSlot;
+import net.xolt.freecam.util.DummyInput;
 import net.xolt.freecam.util.FreeCamera;
 import net.xolt.freecam.util.FreecamPosition;
 import net.xolt.freecam.variant.api.BuildVariant;
@@ -46,9 +47,8 @@ public class Freecam {
         if (isEnabled()) {
             // Prevent player from being controlled when freecam is enabled
             if (mc.player != null && mc.player.input instanceof KeyboardInput && !isPlayerControlEnabled()) {
-                Input input = new Input();
-                input.shiftKeyDown = mc.player.input.shiftKeyDown; // Makes player continue to sneak after freecam is enabled.
-                mc.player.input = input;
+                // Makes player continue to sneak after freecam is enabled.
+                mc.player.input = new DummyInput(mc.player.input);
             }
 
             mc.gameRenderer.setRenderHand(ModConfig.INSTANCE.visual.showHand);
@@ -155,13 +155,14 @@ public class Freecam {
             return;
         }
 
+        playerControlEnabled = !playerControlEnabled;
         if (playerControlEnabled) {
-            freeCamera.input = new KeyboardInput(MC.options);
-        } else {
             MC.player.input = new KeyboardInput(MC.options);
             freeCamera.input = new Input();
+        } else {
+            freeCamera.input = new KeyboardInput(MC.options);
+            // We set MC.player.input every tick anyway, so don't bother here
         }
-        playerControlEnabled = !playerControlEnabled;
     }
 
     private static void onEnableTripod(TripodSlot tripod) {
