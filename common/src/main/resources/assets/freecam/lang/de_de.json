@@ -40,6 +40,7 @@
   "text.autoconfig.freecam.option.collision.whitelist.patterns.@Tooltip[1]": "Angepasst auf volle Block-id, z.B. \"minecraft:grass_block\".",
   "text.autoconfig.freecam.option.collision.ignoreAll": "Alle Kollision ignorieren",
   "text.autoconfig.freecam.option.collision.ignoreAll.@Tooltip[0]": "Ermöglicht das Bewegen durch alle Blöcke in Freecam.",
+  "text.autoconfig.freecam.option.collision.ignoreAll.@Tooltip[1]": "§eüberschreibe die obigen Einstellungen.",
   "text.autoconfig.freecam.option.visual": "Visuelle Optionen",
   "text.autoconfig.freecam.option.visual.@Tooltip": "Das Aussehen von freecam.",
   "text.autoconfig.freecam.option.visual.perspective": "Ursprüngliche Perspektive",
