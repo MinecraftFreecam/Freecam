@@ -246,7 +246,6 @@ public class Freecam {
         MC.setCameraEntity(MC.player);
         playerControlEnabled = false;
         freeCamera.despawn();
-        freeCamera.input = new Input();
         freeCamera = null;
 
         if (MC.player != null) {
