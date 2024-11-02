@@ -27,7 +27,7 @@ public class GuiMixin {
     // Don't render pumpkin overlay while Freecam is active
     @Inject(method = "renderTextureOverlay", at = @At("HEAD"), cancellable = true)
     private void onRenderTextureOverlay(GuiGraphics guiGraphics, ResourceLocation shaderLocation, float alpha, CallbackInfo ci) {
-        if (Freecam.isEnabled() && shaderLocation.equals(ResourceLocation.withDefaultNamespace("misc/pumpkinblur"))) {
+        if (Freecam.isEnabled()) {
             ci.cancel();
         }
     }
