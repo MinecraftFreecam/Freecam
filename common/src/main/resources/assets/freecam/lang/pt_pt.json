@@ -1,0 +1,14 @@
+{
+  "category.freecam.freecam": "Freecam",
+  "key.freecam.toggle": "Alternar câmara livre",
+  "key.freecam.playerControl": "Controlo do jogador",
+  "key.freecam.tripodReset": "Redefinir tripod",
+  "key.freecam.configGui": "Interface de definição",
+  "msg.freecam.enable": "A câmara livre foi habilitada.",
+  "msg.freecam.disable": "A câmara livre foi desabilitada.",
+  "msg.freecam.restrictedByConfig": "A câmara livre está restrita no servidor atual (%s).",
+  "msg.freecam.openTripod": "A abrir câmara %s",
+  "msg.freecam.closeTripod": "A fechar câmara %s",
+  "msg.freecam.tripodReset": "Redefinir câmara %s",
+  "text.autoconfig.freecam.title": "Definições de câmara livre"
+}
