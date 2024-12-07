@@ -2,9 +2,7 @@ package net.xolt.freecam.mixins;
 
 import net.minecraft.resources.ResourceLocation;
 import net.xolt.freecam.Freecam;
-import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -17,11 +15,6 @@ import net.minecraft.world.entity.player.Player;
 
 @Mixin(Gui.class)
 public class GuiMixin {
-
-    @Shadow
-    @Final
-    private static ResourceLocation PUMPKIN_BLUR_LOCATION;
-
     // Makes HUD correspond to the player rather than the FreeCamera.
     @Inject(method = "getCameraPlayer", at = @At("HEAD"), cancellable = true)
     private void onGetCameraPlayer(CallbackInfoReturnable<Player> cir) {
@@ -30,10 +23,10 @@ public class GuiMixin {
         }
     }
 
-    // Don't render pumpkin overlay while Freecam is active
+    // Don't render equipped-item overlays while Freecam is active
     @Inject(method = "renderTextureOverlay", at = @At("HEAD"), cancellable = true)
     private void onRenderTextureOverlay(ResourceLocation textureLocation, float alpha, CallbackInfo ci) {
-        if (Freecam.isEnabled() && textureLocation.equals(PUMPKIN_BLUR_LOCATION)) {
+        if (Freecam.isEnabled()) {
             ci.cancel();
         }
     }

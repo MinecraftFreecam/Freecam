@@ -6,7 +6,7 @@ import org.jetbrains.changelog.tasks.BaseChangelogTask
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
     id "dev.architectury.loom" version "1.7-SNAPSHOT" apply false
-    id "com.hypherionmc.modutils.modpublisher" version "2.1.2" apply false
+    id "com.hypherionmc.modutils.modpublisher" version "2.1.7+snapshot.0" apply false
     id "com.github.johnrengelman.shadow" version "8.1.1" apply false
     id "org.jetbrains.changelog" version "2.2.0"
 }
@@ -205,7 +205,7 @@ subprojects {
             }
 
             artifact = tasks.remapJar
-            setPlatformArtifact "modrinth", tasks.remapModrinthJar
+            //setPlatformArtifact "modrinth", tasks.remapModrinthJar
 
             [ curseDepends, modrinthDepends ].each {
                 it.embedded "cloth-config"
