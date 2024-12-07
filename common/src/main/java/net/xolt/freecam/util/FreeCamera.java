@@ -38,7 +38,7 @@ public class FreeCamera extends LocalPlayer {
                     // worldSessionTelemetryManager
                     MC.getTelemetryManager().createWorldSessionManager(false, null, null),
                     // receivedRegistries
-                    RegistryAccess.Frozen.EMPTY,
+                    MC.player.registryAccess().freeze(),
                     // enabledFeatures
                     FeatureFlagSet.of(),
                     // serverBrand

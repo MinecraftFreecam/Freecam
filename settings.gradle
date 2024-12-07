@@ -4,6 +4,7 @@ pluginManagement {
         maven { url "https://maven.architectury.dev/" }
         maven { url "https://maven.minecraftforge.net/" }
         maven { url "https://maven.firstdark.dev/releases/" }
+        maven { url "https://maven.firstdark.dev/snapshots/" }
         gradlePluginPortal()
     }
 }
