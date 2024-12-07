@@ -212,7 +212,7 @@ subprojects {
             }
 
             artifact = tasks.remapJar
-            setPlatformArtifact "modrinth", tasks.remapModrinthJar
+            //setPlatformArtifact "modrinth", tasks.remapModrinthJar
 
             [ curseDepends, modrinthDepends ].each {
                 it.embedded "cloth-config"
