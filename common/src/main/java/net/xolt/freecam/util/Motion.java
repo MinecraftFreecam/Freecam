@@ -16,7 +16,7 @@ public class Motion {
         Vec3 forward = Vec3.directionFromRotation(0, yaw);
         Vec3 side = Vec3.directionFromRotation(0, yaw + 90);
 
-        freeCamera.input.tick(false, 0.3F);
+        freeCamera.input.tick();
         hSpeed = hSpeed * (freeCamera.isSprinting() ? 1.5 : 1.0);
 
         boolean straight = false;
