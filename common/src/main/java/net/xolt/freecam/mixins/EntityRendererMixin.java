@@ -18,7 +18,12 @@ public class EntityRendererMixin {
 
     // Prevent rendering of nametag in inventory screen
     @Inject(method = "renderNameTag", at = @At("HEAD"), cancellable = true)
-    private void onRenderLabel(Entity entity, Component text, PoseStack poseStack, MultiBufferSource multiBufferSource, int light, CallbackInfo ci) {
+    private void onRenderLabel(Entity renderState,
+                               Component component,
+                               PoseStack poseStack,
+                               MultiBufferSource multiBufferSource,
+                               int packedLightCoords,
+                               CallbackInfo ci) {
         if (Freecam.isEnabled() && !MC.getEntityRenderDispatcher().shouldRenderShadow) {
             ci.cancel();
         }
