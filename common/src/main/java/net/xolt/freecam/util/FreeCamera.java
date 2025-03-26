@@ -7,7 +7,6 @@ import net.minecraft.client.player.KeyboardInput;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.core.RegistryAccess;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffect;

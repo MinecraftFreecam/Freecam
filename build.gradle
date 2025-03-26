@@ -5,7 +5,7 @@ import org.jetbrains.changelog.tasks.BaseChangelogTask
 
 plugins {
     id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.7-SNAPSHOT" apply false
+    id "dev.architectury.loom" version "1.10-SNAPSHOT" apply false
     id "com.hypherionmc.modutils.modpublisher" version "2.1.7+snapshot.0" apply false
     id "com.github.johnrengelman.shadow" version "8.1.1" apply false
     id "org.jetbrains.changelog" version "2.2.0"
@@ -14,7 +14,7 @@ plugins {
 tasks.named('wrapper') {
     // Use "all" so we get sources and javadoc too
     distributionType = "all"
-    gradleVersion = "8.8"
+    gradleVersion = "8.11"
 }
 
 // Helper task that bumps the version number
