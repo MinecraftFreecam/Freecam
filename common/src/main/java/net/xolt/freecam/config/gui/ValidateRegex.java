@@ -8,7 +8,7 @@ import java.lang.annotation.Target;
 /**
  * Show an error message when the config entry is not a valid {@link java.util.regex.Pattern regex}.
  * <p>
- * Can be applied to a {@link String} or {@link java.util.List List<String>}.
+ * Can be applied to a {@link String} or {@link java.util.List List&lt;String&gt;}.
  */
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
