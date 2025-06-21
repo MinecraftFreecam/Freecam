@@ -14,6 +14,7 @@ import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
+import net.minecraft.world.entity.player.Input;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
@@ -61,7 +62,7 @@ public class FreeCamera extends LocalPlayer {
     };
 
     public FreeCamera(int id) {
-        super(MC, MC.level, NETWORK_HANDLER, MC.player.getStats(), MC.player.getRecipeBook(), false, false);
+        super(MC, MC.level, NETWORK_HANDLER, MC.player.getStats(), MC.player.getRecipeBook(), Input.EMPTY, false);
 
         setId(id);
         setPose(Pose.SWIMMING);
