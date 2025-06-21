@@ -33,15 +33,13 @@ public class FreecamForge {
         ModBindings.forEach(event::register);
     }
 
-    @EventBusSubscriber(value = Dist.CLIENT)
-    public static class GlobalEventHandler {
-        @SubscribeEvent(priority = EventPriority.HIGH)
-        public static void preTick(ClientTickEvent.Pre event) {
-            Freecam.preTick(Minecraft.getInstance());
-        }
-        @SubscribeEvent(priority = EventPriority.HIGH)
-        public static void postTick(ClientTickEvent.Post event) {
-            Freecam.postTick(Minecraft.getInstance());
-        }
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void preTick(ClientTickEvent.Pre event) {
+        Freecam.preTick(Minecraft.getInstance());
+    }
+
+    @SubscribeEvent(priority = EventPriority.HIGH)
+    public static void postTick(ClientTickEvent.Post event) {
+        Freecam.postTick(Minecraft.getInstance());
     }
 }
