@@ -17,7 +17,7 @@ import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfig;
 
 @Mod(Freecam.MOD_ID)
-@EventBusSubscriber(bus = EventBusSubscriber.Bus.MOD, value = Dist.CLIENT)
+@EventBusSubscriber(value = Dist.CLIENT)
 @SuppressWarnings("unused")
 public class FreecamForge {
 
@@ -33,7 +33,7 @@ public class FreecamForge {
         ModBindings.forEach(event::register);
     }
 
-    @EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
+    @EventBusSubscriber(value = Dist.CLIENT)
     public static class GlobalEventHandler {
         @SubscribeEvent(priority = EventPriority.HIGH)
         public static void preTick(ClientTickEvent.Pre event) {
