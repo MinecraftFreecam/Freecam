@@ -60,8 +60,6 @@ public class Freecam {
                 );
                 mc.player.input = input;
             }
-
-            mc.gameRenderer.setRenderHand(ModConfig.INSTANCE.visual.showHand);
         }
     }
 
@@ -241,7 +239,6 @@ public class Freecam {
 
     private static void onEnable() {
         MC.smartCull = false;
-        MC.gameRenderer.setRenderHand(ModConfig.INSTANCE.visual.showHand);
 
         rememberedF5 = MC.options.getCameraType();
         if (MC.gameRenderer.getMainCamera().isDetached()) {
@@ -251,7 +248,6 @@ public class Freecam {
 
     private static void onDisable() {
         MC.smartCull = true;
-        MC.gameRenderer.setRenderHand(true);
         MC.setCameraEntity(MC.player);
         playerControlEnabled = false;
         freeCamera.despawn();

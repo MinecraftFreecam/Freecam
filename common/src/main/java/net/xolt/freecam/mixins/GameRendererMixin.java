@@ -10,6 +10,7 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static net.xolt.freecam.Freecam.MC;
@@ -17,6 +18,14 @@ import static net.xolt.freecam.config.ModConfig.InteractionMode.PLAYER;
 
 @Mixin(GameRenderer.class)
 public class GameRendererMixin {
+
+    // Hide hand in freecam if showHand is disabled
+    @Inject(method = "renderItemInHand", at = @At("HEAD"), cancellable = true)
+    private void onRenderItemInHand(CallbackInfo ci) {
+        if (Freecam.isEnabled() && !ModConfig.INSTANCE.visual.showHand) {
+            ci.cancel();
+        }
+    }
 
     // Disables block outlines when allowInteract is disabled.
     @Inject(method = "shouldRenderBlockOutline", at = @At("HEAD"), cancellable = true)
