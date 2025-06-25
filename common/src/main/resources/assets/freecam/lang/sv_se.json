@@ -1,4 +1,5 @@
 {
+  "key.freecam.playerControl": "Kontrollera Spelare",
   "text.autoconfig.freecam.option.movement.flightMode": "Flygläge",
   "text.autoconfig.freecam.option.movement.flightMode.default": "Standard",
   "text.autoconfig.freecam.option.movement.flightMode.creative": "Kreativt",
