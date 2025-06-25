@@ -222,4 +222,16 @@ subprojects {
 
         tasks.publish.dependsOn tasks.publishMod
     }
+
+    publishing {
+        repositories {
+            mavenLocal()
+        }
+
+        publications {
+            maven(MavenPublication) {
+                from components.java
+            }
+        }
+    }
 }
