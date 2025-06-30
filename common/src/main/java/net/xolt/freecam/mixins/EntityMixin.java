@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static net.xolt.freecam.Freecam.MC;
 
 @Mixin(Entity.class)
+@SuppressWarnings("EqualsBetweenInconvertibleTypes")
 public class EntityMixin {
 
     // Makes mouse input rotate the FreeCamera.
