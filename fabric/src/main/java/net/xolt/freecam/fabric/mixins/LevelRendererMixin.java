@@ -18,7 +18,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import java.util.List;
 
 import static net.xolt.freecam.Freecam.MC;
-import static org.spongepowered.asm.mixin.injection.callback.LocalCapture.CAPTURE_FAILHARD;
 
 @Mixin(LevelRenderer.class)
 public abstract class LevelRendererMixin {
@@ -28,7 +27,7 @@ public abstract class LevelRendererMixin {
     @Shadow protected abstract void renderEntity(Entity entity, double camX, double camY, double camZ, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource);
 
     // Makes the player render if showPlayer is enabled.
-    @Inject(method = "renderEntities", at = @At("TAIL"), locals = CAPTURE_FAILHARD)
+    @Inject(method = "renderEntities", at = @At("TAIL"))
     private void onRender(
             PoseStack poseStack,
                           MultiBufferSource.BufferSource bufferSource,
