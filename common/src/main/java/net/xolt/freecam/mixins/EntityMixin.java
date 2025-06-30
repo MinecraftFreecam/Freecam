@@ -18,9 +18,9 @@ public class EntityMixin {
 
     // Makes mouse input rotate the FreeCamera.
     @Inject(method = "turn", at = @At("HEAD"), cancellable = true)
-    private void onChangeLookDirection(double x, double y, CallbackInfo ci) {
+    private void onChangeLookDirection(double rotation, double pitch, CallbackInfo ci) {
         if (Freecam.isEnabled() && this.equals(MC.player) && !Freecam.isPlayerControlEnabled()) {
-            Freecam.getFreeCamera().turn(x, y);
+            Freecam.getFreeCamera().turn(rotation, pitch);
             ci.cancel();
         }
     }
