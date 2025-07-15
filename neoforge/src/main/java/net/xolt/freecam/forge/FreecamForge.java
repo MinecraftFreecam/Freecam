@@ -8,7 +8,6 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
-import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
@@ -16,7 +15,7 @@ import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfig;
 
-@Mod(Freecam.MOD_ID)
+@Mod(value = Freecam.MOD_ID, dist = Dist.CLIENT)
 @EventBusSubscriber(value = Dist.CLIENT)
 @SuppressWarnings("unused")
 public class FreecamForge {
