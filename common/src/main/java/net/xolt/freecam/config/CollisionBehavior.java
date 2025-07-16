@@ -48,7 +48,14 @@ public class CollisionBehavior {
         return false;
     }
 
+    // Autoconfig implementation
     static InteractionResult onConfigChange(ConfigHolder<ModConfig> holder, ModConfig config) {
+        onConfigChange(config);
+        return InteractionResult.PASS;
+    }
+
+    // General implementation
+    public static void onConfigChange(ModConfig config) {
         String[] ids = config.collision.whitelist.ids.stream()
                 .map(id -> id.contains(":") ? id : "minecraft:" + id)
                 .toArray(String[]::new);
@@ -61,8 +68,6 @@ public class CollisionBehavior {
                 .matching(ids)
                 .matching(patterns)
                 .build();
-
-        return InteractionResult.PASS;
     }
 
     private static String getBlockId(Block block) {

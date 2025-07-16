@@ -2,6 +2,7 @@ package net.xolt.freecam.forge;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.screens.Screen;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -14,6 +15,7 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.config.NewConfig;
 
 @Mod(value = Freecam.MOD_ID, dist = Dist.CLIENT)
 @EventBusSubscriber(value = Dist.CLIENT)
@@ -24,7 +26,9 @@ public class FreecamForge {
         ModConfig.init();
         // Register our config screen with Forge
         container.registerExtensionPoint(IConfigScreenFactory.class, (client, parent) ->
-                AutoConfig.getConfigScreen(ModConfig.class, parent).get());
+                Screen.hasShiftDown()
+                        ? NewConfig.getConfigScreen(parent)
+                        : AutoConfig.getConfigScreen(ModConfig.class, parent).get());
     }
 
     @SubscribeEvent
