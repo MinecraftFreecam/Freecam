@@ -11,9 +11,15 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Changed
 
+- Updated to 1.21.8 ([292](https://github.com/MinecraftFreecam/Freecam/pull/292), [296](https://github.com/MinecraftFreecam/Freecam/pull/296))
+
 ### Removed
 
 ### Fixed
+
+- [Iris](https://github.com/IrisShaders/Iris) compatibility for "Show Hand" and "Show Player" ([294](https://github.com/MinecraftFreecam/Freecam/pull/294))
+- "Full brightness" rendering incorrectly on MacOS X ([300](https://github.com/MinecraftFreecam/Freecam/pull/300))
+- Crash loading the mod on a dedicated server ([293](https://github.com/MinecraftFreecam/Freecam/pull/293))
 
 ## [1.3.4] - 2025-06-25
 
