@@ -6,6 +6,7 @@ import net.minecraft.client.resources.metadata.gui.GuiSpriteScaling.NineSlice;
 import net.minecraft.resources.ResourceLocation;
 
 public class NineSliceTexture extends ScaledTexture {
+    private final ResourceLocation identifier;
     private final int left;
     private final int right;
     private final int top;
@@ -13,6 +14,7 @@ public class NineSliceTexture extends ScaledTexture {
 
     NineSliceTexture(ResourceLocation identifier, NineSlice scaling) {
         super(identifier, scaling.width(), scaling.height());
+        this.identifier = identifier;
         this.left = scaling.border().left();
         this.right = scaling.border().right();
         this.top = scaling.border().top();
@@ -31,56 +33,51 @@ public class NineSliceTexture extends ScaledTexture {
      */
     @Override
     public void draw(GuiGraphics gfx, int x, int y, int width, int height) {
-        // No scaling required
+        // Fast path: no scaling
         if (width == textureWidth && height == textureHeight) {
-            this.drawRegion(gfx, x, y, width, height, 0, 0, textureWidth, textureHeight);
+            blitRegionStretch(gfx, x, y, width, height, 0, 0, textureWidth, textureHeight);
             return;
         }
 
-        int left = Math.min(this.left, width / 2);
-        int right = Math.min(this.right, width / 2);
-        int top = Math.min(this.top, height / 2);
-        int bottom = Math.min(this.bottom, height / 2);
+        // Clamp borders so they never exceed half of the target size
+        int l = Math.min(this.left, width / 2);
+        int r = Math.min(this.right, width / 2);
+        int t = Math.min(this.top, height / 2);
+        int b = Math.min(this.bottom, height / 2);
 
-        // Horizontal scaling only
-        if (height == textureHeight) {
-            // Left
-            this.drawRegion(gfx, x, y, left, height, 0, 0, left, textureHeight);
-            // Center
-            this.drawRegionTiled(gfx, x + left, y, width - right - left, height, left, 0,  textureWidth - right - left, textureHeight);
-            // Right
-            this.drawRegion(gfx, x + width - right, y, right, height, textureWidth - right, 0, x + width - right, textureHeight);
-            return;
+        int midW = Math.max(0, width - l - r);
+        int midH = Math.max(0, height - t - b);
+
+        int texMidW = Math.max(0, textureWidth - this.left - this.right);
+        int texMidH = Math.max(0, textureHeight - this.top - this.bottom);
+
+        // Corners
+        blitRegionStretch(gfx, x, y, l, t, 0, 0, this.left, this.top); // top-left
+        blitRegionStretch(gfx, x + width - r, y, r, t, textureWidth - this.right, 0, this.right, this.top); // top-right
+        blitRegionStretch(gfx, x, y + height - b, l, b, 0, textureHeight - this.bottom, this.left, this.bottom); // bottom-left
+        blitRegionStretch(gfx, x + width - r, y + height - b, r, b, textureWidth - this.right, textureHeight - this.bottom, this.right, this.bottom); // bottom-right
+
+        // Edges
+        if (midW > 0) {
+            blitRegionStretch(gfx, x + l, y, midW, t, this.left, 0, texMidW, this.top); // top edge
+            blitRegionStretch(gfx, x + l, y + height - b, midW, b, this.left, textureHeight - this.bottom, texMidW, this.bottom); // bottom edge
         }
 
-        // Vertical scaling only
-        if (width == textureWidth) {
-            // Top
-            this.drawRegion(gfx, x, y, width, top, 0, 0, textureWidth, top);
-            // Center
-            this.drawRegionTiled(gfx, x, y + top, width, height - bottom - top, 0, top, textureWidth, textureHeight - bottom - top);
-            // Bottom
-            this.drawRegion(gfx, x, y + height - bottom, width, bottom, 0, textureHeight - bottom, textureWidth, textureHeight - bottom);
-            return;
+        if (midH > 0) {
+            blitRegionStretch(gfx, x, y + t, l, midH, 0, this.top, this.left, texMidH); // left edge
+            blitRegionStretch(gfx, x + width - r, y + t, r, midH, textureWidth - this.right, this.top, this.right, texMidH); // right edge
         }
 
-        // Top Left
-        this.drawRegion(gfx, x, y, left, top, 0, 0);
-        // Top Center
-        this.drawRegionTiled(gfx, x + left, y, width - left - right, top, left, 0, textureWidth - left - right, top);
-        // Top Right
-        this.drawRegion(gfx, x + width - right, y, right, top, textureWidth - right, 0);
-        // Bottom Left
-        this.drawRegion(gfx, x, y + height - bottom, left, bottom, 0, textureHeight - bottom);
-        // Bottom Center
-        this.drawRegionTiled(gfx, x + left, y + height - bottom, width - left - right, bottom, left, textureHeight - bottom, textureWidth - left - right, bottom);
-        // Bottom Right
-        this.drawRegion(gfx, x + width - right, y + height - bottom, right, bottom, textureWidth - right, textureHeight - bottom);
-        // Main Left
-        this.drawRegionTiled(gfx, x, y + top, left, height - top - bottom, 0, top, left, textureHeight - top - bottom);
-        // Main Center
-        this.drawRegionTiled(gfx, x + left, y + top, width - left - right, height - top - bottom, left, top, textureWidth - left - right, textureHeight - top - bottom);
-        // Main Right
-        this.drawRegionTiled(gfx, x + width - right, y + top, right, height - top - bottom, textureWidth - right, top, right, textureHeight - top - bottom);
+        // Center
+        if (midW > 0 && midH > 0) {
+            blitRegionStretch(gfx, x + l, y + t, midW, midH, this.left, this.top, texMidW, texMidH);
+        }
+    }
+
+    /**
+     * Stretch-draw a sub-rectangle (u,v,uW,uH) of the texture to (x,y,drawW,drawH).
+     */
+    private void blitRegionStretch(GuiGraphics gfx, int x, int y, int drawW, int drawH, int u, int v, int uW, int uH) {
+        gfx.blit(this.identifier, x, y, drawW, drawH, u, v, uW, uH, this.textureWidth, this.textureHeight);
     }
 }
