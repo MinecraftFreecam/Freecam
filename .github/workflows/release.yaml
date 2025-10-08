@@ -1,12 +1,19 @@
 # This CI workflow marks the draft release as "published".
 # If there is no draft yet the run will fail (and can be re-run later)
 name: Publish GitHub Release
+run-name: Publish ${{ env.TAG }} GitHub Release
 
 on:
   push:
     tags:
       - 'v*' # e.g. v1.2.3
       - '!v*\+mc*' # exclude tags handled by publish.yaml
+  workflow_dispatch:
+    inputs:
+      version:
+        required: true
+        type: string
+        description: The version to publish, e.g. "1.2.3"
 
 # Only allow running one build job at a time to optimise cache hits
 concurrency:
@@ -17,7 +24,7 @@ permissions:
   contents: write
 
 env:
-  TAG: ${{ github.ref_name }}
+  TAG: ${{ github.ref_name }} || v${{ inputs.version }}
   REPO: ${{ github.repository }}
 
 jobs:
@@ -62,6 +69,7 @@ jobs:
         # Also ensure the release title is correct
       - name: Publish release
         run: |
-          gh release edit "$TAG" \
+          gh --repo "$REPO" \
+            release edit "$TAG" \
             --title="Freecam ${TAG#v}" \
             --draft="false"
