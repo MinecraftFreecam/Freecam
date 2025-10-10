@@ -9,7 +9,7 @@ import java.util.function.Consumer;
 
 public class FreecamKeyMapping extends KeyMapping implements Tickable {
 
-    private static final Category FREECAM_CATEGORY = Category.register(ResourceLocation.fromNamespaceAndPath("freecam", "category.freecam.freecam"));
+    private static final Category FREECAM_CATEGORY = Category.register(ResourceLocation.fromNamespaceAndPath("freecam", "freecam"));
 
     private final Consumer<FreecamKeyMapping> onTick;
 
