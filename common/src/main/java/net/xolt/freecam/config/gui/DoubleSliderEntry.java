@@ -9,6 +9,8 @@ import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
@@ -137,13 +139,13 @@ class DoubleSliderEntry extends TooltipListEntry<Double> {
         }
 
         @Override
-        public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-            return DoubleSliderEntry.this.isEditable() && super.keyPressed(keyCode, scanCode, modifiers);
+        public boolean keyPressed(KeyEvent event) {
+            return DoubleSliderEntry.this.isEditable() && super.keyPressed(event);
         }
 
         @Override
-        public boolean mouseDragged(double mouseX, double mouseY, int button, double dragX, double dragY) {
-            return DoubleSliderEntry.this.isEditable() && super.mouseDragged(mouseX, mouseY, button, dragX, dragY);
+        public boolean mouseDragged(MouseButtonEvent event, double double_3, double double_4) {
+            return DoubleSliderEntry.this.isEditable() && super.mouseDragged(event, double_3, double_4);
         }
 
         public void setValue(double value) {
