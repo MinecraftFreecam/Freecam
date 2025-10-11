@@ -1,6 +1,7 @@
 package net.xolt.freecam.util;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.multiplayer.ClientPacketListener;
 import net.minecraft.client.multiplayer.CommonListenerCookie;
 import net.minecraft.client.player.KeyboardInput;
@@ -8,6 +9,7 @@ import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -30,7 +32,7 @@ public class FreeCamera extends LocalPlayer {
 
     private static final ClientPacketListener NETWORK_HANDLER = new ClientPacketListener(
             MC,
-            MC.getConnection().getConnection(),
+            new net.minecraft.network.Connection(PacketFlow.CLIENTBOUND),
             new CommonListenerCookie(
                     // localGameProfile
                     new GameProfile(UUID.randomUUID(), "FreeCamera"),
@@ -43,13 +45,13 @@ public class FreeCamera extends LocalPlayer {
                     // serverBrand
                     null,
                     // serverData
-                    MC.getCurrentServer(),
+                    null,
                     // postDisconnectScreen
-                    MC.screen,
+                    null,
                     // serverCookies
                     Collections.emptyMap(),
                     // chatState
-                    MC.gui.getChat().storeState(),
+                    null,
                     // strictErrorHandling
                     false)) {
         @Override
@@ -138,15 +140,11 @@ public class FreeCamera extends LocalPlayer {
     }
 
     public void spawn() {
-        if (clientLevel != null) {
-            clientLevel.addEntity(this);
-        }
+        ((ClientLevel) level()).addEntity(this);
     }
 
     public void despawn() {
-        if (clientLevel != null && clientLevel.getEntity(getId()) != null) {
-            clientLevel.removeEntity(getId(), RemovalReason.DISCARDED);
-        }
+        ((ClientLevel) level()).removeEntity(getId(), RemovalReason.DISCARDED);
     }
 
     // Prevents fall damage sound when FreeCamera touches ground with noClip disabled.
