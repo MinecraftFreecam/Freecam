@@ -16,7 +16,7 @@ import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfig;
 
-@Mod(Freecam.MOD_ID)
+@Mod(value = Freecam.MOD_ID)
 @Mod.EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
 @SuppressWarnings("unused")
 public class FreecamForge {

@@ -6,6 +6,7 @@ import net.minecraft.client.player.KeyboardInput;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.PacketFlow;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -27,8 +28,8 @@ public class FreeCamera extends LocalPlayer {
     private static final ClientPacketListener NETWORK_HANDLER = new ClientPacketListener(
             MC,
             MC.screen,
-            MC.getConnection().getConnection(),
-            MC.getCurrentServer(),
+            new net.minecraft.network.Connection(PacketFlow.CLIENTBOUND),
+            null,
             new GameProfile(UUID.randomUUID(), "FreeCamera"),
             MC.getTelemetryManager().createWorldSessionManager(false, null)
     ) {
@@ -118,15 +119,12 @@ public class FreeCamera extends LocalPlayer {
     }
 
     public void spawn() {
-        if (clientLevel != null) {
-            clientLevel.putNonPlayerEntity(getId(), this);
-        }
+        clientLevel.putNonPlayerEntity(getId(), this);
     }
 
     public void despawn() {
-        if (clientLevel != null && clientLevel.getEntity(getId()) != null) {
-            clientLevel.removeEntity(getId(), RemovalReason.DISCARDED);
-        }
+
+        clientLevel.removeEntity(getId(), RemovalReason.DISCARDED);
     }
 
     // Prevents fall damage sound when FreeCamera touches ground with noClip disabled.

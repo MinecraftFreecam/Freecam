@@ -18,7 +18,7 @@ public class FreecamKeyMapping extends KeyMapping implements Tickable {
     }
 
     FreecamKeyMapping(String translationKey, InputConstants.Type type, int code, Consumer<FreecamKeyMapping> onTick) {
-        super("key.freecam." + translationKey, type, code, "category.freecam.freecam");
+        super("key.freecam." + translationKey, type, code, "key.category.freecam.freecam");
         this.onTick = onTick;
     }
 

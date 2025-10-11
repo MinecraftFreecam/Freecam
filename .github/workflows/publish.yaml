@@ -1,6 +1,7 @@
 # This CI Workflow builds any tags pushed,
 # and releases them to a (draft) GitHub release, CurseForge, & Modrinth.
 name: Publish Release Build
+run-name: Publish ${{ github.ref_name }} Build
 
 on:
   push:
