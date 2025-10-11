@@ -13,6 +13,8 @@
     "EntityRendererMixin",
     "GameRendererMixin",
     "GuiMixin",
+    "IrisHandRendererMixin",
+    "IrisShadowRendererMixin",
     "ItemInHandRendererMixin",
     "LightTextureMixin",
     "LivingEntityMixin",
