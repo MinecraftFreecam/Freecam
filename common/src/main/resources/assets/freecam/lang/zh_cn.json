@@ -1,5 +1,5 @@
 {
-  "category.freecam.freecam": "自由视角(Freecam)",
+  "key.category.freecam.freecam": "自由视角(Freecam)",
   "key.freecam.toggle": "切换自由视角(Freecam)",
   "key.freecam.playerControl": "控制玩家",
   "key.freecam.tripodReset": "重置三脚架",

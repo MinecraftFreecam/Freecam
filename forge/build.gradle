@@ -33,6 +33,9 @@ dependencies {
     modApi "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_version}"
     include "me.shedaniel.cloth:cloth-config-forge:${rootProject.cloth_version}"
 
+    compileOnly annotationProcessor("io.github.llamalad7:mixinextras-common:${rootProject.forge_mixinextras_version}")
+    implementation include("io.github.llamalad7:mixinextras-forge:${rootProject.forge_mixinextras_version}")
+
     common project(path: ":common", configuration: "namedElements")
     shadowCommon project(path: ":common", configuration: "transformProductionForge")
 
