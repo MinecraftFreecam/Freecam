@@ -11,9 +11,16 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Changed
 
-- Updated to 1.21.10
-
 ### Removed
+
+### Fixed
+
+## [1.3.5] - 2025-10-10
+
+### Added
+
+- 1.21.10 Support
+- Various translation updates
 
 ### Fixed
 
@@ -593,7 +600,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 - Minecraft 1.18 support.
 - Minecraft 1.17 support.
 
-[Unreleased]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.4...HEAD
+[Unreleased]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.5...HEAD
+[1.3.5]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.4...v1.3.5
 [1.3.4]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.3...v1.3.4
 [1.3.3]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.2...v1.3.3
 [1.3.2]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.1...v1.3.2
