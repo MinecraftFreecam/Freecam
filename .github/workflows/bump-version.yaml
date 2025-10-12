@@ -48,7 +48,9 @@ jobs:
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
-          java-version: '21'
+          java-version: |
+            16
+            21
           distribution: microsoft
 
       - name: Setup Gradle
