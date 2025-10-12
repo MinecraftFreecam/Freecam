@@ -81,9 +81,6 @@ allprojects {
         archivesName = rootProject.name + project.path.replaceAll(':', '-')
     }
 
-    sourceCompatibility = JavaVersion.VERSION_17
-    targetCompatibility = JavaVersion.VERSION_17
-
     repositories {
         // Add repositories to retrieve artifacts from in here.
         // You should only use this when depending on other mods because
@@ -96,15 +93,27 @@ allprojects {
         maven { url "https://maven.terraformersmc.com/" }
     }
 
+    def javaVersion = 17
+    def javaLanguageVersion = JavaLanguageVersion.of(javaVersion)
+
     // ensure that the encoding is set to UTF-8, no matter what the system default is
     // this fixes some edge cases with special characters not displaying correctly
     // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
     tasks.withType(JavaCompile) {
         options.encoding = "UTF-8"
-        options.release = 17
+        options.release = javaVersion
+    }
+
+    tasks.withType(JavaExec).configureEach {
+        javaLauncher.set(javaToolchains.launcherFor {
+            languageVersion = javaLanguageVersion
+        })
     }
 
     java {
+        toolchain {
+            languageVersion = javaLanguageVersion
+        }
         withSourcesJar()
     }
 
