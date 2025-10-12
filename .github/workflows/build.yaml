@@ -46,7 +46,7 @@ jobs:
           java-version: |
             8
             21
-          distribution: microsoft
+          distribution: temurin
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v3
 
