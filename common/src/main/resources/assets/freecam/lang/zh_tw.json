@@ -1,5 +1,5 @@
 {
-  "category.freecam.freecam": "靈魂出竅",
+  "key.category.freecam.freecam": "靈魂出竅",
   "key.freecam.toggle": "切換靈魂出竅",
   "key.freecam.playerControl": "控制玩家",
   "key.freecam.tripodReset": "重設三腳架",
@@ -37,7 +37,7 @@
   "text.autoconfig.freecam.option.collision.whitelist.ids.@Tooltip[1]": "如果省略命名空間，則假定為「minecraft:」。",
   "text.autoconfig.freecam.option.collision.whitelist.patterns": "忽略正規表示式",
   "text.autoconfig.freecam.option.collision.whitelist.patterns.@Tooltip[0]": "使用正規表示式語法。",
-  "text.autoconfig.freecam.option.collision.whitelist.patterns.@Tooltip[1]": "以完整方塊 ID比對，例如「minecraft:grass_block」。",
+  "text.autoconfig.freecam.option.collision.whitelist.patterns.@Tooltip[1]": "以完整方塊 ID 比對，例如「minecraft:grass_block」。",
   "text.autoconfig.freecam.option.collision.ignoreAll": "忽略所有碰撞",
   "text.autoconfig.freecam.option.collision.ignoreAll.@Tooltip[0]": "允許在靈魂出竅中穿過所有方塊。",
   "text.autoconfig.freecam.option.collision.ignoreAll.@Tooltip[1]": "§e覆蓋以上設定。",
