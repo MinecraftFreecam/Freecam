@@ -2,6 +2,7 @@ package net.xolt.freecam.config.gui;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.platform.Window;
+import me.shedaniel.clothconfig2.gui.entries.IntegerSliderEntry;
 import me.shedaniel.clothconfig2.gui.entries.TooltipListEntry;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
@@ -30,7 +31,7 @@ import static net.xolt.freecam.Freecam.MC;
 /**
  * {@link IntegerSliderEntry} ported from {@code int} to {@code double}.
  */
-class DoubleSliderEntry extends TooltipListEntry<Double> {
+public class DoubleSliderEntry extends TooltipListEntry<Double> {
     private final Slider sliderWidget;
     private final Button resetButton;
     private final AtomicDouble value;
@@ -40,6 +41,10 @@ class DoubleSliderEntry extends TooltipListEntry<Double> {
     private final double maximum;
     private final Supplier<Double> defaultValue;
     private final List<AbstractWidget> widgets;
+
+    public static DoubleSliderBuilder builder(Component i18n, Component resetButtonKey) {
+        return new DoubleSliderBuilder(i18n, resetButtonKey);
+    }
 
     DoubleSliderEntry(Component fieldName, int precision, double minimum, double maximum, double value, Component resetText, Supplier<Double> defaultValue, @Nullable Consumer<Double> save) {
         //noinspection deprecation,UnstableApiUsage
