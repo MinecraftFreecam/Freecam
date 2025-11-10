@@ -25,6 +25,13 @@ public class FreecamPosition {
         setRotation(entity.getYRot(), entity.getXRot());
     }
 
+    public FreecamPosition(double x, double y, double z, float yaw, float pitch) {
+        this.x = x;
+        this.y = y;
+        this.z = z;
+        setRotation(yaw, pitch);
+    }
+
     // From net.minecraft.client.render.Camera.setRotation
     public void setRotation(float yaw, float pitch) {
         this.pitch = pitch;
