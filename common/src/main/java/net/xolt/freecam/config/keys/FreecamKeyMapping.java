@@ -2,14 +2,13 @@ package net.xolt.freecam.config.keys;
 
 import com.mojang.blaze3d.platform.InputConstants;
 import net.minecraft.client.KeyMapping;
-import net.minecraft.client.renderer.texture.Tickable;
-import net.minecraft.resources.ResourceLocation;
+import net.minecraft.resources.Identifier;
 
 import java.util.function.Consumer;
 
 public class FreecamKeyMapping extends KeyMapping implements Tickable {
 
-    private static final Category FREECAM_CATEGORY = Category.register(ResourceLocation.fromNamespaceAndPath("freecam", "freecam"));
+    private static final Category FREECAM_CATEGORY = Category.register(Identifier.fromNamespaceAndPath("freecam", "freecam"));
 
     private final Consumer<FreecamKeyMapping> onTick;
 

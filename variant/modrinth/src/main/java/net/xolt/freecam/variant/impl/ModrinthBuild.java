@@ -1,6 +1,7 @@
 package net.xolt.freecam.variant.impl;
 
 import net.minecraft.client.Minecraft;
+import net.minecraft.server.permissions.Permissions;
 import net.xolt.freecam.variant.api.BuildVariant;
 
 public class ModrinthBuild implements BuildVariant {
@@ -14,6 +15,6 @@ public class ModrinthBuild implements BuildVariant {
 
     @Override
     public boolean cheatsPermitted() {
-        return MC.player.hasPermissions(2) || MC.player.isCreative() || MC.hasSingleplayerServer();
+        return MC.player.permissions().hasPermission(Permissions.COMMANDS_GAMEMASTER) || MC.player.isCreative() || MC.hasSingleplayerServer();
     }
 }

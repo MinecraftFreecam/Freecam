@@ -75,7 +75,7 @@ public class FreeCamera extends LocalPlayer {
 
         setId(id);
         setPose(Pose.SWIMMING);
-        setClientLoaded(true); // Otherwise input is frozen until timeout
+        connection.setClientLoaded(true); // Otherwise input is frozen
         getAbilities().flying = true;
         input = new KeyboardInput(MC.options);
     }

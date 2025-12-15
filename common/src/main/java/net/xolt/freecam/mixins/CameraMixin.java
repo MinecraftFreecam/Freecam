@@ -2,7 +2,7 @@ package net.xolt.freecam.mixins;
 
 import net.minecraft.client.Camera;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FogType;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModConfig;
@@ -23,7 +23,7 @@ public class CameraMixin {
 
     // When toggling freecam, update the camera's eye height instantly without any transition.
     @Inject(method = "setup", at = @At("HEAD"))
-    public void onUpdate(BlockGetter area, Entity newFocusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
+    public void onUpdate(Level level, Entity newFocusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
         if (newFocusedEntity == null || this.entity == null || newFocusedEntity.equals(this.entity)) {
             return;
         }
