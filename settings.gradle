@@ -12,6 +12,5 @@ pluginManagement {
 include("common")
 include("fabric")
 include("neoforge")
-include("metadata")
 
 rootProject.name = "freecam"

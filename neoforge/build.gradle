@@ -23,10 +23,36 @@ dependencies {
 
     common project(path: ":common", configuration: "namedElements")
     shadowCommon project(path: ":common", configuration: "transformProductionNeoForge")
-
-    common dependencies.project(path: ":metadata", configuration: "neoforge")
-    shadowCommon dependencies.project(path: ":metadata", configuration: "neoforge")
 }
+
+processResources {
+    inputs.properties(
+            mod_id: rootProject.name,
+            version: project.version,
+            authors: project.authors,
+            description: project.description,
+            licence: project.licence,
+            homepage_url: project.homepage_url,
+            source_code_url: project.source_code_url,
+            issue_tracker_url: project.issue_tracker_url,
+            gh_releases_url: project.gh_releases_url,
+            curseforge_url: project.curseforge_url,
+            modrinth_url: project.modrinth_url,
+            crowdin_url: project.crowdin_url,
+            neoforge_mc_req: project.neoforge_mc_req,
+            neoforge_loader_req: project.neoforge_loader_req,
+            neoforge_req: project.neoforge_req,
+    )
+
+    def overrides = new TreeMap()
+    overrides.mod_id = inputs.properties.mod_id.toLowerCase()
+    overrides.name = overrides.mod_id.capitalize()
+
+    filesMatching("META-INF/neoforge.mods.toml") {
+        expand inputs.properties + overrides
+    }
+}
+
 
 // Configure jar tasks
 shadowJar {
