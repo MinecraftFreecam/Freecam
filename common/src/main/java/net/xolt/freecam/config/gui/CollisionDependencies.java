@@ -3,7 +3,6 @@ package net.xolt.freecam.config.gui;
 import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
 import me.shedaniel.clothconfig2.api.ValueHolder;
 import me.shedaniel.clothconfig2.gui.entries.BooleanListEntry;
-import net.xolt.freecam.variant.api.BuildVariant;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -48,10 +47,6 @@ class CollisionDependencies {
 
         // Register a transformer to set requirements for ignoreTransparent & ignoreOpenable
         guiRegistry.registerPredicateTransformer((guis, i18n, field, config, defaults, registry) -> {
-            if (BuildVariant.getInstance().name().equals("modrinth")) {
-                // Disabling doesn't make sense on the modrinth build
-                return guis;
-            }
             guis.stream()
                     .filter(BooleanListEntry.class::isInstance)
                     .map(BooleanListEntry.class::cast)

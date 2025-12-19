@@ -52,20 +52,12 @@ jobs:
         run: ./gradlew build
 
         # Upload separately, or they'll be zipped together
-      - name: Upload all builds
-        uses: actions/upload-artifact@v4
-        with:
-          name: all-builds-${{ steps.data.outputs.name_suffix }}.zip
-          path: build/libs
-          retention-days: 30
-          if-no-files-found: error
       - name: Upload Fabric build
         uses: actions/upload-artifact@v4
         with:
           name: freecam-fabric-${{ steps.data.outputs.name_suffix }}.jar
           path: |
             build/libs/*-fabric-*.jar
-            !**-modrinth-*.jar
           retention-days: 90
           if-no-files-found: error
       - name: Upload Forge build
@@ -74,6 +66,5 @@ jobs:
           name: freecam-${{ steps.data.outputs.forge_name }}-${{ steps.data.outputs.name_suffix }}.jar
           path: |
             build/libs/*-${{ steps.data.outputs.forge_name }}-*.jar
-            !**-modrinth-*.jar
           retention-days: 90
           if-no-files-found: error

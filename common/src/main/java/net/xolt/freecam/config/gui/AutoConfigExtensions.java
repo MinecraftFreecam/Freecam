@@ -32,7 +32,6 @@ public class AutoConfigExtensions {
         GuiRegistry registry = AutoConfigClient.getGuiRegistry(configClass);
 
         ModBindingsConfigImpl.apply(registry);
-        VariantTooltipImpl.apply(registry);
         ValidateRegexImpl.apply(registry);
         BoundedContinuousImpl.apply(registry);
 

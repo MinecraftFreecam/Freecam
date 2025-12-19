@@ -3,7 +3,6 @@ package net.xolt.freecam.mixins;
 import net.minecraft.client.Minecraft;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModConfig;
-import net.xolt.freecam.variant.api.BuildVariant;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -13,7 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static net.xolt.freecam.config.ModBindings.KEY_TOGGLE;
 import static net.xolt.freecam.config.ModBindings.KEY_TRIPOD_RESET;
-import static net.xolt.freecam.config.ModConfig.InteractionMode.PLAYER;
 
 @Mixin(Minecraft.class)
 public class MinecraftMixin {
@@ -58,11 +56,6 @@ public class MinecraftMixin {
 
     @Unique
     private static boolean freecam$disableInteract() {
-        return Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !freecam$allowInteract();
-    }
-
-    @Unique
-    private static boolean freecam$allowInteract() {
-        return ModConfig.INSTANCE.utility.allowInteract && (BuildVariant.getInstance().cheatsPermitted() || ModConfig.INSTANCE.utility.interactionMode.equals(PLAYER));
+        return Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !ModConfig.INSTANCE.utility.allowInteract;
     }
 }

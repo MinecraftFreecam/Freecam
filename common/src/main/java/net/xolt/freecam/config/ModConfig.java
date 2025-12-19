@@ -9,11 +9,9 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDispla
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
 import net.xolt.freecam.config.gui.AutoConfigExtensions;
-import net.xolt.freecam.config.gui.ValidateRegex;
 import net.xolt.freecam.config.gui.BoundedContinuous;
 import net.xolt.freecam.config.gui.ModBindingsConfig;
-import net.xolt.freecam.config.gui.VariantTooltip;
-import net.xolt.freecam.variant.api.BuildVariant;
+import net.xolt.freecam.config.gui.ValidateRegex;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
@@ -69,8 +67,7 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.Tooltip
         public boolean ignoreOpenable = false;
 
-        @VariantTooltip(variant = "normal", count = 1)
-        @VariantTooltip(variant = "modrinth", count = 2)
+        @ConfigEntry.Gui.Tooltip
         public boolean ignoreCustom = false;
 
         @ConfigEntry.Gui.TransitiveObject
@@ -83,10 +80,8 @@ public class ModConfig implements ConfigData {
             public List<String> patterns = new ArrayList<>();
         }
 
-        @VariantTooltip(variant = "normal", count = 2)
-        @VariantTooltip(variant = "modrinth", count = 3)
-        // Default to true, when not running a modrinth build
-        public boolean ignoreAll = !BuildVariant.getInstance().name().equals("modrinth");
+        @ConfigEntry.Gui.Tooltip(count = 2)
+        public boolean ignoreAll = true;
 
         @ConfigEntry.Gui.Tooltip(count = 2)
         public boolean alwaysCheck = false;
@@ -120,11 +115,10 @@ public class ModConfig implements ConfigData {
         @ConfigEntry.Gui.Tooltip
         public boolean disableOnDamage = true;
 
-        @VariantTooltip(count = 2)
+        @ConfigEntry.Gui.Tooltip(count = 2)
         public boolean freezePlayer = false;
 
-        @VariantTooltip(variant = "normal", count = 2)
-        @VariantTooltip(variant = "modrinth", count = 3)
+        @ConfigEntry.Gui.Tooltip(count = 2)
         public boolean allowInteract = false;
 
         @ConfigEntry.Gui.Tooltip

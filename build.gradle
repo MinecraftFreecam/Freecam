@@ -1,4 +1,3 @@
-import net.fabricmc.loom.task.RemapJarTask
 import net.xolt.freecam.gradle.BumpVersionTask
 import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.tasks.BaseChangelogTask
@@ -162,9 +161,6 @@ subprojects {
     if (rootProject.enabled_platforms.split(',').contains project.name) {
         apply plugin: "com.hypherionmc.modutils.modpublisher"
 
-        // Ensure this task exists, since we need to publish its output
-        tasks.maybeCreate("remapModrinthJar", RemapJarTask)
-
         publisher {
             curseID = "557076"
             modrinthID = "XeEZ3fK2"
@@ -221,7 +217,6 @@ subprojects {
             }
 
             artifact = tasks.remapJar
-            //setPlatformArtifact "modrinth", tasks.remapModrinthJar
 
             [ curseDepends, modrinthDepends ].each {
                 it.embedded "cloth-config"

@@ -1,11 +1,6 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
-import net.fabricmc.loom.task.RemapJarTask
-
 plugins {
     id "com.github.johnrengelman.shadow"
 }
-
-def variants = rootProject.build_variants.split(',')
 
 architectury {
     platformSetupLoomIde()
@@ -29,99 +24,37 @@ dependencies {
     common project(path: ":common", configuration: "namedElements")
     shadowCommon project(path: ":common", configuration: "transformProductionNeoForge")
 
-    shadowCommon project(":variant:api")
+    common dependencies.project(path: ":metadata", configuration: "neoforge")
+    shadowCommon dependencies.project(path: ":metadata", configuration: "neoforge")
 }
 
-variants.each { variant ->
-    // Create a variant source set & shadow config
-    def set = sourceSets.create(variant) {
-        java.srcDirs = [ ]
-        resources.srcDirs = [ ]
-        compileClasspath += sourceSets.main.compileClasspath
-        runtimeClasspath += sourceSets.main.runtimeClasspath
-    }
-    def shadowConfig = configurations.create("${variant}Shadow")
+// Configure jar tasks
+shadowJar {
+    group = "shadow"
+    exclude "architectury.common.json"
 
-    // Add a dependency on metadata
-    def metadata = dependencies.project(path: ":metadata", configuration: "neoforge${variant == "normal" ? "" : variant.capitalize()}")
-    dependencies.add(set.implementationConfigurationName, metadata)
-    dependencies.add(shadowConfig.name, metadata)
-
-    // Add a dependency on variant's service provider
-    def spi = dependencies.project(path: ":variant:${variant}", configuration: "namedElements")
-    dependencies.add(set.implementationConfigurationName, spi)
-    dependencies.add(shadowConfig.name, dependencies.project(path: ":variant:${variant}", configuration: "transformProductionNeoForge"))
-
-    // Configure/create a run config
-    def run
-    if (variant == "normal") {
-        run = loom.runs.client
-    } else {
-        run = loom.runs.create("${variant}Client") {
-            inherit loom.runs.client
-            forgeTemplate "client"
-            configName = "Run $variant"
-            source set
-        }
-    }
-    run.source set
-
-    // Tell forge all this is part of one mod
-    run.mods.register(rootProject.name) {
-        sourceSet project.sourceSets.main
-        sourceSet set
-        dependency metadata
-        dependency spi
+    manifest {
+        inheritFrom tasks.jar.manifest
     }
 
-    // Configure/create jar tasks
-    def shadowJarTask
-    def remapJarTask
-    def appendix
-    if (variant == "normal") {
-        shadowJarTask = tasks.shadowJar
-        remapJarTask = tasks.remapJar
-        appendix = ""
-    } else {
-        shadowJarTask = tasks.maybeCreate("shadow${variant.capitalize()}Jar", ShadowJar)
-        remapJarTask = tasks.maybeCreate("remap${variant.capitalize()}Jar", RemapJarTask)
-        appendix = variant
-    }
+    configurations = [
+            project.configurations.shadowCommon,
+    ]
 
-    shadowJarTask.configure {
-        group = "shadow"
-        from sourceSets.main.output
-        from set.output
-        exclude "architectury.common.json"
-
-        manifest {
-            inheritFrom tasks.jar.manifest
-        }
-
-        configurations = [
-                project.configurations.shadowCommon,
-                shadowConfig
-        ]
-
-        archiveAppendix = appendix
-        archiveClassifier = "dev-shadow"
-    }
-
-    remapJarTask.configure {
-        group = "loom"
-        inputFile = shadowJarTask.archiveFile
-        dependsOn shadowJarTask
-        archiveAppendix = appendix
-
-        // Transform the AccessWidener into an AccessTransformer
-        atAccessWideners.add loom.accessWidenerPath.get().asFile.name
-
-        // Output in root `build/libs`
-        destinationDirectory = rootProject.layout.buildDirectory.dir "libs"
-    }
-
-    tasks.build.dependsOn remapJarTask
+    archiveClassifier = "dev-shadow"
 }
+
+remapJar {
+    group = "loom"
+    inputFile = tasks.shadowJar.archiveFile
+
+    // Transform the AccessWidener into an AccessTransformer
+    atAccessWideners.add loom.accessWidenerPath.get().asFile.name
+    // Output in root `build/libs`
+    destinationDirectory = rootProject.layout.buildDirectory.dir "libs"
+}
+
+tasks.build.dependsOn tasks.remapJar
 
 components.java {
     withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
