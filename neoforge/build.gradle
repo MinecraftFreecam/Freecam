@@ -1,5 +1,5 @@
 plugins {
-    id "com.github.johnrengelman.shadow"
+    id "com.gradleup.shadow"
 }
 
 architectury {
@@ -8,11 +8,18 @@ architectury {
 }
 
 configurations {
-    common
-    shadowCommon // Don't use shadow from the shadow plugin since it *excludes* files.
+    common {
+        canBeResolved = true
+        canBeConsumed = false
+    }
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
     developmentNeoForge.extendsFrom common
+
+    shadowBundle {
+        canBeResolved = true
+        canBeConsumed = false
+    }
 }
 
 dependencies {
@@ -22,7 +29,7 @@ dependencies {
     include "me.shedaniel.cloth:cloth-config-neoforge:${rootProject.cloth_version}"
 
     common project(path: ":common", configuration: "namedElements")
-    shadowCommon project(path: ":common", configuration: "transformProductionNeoForge")
+    shadowBundle project(path: ":common", configuration: "transformProductionNeoForge")
 }
 
 processResources {
@@ -59,12 +66,8 @@ shadowJar {
     group = "shadow"
     exclude "architectury.common.json"
 
-    manifest {
-        inheritFrom tasks.jar.manifest
-    }
-
     configurations = [
-            project.configurations.shadowCommon,
+            project.configurations.shadowBundle,
     ]
 
     archiveClassifier = "dev-shadow"
@@ -81,9 +84,3 @@ remapJar {
 }
 
 tasks.build.dependsOn tasks.remapJar
-
-components.java {
-    withVariantsFromConfiguration(project.configurations.shadowRuntimeElements) {
-        skip()
-    }
-}
