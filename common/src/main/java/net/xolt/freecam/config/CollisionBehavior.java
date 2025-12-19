@@ -4,7 +4,6 @@ import me.shedaniel.autoconfig.ConfigHolder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.block.*;
-import net.xolt.freecam.variant.api.BuildVariant;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -29,7 +28,7 @@ public class CollisionBehavior {
 
     @SuppressWarnings("RedundantIfStatement")
     public static boolean isIgnored(Block block) {
-        if (ModConfig.INSTANCE.collision.ignoreAll && BuildVariant.getInstance().cheatsPermitted()) {
+        if (ModConfig.INSTANCE.collision.ignoreAll) {
             return true;
         }
 

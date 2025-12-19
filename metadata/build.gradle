@@ -1,24 +1,16 @@
 
 def platforms = rootProject.enabled_platforms.split(',')
-def variants = rootProject.build_variants.split(',')
 
 base {
     archivesName = "metadata"
 }
 
-// For each platform/variant combination, provide a jar containing the generated metadata.
+// For each platform, provide a jar containing the generated metadata.
 // This allows us to include the metadata files as a dependency, which is more flexible.
-platforms.each { platform -> variants.each { variant ->
-
+platforms.each { platform ->
     def name = platform
     def classifier = platform
     def taskDescription = "Generate metadata for ${platform.capitalize()}"
-
-    if (variant != "normal") {
-        name += variant.capitalize()
-        classifier += '-' + variant
-        taskDescription += " (${variant.capitalize()})"
-    }
 
     def task = tasks.register("${name}Jar", Zip) {
         // Configure the task
@@ -33,11 +25,9 @@ platforms.each { platform -> variants.each { variant ->
 
         inputs.properties(
                 mod_id: rootProject.name,
-                modrinth_name: project.modrinth_name,
                 version: project.version,
                 authors: project.authors,
                 description: project.description,
-                modrinth_description: project.modrinth_description,
                 licence: project.licence,
                 homepage_url: project.homepage_url,
                 source_code_url: project.source_code_url,
@@ -58,11 +48,6 @@ platforms.each { platform -> variants.each { variant ->
         overrides.name = overrides.mod_id.capitalize()
         overrides.json_authors = inputs.properties.authors.split(',').collect { "\"$it\"" }.join(", ")
 
-        if (variant == "modrinth") {
-            overrides.name += ' ' + inputs.properties.modrinth_name
-            overrides.description = inputs.properties.description + ' ' + inputs.properties.modrinth_description
-        }
-
         filesMatching("fabric.mod.json") {
             expand inputs.properties + overrides
         }
@@ -78,4 +63,4 @@ platforms.each { platform -> variants.each { variant ->
     // Export the artifact so that other projects can use it
     configurations.register(name)
     artifacts.add(name, task)
-}}
+}
