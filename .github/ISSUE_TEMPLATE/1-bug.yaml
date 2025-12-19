@@ -66,15 +66,6 @@ body:
       description: What version of Freecam are you usign?
     validations:
       required: true
-  - type: dropdown
-    id: modrinth
-    attributes:
-      label: Are you using "Modrinth Edition"?
-      description: Modrinth Edition has some additional restrictions, e.g. it will not allowing you to clip through blocks unless you are `op`, in creative, or in singleplayer.
-      options: [ "Yes", "No" ]
-      default: 1
-    validations:
-      required: true
   - type: input
     id: mc-version
     attributes:
