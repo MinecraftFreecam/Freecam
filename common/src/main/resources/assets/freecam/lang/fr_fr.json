@@ -1,7 +1,7 @@
 {
-  "key.category.freecam.freecam": "Freecam",
+  "key.category.freecam.freecam": "",
   "key.freecam.toggle": "Basculer la caméra libre",
-  "key.freecam.playerControl": "Contrôler le joueur",
+  "key.freecam.playerControl": "Contrôla Player",
   "key.freecam.tripodReset": "Réinitialiser le tripode",
   "key.freecam.configGui": "Interface de configuration",
   "msg.freecam.enable": "Caméra libre activé.",
