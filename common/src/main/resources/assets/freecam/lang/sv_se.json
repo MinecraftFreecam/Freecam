@@ -7,6 +7,10 @@
   "text.autoconfig.freecam.option.visual.perspective.firstPerson": "Första person",
   "text.autoconfig.freecam.option.visual.perspective.thirdPerson": "Tredje person",
   "text.autoconfig.freecam.option.visual.perspective.thirdPersonMirror": "Spegel",
+  "text.autoconfig.freecam.option.visual.showPlayer": "Visa spelare",
+  "text.autoconfig.freecam.option.visual.showHand": "Visa hand",
+  "text.autoconfig.freecam.option.utility.interactionMode.camera": "Kamera",
+  "text.autoconfig.freecam.option.utility.interactionMode.player": "Spelare",
   "text.autoconfig.freecam.option.servers.mode.whitelist": "Vitlista",
   "text.autoconfig.freecam.option.servers.mode.blacklist": "Svartlista"
 }
