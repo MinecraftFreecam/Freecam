@@ -1,6 +1,6 @@
 package net.xolt.freecam.config.gui;
 
-import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.AutoConfigClient;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.gui.DefaultGuiProviders;
 import me.shedaniel.autoconfig.gui.DefaultGuiTransformers;
@@ -29,7 +29,7 @@ public class AutoConfigExtensions {
     private AutoConfigExtensions() {}
 
     public static void apply(Class<? extends ConfigData> configClass) {
-        GuiRegistry registry = AutoConfig.getGuiRegistry(configClass);
+        GuiRegistry registry = AutoConfigClient.getGuiRegistry(configClass);
 
         ModBindingsConfigImpl.apply(registry);
         VariantTooltipImpl.apply(registry);

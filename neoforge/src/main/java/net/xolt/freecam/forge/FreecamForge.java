@@ -1,6 +1,6 @@
 package net.xolt.freecam.forge;
 
-import me.shedaniel.autoconfig.AutoConfig;
+import me.shedaniel.autoconfig.AutoConfigClient;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
@@ -24,7 +24,7 @@ public class FreecamForge {
         ModConfig.init();
         // Register our config screen with Forge
         container.registerExtensionPoint(IConfigScreenFactory.class, (client, parent) ->
-                AutoConfig.getConfigScreen(ModConfig.class, parent).get());
+                AutoConfigClient.getConfigScreen(ModConfig.class, parent).get());
     }
 
     @SubscribeEvent

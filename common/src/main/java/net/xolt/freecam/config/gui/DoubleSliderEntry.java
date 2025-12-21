@@ -148,8 +148,9 @@ class DoubleSliderEntry extends TooltipListEntry<Double> {
             return DoubleSliderEntry.this.isEditable() && super.mouseDragged(event, double_3, double_4);
         }
 
+        @Override
         public void setValue(double value) {
-            this.value = value;
+            super.setValue(value);
         }
     }
 }
