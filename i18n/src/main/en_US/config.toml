@@ -72,6 +72,10 @@ fullBright.tooltip = "Increases brightness while in freecam."
 showSubmersionFog.label = "Show Submersion Fog"
 showSubmersionFog.tooltip = "Whether you see a fog overlay underwater, in lava, or powdered snow."
 
+outlinePlayer.label = "Outline Player"
+outlinePlayer."tooltip[0]" = "Apply an outline to your player when activating Freecam."
+outlinePlayer."tooltip[1]" = "The outline can also be controlled using the \"Toggle Player Outline\" keybind."
+
 [freecam.config.utility]
 label = "Utility Options"
 tooltip = "Freecam enhancements."

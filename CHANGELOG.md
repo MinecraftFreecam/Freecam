@@ -9,6 +9,12 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Added
 
+- A glowing player outline feature, to highlight your player while in Freecam ([340](https://github.com/MinecraftFreecam/Freecam/pull/340))
+  - 'Outline Player' setting that to control whether the outline is initially enabled when entering Freecam (off by default)
+  - 'Toggle Outline Player' keybind to enable or disable the outline while in Freecam
+  - English and Ukrainian translations
+  - For now, it is only available in Minecraft **1.21.11 and newer**
+
 ### Changed
 
 ### Removed

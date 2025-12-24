@@ -148,6 +148,11 @@ public class ModConfigDTO implements MCAwareModConfig, RawJsonHolder {
         return notification.notifyTripod;
     }
 
+    @Override
+    public boolean shouldOutlinePlayer() {
+        return visual.outlinePlayer;
+    }
+
     public MovementConfig movement = new MovementConfig();
     public static class MovementConfig {
         public FlightMode flightMode = FlightMode.DEFAULT;
@@ -178,6 +183,7 @@ public class ModConfigDTO implements MCAwareModConfig, RawJsonHolder {
         public boolean showHand = false;
         public boolean fullBright = false;
         public boolean showSubmersion = false;
+        public boolean outlinePlayer = false;
     }
 
     public UtilityConfig utility = new UtilityConfig();

@@ -31,7 +31,13 @@ public enum ModBindings {
             .build()),
     KEY_CONFIG_GUI(() -> builder("config.open")
             .action(ConfigScreenProvider.provider()::openConfigScreen)
-            .build());
+            .build())
+    //? if >=1.21.11 {
+    ,KEY_OUTLINE_TOGGLE(() -> builder("outlinePlayer.toggle")
+            .action(Freecam::toggleOutline)
+            .build())
+    //?}
+    ;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ModBindings.class);
 
