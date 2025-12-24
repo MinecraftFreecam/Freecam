@@ -111,6 +111,9 @@ public class ModConfig implements ConfigData {
 
         @ConfigEntry.Gui.Tooltip
         public boolean showSubmersion = false;
+
+        @ConfigEntry.Gui.Tooltip
+        public boolean outlinePlayer = false;
     }
 
     @ConfigEntry.Gui.Tooltip

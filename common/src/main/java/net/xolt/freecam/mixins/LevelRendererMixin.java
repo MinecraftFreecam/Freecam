@@ -1,6 +1,7 @@
 package net.xolt.freecam.mixins;
 
 import net.minecraft.client.Camera;
+import net.xolt.freecam.config.ModConfig;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.LevelRenderer;
 import net.minecraft.client.renderer.culling.Frustum;
@@ -27,9 +28,11 @@ public class LevelRendererMixin {
     @Inject(method = "extractVisibleEntities", at = @At("TAIL"))
     private void onExtractVisibleEntities(Camera camera, Frustum frustum, DeltaTracker deltaTracker, LevelRenderState levelRenderState, CallbackInfo ci) {
         if (Freecam.isEnabled() && MC.player != null) {
+            
             float partialTick = deltaTracker.getGameTimeDeltaPartialTick(false);
             EntityRenderState state = entityRenderDispatcher.extractEntity(MC.player, partialTick);
-            if (state != null) {
+
+            if (state != null && ModConfig.INSTANCE.visual.outlinePlayer) {
                 state.outlineColor = ARGB.opaque(MC.player.getTeamColor());
                 levelRenderState.entityRenderStates.add(state);
                 levelRenderState.haveGlowingEntities = true;
