@@ -27,12 +27,12 @@ public class LevelRendererMixin {
     // Add the local player to the visible entities when freecam is enabled so they get the outline
     @Inject(method = "extractVisibleEntities", at = @At("TAIL"))
     private void onExtractVisibleEntities(Camera camera, Frustum frustum, DeltaTracker deltaTracker, LevelRenderState levelRenderState, CallbackInfo ci) {
-        if (Freecam.isEnabled() && MC.player != null) {
+        if (Freecam.isEnabled() && ModConfig.INSTANCE.visual.outlinePlayer && MC.player != null) {
             
             float partialTick = deltaTracker.getGameTimeDeltaPartialTick(false);
             EntityRenderState state = entityRenderDispatcher.extractEntity(MC.player, partialTick);
 
-            if (state != null && ModConfig.INSTANCE.visual.outlinePlayer) {
+            if (state != null) {
                 state.outlineColor = ARGB.opaque(MC.player.getTeamColor());
                 levelRenderState.entityRenderStates.add(state);
                 levelRenderState.haveGlowingEntities = true;
