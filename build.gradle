@@ -4,11 +4,11 @@ import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.tasks.BaseChangelogTask
 
 plugins {
-    id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.13-SNAPSHOT" apply false
-    id "com.hypherionmc.modutils.modpublisher" version "2.1.7+snapshot.0" apply false
-    id "com.github.johnrengelman.shadow" version "8.1.1" apply false
-    id "org.jetbrains.changelog" version "2.2.0"
+    alias(libs.plugins.architectury.plugin)
+    alias(libs.plugins.architectury.loom) apply false
+    alias(libs.plugins.modpublisher) apply false
+    alias(libs.plugins.shadow) apply false
+    alias(libs.plugins.jetbrains.changelog)
 }
 
 tasks.named('wrapper') {
