@@ -3,11 +3,16 @@ plugins {
 }
 
 dependencies {
+    implementation(plugin(libs.plugins.jetbrains.changelog))
+    implementation(plugin(libs.plugins.modpublisher))
     testImplementation(kotlin("test"))
 }
 
 repositories {
     mavenCentral()
+    gradlePluginPortal()
+    maven("https://maven.firstdark.dev/releases/")
+    maven("https://maven.firstdark.dev/snapshots/")
 }
 
 tasks.test {

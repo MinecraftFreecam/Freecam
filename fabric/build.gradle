@@ -2,8 +2,8 @@ import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import net.fabricmc.loom.task.RemapJarTask
 
 plugins {
+    id "freecam.publish"
     id "com.github.johnrengelman.shadow"
-    id "com.hypherionmc.modutils.modpublisher"
 }
 
 def variants = rootProject.build_variants.split(',')
