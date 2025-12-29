@@ -58,6 +58,8 @@
   "text.autoconfig.freecam.option.visual.fullBright.@Tooltip": "Збільшує яскравість в режимі вільної камери.",
   "text.autoconfig.freecam.option.visual.showSubmersion": "Показати занурювальний туман",
   "text.autoconfig.freecam.option.visual.showSubmersion.@Tooltip": "Чи будете ви бачити туман під водою, у лаві або в сипкому снігу.",
+  "text.autoconfig.freecam.option.visual.outlinePlayer.@Tooltip": "Окреслює модель гравця крізь стіни.",
+  "text.autoconfig.freecam.option.visual.outlinePlayer": "Окреслення Гравця",
   "text.autoconfig.freecam.option.utility": "Параметри корисности",
   "text.autoconfig.freecam.option.utility.@Tooltip": "Покращення Freecam.",
   "text.autoconfig.freecam.option.utility.disableOnDamage": "Вимкнути при отриманні шкоди",
