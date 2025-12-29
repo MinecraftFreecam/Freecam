@@ -1,0 +1,13 @@
+[versions]
+architectury-plugin = "3.4-SNAPSHOT"
+architectury-loom = "1.13-SNAPSHOT"
+modpublisher = "2.1.7+snapshot.0"
+shadow = "8.1.1"
+jetbrains-changelog = "2.2.0"
+
+[plugins]
+architectury-plugin = { id = "architectury-plugin", version.ref = "architectury-plugin" }
+architectury-loom = { id = "dev.architectury.loom", version.ref = "architectury-loom" }
+modpublisher = { id = "com.hypherionmc.modutils.modpublisher", version.ref = "modpublisher" }
+shadow = { id = "com.github.johnrengelman.shadow", version.ref = "shadow" }
+jetbrains-changelog = { id = "org.jetbrains.changelog", version.ref = "jetbrains-changelog" }
