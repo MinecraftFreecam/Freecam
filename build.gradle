@@ -1,13 +1,11 @@
 import net.xolt.freecam.gradle.BumpVersionTask
-import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.tasks.BaseChangelogTask
 
 plugins {
-    id "architectury-plugin" version "3.4-SNAPSHOT"
-    id "dev.architectury.loom" version "1.13-SNAPSHOT" apply false
-    id "com.gradleup.shadow" version "8.3.6" apply false
-    id "com.hypherionmc.modutils.modpublisher" version "2.1.7+snapshot.0" apply false
-    id "org.jetbrains.changelog" version "2.2.0"
+    alias(libs.plugins.architectury.plugin)
+    alias(libs.plugins.architectury.loom) apply false
+    alias(libs.plugins.shadow) apply false
+    id "org.jetbrains.changelog"
 }
 
 tasks.named('wrapper') {
@@ -156,83 +154,6 @@ subprojects {
             officialMojangMappings()
             parchment("org.parchmentmc.data:parchment-${parchmentAppendix}:${parchmentVersion}@zip")
         }
-    }
-
-    if (rootProject.enabled_platforms.split(',').contains project.name) {
-        apply plugin: "com.hypherionmc.modutils.modpublisher"
-
-        publisher {
-            curseID = "557076"
-            modrinthID = "XeEZ3fK2"
-
-            github {
-                // Extract our repo slug from the github URL
-                repo = rootProject.source_code_url.replaceFirst("^https?://github\\.com/", "")
-                // GitHub releases must be associated with a git tag
-                // We want this to be the canonical tag, not the annotated build tag
-                tag = "v${rootProject.mod_version}"
-                // Create a draft release, so that GitHub doesn't actually create the tag
-                // does not affect already published releases
-                draft = true
-            }
-
-            // Format display name, e.g. "1.2.4 for MC 1.20.4 (fabric)"
-            displayName = "${rootProject.mod_version} for MC ${rootProject.minecraft_version} (${project.name})"
-            version = project.version
-            versionType = rootProject.release_type
-            curseEnvironment = "client"
-            loaders = [ project.name ]
-            javaVersions = [ project.java.targetCompatibility ]
-
-            // Get the changelog entry using the changelog plugin
-            changelog = provider {
-                def plugin = rootProject.changelog
-                def version = rootProject.mod_version
-                if (!plugin.has(version)) {
-                    logger.warn "No changelog for \"${version}\". Using \"unreleased\" instead."
-                }
-
-                def logEntry = (plugin.getOrNull(version) ?: plugin.getUnreleased())
-                        .withHeader(false)
-                        .withLinks(false)
-                        .withEmptySections(false)
-                        .withSummary(true)
-
-                return plugin.renderItem(logEntry, Changelog.OutputType.MARKDOWN)
-            }
-
-            // List the current `minecraft_version`, everything in `supported_mc_versions`, &
-            // everything in the current mod loader's `*_supported_mc_versions` as a supported version
-            gameVersions = provider {
-                String prop = "supported_mc_versions"
-                String primary = rootProject.property("minecraft_version")
-                String common = rootProject.findProperty(prop) ?: ""
-                String specific = rootProject.findProperty("${project.name}_${prop}") ?: ""
-
-                return (common.split(",") + specific.split(",") + [ primary ])
-                        .findAll { it != null }
-                        .findAll { it != "" }
-                        .collect { it.trim() }
-                        .unique()
-            }
-
-            artifact = tasks.remapJar
-
-            [ curseDepends, modrinthDepends ].each {
-                it.embedded "cloth-config"
-            }
-
-            def ci = System.getenv("CI") != null
-            def dummy = ci ? "" : "default"
-            apiKeys {
-                github findProperty("github_token") ?: System.getenv("GITHUB_TOKEN") ?: System.getenv("GH_TOKEN") ?: dummy
-                curseforge findProperty("curseforge_token") ?: System.getenv("CURSEFORGE_TOKEN") ?: dummy
-                modrinth findProperty("modrinth_token") ?: System.getenv("MODRINTH_TOKEN") ?: dummy
-            }
-            debug = !ci
-        }
-
-        tasks.publish.dependsOn tasks.publishMod
     }
 
     publishing {
