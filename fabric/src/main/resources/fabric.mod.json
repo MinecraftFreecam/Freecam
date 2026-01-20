@@ -1,18 +1,18 @@
 {
   "schemaVersion": 1,
-  "id": "${mod_id}",
-  "version": "${version}",
-  "name": "${name}",
-  "description": "${description}",
+  "id": "${modId}",
+  "version": "${modVersion}",
+  "name": "${modName}",
+  "description": "${modDescription}",
   "authors": [
-    ${json_authors}
+    ${modAuthors}
   ],
   "contact": {
-    "homepage": "${homepage_url}",
-    "sources": "${source_code_url}",
-    "issues": "${issue_tracker_url}"
+    "homepage": "${modHomepage}",
+    "sources": "${modSource}",
+    "issues": "${modIssues}"
   },
-  "license": "${licence}",
+  "license": "${modLicense}",
   "icon": "icon.png",
   "environment": "client",
   "entrypoints": {
@@ -28,17 +28,17 @@
     "freecam-common.mixins.json"
   ],
   "depends": {
-    "fabricloader": "${fabric_loader_req}",
+    "fabricloader": "${fabricLoaderReq}",
     "fabric": "*",
-    "minecraft": "${fabric_mc_req}"
+    "minecraft": "${fabricMcReq}"
   },
   "custom": {
     "modmenu": {
       "links": {
-        "modmenu.crowdin": "${crowdin_url}",
-        "modmenu.curseforge": "${curseforge_url}",
-        "modmenu.modrinth": "${modrinth_url}",
-        "modmenu.github_releases": "${gh_releases_url}"
+        "modmenu.crowdin": "${modCrowdin}",
+        "modmenu.curseforge": "${modCurseforge}",
+        "modmenu.modrinth": "${modModrinth}",
+        "modmenu.github_releases": "${modGhReleases}"
       }
     }
   }

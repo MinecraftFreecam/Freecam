@@ -6,6 +6,7 @@ dependencies {
     implementation(plugin(libs.plugins.jetbrains.changelog))
     implementation(plugin(libs.plugins.modpublisher))
     testImplementation(kotlin("test"))
+    implementation("dev.kikugie:stonecutter:0.8.2")
 }
 
 repositories {
@@ -13,6 +14,7 @@ repositories {
     gradlePluginPortal()
     maven("https://maven.firstdark.dev/releases/")
     maven("https://maven.firstdark.dev/snapshots/")
+    maven("https://maven.kikugie.dev/snapshots")
 }
 
 tasks.test {

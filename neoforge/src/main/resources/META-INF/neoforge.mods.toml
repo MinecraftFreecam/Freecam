@@ -1,18 +1,18 @@
 modLoader = "javafml"
-loaderVersion = "${neoforge_loader_req}"
-issueTrackerURL = "${issue_tracker_url}"
-license = "${licence}"
+loaderVersion = "${neoforgeLoaderReq}"
+issueTrackerURL = "${modIssues}"
+license = "${modLicense}"
 
 [[mods]]
-modId = "${mod_id}"
-version = "${version}"
-displayName = "${name}"
-displayURL = "${homepage_url}"
+modId = "${modId}"
+version = "${modVersion}"
+displayName = "${modName}"
+displayURL = "${modHomepage}"
 logoFile = "icon.png"
 logoBlur = true
-authors = "${authors}"
+authors = "${modAuthors}"
 description = '''
-${description}
+${modDescription}
 '''
 
 [[mixins]]
@@ -21,16 +21,16 @@ config = "freecam-common.mixins.json"
 [[mixins]]
 config = "freecam-neoforge.mixins.json"
 
-[[dependencies.${mod_id}]]
+[[dependencies.${modId}]]
 modId = "neoforge"
-versionRange = "${neoforge_req}"
+versionRange = "${neoforgeReq}"
 type = "required"
 ordering = "NONE"
 side = "CLIENT"
 
-[[dependencies.${mod_id}]]
+[[dependencies.${modId}]]
 modId = "minecraft"
-versionRange = "${neoforge_mc_req}"
+versionRange = "${neoforgeMcReq}"
 type = "required"
 ordering = "NONE"
 side = "CLIENT"

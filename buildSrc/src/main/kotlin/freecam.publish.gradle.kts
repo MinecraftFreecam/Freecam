@@ -12,18 +12,18 @@ publisher {
 
     github {
         // Extract our repo slug from the github URL
-        repo(rootProject.property("source_code_url").toString().removePrefix("https://github.com/"))
+        repo(rootProject.property("mod.source").toString().removePrefix("https://github.com/"))
 
         // Canonical tag (not the annotated build tag)
-        tag("v${rootProject.property("mod_version")}")
+        tag("v${rootProject.property("mod.version")}")
         draft(true)
     }
 
     // Format display name, e.g. "1.2.4 for MC 1.20.4 (fabric)"
     displayName =
-        "${rootProject.property("mod_version")} for MC ${rootProject.property("minecraft_version")} (${project.name})"
+        "${rootProject.property("mod.version")} for MC ${rootProject.property("minecraft_version")} (${project.name})"
 
-    version = project.version.toString()
+    projectVersion = project.version.toString()
     versionType = rootProject.property("release_type").toString()
     curseEnvironment = "client"
 
@@ -62,7 +62,7 @@ publisher {
             .distinct()
     })
 
-    artifact.set(tasks.named("remapJar"))
+    artifact.set(tasks.matching { it.name == "remapJar" || it.name == "jar"})
 
     listOf(curseDepends, modrinthDepends).forEach {
         it.embedded("cloth-config")
