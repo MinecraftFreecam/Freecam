@@ -51,6 +51,13 @@ loom {
     }
 }
 
+tasks.register<Copy>("buildAndCollect") {
+    group = "build"
+    from(tasks.remapJar.map { it.archiveFile })
+    into(rootProject.layout.buildDirectory.file("libs/${project.property("mod.version")}"))
+    dependsOn("build")
+}
+
 publisher {
     listOf(curseDepends, modrinthDepends).forEach {
         it.required("fabric-api")
