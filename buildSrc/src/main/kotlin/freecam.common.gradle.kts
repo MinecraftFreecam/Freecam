@@ -5,7 +5,7 @@ plugins {
 }
 
 version = "${loader}-${commonMod.version}+mc${stonecutterBuild.current.version}"
-
+group = commonMod.group
 base {
     archivesName = commonMod.id
 }

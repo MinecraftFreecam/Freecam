@@ -12,19 +12,19 @@ if (this == rootProject) {
         gradleVersion = "8.11"
     }
 
-// Helper task that bumps the version number
+    // Helper task that bumps the version number
     tasks.register<BumpVersionTask>("bumpVersion") {
         group = "version"
         input = file("gradle.properties")
         key = "mod_version"
     }
 
-// Move the changelog tasks to the "version" group
+    // Move the changelog tasks to the "version" group
     tasks.withType<BaseChangelogTask>().configureEach {
         group = "version"
     }
 
-// Don't need these on the root project
+    // Don't need these on the root project
     afterEvaluate {
         tasks.named<Jar>("jar") { enabled = false }
         tasks.named<Jar>("sourcesJar") { enabled = false }
