@@ -1,9 +1,7 @@
 plugins {
-    id("net.neoforged.moddev") version "2.0.139"
+    alias(libs.plugins.moddevgradle)
+    alias(libs.plugins.fletchingtable.neoforge)
     id("freecam.loaders")
-    //kotlin("jvm") version "2.2.0"
-    //id("com.google.devtools.ksp") version "2.2.0-2.0.2"
-    id("dev.kikugie.fletching-table.neoforge") version "0.1.0-alpha.22"
 }
 
 fletchingTable {

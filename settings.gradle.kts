@@ -16,8 +16,7 @@ pluginManagement {
 }
 
 plugins {
-    id("dev.kikugie.stonecutter") version "0.8.2"
-    id("org.gradle.toolchains.foojay-resolver-convention") version "0.8.0"
+    id("dev.kikugie.stonecutter") version settings.extra.properties["stonecutter_version"] as String
 }
 
 val commonVersions = providers.gradleProperty("stonecutter_enabled_common_versions").orNull?.split(",")?.map { it.trim() } ?: emptyList()

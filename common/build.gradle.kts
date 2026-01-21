@@ -1,9 +1,7 @@
 plugins {
+    alias(libs.plugins.fabric.loom)
+    alias(libs.plugins.fletchingtable.fabric)
     id("freecam.common")
-    id("fabric-loom") version "1.14-SNAPSHOT"
-    kotlin("jvm") version "2.2.0"
-    id("com.google.devtools.ksp") version "2.2.0-2.0.2"
-    id("dev.kikugie.fletching-table.fabric") version "0.1.0-alpha.22"
 }
 
 stonecutter {
