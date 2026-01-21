@@ -57,7 +57,7 @@ jobs:
         with:
           name: freecam-fabric-${{ steps.data.outputs.name_suffix }}.jar
           path: |
-            build/libs/*-fabric-*.jar
+            build/libs/*/*-fabric-*.jar
           retention-days: 90
           if-no-files-found: error
       - name: Upload Forge build
@@ -65,6 +65,6 @@ jobs:
         with:
           name: freecam-${{ steps.data.outputs.forge_name }}-${{ steps.data.outputs.name_suffix }}.jar
           path: |
-            build/libs/*-${{ steps.data.outputs.forge_name }}-*.jar
+            build/libs/*/*-${{ steps.data.outputs.forge_name }}-*.jar
           retention-days: 90
           if-no-files-found: error
