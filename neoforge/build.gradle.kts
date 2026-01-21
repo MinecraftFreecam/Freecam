@@ -1,8 +1,8 @@
 plugins {
     id("net.neoforged.moddev") version "2.0.139"
     id("freecam.loaders")
-    kotlin("jvm") version "2.2.0"
-    id("com.google.devtools.ksp") version "2.2.0-2.0.2"
+    //kotlin("jvm") version "2.2.0"
+    //id("com.google.devtools.ksp") version "2.2.0-2.0.2"
     id("dev.kikugie.fletching-table.neoforge") version "0.1.0-alpha.22"
 }
 
@@ -26,10 +26,10 @@ dependencies {
 }
 
 neoForge {
-//    val at = project.file("build/resources/main/META-INF/accesstransformer.cfg");
-//
-//    accessTransformers.from(at.absolutePath)
-//    validateAccessTransformers = true
+    val at = project.file("build/resources/main/META-INF/accesstransformer.cfg");
+
+    accessTransformers.from(at.absolutePath)
+    validateAccessTransformers = true
 
     runs {
         register("client") {
@@ -60,12 +60,6 @@ sourceSets.main {
     resources.srcDir("src/generated/resources")
 }
 
-//tasks {
-//    processResources {
-//        exclude("freecam.accesswidener")
-//    }
-//}
-//
-//tasks.named("createMinecraftArtifacts") {
-//    dependsOn(":neoforge:${commonMod.propOrNull("minecraft_version")}:processResources")
-//}
+tasks.named("createMinecraftArtifacts") {
+    dependsOn(":neoforge:${commonMod.propOrNull("minecraft_version")}:processResources")
+}
