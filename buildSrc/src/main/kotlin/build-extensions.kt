@@ -30,7 +30,7 @@ value class ModData(private val project: Project) {
     val name: String get() = modProp("name")
     val version: String get() = modProp("version")
     val group: String get() = modProp("group")
-    val authors: String get() = modProp("authors").split(',').joinToString(", ") { "\"$it\"" }
+    val authors: String get() = modProp("authors")
     val description: String get() = modProp("description")
     val license: String get() = modProp("license")
     val homepage: String get() = modProp("homepage")
