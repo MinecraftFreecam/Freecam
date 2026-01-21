@@ -68,3 +68,7 @@ tasks.register<Copy>("buildAndCollect") {
 tasks.named("createMinecraftArtifacts") {
     dependsOn(":neoforge:${commonMod.propOrNull("minecraft_version")}:processResources")
 }
+
+publisher {
+    artifact.set(tasks.named("jar"))
+}

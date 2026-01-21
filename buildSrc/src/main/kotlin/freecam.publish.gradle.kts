@@ -62,8 +62,6 @@ publisher {
             .distinct()
     })
 
-    artifact.set(tasks.matching { it.name == "remapJar" || it.name == "jar"})
-
     listOf(curseDepends, modrinthDepends).forEach {
         it.embedded("cloth-config")
     }

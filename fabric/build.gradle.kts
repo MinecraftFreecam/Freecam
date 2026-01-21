@@ -58,6 +58,8 @@ tasks.register<Copy>("buildAndCollect") {
 }
 
 publisher {
+    artifact.set(tasks.named("remapJar"))
+
     listOf(curseDepends, modrinthDepends).forEach {
         it.required("fabric-api")
         it.optional("modmenu")
