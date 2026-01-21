@@ -65,7 +65,7 @@ tasks {
             "modVersion" to commonMod.version,
             "modGroup" to commonMod.group,
             "modAuthors" to commonMod.authors,
-            "modAuthorsJson" to commonMod.authors.split(',').joinToString(", ") { "\"$it\"" },
+            "modAuthorsJson" to commonMod.authors.split(',').joinToString("\", \""),
             "modDescription" to commonMod.description,
             "modLicense" to commonMod.license,
             "modHomepage" to commonMod.homepage,
