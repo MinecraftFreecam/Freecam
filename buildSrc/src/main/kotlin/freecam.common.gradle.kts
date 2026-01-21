@@ -10,7 +10,13 @@ base {
     archivesName = commonMod.id
 }
 
-val javaVersion = 21
+val requiredJava = when {
+    stonecutterBuild.current.parsed >= "1.20.6" -> JavaVersion.VERSION_21
+    stonecutterBuild.current.parsed >= "1.18" -> JavaVersion.VERSION_17
+    stonecutterBuild.current.parsed >= "1.17" -> JavaVersion.VERSION_16
+    else -> JavaVersion.VERSION_1_8
+}
+val javaVersion = requiredJava.majorVersion.toInt()
 val javaLanguageVersion = JavaLanguageVersion.of(javaVersion)
 
 // ensure that the encoding is set to UTF-8, no matter what the system default is
