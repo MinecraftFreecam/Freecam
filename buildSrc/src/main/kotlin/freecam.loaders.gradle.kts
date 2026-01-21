@@ -12,7 +12,9 @@ val commonResources: Configuration by configurations.creating {
 
 dependencies {
     val commonPath = common.hierarchy.toString()
-    compileOnly(project(path = commonPath))
+    compileOnly(project(path = commonPath)) {
+        isTransitive = false
+    }
     commonJava(project(path = commonPath, configuration = "commonJava"))
     commonResources(project(path = commonPath, configuration = "commonResources"))
 }
