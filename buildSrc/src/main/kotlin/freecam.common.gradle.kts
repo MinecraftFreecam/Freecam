@@ -1,6 +1,6 @@
 plugins {
     id("idea")
-    id("java")
+    id("java-library")
     id("maven-publish")
 }
 
