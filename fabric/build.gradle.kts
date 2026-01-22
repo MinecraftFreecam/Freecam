@@ -57,6 +57,16 @@ tasks.register<Copy>("buildAndCollect") {
     dependsOn("build")
 }
 
+tasks {
+    processResources {
+        filesMatching("fabric.mod.json") {
+            expand(commonJsonExpansions)
+        }
+
+        inputs.properties(commonExpansions)
+    }
+}
+
 publisher {
     artifact.set(tasks.named("remapJar"))
 

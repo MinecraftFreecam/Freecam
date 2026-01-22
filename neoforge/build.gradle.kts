@@ -69,6 +69,18 @@ tasks.named("createMinecraftArtifacts") {
     dependsOn(":neoforge:${project.name}:processResources")
 }
 
+tasks.processResources {
+    filesMatching(listOf("META-INF/mods.toml", "META-INF/neoforge.mods.toml")) {
+        expand(commonExpansions)
+    }
+
+    filesMatching("pack.mcmeta") {
+        expand(commonJsonExpansions)
+    }
+
+    inputs.properties(commonExpansions)
+}
+
 publisher {
     artifact.set(tasks.named("jar"))
 }
