@@ -27,12 +27,6 @@ tasks.withType<JavaCompile>().configureEach {
     options.release = javaVersion
 }
 
-tasks.withType<JavaExec>().configureEach {
-    javaLauncher.set(javaToolchains.launcherFor {
-        languageVersion.set(javaLanguageVersion)
-    })
-}
-
 java {
     toolchain {
         languageVersion.set(javaLanguageVersion)
