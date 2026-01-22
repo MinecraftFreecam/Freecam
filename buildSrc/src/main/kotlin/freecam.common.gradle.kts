@@ -70,7 +70,7 @@ tasks {
             "modName" to commonMod.name,
             "modVersion" to commonMod.version,
             "modGroup" to commonMod.group,
-            "modAuthors" to commonMod.authors,
+            "modAuthors" to commonMod.authors.split(',').joinToString(", "),
             "modAuthorsJson" to commonMod.authors.split(',').joinToString("\", \""),
             "modDescription" to commonMod.description,
             "modLicense" to commonMod.license,
