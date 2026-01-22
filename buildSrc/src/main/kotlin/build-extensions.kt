@@ -22,6 +22,45 @@ val Project.common get() = requireNotNull(stonecutterBuild.node.sibling("common"
 val Project.commonProject get() = rootProject.project(stonecutterBuild.current.project)
 val Project.commonMod get() = commonProject.mod
 
+val Project.commonExpansions: Map<String, String>
+    get() {
+        val authors = commonMod.authors
+            .split(',')
+            .map(String::trim)
+            .filter(String::isNotEmpty)
+
+        return mapOf(
+            "javaVersion" to commonMod.propOrNull("java.version"),
+            "modId" to commonMod.id,
+            "modName" to commonMod.name,
+            "modVersion" to commonMod.version,
+            "modGroup" to commonMod.group,
+            "modAuthors" to authors.joinToString(", "),
+            "modAuthorsJson" to authors.joinToString("\", \""),
+            "modDescription" to commonMod.description,
+            "modLicense" to commonMod.license,
+            "modHomepage" to commonMod.homepage,
+            "modSource" to commonMod.source,
+            "modIssues" to commonMod.issues,
+            "modGhReleases" to commonMod.ghReleases,
+            "modCurseforge" to commonMod.curseforge,
+            "modModrinth" to commonMod.modrinth,
+            "modCrowdin" to commonMod.crowdin,
+            "minecraftVersion" to commonMod.propOrNull("minecraft_version"),
+            "fabricLoaderVersion" to commonMod.depOrNull("fabric_loader"),
+            "fabricLoaderReq" to commonMod.depOrNull("fabric_loader_req"),
+            "fabricMcReq" to commonMod.depOrNull("fabric_mc_req"),
+            "fabricApiVersion" to commonMod.depOrNull("fabric_api"),
+            "neoForgeVersion" to commonMod.depOrNull("neoforge"),
+            "neoforgeLoaderReq" to commonMod.depOrNull("neoforge_loader_req"),
+            "neoforgeReq" to commonMod.depOrNull("neoforge_req"),
+            "neoforgeMcReq" to commonMod.depOrNull("neoforge_mc_req"),
+            "forgeVersion" to commonMod.depOrNull("forge"),
+        ).filterValues { it?.isNotEmpty() == true }.mapValues { it.value!! }
+    }
+val Project.commonJsonExpansions get() =
+    project.commonExpansions.mapValues { (_, v) -> v.replace("\n", "\\\\n") }
+
 val Project.loader: String? get() = prop("loader")
 
 @JvmInline

@@ -62,56 +62,6 @@ sourceSets.main {
     resources.srcDir("src/generated/resources")
 }
 
-tasks {
-    processResources {
-        val authors = commonMod.authors
-            .split(',')
-            .map(String::trim)
-            .filter(String::isNotEmpty)
-
-        val expandProps = mapOf(
-            "javaVersion" to commonMod.propOrNull("java.version"),
-            "modId" to commonMod.id,
-            "modName" to commonMod.name,
-            "modVersion" to commonMod.version,
-            "modGroup" to commonMod.group,
-            "modAuthors" to authors.joinToString(", "),
-            "modAuthorsJson" to authors.joinToString("\", \""),
-            "modDescription" to commonMod.description,
-            "modLicense" to commonMod.license,
-            "modHomepage" to commonMod.homepage,
-            "modSource" to commonMod.source,
-            "modIssues" to commonMod.issues,
-            "modGhReleases" to commonMod.ghReleases,
-            "modCurseforge" to commonMod.curseforge,
-            "modModrinth" to commonMod.modrinth,
-            "modCrowdin" to commonMod.crowdin,
-            "minecraftVersion" to commonMod.propOrNull("minecraft_version"),
-            "fabricLoaderVersion" to commonMod.depOrNull("fabric_loader"),
-            "fabricLoaderReq" to commonMod.depOrNull("fabric_loader_req"),
-            "fabricMcReq" to commonMod.depOrNull("fabric_mc_req"),
-            "fabricApiVersion" to commonMod.depOrNull("fabric_api"),
-            "neoForgeVersion" to commonMod.depOrNull("neoforge"),
-            "neoforgeLoaderReq" to commonMod.depOrNull("neoforge_loader_req"),
-            "neoforgeReq" to commonMod.depOrNull("neoforge_req"),
-            "neoforgeMcReq" to commonMod.depOrNull("neoforge_mc_req"),
-            "forgeVersion" to commonMod.depOrNull("forge"),
-        ).filterValues { it?.isNotEmpty() ?: false }.mapValues { (_, v) -> v!! }
-
-        val jsonExpandProps = expandProps.mapValues { (_, v) -> v.replace("\n", "\\\\n") }
-
-        filesMatching(listOf("META-INF/mods.toml", "META-INF/neoforge.mods.toml")) {
-            expand(expandProps)
-        }
-
-        filesMatching(listOf("pack.mcmeta", "fabric.mod.json")) {
-            expand(jsonExpandProps)
-        }
-
-        inputs.properties(expandProps)
-    }
-}
-
 tasks.named("processResources") {
     dependsOn(":common:${project.name}:stonecutterGenerate")
 }
