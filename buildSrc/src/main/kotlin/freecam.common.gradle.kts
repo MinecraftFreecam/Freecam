@@ -64,14 +64,19 @@ sourceSets.main {
 
 tasks {
     processResources {
+        val authors = commonMod.authors
+            .split(',')
+            .map(String::trim)
+            .filter(String::isNotEmpty)
+
         val expandProps = mapOf(
             "javaVersion" to commonMod.propOrNull("java.version"),
             "modId" to commonMod.id,
             "modName" to commonMod.name,
             "modVersion" to commonMod.version,
             "modGroup" to commonMod.group,
-            "modAuthors" to commonMod.authors.split(',').joinToString(", "),
-            "modAuthorsJson" to commonMod.authors.split(',').joinToString("\", \""),
+            "modAuthors" to authors.joinToString(", "),
+            "modAuthorsJson" to authors.joinToString("\", \""),
             "modDescription" to commonMod.description,
             "modLicense" to commonMod.license,
             "modHomepage" to commonMod.homepage,
@@ -91,7 +96,7 @@ tasks {
             "neoforgeReq" to commonMod.depOrNull("neoforge_req"),
             "neoforgeMcReq" to commonMod.depOrNull("neoforge_mc_req"),
             "forgeVersion" to commonMod.depOrNull("forge"),
-        ).filterValues { it?.isNotEmpty() == true }.mapValues { (_, v) -> v!! }
+        ).filterValues { it?.isNotEmpty() ?: false }.mapValues { (_, v) -> v!! }
 
         val jsonExpandProps = expandProps.mapValues { (_, v) -> v.replace("\n", "\\\\n") }
 
