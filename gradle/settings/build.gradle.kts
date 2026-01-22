@@ -4,17 +4,14 @@ plugins {
 
 dependencies {
     implementation(plugin(libs.plugins.stonecutter))
-    implementation(plugin(libs.plugins.jetbrains.changelog))
-    implementation(plugin(libs.plugins.modpublisher))
     testImplementation(kotlin("test"))
 }
 
 repositories {
     mavenCentral()
     gradlePluginPortal()
-    maven("https://maven.firstdark.dev/releases/")
-    maven("https://maven.firstdark.dev/snapshots/")
     maven("https://maven.kikugie.dev/snapshots")
+    maven("https://maven.kikugie.dev/releases")
 }
 
 tasks.test {
