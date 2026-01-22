@@ -48,9 +48,9 @@ repositories {
     mavenCentral()
     maven("https://maven.parchmentmc.org/")
     maven("https://maven.neoforged.net/releases/")
-    if (commonMod.depOrNull("neoforge_pr")  != null) {
+    commonMod.depOrNull("neoforge_pr")?.let {
         maven {
-            url = uri("https://prmaven.neoforged.net/NeoForge/pr${commonMod.dep("neoforge_pr")}")
+            url = uri("https://prmaven.neoforged.net/NeoForge/pr${it}")
             content { includeModule("net.neoforged", "neoforge") }
         }
     }
