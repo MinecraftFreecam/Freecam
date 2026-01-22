@@ -13,10 +13,11 @@ pluginManagement {
         maven("https://maven.kikugie.dev/snapshots")
         maven("https://maven.kikugie.dev/releases")
     }
+    includeBuild("./gradle/settings")
 }
 
 plugins {
-    id("dev.kikugie.stonecutter") version settings.extra.properties["stonecutter_version"] as String
+    id("freecam.settings-plugin")
 }
 
 val commonVersions = providers.gradleProperty("stonecutter_enabled_common_versions").orNull?.split(",")?.map { it.trim() } ?: emptyList()
