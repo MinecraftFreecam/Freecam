@@ -12,19 +12,19 @@ publisher {
 
     github {
         // Extract our repo slug from the github URL
-        repo(rootProject.property("mod.source").toString().removePrefix("https://github.com/"))
+        repo(commonMod.modProp("source").removePrefix("https://github.com/"))
 
         // Canonical tag (not the annotated build tag)
-        tag("v${rootProject.property("mod.version")}")
+        tag("v${commonMod.modProp("version")}")
         draft(true)
     }
 
     // Format display name, e.g. "1.2.4 for MC 1.20.4 (fabric)"
     displayName =
-        "${rootProject.property("mod.version")} for MC ${rootProject.property("minecraft_version")} (${project.name})"
+        "${commonMod.modProp("version")} for MC ${commonMod.mc} (${loader})"
 
     projectVersion = project.version.toString()
-    versionType = rootProject.property("release_type").toString()
+    versionType = commonMod.prop("release_type")
     curseEnvironment = "client"
 
     loaders = listOf(project.name)
@@ -33,7 +33,7 @@ publisher {
     // Get the changelog entry using the changelog plugin
     changelog.set(provider {
         val plugin = rootProject.extensions.getByType(ChangelogPluginExtension::class.java)
-        val version = rootProject.property("mod_version").toString()
+        val version = commonMod.modProp("version")
 
         if (!plugin.has(version)) {
             logger.warn("No changelog for \"$version\". Using \"unreleased\" instead.")
@@ -51,10 +51,10 @@ publisher {
     // Supported game versions
     gameVersions.set(provider {
         val prop = "supported_mc_versions"
-        val primary = rootProject.property("minecraft_version").toString()
-        val common = rootProject.findProperty(prop)?.toString().orEmpty()
+        val primary = commonMod.mc
+        val common = commonMod.propOrNull(prop).orEmpty()
         val specific =
-            rootProject.findProperty("${project.name}_$prop")?.toString().orEmpty()
+            rootProject.findProperty("${loader}_$prop")?.toString().orEmpty()
 
         (common.split(",") + specific.split(",") + primary)
             .map { it.trim() }

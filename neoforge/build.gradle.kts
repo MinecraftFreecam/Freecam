@@ -1,5 +1,5 @@
 plugins {
-    alias(libs.plugins.moddevgradle)
+    alias(libs.plugins.moddev)
     alias(libs.plugins.fletchingtable.neoforge)
     id("freecam.loaders")
 }
@@ -66,7 +66,7 @@ tasks.register<Copy>("buildAndCollect") {
 }
 
 tasks.named("createMinecraftArtifacts") {
-    dependsOn(":neoforge:${commonMod.propOrNull("minecraft_version")}:processResources")
+    dependsOn(":neoforge:${project.name}:processResources")
 }
 
 publisher {

@@ -16,7 +16,7 @@ if (this == rootProject) {
     tasks.register<BumpVersionTask>("bumpVersion") {
         group = "version"
         input = file("gradle.properties")
-        key = "mod_version"
+        key = "mod.version"
     }
 
     // Move the changelog tasks to the "version" group

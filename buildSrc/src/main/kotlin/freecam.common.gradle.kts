@@ -4,7 +4,7 @@ plugins {
     id("maven-publish")
 }
 
-version = "${loader}-${commonMod.version}+mc${stonecutterBuild.current.version}"
+version = "${loader}-${commonMod.version}+mc${commonMod.mc}"
 group = commonMod.group
 base {
     archivesName = commonMod.id
@@ -82,7 +82,6 @@ tasks {
             "modModrinth" to commonMod.modrinth,
             "modCrowdin" to commonMod.crowdin,
             "minecraftVersion" to commonMod.propOrNull("minecraft_version"),
-            "minMinecraftVersion" to commonMod.propOrNull("min_minecraft_version"),
             "fabricLoaderVersion" to commonMod.depOrNull("fabric_loader"),
             "fabricLoaderReq" to commonMod.depOrNull("fabric_loader_req"),
             "fabricMcReq" to commonMod.depOrNull("fabric_mc_req"),
@@ -92,7 +91,6 @@ tasks {
             "neoforgeReq" to commonMod.depOrNull("neoforge_req"),
             "neoforgeMcReq" to commonMod.depOrNull("neoforge_mc_req"),
             "forgeVersion" to commonMod.depOrNull("forge"),
-            "modMenuVersion" to commonMod.depOrNull("modmenu")
         ).filterValues { it?.isNotEmpty() == true }.mapValues { (_, v) -> v!! }
 
         val jsonExpandProps = expandProps.mapValues { (_, v) -> v.replace("\n", "\\\\n") }
@@ -110,5 +108,5 @@ tasks {
 }
 
 tasks.named("processResources") {
-    dependsOn(":common:${commonMod.propOrNull("minecraft_version")}:stonecutterGenerate")
+    dependsOn(":common:${project.name}:stonecutterGenerate")
 }
