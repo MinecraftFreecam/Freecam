@@ -48,13 +48,13 @@ val Project.commonExpansions: Map<String, String>
             "modCrowdin" to commonMod.crowdin,
             "minecraftVersion" to commonMod.propOrNull("minecraft_version"),
             "fabricLoaderVersion" to commonMod.depOrNull("fabric_loader"),
-            "fabricLoaderReq" to commonMod.depOrNull("fabric_loader_req"),
-            "fabricMcReq" to commonMod.depOrNull("fabric_mc_req"),
+            "fabricLoaderReq" to commonMod.propOrNull("fabric_loader_req"),
+            "fabricMcReq" to commonMod.propOrNull("fabric_mc_req"),
             "fabricApiVersion" to commonMod.depOrNull("fabric_api"),
             "neoForgeVersion" to commonMod.depOrNull("neoforge"),
-            "neoforgeLoaderReq" to commonMod.depOrNull("neoforge_loader_req"),
-            "neoforgeReq" to commonMod.depOrNull("neoforge_req"),
-            "neoforgeMcReq" to commonMod.depOrNull("neoforge_mc_req"),
+            "neoforgeLoaderReq" to commonMod.propOrNull("neoforge_loader_req"),
+            "neoforgeReq" to commonMod.propOrNull("neoforge_req"),
+            "neoforgeMcReq" to commonMod.propOrNull("neoforge_mc_req"),
             "forgeVersion" to commonMod.depOrNull("forge"),
         ).filterValues { it?.isNotEmpty() == true }.mapValues { it.value!! }
     }
