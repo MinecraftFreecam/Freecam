@@ -41,10 +41,12 @@ neoForge {
     }
 
     parchment {
-        commonMod.depOrNull("parchment")?.let {
-            mappingsVersion = it.split('-')[1]
-            minecraftVersion = it.split('-')[0]
-        }
+        commonMod.depOrNull("parchment")
+            ?.split('-', limit = 2)
+            ?.also { (mc, mappings) ->
+                minecraftVersion = mc
+                mappingsVersion = mappings
+            }
     }
 
     mods {

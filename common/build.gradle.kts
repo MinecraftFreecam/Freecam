@@ -26,11 +26,11 @@ dependencies {
     minecraft("com.mojang:minecraft:${commonMod.mc}")
     mappings(loom.layered {
         officialMojangMappings()
-        commonMod.depOrNull("parchment")?.let { parchmentVersionFull ->
-            val parchmentAppendix = parchmentVersionFull.split('-')[0]
-            val parchmentVersion = parchmentVersionFull.split('-')[1]
-            parchment("org.parchmentmc.data:parchment-${parchmentAppendix}:$parchmentVersion@zip")
-        }
+        commonMod.depOrNull("parchment")
+            ?.split('-', limit = 2)
+            ?.also { (mc, mappings) ->
+                parchment("org.parchmentmc.data:parchment-${mc}:$mappings@zip")
+            }
     })
 
     compileOnly("org.spongepowered:mixin:0.8.5")
