@@ -4,11 +4,13 @@ plugins {
     id("freecam.loaders")
 }
 
+val processedAw = stonecutterBuild.process(project(":common").file("src/main/resources/freecam.accesswidener"), "build/stonecutter/processed.aw");
+
 fletchingTable {
     accessConverter.register("main") {
         // Access widener file relative to `src/main/resources`
         // Converted to `META-INF/accesstransformer.cfg` by default
-        add("freecam.accesswidener")
+        add(processedAw.name)
     }
 }
 
@@ -58,6 +60,7 @@ neoForge {
 }
 
 sourceSets.main {
+    resources.srcDir(processedAw.parentFile)
     resources.srcDir("src/generated/resources")
 }
 
@@ -73,6 +76,8 @@ tasks.named("createMinecraftArtifacts") {
 }
 
 tasks.processResources {
+    exclude("freecam.accesswidener")
+
     filesMatching(listOf("META-INF/mods.toml", "META-INF/neoforge.mods.toml")) {
         expand(commonExpansions)
     }
