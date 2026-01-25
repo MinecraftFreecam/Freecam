@@ -2,82 +2,50 @@ package net.xolt.freecam.util;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.client.multiplayer.CommonListenerCookie;
-import net.minecraft.client.multiplayer.LevelLoadTracker;
+import net.minecraft.client.player.AbstractClientPlayer;
+import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.KeyboardInput;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Holder;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.PacketFlow;
-import net.minecraft.server.ServerLinks;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.player.Input;
-import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.Vec2;
 import net.xolt.freecam.config.ModConfig;
 import org.jetbrains.annotations.ApiStatus;
 
-import java.util.Collections;
 import java.util.UUID;
 
 import static net.xolt.freecam.Freecam.MC;
 
 @ApiStatus.Internal
 @ApiStatus.AvailableSince("0.4.0")
-public class FreeCamera extends LocalPlayer {
-
-    private static final ClientPacketListener NETWORK_HANDLER = new ClientPacketListener(
-            MC,
-            new net.minecraft.network.Connection(PacketFlow.CLIENTBOUND),
-            new CommonListenerCookie(
-                    // levelLoadTracker
-                    new LevelLoadTracker(),
-                    // localGameProfile
-                    new GameProfile(UUID.randomUUID(), "FreeCamera"),
-                    // worldSessionTelemetryManager
-                    MC.getTelemetryManager().createWorldSessionManager(false, null, null),
-                    // receivedRegistries
-                    MC.player.registryAccess().freeze(),
-                    // enabledFeatures
-                    FeatureFlagSet.of(),
-                    // serverBrand
-                    null,
-                    // serverData
-                    null,
-                    // postDisconnectScreen
-                    null,
-                    // serverCookies
-                    Collections.emptyMap(),
-                    // chatState
-                    null,
-                    // customReportDetails
-                    Collections.emptyMap(),
-                    // serverLinks
-                    ServerLinks.EMPTY,
-                    // seenPlayers
-                    Collections.emptyMap(),
-                    // seenInsecureChatWarning
-                    false)) {
-        @Override
-        public void send(Packet<?> packet) {
-        }
-    };
+public class FreeCamera extends AbstractClientPlayer {
+    public ClientInput input;
+    public float yBob;
+    public float xBob;
+    public float yBobO;
+    public float xBobO;
 
     public FreeCamera(int id) {
-        super(MC, MC.level, NETWORK_HANDLER, MC.player.getStats(), MC.player.getRecipeBook(), Input.EMPTY, false);
+        super(MC.level, new GameProfile(UUID.randomUUID(), "FreeCamera"));
 
         setId(id);
         setPose(Pose.SWIMMING);
-        connection.setClientLoaded(true); // Otherwise input is frozen
+        //connection.setClientLoaded(true); // Otherwise input is frozen
         getAbilities().flying = true;
         input = new KeyboardInput(MC.options);
+    }
+
+    @Override
+    public void tick() {
+        input.tick();
+        doMotion();
+        super.tick();
     }
 
     @Override
@@ -218,12 +186,6 @@ public class FreeCamera extends LocalPlayer {
         super.setPose(Pose.SWIMMING);
     }
 
-    // Prevents slow down due to being in swimming pose. (Fixes being unable to sprint)
-    @Override
-    public boolean isMovingSlowly() {
-        return false;
-    }
-
     // Prevents water submersion sounds from playing.
     @Override
     protected boolean updateIsUnderwater() {
@@ -235,16 +197,55 @@ public class FreeCamera extends LocalPlayer {
     @Override
     protected void doWaterSplashEffect() {}
 
-    @Override
-    public void aiStep() {
+    private void doMotion() {
         if (ModConfig.INSTANCE.movement.flightMode.equals(ModConfig.FlightMode.DEFAULT)) {
             getAbilities().setFlyingSpeed(0);
             Motion.doMotion(this, ModConfig.INSTANCE.movement.horizontalSpeed, ModConfig.INSTANCE.movement.verticalSpeed);
         } else {
             getAbilities().setFlyingSpeed((float) ModConfig.INSTANCE.movement.verticalSpeed / 10);
+            if (this.input.keyPresses.shift() ^ this.input.keyPresses.jump()) {
+                int direction = this.input.keyPresses.jump() ? 1 : -1;
+                this.setDeltaMovement(this.getDeltaMovement().add(0.0F, ((float) direction * this.getAbilities().getFlyingSpeed() * 3.0F), 0.0F));
+            }
         }
-        super.aiStep();
         getAbilities().flying = true;
         setOnGround(false);
+    }
+
+    @Override
+    public float getViewXRot(float partialTick) {
+        return this.getXRot();
+    }
+
+    @Override
+    public float getViewYRot(float partialTick) {
+        return this.getYRot();
+    }
+
+    // In LivingEntity's aiStep(), these two methods decide whether to call travel(), enabling movement ticking
+    @Override
+    public boolean isEffectiveAi() {
+        return true;
+    }
+
+    @Override
+    public boolean canSimulateMovement() {
+        return true;
+    }
+
+    // Based on LocalPlayer
+    @Override
+    protected void applyInput() {
+        Vec2 vec2 = this.input.getMoveVector();
+        if (vec2.lengthSquared() != 0.0F)
+            vec2 = vec2.scale(0.98F);
+
+        this.xxa = vec2.x;
+        this.zza = vec2.y;
+        this.jumping = this.input.keyPresses.jump();
+        this.yBobO = this.yBob;
+        this.xBobO = this.xBob;
+        this.xBob = this.xBob + (this.getXRot() - this.xBob) * 0.5F;
+        this.yBob = this.yBob + (this.getYRot() - this.yBob) * 0.5F;
     }
 }
