@@ -105,6 +105,7 @@ $RECYCLE.BIN/
 *.lnk
 
 .gradle
+.kotlin/
 build/
 
 # Ignore Gradle GUI config
