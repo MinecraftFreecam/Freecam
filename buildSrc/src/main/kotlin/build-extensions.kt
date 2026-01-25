@@ -1,5 +1,6 @@
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import dev.kikugie.stonecutter.controller.StonecutterControllerExtension
+import dev.kikugie.stonecutter.data.tree.ProjectNode
 import net.xolt.freecam.gradle.ParchmentVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
@@ -17,40 +18,51 @@ fun RepositoryHandler.strictMaven(url: String, alias: String, vararg groups: Str
 val Project.stonecutterBuild get() = extensions.getByType<StonecutterBuildExtension>()
 val Project.stonecutterController get() = extensions.getByType<StonecutterControllerExtension>()
 
-val Project.common get() = requireNotNull(stonecutterBuild.node.sibling("common")) {
+/**
+ * The stonecutter [ProjectNode] for the current version's `:common` project, e.g. `:common:1.12.11`.
+ */
+val Project.commonNode: ProjectNode get() = requireNotNull(stonecutterBuild.node.sibling("common")) {
     "No common project for $project"
 }
-val Project.commonProject get() = rootProject.project(stonecutterBuild.current.project)
-val Project.commonMod get() = commonProject.mod
+
+/**
+ * The current version's `rootProject`, e.g. `project(":1.21.11")`.
+ */
+val Project.currentRootProject get() = rootProject.project(stonecutterBuild.current.project)!!
+
+/**
+ * [Project.mod] for the [current version's root project][Project.currentRootProject].
+ */
+val Project.currentMod get() = currentRootProject.mod
 
 val Project.commonExpansions: Map<String, String>
     get() {
         return mapOf(
-            "javaVersion" to commonMod.propOrNull("java.version"),
-            "modId" to commonMod.id,
-            "modName" to commonMod.name,
-            "modVersion" to commonMod.version,
-            "modGroup" to commonMod.group,
-            "modAuthors" to commonMod.authors.joinToString(", "),
-            "modDescription" to commonMod.description,
-            "modLicense" to commonMod.license,
-            "modHomepage" to commonMod.homepage,
-            "modSource" to commonMod.source,
-            "modIssues" to commonMod.issues,
-            "modGhReleases" to commonMod.ghReleases,
-            "modCurseforge" to commonMod.curseforge,
-            "modModrinth" to commonMod.modrinth,
-            "modCrowdin" to commonMod.crowdin,
-            "minecraftVersion" to commonMod.propOrNull("minecraft_version"),
-            "fabricLoaderVersion" to commonMod.depOrNull("fabric_loader"),
-            "fabricLoaderReq" to commonMod.propOrNull("fabric_loader_req"),
-            "fabricMcReq" to commonMod.propOrNull("fabric_mc_req"),
-            "fabricApiVersion" to commonMod.depOrNull("fabric_api"),
-            "neoForgeVersion" to commonMod.depOrNull("neoforge"),
-            "neoforgeLoaderReq" to commonMod.propOrNull("neoforge_loader_req"),
-            "neoforgeReq" to commonMod.propOrNull("neoforge_req"),
-            "neoforgeMcReq" to commonMod.propOrNull("neoforge_mc_req"),
-            "forgeVersion" to commonMod.depOrNull("forge"),
+            "javaVersion" to currentMod.propOrNull("java.version"),
+            "modId" to currentMod.id,
+            "modName" to currentMod.name,
+            "modVersion" to currentMod.version,
+            "modGroup" to currentMod.group,
+            "modAuthors" to currentMod.authors.joinToString(", "),
+            "modDescription" to currentMod.description,
+            "modLicense" to currentMod.license,
+            "modHomepage" to currentMod.homepage,
+            "modSource" to currentMod.source,
+            "modIssues" to currentMod.issues,
+            "modGhReleases" to currentMod.ghReleases,
+            "modCurseforge" to currentMod.curseforge,
+            "modModrinth" to currentMod.modrinth,
+            "modCrowdin" to currentMod.crowdin,
+            "minecraftVersion" to currentMod.propOrNull("minecraft_version"),
+            "fabricLoaderVersion" to currentMod.depOrNull("fabric_loader"),
+            "fabricLoaderReq" to currentMod.propOrNull("fabric_loader_req"),
+            "fabricMcReq" to currentMod.propOrNull("fabric_mc_req"),
+            "fabricApiVersion" to currentMod.depOrNull("fabric_api"),
+            "neoForgeVersion" to currentMod.depOrNull("neoforge"),
+            "neoforgeLoaderReq" to currentMod.propOrNull("neoforge_loader_req"),
+            "neoforgeReq" to currentMod.propOrNull("neoforge_req"),
+            "neoforgeMcReq" to currentMod.propOrNull("neoforge_mc_req"),
+            "forgeVersion" to currentMod.depOrNull("forge"),
         ).filterValues { it?.isNotEmpty() == true }.mapValues { it.value!! }
     }
 
@@ -58,7 +70,7 @@ val Project.commonExpansions: Map<String, String>
 val Project.commonJsonExpansions get() = buildMap {
     putAll(project.commonExpansions)
     mapValues { (_, v) -> v.replace("\n", "\\\\n") }
-    put("modAuthorsJson", commonMod.authors.joinToString("\", \""))
+    put("modAuthorsJson", currentMod.authors.joinToString("\", \""))
 }
 
 val Project.loader: String? get() = prop("loader")

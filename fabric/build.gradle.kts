@@ -10,25 +10,25 @@ stonecutter {
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:${commonMod.mc}")
+    minecraft("com.mojang:minecraft:${currentMod.mc}")
     mappings(loom.layered {
         officialMojangMappings()
-        commonMod.parchment { mappings, mc ->
+        currentMod.parchment { mappings, mc ->
             parchment("org.parchmentmc.data:parchment-${mc}:$mappings@zip")
         }
     })
 
-    modImplementation("net.fabricmc:fabric-loader:${commonMod.dep("fabric_loader")}")
-    modApi("net.fabricmc.fabric-api:fabric-api:${commonMod.dep("fabric_api")}")
+    modImplementation("net.fabricmc:fabric-loader:${currentMod.dep("fabric_loader")}")
+    modApi("net.fabricmc.fabric-api:fabric-api:${currentMod.dep("fabric_api")}")
 
-    modImplementation("com.terraformersmc:modmenu:${commonMod.dep("modmenu")}") {
+    modImplementation("com.terraformersmc:modmenu:${currentMod.dep("modmenu")}") {
         exclude(module = "fabric-api")
     }
 
-    modApi("me.shedaniel.cloth:cloth-config-fabric:${commonMod.dep("cloth")}") {
+    modApi("me.shedaniel.cloth:cloth-config-fabric:${currentMod.dep("cloth")}") {
         exclude(group = "net.fabricmc.fabric-api")
     }
-    include("me.shedaniel.cloth:cloth-config-fabric:${commonMod.dep("cloth")}")
+    include("me.shedaniel.cloth:cloth-config-fabric:${currentMod.dep("cloth")}")
 }
 
 loom {

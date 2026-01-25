@@ -23,17 +23,17 @@ loom {
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:${commonMod.mc}")
+    minecraft("com.mojang:minecraft:${currentMod.mc}")
     mappings(loom.layered {
         officialMojangMappings()
-        commonMod.parchment { mappings, mc ->
+        currentMod.parchment { mappings, mc ->
             parchment("org.parchmentmc.data:parchment-${mc}:$mappings@zip")
         }
     })
 
-    compileOnly("org.spongepowered:mixin:${commonMod.dep("mixin")}")
-    modCompileOnly("net.fabricmc:fabric-loader:${commonMod.dep("fabric_loader")}")
-    modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:${commonMod.dep("cloth")}")
+    compileOnly("org.spongepowered:mixin:${currentMod.dep("mixin")}")
+    modCompileOnly("net.fabricmc:fabric-loader:${currentMod.dep("fabric_loader")}")
+    modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:${currentMod.dep("cloth")}")
 }
 
 val commonJava: Configuration by configurations.creating {

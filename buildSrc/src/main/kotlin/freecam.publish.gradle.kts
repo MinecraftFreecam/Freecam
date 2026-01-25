@@ -12,19 +12,19 @@ publisher {
 
     github {
         // Extract our repo slug from the github URL
-        repo(commonMod.modProp("source").removePrefix("https://github.com/"))
+        repo(currentMod.modProp("source").removePrefix("https://github.com/"))
 
         // Canonical tag (not the annotated build tag)
-        tag("v${commonMod.modProp("version")}")
+        tag("v${currentMod.modProp("version")}")
         draft(true)
     }
 
     // Format display name, e.g. "1.2.4 for MC 1.20.4 (fabric)"
     displayName =
-        "${commonMod.modProp("version")} for MC ${commonMod.mc} (${loader})"
+        "${currentMod.modProp("version")} for MC ${currentMod.mc} (${loader})"
 
     projectVersion = project.version.toString()
-    versionType = commonMod.releaseType
+    versionType = currentMod.releaseType
     curseEnvironment = "client"
 
     loaders = listOf(project.name)
@@ -33,7 +33,7 @@ publisher {
     // Get the changelog entry using the changelog plugin
     changelog.set(provider {
         val plugin = rootProject.extensions.getByType(ChangelogPluginExtension::class.java)
-        val version = commonMod.modProp("version")
+        val version = currentMod.modProp("version")
 
         if (!plugin.has(version)) {
             logger.warn("No changelog for \"$version\". Using \"unreleased\" instead.")
@@ -51,8 +51,8 @@ publisher {
     // Supported game versions
     gameVersions.set(provider {
         val prop = "supported_mc_versions"
-        val primary = commonMod.mc
-        val common = commonMod.propOrNull(prop).orEmpty()
+        val primary = currentMod.mc
+        val common = currentMod.propOrNull(prop).orEmpty()
         val specific =
             rootProject.findProperty("${loader}_$prop")?.toString().orEmpty()
 

@@ -4,10 +4,10 @@ plugins {
     id("maven-publish")
 }
 
-version = "${loader}-${commonMod.version}+mc${commonMod.mc}"
-group = commonMod.group
+version = "${loader}-${currentMod.version}+mc${currentMod.mc}"
+group = currentMod.group
 base {
-    archivesName = commonMod.id
+    archivesName = currentMod.id
 }
 
 val requiredJava = when {
@@ -42,7 +42,7 @@ repositories {
     mavenCentral()
     maven("https://maven.parchmentmc.org/")
     maven("https://maven.neoforged.net/releases/")
-    commonMod.depOrNull("neoforge_pr")?.let {
+    currentMod.depOrNull("neoforge_pr")?.let {
         maven {
             url = uri("https://prmaven.neoforged.net/NeoForge/pr${it}")
             content { includeModule("net.neoforged", "neoforge") }
