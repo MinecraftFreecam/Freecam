@@ -6,4 +6,4 @@ projects = ["common", "fabric", "neoforge"]
 projects = ["common", "fabric", "neoforge"]
 
 ["1.19.4"]
-projects = ["common", "fabric"]
+projects = ["common", "fabric", "forge"]
