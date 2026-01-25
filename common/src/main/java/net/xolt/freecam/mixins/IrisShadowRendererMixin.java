@@ -10,7 +10,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Pseudo
 @Mixin(
+        //? if >=1.20 {
         targets = "net.irisshaders.iris.shadows.ShadowRenderer",
+        //? } else
+        //targets = "net.coderbot.iris.pipeline.ShadowRenderer",
         remap = false
 )
 public class IrisShadowRendererMixin {

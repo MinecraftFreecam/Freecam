@@ -3,18 +3,24 @@ package net.xolt.freecam.config.gui;
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.platform.Window;
 import me.shedaniel.clothconfig2.gui.entries.TooltipListEntry;
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.AbstractSliderButton;
 import net.minecraft.client.gui.components.AbstractWidget;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.components.events.GuiEventListener;
 import net.minecraft.client.gui.narration.NarratableEntry;
-import net.minecraft.client.input.KeyEvent;
-import net.minecraft.client.input.MouseButtonEvent;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.Mth;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
+//? if >=1.21.11 {
+import net.minecraft.client.input.KeyEvent;
+import net.minecraft.client.input.MouseButtonEvent;
+//? }
+//? if >=1.20.6 {
+import net.minecraft.client.gui.GuiGraphics;
+//? } else {
+/*import com.mojang.blaze3d.vertex.PoseStack;
+*///? }
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -92,7 +98,12 @@ class DoubleSliderEntry extends TooltipListEntry<Double> {
     }
 
     @Override
-    public void render(GuiGraphics graphics, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean isHovered, float delta) {
+    public void render(
+            //? if >=1.20.6 {
+            GuiGraphics
+            //? } else
+            //PoseStack
+                    graphics, int index, int y, int x, int entryWidth, int entryHeight, int mouseX, int mouseY, boolean isHovered, float delta) {
         super.render(graphics, index, y, x, entryWidth, entryHeight, mouseX, mouseY, isHovered, delta);
         Window window = MC.getWindow();
         resetButton.active = isEditable() && getDefaultValue().isPresent() && defaultValue.get() != value.get();
@@ -102,11 +113,19 @@ class DoubleSliderEntry extends TooltipListEntry<Double> {
 
         Component name = getDisplayedFieldName();
         if (MC.font.isBidirectional()) {
-            graphics.drawString(MC.font, name.getVisualOrderText(), window.getGuiScaledWidth() - x - MC.font.width(name), y + 6, getPreferredTextColor());
+            //? if >=1.20.6 {
+            graphics.drawString(
+            //? } else
+            //drawString(graphics,
+                    MC.font, name.getVisualOrderText(), window.getGuiScaledWidth() - x - MC.font.width(name), y + 6, getPreferredTextColor());
             resetButton.setX(x);
             sliderWidget.setX(x + resetButton.getWidth() + 1);
         } else {
-            graphics.drawString(MC.font, name.getVisualOrderText(), x, y + 6, getPreferredTextColor());
+            //? if >=1.20.6 {
+            graphics.drawString(
+            //? } else
+            //drawString(graphics,
+                    MC.font, name.getVisualOrderText(), x, y + 6, getPreferredTextColor());
             resetButton.setX(x + entryWidth - resetButton.getWidth());
             sliderWidget.setX(x + entryWidth - 150);
         }
@@ -139,18 +158,42 @@ class DoubleSliderEntry extends TooltipListEntry<Double> {
         }
 
         @Override
-        public boolean keyPressed(KeyEvent event) {
-            return DoubleSliderEntry.this.isEditable() && super.keyPressed(event);
+        public boolean keyPressed(
+                //? if >=1.21.11 {
+                KeyEvent event
+                //? } else
+                //int keyCode, int scanCode, int modifiers
+        ) {
+            return DoubleSliderEntry.this.isEditable() && super.keyPressed(
+                    //? if >=1.21.11 {
+                    event
+                    //? } else
+                    //keyCode, scanCode, modifiers
+            );
         }
 
         @Override
-        public boolean mouseDragged(MouseButtonEvent event, double double_3, double double_4) {
-            return DoubleSliderEntry.this.isEditable() && super.mouseDragged(event, double_3, double_4);
+        public boolean mouseDragged(
+                //? if >=1.21.11 {
+                MouseButtonEvent event, double double_3, double double_4
+                //? } else
+                //double mouseX, double mouseY, int button, double dragX, double dragY
+        ) {
+            return DoubleSliderEntry.this.isEditable() && super.mouseDragged(
+                    //? if >=1.21.11 {
+                    event, double_3, double_4
+                    //? } else
+                    //mouseX, mouseY, button, dragX, dragY
+            );
         }
 
+        //? if >=1.21.11
         @Override
         public void setValue(double value) {
+            //? if >=1.21.11 {
             super.setValue(value);
+            //? } else
+            //this.value = value;
         }
     }
 }

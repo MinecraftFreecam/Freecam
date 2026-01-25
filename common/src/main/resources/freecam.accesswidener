@@ -1,2 +1,9 @@
 accessWidener v2 named
+#? if >=1.21
 accessible method net/minecraft/client/multiplayer/ClientPacketListener setClientLoaded (Z)V
+
+#? if <1.21
+#accessible field net/minecraft/client/renderer/entity/EntityRenderDispatcher shouldRenderShadow Z
+
+#? if <1.20
+#accessible field net/minecraft/client/KeyMapping key Lcom/mojang/blaze3d/platform/InputConstants$Key;

@@ -10,7 +10,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Pseudo
 @Mixin(
+        //? if >=1.20 {
         targets = "net.irisshaders.iris.pathways.HandRenderer",
+        //? } else
+        //targets = "net.coderbot.iris.pipeline.HandRenderer",
         remap = false
 )
 public class IrisHandRendererMixin {

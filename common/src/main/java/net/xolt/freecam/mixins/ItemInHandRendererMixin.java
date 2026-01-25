@@ -1,6 +1,8 @@
 package net.xolt.freecam.mixins;
 
-import net.minecraft.client.renderer.SubmitNodeCollector;
+import com.mojang.blaze3d.vertex.PoseStack;
+import net.minecraft.client.player.LocalPlayer;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.xolt.freecam.Freecam;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
@@ -9,13 +11,14 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
+//? if >= 1.21.11 {
+import net.minecraft.client.renderer.SubmitNodeCollector;
+//? } else {
+/*import net.minecraft.client.renderer.MultiBufferSource;
+*///? }
 
 import static net.xolt.freecam.Freecam.MC;
-
-import com.mojang.blaze3d.vertex.PoseStack;
-import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.ItemInHandRenderer;
-import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(ItemInHandRenderer.class)
 public class ItemInHandRendererMixin {
@@ -43,7 +46,12 @@ public class ItemInHandRendererMixin {
     }
 
     @Inject(method = "renderHandsWithItems", at = @At("HEAD"))
-    private void storeTickDelta(float partialTick, PoseStack poseStack, SubmitNodeCollector nodeCollector, LocalPlayer player, int packedLight, CallbackInfo ci) {
+    private void storeTickDelta(float partialTick, PoseStack poseStack,
+                                //? if >=1.21.11 {
+                                SubmitNodeCollector nodeCollector,
+                                //? } else
+                                //MultiBufferSource.BufferSource vertexConsumers,
+                                LocalPlayer player, int packedLight, CallbackInfo ci) {
         this.freecam$tickDelta = partialTick;
     }
 

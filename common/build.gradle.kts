@@ -33,7 +33,7 @@ dependencies {
             }
     })
 
-    compileOnly("org.spongepowered:mixin:0.8.5")
+    compileOnly("org.spongepowered:mixin:${commonMod.dep("mixin")}")
     modCompileOnly("net.fabricmc:fabric-loader:${commonMod.dep("fabric_loader")}")
     modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:${commonMod.dep("cloth")}")
 }

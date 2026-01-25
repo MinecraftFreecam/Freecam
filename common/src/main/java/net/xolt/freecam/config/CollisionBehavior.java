@@ -15,7 +15,11 @@ import java.util.regex.Pattern;
 public class CollisionBehavior {
 
     private static final Predicate<Block> transparent = Builder.builder()
-            .matching(TransparentBlock.class, IronBarsBlock.class)
+            //? if >=1.20.6 {
+            .matching(TransparentBlock.class)
+            //? } else
+            //.matching(AbstractGlassBlock.class)
+            .matching(IronBarsBlock.class)
             .matching(BarrierBlock.class)
             .build();
 
