@@ -1,5 +1,6 @@
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import dev.kikugie.stonecutter.controller.StonecutterControllerExtension
+import net.xolt.freecam.gradle.ParchmentVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.kotlin.dsl.getByType
@@ -83,7 +84,12 @@ value class ModData(private val project: Project) {
     val curseforge: String get() = modProp("curseforge")
     val modrinth: String get() = modProp("modrinth")
     val crowdin: String get() = modProp("crowdin")
+    val parchment: ParchmentVersion? get() = depOrNull("parchment")?.let(ParchmentVersion::parse)
     val mc: String get() = depOrNull("minecraft") ?: project.stonecutterBuild.current.version
+
+    inline fun parchment(block: (mappings: String, minecraft: String) -> Unit) {
+        parchment?.let { block(it.mappings, it.minecraft ?: mc) }
+    }
 
     fun propOrNull(key: String) = project.prop(key)
     fun prop(key: String) = requireNotNull(propOrNull(key)) { "Missing '$key'" }
