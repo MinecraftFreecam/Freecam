@@ -28,7 +28,6 @@ public class ItemInHandRendererMixin {
         if (!Freecam.isEnabled())
             return;
 
-        float partialTick = args.get(0);
         args.set(1, Freecam.getFreeCamera().xBobO);
         args.set(2, Freecam.getFreeCamera().xBob);
     }
@@ -39,7 +38,6 @@ public class ItemInHandRendererMixin {
         if (!Freecam.isEnabled())
             return;
 
-        float partialTick = args.get(0);
         args.set(1, Freecam.getFreeCamera().yBobO);
         args.set(2, Freecam.getFreeCamera().yBob);
     }
