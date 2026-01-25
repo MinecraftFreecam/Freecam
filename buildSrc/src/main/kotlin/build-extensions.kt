@@ -31,7 +31,6 @@ val Project.commonExpansions: Map<String, String>
             "modVersion" to commonMod.version,
             "modGroup" to commonMod.group,
             "modAuthors" to commonMod.authors.joinToString(", "),
-            "modAuthorsJson" to commonMod.authors.joinToString("\", \""),
             "modDescription" to commonMod.description,
             "modLicense" to commonMod.license,
             "modHomepage" to commonMod.homepage,
@@ -53,8 +52,13 @@ val Project.commonExpansions: Map<String, String>
             "forgeVersion" to commonMod.depOrNull("forge"),
         ).filterValues { it?.isNotEmpty() == true }.mapValues { it.value!! }
     }
-val Project.commonJsonExpansions get() =
-    project.commonExpansions.mapValues { (_, v) -> v.replace("\n", "\\\\n") }
+
+// TODO: handle JSON as structured data, to avoid string injection hacks
+val Project.commonJsonExpansions get() = buildMap {
+    putAll(project.commonExpansions)
+    mapValues { (_, v) -> v.replace("\n", "\\\\n") }
+    put("modAuthorsJson", commonMod.authors.joinToString("\", \""))
+}
 
 val Project.loader: String? get() = prop("loader")
 
