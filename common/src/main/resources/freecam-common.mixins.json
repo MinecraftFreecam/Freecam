@@ -6,7 +6,6 @@
   "client": [
     "AvatarRendererMixin",
     "BlockStateBaseMixin",
-    "BubbleColumnAmbientSoundHandlerMixin",
     "CameraMixin",
     "ClientPacketListenerMixin",
     "EntityMixin",

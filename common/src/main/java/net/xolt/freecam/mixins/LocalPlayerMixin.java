@@ -21,4 +21,18 @@ public class LocalPlayerMixin {
             cir.setReturnValue(true);
         }
     }
+
+    // Makes arm movement depend upon FreeCamera movement rather than player movement.
+    @Inject(method = "getViewXRot", at = @At("HEAD"), cancellable = true)
+    private void onGetViewXRot(float partialTick, CallbackInfoReturnable<Float> cir) {
+        if (Freecam.isEnabled())
+            cir.setReturnValue(Freecam.getFreeCamera().getViewXRot(partialTick));
+    }
+
+    // Makes arm movement depend upon FreeCamera movement rather than player movement.
+    @Inject(method = "getViewYRot", at = @At("HEAD"), cancellable = true)
+    private void onGetViewYRot(float partialTick, CallbackInfoReturnable<Float> cir) {
+        if (Freecam.isEnabled())
+            cir.setReturnValue(Freecam.getFreeCamera().getViewYRot(partialTick));
+    }
 }
