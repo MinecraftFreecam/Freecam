@@ -15,6 +15,8 @@ tomlj = { group = "org.tomlj", name = "tomlj", version.ref = "tomlj" }
 stonecutter = { id = "dev.kikugie.stonecutter", version.ref = "stonecutter" }
 fabric-loom = { id = "fabric-loom", version.ref = "fabric-loom" }
 moddev = { id = "net.neoforged.moddev", version.ref = "moddev" }
+moddev-legacy = {id = "net.neoforged.moddev.legacyforge", version.ref = "moddev"}
+fletchingtable = { id = "dev.kikugie.fletching-table", version.ref = "fletchingtable" }
 fletchingtable-fabric = { id = "dev.kikugie.fletching-table.fabric", version.ref = "fletchingtable" }
 fletchingtable-neoforge = { id = "dev.kikugie.fletching-table.neoforge", version.ref = "fletchingtable" }
 foojay-resolver = { id = "org.gradle.toolchains.foojay-resolver-convention", version.ref = "foojay-resolver" }
