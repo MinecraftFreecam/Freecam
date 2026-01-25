@@ -26,11 +26,9 @@ dependencies {
     minecraft("com.mojang:minecraft:${commonMod.mc}")
     mappings(loom.layered {
         officialMojangMappings()
-        commonMod.depOrNull("parchment")
-            ?.split('-', limit = 2)
-            ?.also { (mc, mappings) ->
-                parchment("org.parchmentmc.data:parchment-${mc}:$mappings@zip")
-            }
+        commonMod.parchment { mappings, mc ->
+            parchment("org.parchmentmc.data:parchment-${mc}:$mappings@zip")
+        }
     })
 
     compileOnly("org.spongepowered:mixin:${commonMod.dep("mixin")}")
