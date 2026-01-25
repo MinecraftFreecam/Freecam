@@ -24,19 +24,14 @@ val Project.commonMod get() = commonProject.mod
 
 val Project.commonExpansions: Map<String, String>
     get() {
-        val authors = commonMod.authors
-            .split(',')
-            .map(String::trim)
-            .filter(String::isNotEmpty)
-
         return mapOf(
             "javaVersion" to commonMod.propOrNull("java.version"),
             "modId" to commonMod.id,
             "modName" to commonMod.name,
             "modVersion" to commonMod.version,
             "modGroup" to commonMod.group,
-            "modAuthors" to authors.joinToString(", "),
-            "modAuthorsJson" to authors.joinToString("\", \""),
+            "modAuthors" to commonMod.authors.joinToString(", "),
+            "modAuthorsJson" to commonMod.authors.joinToString("\", \""),
             "modDescription" to commonMod.description,
             "modLicense" to commonMod.license,
             "modHomepage" to commonMod.homepage,
@@ -70,7 +65,11 @@ value class ModData(private val project: Project) {
     val version: String get() = modProp("version")
     val releaseType: String get() = modProp("release_type")
     val group: String get() = modProp("group")
-    val authors: String get() = modProp("authors")
+    val authors: List<String> get() =
+        modProp("authors")
+            .split(',')
+            .map(String::trim)
+            .filter(String::isNotEmpty)
     val description: String get() = modProp("description")
     val license: String get() = modProp("license")
     val homepage: String get() = modProp("homepage")
