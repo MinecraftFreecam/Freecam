@@ -4,6 +4,7 @@ plugins {
 
 dependencies {
     implementation(plugin(libs.plugins.stonecutter))
+    implementation(plugin(libs.plugins.foojay.resolver))
     testImplementation(kotlin("test"))
 }
 

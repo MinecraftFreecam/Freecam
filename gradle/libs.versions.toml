@@ -3,6 +3,7 @@ stonecutter = "0.8.3"
 fabric-loom = "1.14-SNAPSHOT"
 moddev = "2.0.140"
 fletchingtable = "0.1.0-alpha.22"
+foojay-resolver = "1.0.0"
 modpublisher = "2.1.7+snapshot.0"
 jetbrains-changelog = "2.2.0"
 
@@ -12,5 +13,6 @@ fabric-loom = { id = "fabric-loom", version.ref = "fabric-loom" }
 moddev = { id = "net.neoforged.moddev", version.ref = "moddev" }
 fletchingtable-fabric = { id = "dev.kikugie.fletching-table.fabric", version.ref = "fletchingtable" }
 fletchingtable-neoforge = { id = "dev.kikugie.fletching-table.neoforge", version.ref = "fletchingtable" }
+foojay-resolver = { id = "org.gradle.toolchains.foojay-resolver-convention", version.ref = "foojay-resolver" }
 modpublisher = { id = "com.hypherionmc.modutils.modpublisher", version.ref = "modpublisher" }
 jetbrains-changelog = { id = "org.jetbrains.changelog", version.ref = "jetbrains-changelog" }
