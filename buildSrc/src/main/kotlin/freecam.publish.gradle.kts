@@ -24,7 +24,7 @@ publisher {
         "${commonMod.modProp("version")} for MC ${commonMod.mc} (${loader})"
 
     projectVersion = project.version.toString()
-    versionType = commonMod.prop("release_type")
+    versionType = commonMod.releaseType
     curseEnvironment = "client"
 
     loaders = listOf(project.name)

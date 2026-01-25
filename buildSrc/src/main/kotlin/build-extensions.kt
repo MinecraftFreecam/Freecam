@@ -2,7 +2,8 @@ import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import dev.kikugie.stonecutter.controller.StonecutterControllerExtension
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
-import org.gradle.kotlin.dsl.*
+import org.gradle.kotlin.dsl.getByType
+import org.gradle.kotlin.dsl.maven
 
 val Project.mod: ModData get() = ModData(this)
 fun Project.prop(key: String): String? = findProperty(key)?.toString()
@@ -67,6 +68,7 @@ value class ModData(private val project: Project) {
     val id: String get() = modProp("id")
     val name: String get() = modProp("name")
     val version: String get() = modProp("version")
+    val releaseType: String get() = modProp("release_type")
     val group: String get() = modProp("group")
     val authors: String get() = modProp("authors")
     val description: String get() = modProp("description")
