@@ -9,7 +9,7 @@ if (this == rootProject) {
     tasks.named<Wrapper>("wrapper") {
         // Use "all" so we get sources and javadoc too
         distributionType = Wrapper.DistributionType.ALL
-        gradleVersion = "8.11"
+        gradleVersion = "9.2.1"
     }
 
     // Helper task that bumps the version number
