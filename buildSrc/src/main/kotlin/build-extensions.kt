@@ -6,7 +6,6 @@ import org.gradle.kotlin.dsl.*
 
 val Project.mod: ModData get() = ModData(this)
 fun Project.prop(key: String): String? = findProperty(key)?.toString()
-fun String.upperCaseFirst() = replaceFirstChar { if (it.isLowerCase()) it.uppercaseChar() else it }
 
 fun RepositoryHandler.strictMaven(url: String, alias: String, vararg groups: String) = exclusiveContent {
     forRepository { maven(url) { name = alias } }
