@@ -243,6 +243,7 @@ public class FreeCamera extends AbstractClientPlayer {
         this.xxa = vec2.x;
         this.zza = vec2.y;
         this.jumping = this.input.keyPresses.jump();
+        this.setSprinting((this.input.keyPresses.sprint() && this.input.keyPresses.forward()) || (this.input.keyPresses.forward() && this.isSprinting()));
         this.yBobO = this.yBob;
         this.xBobO = this.xBob;
         this.xBob = this.xBob + (this.getXRot() - this.xBob) * 0.5F;
