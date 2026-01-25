@@ -1,6 +1,5 @@
 package net.xolt.freecam.mixins;
 
-import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.resources.Identifier;
 import net.xolt.freecam.Freecam;
 import org.spongepowered.asm.mixin.Mixin;
@@ -8,6 +7,11 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+//? if >=1.20.6 {
+import net.minecraft.client.gui.GuiGraphics;
+ //? } else {
+/*import com.mojang.blaze3d.vertex.PoseStack;
+*///? }
 
 import static net.xolt.freecam.Freecam.MC;
 
@@ -26,7 +30,14 @@ public class GuiMixin {
 
     // Don't render equipped-item overlays while Freecam is active
     @Inject(method = "renderTextureOverlay", at = @At("HEAD"), cancellable = true)
-    private void onRenderTextureOverlay(GuiGraphics guiGraphics, Identifier shaderIdentifier, float alpha, CallbackInfo ci) {
+    private void onRenderTextureOverlay(
+            //? if >=1.20.6 {
+            GuiGraphics guiGraphics,
+            //? } else
+            //PoseStack poseStack,
+            Identifier shaderIdentifier,
+            float alpha,
+            CallbackInfo ci) {
         if (Freecam.isEnabled()) {
             ci.cancel();
         }

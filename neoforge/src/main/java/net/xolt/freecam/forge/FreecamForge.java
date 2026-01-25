@@ -1,6 +1,5 @@
 package net.xolt.freecam.forge;
 
-import me.shedaniel.autoconfig.AutoConfigClient;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.EventPriority;
@@ -16,29 +15,39 @@ import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfig;
 
 @Mod(value = Freecam.MOD_ID, dist = Dist.CLIENT)
-@EventBusSubscriber(value = Dist.CLIENT)
+@EventBusSubscriber(
+        //? neoforge: <21
+        //bus = EventBusSubscriber.Bus.MOD,
+        value = Dist.CLIENT
+)
 @SuppressWarnings("unused")
 public class FreecamForge {
 
     public FreecamForge(ModContainer container) {
         ModConfig.init();
         // Register our config screen with Forge
-        container.registerExtensionPoint(IConfigScreenFactory.class, (client, parent) ->
-                AutoConfigClient.getConfigScreen(ModConfig.class, parent).get());
+        container.registerExtensionPoint(IConfigScreenFactory.class, (client, parent) -> ModConfig.getConfigScreen());
     }
+
 
     @SubscribeEvent
     public static void registerKeymappings(RegisterKeyMappingsEvent event) {
         ModBindings.forEach(event::register);
     }
 
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void preTick(ClientTickEvent.Pre event) {
-        Freecam.preTick(Minecraft.getInstance());
-    }
+    //? neoforge: <21 {
+    /*@EventBusSubscriber(bus = EventBusSubscriber.Bus.GAME, value = Dist.CLIENT)
+    public static class GlobalEventHandler {
+    *///? }
+        @SubscribeEvent(priority = EventPriority.HIGH)
+        public static void preTick(ClientTickEvent.Pre event) {
+            Freecam.preTick(Minecraft.getInstance());
+        }
 
-    @SubscribeEvent(priority = EventPriority.HIGH)
-    public static void postTick(ClientTickEvent.Post event) {
-        Freecam.postTick(Minecraft.getInstance());
-    }
+        @SubscribeEvent(priority = EventPriority.HIGH)
+        public static void postTick(ClientTickEvent.Post event) {
+            Freecam.postTick(Minecraft.getInstance());
+        }
+    //? neoforge: <21
+    //}
 }

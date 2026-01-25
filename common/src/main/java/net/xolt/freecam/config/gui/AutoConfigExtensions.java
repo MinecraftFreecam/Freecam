@@ -1,12 +1,16 @@
 package net.xolt.freecam.config.gui;
 
-import me.shedaniel.autoconfig.AutoConfigClient;
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.gui.DefaultGuiProviders;
 import me.shedaniel.autoconfig.gui.DefaultGuiTransformers;
 import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
 import me.shedaniel.clothconfig2.api.ConfigEntryBuilder;
 import net.minecraft.network.chat.Component;
+//? cloth: >=21.11 {
+import me.shedaniel.autoconfig.AutoConfigClient;
+ //? } else {
+/*import me.shedaniel.autoconfig.AutoConfig;
+*///? }
 
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
@@ -29,7 +33,13 @@ public class AutoConfigExtensions {
     private AutoConfigExtensions() {}
 
     public static void apply(Class<? extends ConfigData> configClass) {
-        GuiRegistry registry = AutoConfigClient.getGuiRegistry(configClass);
+
+        GuiRegistry registry =
+                //? cloth: >=21.11 {
+                AutoConfigClient
+                 //? } else
+                //AutoConfig
+                        .getGuiRegistry(configClass);
 
         ModBindingsConfigImpl.apply(registry);
         ValidateRegexImpl.apply(registry);

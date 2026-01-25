@@ -13,6 +13,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+//? if <1.21.11 {
+/*import net.minecraft.world.level.BlockGetter;
+*///? }
 
 @Mixin(Camera.class)
 public class CameraMixin {
@@ -23,7 +26,16 @@ public class CameraMixin {
 
     // When toggling freecam, update the camera's eye height instantly without any transition.
     @Inject(method = "setup", at = @At("HEAD"))
-    public void onUpdate(Level level, Entity newFocusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
+    public void onUpdate(
+            //? if >=1.21.11 {
+            Level level,
+            //? } else
+            //BlockGetter area,
+            Entity newFocusedEntity,
+            boolean thirdPerson,
+            boolean inverseView,
+            float tickDelta,
+            CallbackInfo ci) {
         if (newFocusedEntity == null || this.entity == null || newFocusedEntity.equals(this.entity)) {
             return;
         }

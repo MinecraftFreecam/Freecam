@@ -8,20 +8,35 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDisplayOption;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
+import net.minecraft.client.gui.screens.Screen;
 import net.xolt.freecam.config.gui.AutoConfigExtensions;
 import net.xolt.freecam.config.gui.BoundedContinuous;
 import net.xolt.freecam.config.gui.ModBindingsConfig;
 import net.xolt.freecam.config.gui.ValidateRegex;
 import org.jetbrains.annotations.NotNull;
+//? cloth: >=21.11 {
+import me.shedaniel.autoconfig.AutoConfigClient;
+//? }
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static net.xolt.freecam.Freecam.MC;
 
 @Config(name = "freecam")
 public class ModConfig implements ConfigData {
 
     @ConfigEntry.Gui.Excluded
     public static ModConfig INSTANCE;
+
+    public static Screen getConfigScreen() {
+        return
+                //? cloth: >=21.11 {
+                AutoConfigClient
+                //? } else
+                //AutoConfig
+                        .getConfigScreen(ModConfig.class, MC.screen).get();
+    }
 
     public static void init() {
         ConfigHolder<ModConfig> holder = AutoConfig.register(ModConfig.class, JanksonConfigSerializer::new);
