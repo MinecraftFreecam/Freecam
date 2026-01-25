@@ -1,5 +1,5 @@
 [versions]
-stonecutter = "0.8.2"
+stonecutter = "0.8.3"
 fabric-loom = "1.14-SNAPSHOT"
 moddev = "2.0.140"
 fletchingtable = "0.1.0-alpha.22"
