@@ -14,7 +14,7 @@ defaults:
 
 jobs:
   prepare:
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
       versions: ${{ steps.versions.outputs.result }}
