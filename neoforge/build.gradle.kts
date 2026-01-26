@@ -7,9 +7,8 @@ plugins {
 val processedAw = stonecutterBuild.process(project(":common").file("src/main/resources/freecam.accesswidener"), "build/stonecutter/processed.aw");
 
 fletchingTable {
-    accessConverter.register("main") {
-        // Access widener file relative to `src/main/resources`
-        // Converted to `META-INF/accesstransformer.cfg` by default
+    // Convert accesswidener to META-INF/accesstransformer.cfg
+    accessConverter.register(sourceSets.main) {
         add(processedAw.name)
     }
 }
