@@ -65,8 +65,8 @@ sourceSets.main {
 tasks.register<Copy>("buildAndCollect") {
     group = "build"
     from(tasks.jar.map { it.archiveFile })
-    into(rootProject.layout.buildDirectory.file("libs/${project.property("mod.version")}"))
-    dependsOn("build")
+    into(rootProject.layout.buildDirectory.file("libs/${currentMod.version}"))
+    dependsOn(tasks.build)
 }
 
 tasks.named("createMinecraftArtifacts") {
