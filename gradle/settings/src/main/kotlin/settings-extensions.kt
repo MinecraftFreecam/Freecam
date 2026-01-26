@@ -8,9 +8,6 @@ private val logger = getLogger("stonecutter.settings")
 /**
  * Loads `stonecutter.versions.toml` and returns a map of Gradle project names
  * to the Minecraft versions they should be built against.
- *
- * The `common` project automatically includes the versions used by all other
- * projects.
  */
 fun Settings.loadStonecutterVersions(): Map<String, List<String>> {
     val versionsFile = rootDir.resolve("stonecutter.versions.toml").toPath()
@@ -25,15 +22,16 @@ fun Settings.loadStonecutterVersions(): Map<String, List<String>> {
             .map { it.toString() }
 
         if (projects.isEmpty()) {
-            logger.warn(
-                "{} has no projects; registering for :common only\n  configured in: {}",
+            // A configured version without any projects is an error, but avoid throwing as it could be done to
+            // temporarily disable a build
+            logger.error(
+                "{} has no projects.\n  configured in: {}",
                 version,
                 versionsFile
             )
         }
 
-        // Implicitly add all versions to `:common`
-        (projects + "common").forEach {
+        projects.forEach {
             acc.getOrPut(it) { mutableSetOf() }.add(version)
         }
 
