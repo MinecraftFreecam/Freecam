@@ -4,8 +4,12 @@ fabric-loom = "1.14-SNAPSHOT"
 moddev = "2.0.140"
 fletchingtable = "0.1.0-alpha.22"
 foojay-resolver = "1.0.0"
+tomlj = "1.1.1"
 modpublisher = "2.1.7+snapshot.0"
 jetbrains-changelog = "2.2.0"
+
+[libraries]
+tomlj = { group = "org.tomlj", name = "tomlj", version.ref = "tomlj" }
 
 [plugins]
 stonecutter = { id = "dev.kikugie.stonecutter", version.ref = "stonecutter" }
