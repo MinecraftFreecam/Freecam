@@ -20,29 +20,15 @@ plugins {
     id("freecam.settings-plugin")
 }
 
-val commonVersions = providers.gradleProperty("stonecutter_enabled_common_versions").orNull?.split(",")?.map { it.trim() } ?: emptyList()
-val fabricVersions = providers.gradleProperty("stonecutter_enabled_fabric_versions").orNull?.split(",")?.map { it.trim() } ?: emptyList()
-//val forgeVersions = providers.gradleProperty("stonecutter_enabled_forge_versions").orNull?.split(",")?.map { it.trim() } ?: emptyList()
-val neoforgeVersions = providers.gradleProperty("stonecutter_enabled_neoforge_versions").orNull?.split(",")?.map { it.trim() } ?: emptyList()
-val dists = mapOf(
-        "common" to commonVersions,
-//        "forge" to forgeVersions,
-        "fabric" to fabricVersions,
-        "neoforge" to neoforgeVersions
-)
-val uniqueVersions = dists.values.flatten().distinct()
-
 stonecutter {
     kotlinController = true
     centralScript = "build.gradle.kts"
 
     create(rootProject) {
-        versions(*uniqueVersions.toTypedArray())
-
-        dists.forEach { (branchName, branchVersions) ->
-                branch(branchName) {
-                    versions(*branchVersions.toTypedArray())
-                }
+        val projectVersions = loadStonecutterVersions()
+        versions(projectVersions.values.flatten().distinct())
+        projectVersions.forEach { (name, mcVersions) ->
+            branch(name) { versions(mcVersions) }
         }
     }
 }
