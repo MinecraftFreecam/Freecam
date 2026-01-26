@@ -4,67 +4,120 @@ on:
   push:
   pull_request:
 
-# Only allow running one build job at a time to optimise cache hits
+# Only allow running one build per branch at a time to optimise cache hits
 concurrency:
-  group: builds
+  group: builds-${{ github.ref }}
+
+defaults:
+  run:
+    shell: bash
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
-    # Avoid duplicate runs when both `push` and `pull_request` are triggered:
-    if: github.event_name != 'pull_request' || github.event.pull_request.head.repo.full_name != github.event.pull_request.base.repo.full_name
+  prepare:
+    runs-on: ubuntu-slim
+    timeout-minutes: 5
+    outputs:
+      versions: ${{ steps.versions.outputs.result }}
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      - name: Checkout versions file
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: stonecutter.versions.toml
+          sparse-checkout-cone-mode: false
 
-      - name: Calculate metadata
-        id: data
-        run: |
-          # Calculate data
-          full="${{ github.sha }}"
-          short="${full:0:6}"
-          date="$(date --utc +'%Y-%m-%d_%H-%M-%S')"
-          forge="$(grep --max-count=1 --only-matching --word-regexp '\(neo\)\?forge' gradle.properties)"
-          minecraft="$(sed -ne 's/^\s*minecraft_version\s*=\s*\(.*\)$/\1/p' gradle.properties)"
+      - name: Generate versions matrix
+        id: versions
+        uses: mikefarah/yq@v4
+        with:
+          cmd: |
+            yq --output-format=json --indent=0 '
+              to_entries | map({
+                "minecraft": .key,
+                "projects": .value.projects
+              })
+            ' stonecutter.versions.toml
 
-          # Print to output
-          echo "full_sha=$full" >> $GITHUB_OUTPUT
-          echo "short_sha=$short" >> $GITHUB_OUTPUT
-          echo "date=$date" >> $GITHUB_OUTPUT
-          echo "forge_name=$forge" >> $GITHUB_OUTPUT
-          echo "minecraft=$minecraft" >> $GITHUB_OUTPUT
-          echo "name_suffix=${date}-${short}-mc${minecraft}" >> $GITHUB_OUTPUT
+  build:
+    name: Build (${{ matrix.minecraft }})
+    runs-on: ubuntu-latest
 
-          # Print to stdout too
-          echo Metadata:
-          cat $GITHUB_OUTPUT
+    needs: prepare
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.prepare.outputs.versions) }}
+    timeout-minutes: 120
 
-      - name: Setup Java
-        uses: actions/setup-java@v4
+    steps:
+      - uses: actions/checkout@v6
+
+      # Install Java used by the Gradle wrapper.
+      # The JVM used to build is installed separately by the foojay resolver.
+      - uses: actions/setup-java@v5
         with:
           java-version: '21'
-          distribution: microsoft
-      - name: Setup Gradle
-        uses: gradle/actions/setup-gradle@v3
+          distribution: temurin
+      - uses: gradle/actions/setup-gradle@v5
 
-      - name: Build
-        run: ./gradlew buildAndCollect
+      - name: Build for MC ${{ matrix.minecraft }}
+        env:
+          minecraft: ${{ matrix.minecraft }}
+          projects: ${{ toJSON(matrix.projects) }}
+        run: |
+          # Build each :project:version:build task
+          mapfile -t tasks < <(
+            echo "$projects" | jq --raw-output --arg mc "$minecraft" '.[] | ":\(.):\($mc):build"'
+          )
+          ./gradlew "${tasks[@]}"
+
+      # Find the jar files to upload
+      - name: Get jar files
+        env:
+          projects: ${{ toJSON(matrix.projects) }}
+          minecraft: ${{ matrix.minecraft }}
+        run: |
+          shopt -s nullglob
+          echo "$projects" | jq --raw-output '.[]' | while read proj; do
+            # Find the main jar
+            jar_paths=("$proj/versions/$minecraft/build/libs/freecam-$proj-"*"+mc$minecraft.jar")
+            if (( ${#jar_paths[@]} < 1 )); then
+              echo "Warning: no jar found for $proj $minecraft" >&2
+              continue
+            elif (( ${#jar_paths[@]} > 1 )); then
+              echo "Warning: multiple jars found for $proj $minecraft" >&2
+            fi
+            jar_path="${jar_paths[0]}"
+            # Export an env var per project
+            echo "${proj}_jar_name=$(basename "$jar_path")" >> $GITHUB_ENV
+            echo "${proj}_jar_path=$jar_path" >> $GITHUB_ENV
+          done
 
         # Upload separately, or they'll be zipped together
       - name: Upload Fabric build
-        uses: actions/upload-artifact@v4
+        if: contains(matrix.projects, 'fabric')
+        uses: actions/upload-artifact@v6
         with:
-          name: freecam-fabric-${{ steps.data.outputs.name_suffix }}.jar
-          path: |
-            build/libs/*/*-fabric-*.jar
+          name: ${{ env.fabric_jar_name }}
+          path: ${{ env.fabric_jar_path }}
           retention-days: 90
           if-no-files-found: error
+
+      - name: Upload Neoforge build
+        if: contains(matrix.projects, 'neoforge')
+        uses: actions/upload-artifact@v6
+        with:
+          name: ${{ env.neoforge_jar_name }}
+          path: ${{ env.neoforge_jar_path }}
+          retention-days: 90
+          if-no-files-found: error
+
       - name: Upload Forge build
-        uses: actions/upload-artifact@v4
+        if: contains(matrix.projects, 'forge')
+        uses: actions/upload-artifact@v6
         with:
-          name: freecam-${{ steps.data.outputs.forge_name }}-${{ steps.data.outputs.name_suffix }}.jar
-          path: |
-            build/libs/*/*-${{ steps.data.outputs.forge_name }}-*.jar
+          name: ${{ env.forge_jar_name }}
+          path: ${{ env.forge_jar_path }}
           retention-days: 90
           if-no-files-found: error
+
