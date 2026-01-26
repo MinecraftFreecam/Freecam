@@ -1,6 +1,10 @@
-# Minecraft versions to build for each Gradle project.
+# Gradle projects to build for the corresponding Minecraft version.
 # The :common project is built implicitly for all versions listed here.
-[projects]
-fabric   = ["1.19.4", "1.20.6", "1.21.11"]
-neoforge = ["1.20.6", "1.21.11"]
-forge    = []
+["1.21.11"]
+projects = ["fabric", "neoforge"]
+
+["1.20.6"]
+projects = ["fabric", "neoforge"]
+
+["1.19.4"]
+projects = ["fabric"]

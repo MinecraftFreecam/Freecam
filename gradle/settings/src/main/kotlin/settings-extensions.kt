@@ -1,31 +1,42 @@
 import org.gradle.api.initialization.Settings
+import org.slf4j.LoggerFactory.getLogger
 import org.tomlj.Toml
+import org.tomlj.TomlTable
+
+private val logger = getLogger("stonecutter.settings")
 
 /**
  * Loads `stonecutter.versions.toml` and returns a map of Gradle project names
  * to the Minecraft versions they should be built against.
  *
- * The `common` project is derived automatically from the versions used by all
- * other projects.
+ * The `common` project automatically includes the versions used by all other
+ * projects.
  */
 fun Settings.loadStonecutterVersions(): Map<String, List<String>> {
     val versionsFile = rootDir.resolve("stonecutter.versions.toml").toPath()
 
-    val table = Toml.parse(versionsFile)
-        .getTable("projects")
-        ?: error("Missing [projects] table")
+    logger.info("Loading stonecutter versions from {}", versionsFile)
+    val table: TomlTable = Toml.parse(versionsFile)
 
-        return buildMap {
-            table.keySet().forEach { project ->
-                table.getArrayOrEmpty(project)
-                    .toList()
-                    .takeUnless { it.isEmpty() }
-                    ?.map { it.toString() }
-                    ?.also { put(project, it) }
-            }
-            // compute :common as the union of all targeted versions
-            values.flatten().distinct().also { allVersions ->
-                put("common", allVersions)
-            }
+    return table.keySet().fold(mutableMapOf<String, MutableSet<String>>()) { acc, version ->
+        val projects = table.getTableOrEmpty(listOf(version))
+            .getArrayOrEmpty("projects")
+            .toList()
+            .map { it.toString() }
+
+        if (projects.isEmpty()) {
+            logger.warn(
+                "{} has no projects; registering for :common only\n  configured in: {}",
+                version,
+                versionsFile
+            )
         }
-    }
+
+        // Implicitly add all versions to `:common`
+        (projects + "common").forEach {
+            acc.getOrPut(it) { mutableSetOf() }.add(version)
+        }
+
+        acc
+    }.mapValues { (_, versions) -> versions.sorted() }
+}
