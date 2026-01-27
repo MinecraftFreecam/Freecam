@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.moddev.legacy)
     alias(libs.plugins.fletchingtable)
     id("freecam.loaders")
+    id("freecam.atremapper")
 }
 
 val processedAw = stonecutterBuild.process(project(":common").file("src/main/resources/freecam.accesswidener"), "build/stonecutter/processed.aw");
@@ -34,7 +35,7 @@ legacyForge {
     accessTransformers.from(tasks.processResources.map {
         it.destinationDir.resolve("META-INF/accesstransformer.cfg")
     })
-    validateAccessTransformers = false
+    validateAccessTransformers = true
 
     runs {
         register("client") {
@@ -77,10 +78,6 @@ tasks.register<Copy>("buildAndCollect") {
     from(tasks.jar.map { it.archiveFile })
     into(rootProject.layout.buildDirectory.file("libs/${currentMod.version}"))
     dependsOn("build")
-}
-
-tasks.named("createMinecraftArtifacts") {
-    dependsOn(":forge:${project.name}:processResources")
 }
 
 tasks.processResources {

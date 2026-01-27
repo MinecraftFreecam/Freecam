@@ -6,6 +6,7 @@ dependencies {
     implementation(plugin(libs.plugins.stonecutter))
     implementation(plugin(libs.plugins.jetbrains.changelog))
     implementation(plugin(libs.plugins.modpublisher))
+    implementation(libs.mapping.io)
     testImplementation(kotlin("test"))
 }
 
@@ -15,6 +16,7 @@ repositories {
     maven("https://maven.firstdark.dev/releases/")
     maven("https://maven.firstdark.dev/snapshots/")
     maven("https://maven.kikugie.dev/snapshots")
+    maven("https://maven.fabricmc.net/")
 }
 
 tasks.test {
