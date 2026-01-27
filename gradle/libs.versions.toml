@@ -1,4 +1,5 @@
 [versions]
+kotlin = "2.2.20"
 stonecutter = "0.8.3"
 fabric-loom = "1.14-SNAPSHOT"
 moddev = "2.0.140"
@@ -8,10 +9,12 @@ tomlj = "1.1.1"
 mapping-io = "0.8.0"
 modpublisher = "2.1.7+snapshot.0"
 jetbrains-changelog = "2.2.0"
+serialization-json = "1.10.0"
 
 [libraries]
 tomlj = { group = "org.tomlj", name = "tomlj", version.ref = "tomlj" }
 mapping-io = { group = "net.fabricmc", name = "mapping-io", version.ref = "mapping-io"}
+kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization-json" }
 
 [plugins]
 stonecutter = { id = "dev.kikugie.stonecutter", version.ref = "stonecutter" }
@@ -24,3 +27,4 @@ fletchingtable-neoforge = { id = "dev.kikugie.fletching-table.neoforge", version
 foojay-resolver = { id = "org.gradle.toolchains.foojay-resolver-convention", version.ref = "foojay-resolver" }
 modpublisher = { id = "com.hypherionmc.modutils.modpublisher", version.ref = "modpublisher" }
 jetbrains-changelog = { id = "org.jetbrains.changelog", version.ref = "jetbrains-changelog" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
