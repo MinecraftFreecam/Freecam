@@ -1,11 +1,19 @@
-import groovy.json.JsonSlurper
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromStream
 import net.fabricmc.mappingio.MappingReader
 import net.fabricmc.mappingio.MappingWriter
 import net.fabricmc.mappingio.adapter.MappingNsRenamer
 import net.fabricmc.mappingio.format.MappingFormat
 import net.fabricmc.mappingio.tree.MappingTree
 import net.fabricmc.mappingio.tree.MemoryMappingTree
+import net.xolt.freecam.gradle.MCVersionJson
+import net.xolt.freecam.gradle.MCVersionManifest
 import java.net.URI
+
+val json = Json {
+    ignoreUnknownKeys = true
+}
 
 val srgFile = layout.buildDirectory.file("mappings/srg.tsrg")
 val mojMapFile = layout.buildDirectory.file("mappings/mojMap.txt")
@@ -39,7 +47,7 @@ val generateNamedToSrg by tasks.registering {
     }
 }
 
-@Suppress("UNCHECKED_CAST")
+@OptIn(ExperimentalSerializationApi::class)
 val downloadMojMappings by tasks.registering {
     group = "mappings"
     outputs.file(mojMapFile)
@@ -48,20 +56,21 @@ val downloadMojMappings by tasks.registering {
     inputs.property("minecraftVersion", currentMod.mc)
 
     doLast {
-        val url = URI("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json").toURL()
-        val manifest = JsonSlurper().parse(url) as Map<*, *>
-        val versions = manifest["versions"] as List<Map<*, *>>
-        val version = versions.first { it["id"] == currentMod.mc }
-        val versionJson = JsonSlurper().parse(URI(version["url"].toString()).toURL()) as Map<*, *>
+        val manifestUrl = URI("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json").toURL()
 
-        val downloads = versionJson["downloads"] as Map<*, *>
-        val clientMappings = downloads["client_mappings"] as Map<*, *>
-        val mappingsUrl = clientMappings["url"].toString()
+        val manifest: MCVersionManifest = manifestUrl.openStream().use(json::decodeFromStream)
 
-        val out = mojMapFile.get().asFile
-        out.parentFile.mkdirs()
-        URI(mappingsUrl).toURL().openStream().use { input ->
-            out.outputStream().use { input.copyTo(it) }
+        val version = manifest.versions.firstOrNull { it.id == currentMod.mc }
+            ?: error("Minecraft version ${currentMod.mc} not found in Mojang manifest")
+
+        val versionUrl = URI(version.url).toURL()
+        val versionJson: MCVersionJson = versionUrl.openStream().use(json::decodeFromStream)
+
+        val mappingsUrl = URI(versionJson.downloads.clientMappings.url).toURL()
+        mappingsUrl.openStream().use { mappings ->
+            val out = mojMapFile.get().asFile
+            out.parentFile.mkdirs()
+            out.outputStream().use(mappings::copyTo)
         }
     }
 }
