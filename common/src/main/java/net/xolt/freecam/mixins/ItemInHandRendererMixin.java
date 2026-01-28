@@ -4,19 +4,19 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.xolt.freecam.Freecam;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArgs;
 import org.spongepowered.asm.mixin.injection.ModifyVariable;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 //? if >= 1.21.11 {
 import net.minecraft.client.renderer.SubmitNodeCollector;
 //? } else {
 /*import net.minecraft.client.renderer.MultiBufferSource;
-*///? }
+ *///? }
 
 import static net.xolt.freecam.Freecam.MC;
 
@@ -25,24 +25,74 @@ public class ItemInHandRendererMixin {
 
     @Unique private float freecam$tickDelta;
 
-    // Makes arm movement depend upon FreeCamera movement rather than player movement.
-    @ModifyArgs(method = "renderHandsWithItems", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;lerp(FFF)F", ordinal = 0))
-    private void onRenderHandsXBob(Args args) {
-        if (!Freecam.isEnabled())
-            return;
+    @Redirect(
+            method = "renderHandsWithItems",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/player/LocalPlayer;getViewXRot(F)F"
+            )
+    )
+    private float redirectGetViewXRot(LocalPlayer player, float partialTick) {
+        return Freecam.isEnabled() ? Freecam.getFreeCamera().getViewXRot(partialTick) : player.getViewXRot(partialTick);
+    }
 
-        args.set(1, Freecam.getFreeCamera().xBobO);
-        args.set(2, Freecam.getFreeCamera().xBob);
+    @Redirect(
+            method = "renderHandsWithItems",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/player/LocalPlayer;getViewYRot(F)F"
+            )
+    )
+    private float redirectGetViewYRot(LocalPlayer player, float partialTick) {
+        return Freecam.isEnabled() ? Freecam.getFreeCamera().getViewYRot(partialTick) : player.getViewYRot(partialTick);
     }
 
     // Makes arm movement depend upon FreeCamera movement rather than player movement.
-    @ModifyArgs(method = "renderHandsWithItems", at = @At(value = "INVOKE", target = "Lnet/minecraft/util/Mth;lerp(FFF)F", ordinal = 1))
-    private void onRenderHandsYBob(Args args) {
-        if (!Freecam.isEnabled())
-            return;
+    @Redirect(
+            method = "renderHandsWithItems",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lnet/minecraft/client/player/LocalPlayer;xBob:F",
+                    opcode = Opcodes.GETFIELD)
+    )
+    private float redirectGetXBob(LocalPlayer player) {
+        return Freecam.isEnabled() ? Freecam.getFreeCamera().xBob : player.xBob;
+    }
 
-        args.set(1, Freecam.getFreeCamera().yBobO);
-        args.set(2, Freecam.getFreeCamera().yBob);
+    // Makes arm movement depend upon FreeCamera movement rather than player movement.
+    @Redirect(
+            method = "renderHandsWithItems",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lnet/minecraft/client/player/LocalPlayer;xBobO:F",
+                    opcode = Opcodes.GETFIELD)
+    )
+    private float redirectGetXBobO(LocalPlayer player) {
+        return Freecam.isEnabled() ? Freecam.getFreeCamera().xBobO : player.xBobO;
+    }
+
+    // Makes arm movement depend upon FreeCamera movement rather than player movement.
+    @Redirect(
+            method = "renderHandsWithItems",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lnet/minecraft/client/player/LocalPlayer;yBob:F",
+                    opcode = Opcodes.GETFIELD)
+    )
+    private float redirectGetYBob(LocalPlayer player) {
+        return Freecam.isEnabled() ? Freecam.getFreeCamera().yBob : player.yBob;
+    }
+
+    // Makes arm movement depend upon FreeCamera movement rather than player movement.
+    @Redirect(
+            method = "renderHandsWithItems",
+            at = @At(
+                    value = "FIELD",
+                    target = "Lnet/minecraft/client/player/LocalPlayer;yBobO:F",
+                    opcode = Opcodes.GETFIELD)
+    )
+    private float redirectGetYBobO(LocalPlayer player) {
+        return Freecam.isEnabled() ? Freecam.getFreeCamera().yBobO : player.yBobO;
     }
 
     @Inject(method = "renderHandsWithItems", at = @At("HEAD"))
@@ -51,13 +101,15 @@ public class ItemInHandRendererMixin {
                                 SubmitNodeCollector nodeCollector,
                                 //? } else
                                 //MultiBufferSource.BufferSource vertexConsumers,
-                                LocalPlayer player, int packedLight, CallbackInfo ci) {
+                                LocalPlayer player,
+                                int packedLight,
+                                CallbackInfo ci) {
         this.freecam$tickDelta = partialTick;
     }
 
     // Makes arm shading depend upon FreeCamera position rather than player position.
     @ModifyVariable(method = "renderHandsWithItems", at = @At("HEAD"), argsOnly = true)
-    private int onRenderItem2(int light) {
+    private int onRenderItemSetLight(int light) {
         if (Freecam.isEnabled()) {
             return MC.getEntityRenderDispatcher().getPackedLightCoords(Freecam.getFreeCamera(), freecam$tickDelta);
         }
