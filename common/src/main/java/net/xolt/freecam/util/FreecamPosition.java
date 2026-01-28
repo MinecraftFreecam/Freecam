@@ -3,8 +3,13 @@ package net.xolt.freecam.util;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.ChunkPos;
+//? if > 1.18.2 {
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
+//? } else {
+/*import com.mojang.math.Quaternion;
+import com.mojang.math.Vector3f;
+*///? }
 
 public class FreecamPosition {
     public double x;
@@ -13,7 +18,11 @@ public class FreecamPosition {
     public float pitch;
     public float yaw;
 
-    private final Quaternionf rotation = new Quaternionf(0.0F, 0.0F, 0.0F, 1.0F);
+    //? if > 1.18.2 {
+    private final Quaternionf rotation = new Quaternionf(
+    //? } else
+    //private final Quaternion rotation = new Quaternion(
+            0.0F, 0.0F, 0.0F, 1.0F);
     private final Vector3f verticalPlane = new Vector3f(0.0F, 1.0F, 0.0F);
     private final Vector3f diagonalPlane = new Vector3f(1.0F, 0.0F, 0.0F);
     private final Vector3f horizontalPlane = new Vector3f(0.0F, 0.0F, 1.0F);
@@ -29,10 +38,28 @@ public class FreecamPosition {
     public void setRotation(float yaw, float pitch) {
         this.pitch = pitch;
         this.yaw = yaw;
+
+        //? if > 1.18.2 {
         rotation.rotationYXZ(-yaw * ((float) Math.PI / 180), pitch * ((float) Math.PI / 180), 0.0f);
-        horizontalPlane.set(0.0f, 0.0f, 1.0f).rotate(rotation);
-        verticalPlane.set(0.0f, 1.0f, 0.0f).rotate(rotation);
-        diagonalPlane.set(1.0f, 0.0f, 0.0f).rotate(rotation);
+        //? } else {
+        /*rotation.set(0.0F, 0.0F, 0.0F, 1.0F);
+        rotation.mul(Vector3f.YP.rotationDegrees(-yaw));
+        rotation.mul(Vector3f.XP.rotationDegrees(pitch));
+        *///? }
+
+        horizontalPlane.set(0.0f, 0.0f, 1.0f);
+        verticalPlane.set(0.0f, 1.0f, 0.0f);
+        diagonalPlane.set(1.0f, 0.0f, 0.0f);
+        
+        //? if > 1.18.2 {
+        horizontalPlane.rotate(rotation);
+        verticalPlane.rotate(rotation);
+        diagonalPlane.rotate(rotation);
+        //? } else {
+        /*horizontalPlane.transform(rotation);
+        verticalPlane.transform(rotation);
+        diagonalPlane.transform(rotation);
+        *///? }
     }
 
     // Invert the rotation so that it is mirrored

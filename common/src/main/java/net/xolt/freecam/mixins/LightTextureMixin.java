@@ -1,6 +1,5 @@
 package net.xolt.freecam.mixins;
 
-import net.minecraft.world.level.dimension.DimensionType;
 import net.minecraft.client.renderer.LightTexture;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModConfig;
@@ -12,6 +11,11 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 //? } else {
 /*import org.spongepowered.asm.mixin.injection.Inject;
+*///? }
+//? if > 1.18.2 {
+import net.minecraft.world.level.dimension.DimensionType;
+//? } else {
+/*import net.minecraft.world.level.Level;
 *///? }
 
 @Mixin(LightTexture.class)
@@ -28,7 +32,14 @@ public class LightTextureMixin {
     }
     //? } else {
     /*@Inject(method = "getBrightness", at = @At("HEAD"), cancellable = true)
-    private static void onGetBrightness(DimensionType dimensionType, int lightLevel, CallbackInfoReturnable<Float> cir) {
+    private /^? if > 1.18.2 >>^/static void onGetBrightness(
+            //? if > 1.18.2 {
+            DimensionType dimensionType,
+            //? } else
+            //Level level,
+            int lightLevel,
+            CallbackInfoReturnable<Float> cir
+    ) {
         if (Freecam.isEnabled() && ModConfig.INSTANCE.visual.fullBright) {
             cir.setReturnValue(1.0f);
         }

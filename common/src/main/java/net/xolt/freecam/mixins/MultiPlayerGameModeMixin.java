@@ -16,6 +16,9 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+//? if <=1.18.2 {
+/*import net.minecraft.client.multiplayer.ClientLevel;
+*///? }
 
 import static net.xolt.freecam.Freecam.MC;
 
@@ -24,7 +27,12 @@ public class MultiPlayerGameModeMixin {
 
     // Prevents interacting with blocks when allowInteract is disabled.
     @Inject(method = "useItemOn", at = @At("HEAD"), cancellable = true)
-    private void onInteractBlock(LocalPlayer player, InteractionHand hand, BlockHitResult hitResult, CallbackInfoReturnable<InteractionResult> cir) {
+    private void onInteractBlock(LocalPlayer player,
+                                 //? if <= 1.18.2
+                                 //ClientLevel level,
+                                 InteractionHand hand,
+                                 BlockHitResult hitResult,
+                                 CallbackInfoReturnable<InteractionResult> cir) {
         if (freecam$disableInteract()) {
             cir.setReturnValue(InteractionResult.PASS);
         }

@@ -1,9 +1,13 @@
 package net.xolt.freecam.config;
 
 import me.shedaniel.autoconfig.ConfigHolder;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.block.*;
+//? if > 1.18.2 {
+import net.minecraft.core.registries.BuiltInRegistries;
+//? } else {
+/*import net.minecraft.core.Registry;
+*///? }
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -69,7 +73,12 @@ public class CollisionBehavior {
     }
 
     private static String getBlockId(Block block) {
-        return BuiltInRegistries.BLOCK.getKey(block).toString();
+        return
+                //? if > 1.18.2 {
+                BuiltInRegistries
+                //? } else
+                //Registry
+                        .BLOCK.getKey(block).toString();
     }
 
     private static class Builder {

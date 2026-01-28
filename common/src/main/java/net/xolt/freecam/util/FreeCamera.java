@@ -50,7 +50,12 @@ public class FreeCamera extends AbstractClientPlayer {
 
     @Override
     public void tick() {
-        input.tick(/*? if <1.21.11 >> ');'*//*false, 0.3F*/);
+        input.tick(
+            //? if <1.21.11
+            //false
+            //? if <1.21.11 && > 1.18.2
+            //, 0.3F
+        );
         doMotion();
         super.tick();
     }

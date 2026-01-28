@@ -27,6 +27,7 @@ dependencies {
 
     modApi("me.shedaniel.cloth:cloth-config-fabric:${currentMod.dep("cloth")}") {
         exclude(group = "net.fabricmc.fabric-api")
+        exclude(group = "net.fabricmc")
     }
     include("me.shedaniel.cloth:cloth-config-fabric:${currentMod.dep("cloth")}")
 }
