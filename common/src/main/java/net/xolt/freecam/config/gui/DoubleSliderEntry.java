@@ -59,9 +59,18 @@ class DoubleSliderEntry extends TooltipListEntry<Double> {
         this.saveCallback = save;
         this.sliderWidget = new Slider(0, 0, 152, 20, (this.value.get() - minimum) / (maximum - minimum));
         this.sliderWidget.updateMessage();
-        this.resetButton = Button.builder(resetText, widget -> this.setValue(this.defaultValue.get()))
-                .width(MC.font.width(resetText) + 6)
-                .build();
+        int sliderWidth = MC.font.width(resetText) + 6;
+        Button.OnPress sliderOnPress = widget -> this.setValue(this.defaultValue.get());
+        this.resetButton =
+                //? if > 1.18.2 {
+                Button.builder(resetText, sliderOnPress)
+                        .width(sliderWidth)
+                        .build();
+                //? } else {
+                /*new Button(0, 0,
+                        sliderWidth, 20,
+                        resetText, sliderOnPress);
+                *///? }
         this.widgets = List.of(this.sliderWidget, this.resetButton);
     }
 
@@ -107,9 +116,14 @@ class DoubleSliderEntry extends TooltipListEntry<Double> {
         super.render(graphics, index, y, x, entryWidth, entryHeight, mouseX, mouseY, isHovered, delta);
         Window window = MC.getWindow();
         resetButton.active = isEditable() && getDefaultValue().isPresent() && defaultValue.get() != value.get();
-        resetButton.setY(y);
         sliderWidget.active = isEditable();
+        //? if > 1.18.2 {
+        resetButton.setY(y);
         sliderWidget.setY(y);
+        //? } else {
+        /*resetButton.y = y;
+        sliderWidget.y = y;
+        *///? }
 
         Component name = getDisplayedFieldName();
         if (MC.font.isBidirectional()) {
@@ -118,16 +132,29 @@ class DoubleSliderEntry extends TooltipListEntry<Double> {
             //? } else
             //drawString(graphics,
                     MC.font, name.getVisualOrderText(), window.getGuiScaledWidth() - x - MC.font.width(name), y + 6, getPreferredTextColor());
+            int sliderX = x + resetButton.getWidth() + 1;
+            //? if > 1.18.2 {
             resetButton.setX(x);
-            sliderWidget.setX(x + resetButton.getWidth() + 1);
+            sliderWidget.setX(sliderX);
+            //? } else {
+            /*resetButton.x = x;
+            sliderWidget.x = sliderX;
+            *///? }
         } else {
             //? if >=1.20.6 {
             graphics.drawString(
             //? } else
             //drawString(graphics,
                     MC.font, name.getVisualOrderText(), x, y + 6, getPreferredTextColor());
-            resetButton.setX(x + entryWidth - resetButton.getWidth());
-            sliderWidget.setX(x + entryWidth - 150);
+            int resetX = x + entryWidth - resetButton.getWidth();
+            int sliderX = x + entryWidth - 150;
+            //? if > 1.18.2 {
+            resetButton.setX(resetX);
+            sliderWidget.setX(sliderX);
+            //? } else {
+            /*resetButton.x = resetX;
+            sliderWidget.x = sliderX;
+            *///? }
         }
 
         sliderWidget.setWidth(150 - resetButton.getWidth() - 2);

@@ -18,7 +18,7 @@ import net.minecraft.client.renderer.state.LevelRenderState;
 //? } else {
 /*import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.world.phys.Vec3;
-import org.joml.Matrix4f;
+
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
@@ -31,6 +31,12 @@ import org.joml.Matrix4fStack;
 import net.minecraft.world.TickRateManager;
 import net.minecraft.client.renderer.culling.Frustum;
 //? }
+//? if >1.18.2 && <1.21.11 {
+/*import org.joml.Matrix4f;
+*///? }
+//? if <= 1.18.2 {
+/*import com.mojang.math.Matrix4f;
+*///? }
 
 import static net.xolt.freecam.Freecam.MC;
 

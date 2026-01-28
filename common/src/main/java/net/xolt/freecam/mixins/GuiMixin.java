@@ -9,7 +9,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 //? if >=1.20.6 {
 import net.minecraft.client.gui.GuiGraphics;
- //? } else {
+ //? } else if > 1.18.2 {
 /*import com.mojang.blaze3d.vertex.PoseStack;
 *///? }
 
@@ -33,7 +33,7 @@ public class GuiMixin {
     private void onRenderTextureOverlay(
             //? if >=1.20.6 {
             GuiGraphics guiGraphics,
-            //? } else
+            //? } else if > 1.18.2
             //PoseStack poseStack,
             Identifier shaderIdentifier,
             float alpha,
