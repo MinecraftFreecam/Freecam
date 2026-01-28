@@ -147,6 +147,13 @@ processResources {
     finalizedBy(remapAtToSrg)
 }
 
+// Even though `processResources` is finalized by `remapAtToSrg`, that doesn't reliably
+// cause Gradle to remap the AT file before running `createMinecraftArtifacts`.
+// An explicit dependency seems to work.
+tasks.matching { it.name == "createMinecraftArtifacts" }.configureEach {
+    dependsOn(remapAtToSrg)
+}
+
 fun remapAtLine(line: String, remapper: MappingTree): String {
     val srgId = remapper.getNamespaceId("srg")
 
