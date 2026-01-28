@@ -52,8 +52,13 @@ artifacts {
         mainSourceSet.java.sourceDirectories.files.forEach {
             add(commonJava.name, it)
         }
-        mainSourceSet.resources.sourceDirectories.files.forEach {
-            add(commonResources.name, it)
-        }
+
+        add(commonResources.name, tasks.processResources)
+    }
+}
+
+tasks.processResources {
+    filesMatching("freecam-common.mixins.json") {
+        expand(commonJsonExpansions)
     }
 }

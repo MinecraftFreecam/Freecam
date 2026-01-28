@@ -54,7 +54,13 @@ class ValidateRegexImpl {
             Pattern.compile(text);
             return Optional.empty();
         } catch (PatternSyntaxException e) {
-            String message = substringBefore(e.getLocalizedMessage(), '\n');
+            String message = substringBefore(
+                    e.getLocalizedMessage(),
+                    //? if >1.17.1 {
+                    '\n'
+                    //? } else
+                    //"\n"
+            );
             return Optional.of(Component.translatable("text.autoconfig.freecam.error.invalidRegex", message));
         }
     }

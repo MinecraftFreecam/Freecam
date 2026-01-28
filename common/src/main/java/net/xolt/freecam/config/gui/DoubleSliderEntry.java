@@ -46,6 +46,8 @@ class DoubleSliderEntry extends TooltipListEntry<Double> {
     private final double maximum;
     private final Supplier<Double> defaultValue;
     private final List<AbstractWidget> widgets;
+    //? cloth: <=5.3.63
+    //private final Consumer<Double> saveCallback;
 
     DoubleSliderEntry(Component fieldName, int precision, double minimum, double maximum, double value, Component resetText, Supplier<Double> defaultValue, @Nullable Consumer<Double> save) {
         //noinspection deprecation,UnstableApiUsage
@@ -95,6 +97,14 @@ class DoubleSliderEntry extends TooltipListEntry<Double> {
     public Optional<Double> getDefaultValue() {
         return Optional.ofNullable(defaultValue).map(Supplier::get);
     }
+
+    //? cloth: <=5.3.63 {
+    /*@Override public void save() {
+        if (this.saveCallback != null) {
+            this.saveCallback.accept(this.getValue());
+        }
+    }
+    *///? }
 
     @Override
     public @NotNull List<? extends GuiEventListener> children() {
