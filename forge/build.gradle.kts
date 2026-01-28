@@ -26,6 +26,7 @@ legacyForge {
 }
 
 dependencies {
+    compileOnlyApi("org.jetbrains:annotations:26.0.2")
     annotationProcessor("org.spongepowered:mixin:${currentMod.dep("mixin")}:processor")
     forgeDependency(group = "me.shedaniel.cloth", name = "cloth-config-forge", version = currentMod.dep("cloth"))
 }
@@ -85,6 +86,10 @@ tasks.processResources {
 
     filesMatching(listOf("META-INF/mods.toml", "META-INF/forge.mods.toml")) {
         expand(commonExpansions)
+    }
+
+    filesMatching("freecam-forge.mixins.json") {
+        expand(commonJsonExpansions)
     }
 
     filesMatching("pack.mcmeta") {

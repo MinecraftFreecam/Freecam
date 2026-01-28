@@ -1,11 +1,9 @@
 package net.xolt.freecam.util;
 
 import com.mojang.authlib.GameProfile;
-import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.KeyboardInput;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
@@ -21,6 +19,10 @@ import net.minecraft.client.player.ClientInput;
 //? } else {
 /*import net.minecraft.client.player.Input;
 *///? }
+//? if >=1.20.6 {
+import net.minecraft.core.Holder;
+import net.minecraft.client.multiplayer.ClientLevel;
+//? }
 
 import java.util.UUID;
 
@@ -43,7 +45,6 @@ public class FreeCamera extends AbstractClientPlayer {
 
         setId(id);
         setPose(Pose.SWIMMING);
-        //connection.setClientLoaded(true); // Otherwise input is frozen
         getAbilities().flying = true;
         input = new KeyboardInput(MC.options);
     }

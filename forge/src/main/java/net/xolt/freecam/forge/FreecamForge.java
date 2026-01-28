@@ -16,9 +16,12 @@ import net.xolt.freecam.config.ModConfig;
 //? forge: > 40.2.14 {
 /*import net.minecraftforge.client.ConfigScreenHandler;
 import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-*///? } else {
-import net.minecraftforge.client.ClientRegistry;
+*///? } else if forge: > 37.1.1 {
+/*import net.minecraftforge.client.ClientRegistry;
 import net.minecraftforge.client.ConfigGuiHandler;
+*///? } else {
+import net.minecraftforge.fmlclient.registry.ClientRegistry;
+import net.minecraftforge.fmlclient.ConfigGuiHandler;
 //? }
 
 @Mod(value = Freecam.MOD_ID)

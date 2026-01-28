@@ -1,10 +1,15 @@
 package net.xolt.freecam.config.gui;
 
 import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
-import me.shedaniel.clothconfig2.api.ValueHolder;
+
 import me.shedaniel.clothconfig2.gui.entries.BooleanListEntry;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+//? if cloth: > 5.3.63 {
+import me.shedaniel.clothconfig2.api.ValueHolder;
+//? } else {
+/*import me.shedaniel.clothconfig2.api.ReferenceProvider;
+*///? }
 
 import java.util.List;
 
@@ -14,7 +19,10 @@ import static java.lang.Boolean.FALSE;
 class CollisionDependencies {
 
     private static final Logger LOGGER = LogManager.getLogger();
+    //? if cloth: > 5.3.63 {
     private static ValueHolder<Boolean> ignoreAllWidget;
+    //? } else
+    //private static ReferenceProvider<Boolean> ignoreAllWidget;
 
     private CollisionDependencies() {}
 
@@ -47,16 +55,22 @@ class CollisionDependencies {
 
         // Register a transformer to set requirements for ignoreTransparent & ignoreOpenable
         guiRegistry.registerPredicateTransformer((guis, i18n, field, config, defaults, registry) -> {
+            // FIXME requirements not supported by cloth 5.3.63
+            //? cloth: > 5.3.63 {
             guis.stream()
                     .filter(BooleanListEntry.class::isInstance)
                     .map(BooleanListEntry.class::cast)
                     .forEach(gui -> gui.setRequirement(CollisionDependencies::notIgnoreAll));
+            //? }
             return guis;
         }, field -> List.of("ignoreTransparent", "ignoreOpenable", "ignoreCustom").contains(field.getName()));
     }
 
     // Requirement handler: require ignoreAll is set to "No"
     private static boolean notIgnoreAll() {
-        return ignoreAllWidget == null || FALSE.equals(ignoreAllWidget.getValue());
+        return ignoreAllWidget == null || FALSE.equals(ignoreAllWidget
+                //? cloth: <= 5.3.63
+                //.provideReferenceEntry()
+                .getValue());
     }
 }

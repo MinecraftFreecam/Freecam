@@ -19,15 +19,18 @@ dependencies {
     })
 
     modImplementation("net.fabricmc:fabric-loader:${currentMod.dep("fabric_loader")}")
-    modApi("net.fabricmc.fabric-api:fabric-api:${currentMod.dep("fabric_api")}")
+    modApi("net.fabricmc.fabric-api:fabric-api:${currentMod.dep("fabric_api")}") {
+        exclude(module = "fabric-loader")
+    }
 
     modImplementation("com.terraformersmc:modmenu:${currentMod.dep("modmenu")}") {
         exclude(module = "fabric-api")
+        exclude(module = "fabric-loader")
     }
 
     modApi("me.shedaniel.cloth:cloth-config-fabric:${currentMod.dep("cloth")}") {
-        exclude(group = "net.fabricmc.fabric-api")
-        exclude(group = "net.fabricmc")
+        exclude(module = "fabric-api")
+        exclude(module = "fabric-loader")
     }
     include("me.shedaniel.cloth:cloth-config-fabric:${currentMod.dep("cloth")}")
 }
@@ -59,6 +62,10 @@ tasks.register<Copy>("buildAndCollect") {
 tasks {
     processResources {
         filesMatching("fabric.mod.json") {
+            expand(commonJsonExpansions)
+        }
+
+        filesMatching("freecam-fabric.mixins.json") {
             expand(commonJsonExpansions)
         }
 

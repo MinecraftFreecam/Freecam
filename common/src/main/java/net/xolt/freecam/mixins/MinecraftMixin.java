@@ -18,9 +18,14 @@ public class MinecraftMixin {
 
     // Prevents attacks when allowInteract is disabled.
     @Inject(method = "startAttack", at = @At("HEAD"), cancellable = true)
-    private void onDoAttack(CallbackInfoReturnable<Boolean> cir) {
+    private void onDoAttack(
+            //? if >1.17.1 {
+            CallbackInfoReturnable<Boolean> ci
+            //? } else
+            //CallbackInfo ci
+    ) {
         if (freecam$disableInteract()) {
-            cir.cancel();
+            ci.cancel();
         }
     }
 

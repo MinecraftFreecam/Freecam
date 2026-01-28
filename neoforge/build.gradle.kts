@@ -79,6 +79,10 @@ tasks.processResources {
         expand(commonExpansions)
     }
 
+    filesMatching("freecam-neoforge.mixins.json") {
+        expand(commonJsonExpansions)
+    }
+
     filesMatching("pack.mcmeta") {
         expand(commonJsonExpansions)
     }

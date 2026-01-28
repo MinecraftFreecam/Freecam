@@ -2,8 +2,10 @@ import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import dev.kikugie.stonecutter.controller.StonecutterControllerExtension
 import dev.kikugie.stonecutter.data.tree.ProjectNode
 import net.xolt.freecam.gradle.ParchmentVersion
+import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
+import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.maven
 
@@ -35,10 +37,19 @@ val Project.currentRootProject get() = rootProject.project(stonecutterBuild.curr
  */
 val Project.currentMod get() = currentRootProject.mod
 
+val Project.requiredJava get() = when {
+    stonecutterBuild.current.parsed >= "1.20.6" -> JavaVersion.VERSION_21
+    stonecutterBuild.current.parsed >= "1.18" -> JavaVersion.VERSION_17
+    stonecutterBuild.current.parsed >= "1.17" -> JavaVersion.VERSION_16
+    else -> JavaVersion.VERSION_1_8
+}
+val Project.javaVersion get() = requiredJava.majorVersion.toInt()
+val Project.javaLanguageVersion get() = JavaLanguageVersion.of(javaVersion)
+
 val Project.commonExpansions: Map<String, String>
     get() {
         return mapOf(
-            "javaVersion" to currentMod.propOrNull("java.version"),
+            "mixinCompatLevel" to "JAVA_$javaVersion",
             "modId" to currentMod.id,
             "modName" to currentMod.name,
             "modVersion" to currentMod.version,

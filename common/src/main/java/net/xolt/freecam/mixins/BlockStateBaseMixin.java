@@ -25,7 +25,10 @@ public abstract class BlockStateBaseMixin {
 
     @Inject(method = "getCollisionShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;", at = @At("HEAD"), cancellable = true)
     private void onGetCollisionShape(BlockGetter world, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (context instanceof EntityCollisionContext entityShapeContext && entityShapeContext.getEntity() instanceof FreeCamera) {
+        if (context instanceof EntityCollisionContext entityShapeContext
+                //? if <= 1.17.1
+                //&& entityShapeContext.getEntity().isPresent()
+                && entityShapeContext.getEntity()/*? if <=1.17.1 >>*//*.get()*/ instanceof FreeCamera) {
             // Return early if "Always Check Initial Collision" is on and Freecam isn't enabled yet
             if (ModConfig.INSTANCE.collision.alwaysCheck && !Freecam.isEnabled()) {
                 return;
