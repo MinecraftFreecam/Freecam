@@ -105,7 +105,9 @@ val downloadSrgMappings by tasks.registering {
 val remapAtToSrg by tasks.registering {
     group = "mappings"
     description = "Remap AccessTransformer from named to SRG"
+
     dependsOn(generateNamedToSrg)
+    mustRunAfter(processResources)
 
     // the unmapped file comes from fletching table, via processResources
     // We later overwrite this file
@@ -113,46 +115,38 @@ val remapAtToSrg by tasks.registering {
         it.destinationDir.resolve("META-INF/accesstransformer.cfg")
     }
 
-    // outputAt is a staging file so that gradle can see whether anything changed
-    val outputAt = layout.buildDirectory.file("srg_at/accesstransformer.cfg")
-
     inputs.file(inputAt)
     inputs.file(namedToSrgFile)
-    outputs.file(outputAt)
+    outputs.file(inputAt)
+    outputs.cacheIf { false }
 
     doLast {
         val remapper = MemoryMappingTree()
-
         namedToSrgFile.get().asFile.bufferedReader().use { reader ->
             MappingReader.read(reader, MappingFormat.TSRG_2_FILE, remapper)
         }
 
-        outputAt.get().asFile.parentFile.mkdirs()
+        val inputFile = inputAt.get()
+        val tmpFile = inputFile.resolveSibling("${inputFile.name}.tmp")
 
-        val remappedLines = inputAt.get().readLines().map { line ->
-            remapAtLine(line, remapper)
+        // Stream lines from the input file, remapping into the temp file
+        tmpFile.bufferedWriter().use { writer ->
+            inputFile.bufferedReader().useLines { lines ->
+                lines.forEach { line ->
+                    writer.appendLine(remapAtLine(line, remapper))
+                }
+            }
         }
 
-        outputAt.get().asFile.writeText(remappedLines.joinToString("\n"))
-
-        // Overwrite the processResources file
-        copy {
-            from(outputAt)
-            into(inputAt.get().parentFile)
+        // Replace the input file
+        if (!tmpFile.renameTo(inputFile)) {
+            inputFile.delete()
+            tmpFile.renameTo(inputFile)
         }
     }
 }
 
-processResources {
-    // Fletching Table generates accesstransformer.cfg during processResources execution.
-    // We must remap it after processResources runs, and ensure downstream tasks see the
-    // remapped file.
-    finalizedBy(remapAtToSrg)
-}
-
-// Even though `processResources` is finalized by `remapAtToSrg`, that doesn't reliably
-// cause Gradle to remap the AT file before running `createMinecraftArtifacts`.
-// An explicit dependency seems to work.
+// Ensure we remap before MDG uses the accesstransformer
 tasks.matching { it.name == "createMinecraftArtifacts" }.configureEach {
     dependsOn(remapAtToSrg)
 }
