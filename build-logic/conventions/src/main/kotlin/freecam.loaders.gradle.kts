@@ -1,3 +1,5 @@
+import net.xolt.freecam.gradle.ProjectReleaseMetadataTask
+
 plugins {
     id("freecam.common")
 }
@@ -11,6 +13,11 @@ sourceSets {
         java.srcDirs(commonTasks.named<Sync>("stonecutterGenerate").map { it.destinationDir })
         resources.srcDirs(commonTasks.processResources.map { it.destinationDir })
     }
+}
+
+tasks.register<ProjectReleaseMetadataTask>("generateReleaseMetadata") {
+    group = "publishing"
+    description = "Generates release metadata for publishing"
 }
 
 publishing {

@@ -19,6 +19,7 @@ include(
     "api",
     "api:plugin",
     "conventions",
+    "release-metadata",
     "settings",
 )
 
