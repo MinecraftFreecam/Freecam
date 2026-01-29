@@ -10,6 +10,10 @@ out/
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
+# python
+.venv/
+__pycache__/
+
 # JIRA plugin
 atlassian-ide-plugin.xml
 

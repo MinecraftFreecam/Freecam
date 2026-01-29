@@ -1,0 +1,37 @@
+name: Lint
+
+on:
+  pull_request:
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  lint:
+    runs-on: ubuntu-slim
+
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout required files
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: |
+            ci
+            CHANGELOG.md
+            gradle.properties
+          sparse-checkout-cone-mode: false
+
+      - uses: actions/setup-python@v6
+        with:
+          cache: pip
+
+      - name: Install test dependencies
+        run: pip install --requirement ci/requirements.txt
+
+      - name: Run tests
+        run: python -m pytest
+
+      - name: Lint changelog
+        run: python ci/lint_changelog.py
