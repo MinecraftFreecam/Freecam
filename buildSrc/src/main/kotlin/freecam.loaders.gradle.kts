@@ -1,6 +1,5 @@
 plugins {
     id("freecam.common")
-    id("freecam.publish")
 }
 
 val commonJava: Configuration by configurations.creating {
