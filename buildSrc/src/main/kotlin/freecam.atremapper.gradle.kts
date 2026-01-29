@@ -188,5 +188,5 @@ fun remapAtLine(line: String, remapper: MappingTree): String {
     }
 
     val newLineParts = parts.take(1) + remappedClass + remappedMember + parts.drop(3)
-    return newLineParts.joinToString(" ")
+    return newLineParts.filterNot{it.isEmpty()}.joinToString(" ")
 }
