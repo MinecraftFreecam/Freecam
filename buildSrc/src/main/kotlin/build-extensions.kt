@@ -1,7 +1,7 @@
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import dev.kikugie.stonecutter.controller.StonecutterControllerExtension
 import dev.kikugie.stonecutter.data.tree.ProjectNode
-import net.xolt.freecam.gradle.ParchmentVersion
+import net.xolt.freecam.model.ParchmentVersion
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler

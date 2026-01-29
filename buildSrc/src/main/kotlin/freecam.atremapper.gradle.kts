@@ -7,8 +7,8 @@ import net.fabricmc.mappingio.adapter.MappingNsRenamer
 import net.fabricmc.mappingio.format.MappingFormat
 import net.fabricmc.mappingio.tree.MappingTree
 import net.fabricmc.mappingio.tree.MemoryMappingTree
-import net.xolt.freecam.gradle.MCVersionJson
-import net.xolt.freecam.gradle.MCVersionManifest
+import net.xolt.freecam.model.MCVersionJson
+import net.xolt.freecam.model.MCVersionManifest
 import java.net.URI
 
 val json = Json {
