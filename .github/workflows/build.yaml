@@ -17,7 +17,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
-      versions: ${{ steps.versions.outputs.result }}
+      matrix: ${{ steps.matrix.outputs.result }}
 
     steps:
       - name: Checkout versions file
@@ -27,7 +27,7 @@ jobs:
           sparse-checkout-cone-mode: false
 
       - name: Generate versions matrix
-        id: versions
+        id: matrix
         uses: mikefarah/yq@v4
         with:
           cmd: |
@@ -46,7 +46,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include: ${{ fromJson(needs.prepare.outputs.versions) }}
+        include: ${{ fromJson(needs.prepare.outputs.matrix) }}
     timeout-minutes: 120
     env:
       artifact_name: freecam-${{ matrix.minecraft }}-builds
