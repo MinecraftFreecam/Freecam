@@ -15,6 +15,7 @@ val json = Json {
     ignoreUnknownKeys = true
 }
 
+val legacy = stonecutterBuild.current.parsed <= "1.16.5"
 val srgFile = layout.buildDirectory.file("mappings/srg.tsrg")
 val mojMapFile = layout.buildDirectory.file("mappings/mojMap.txt")
 val namedToSrgFile = layout.buildDirectory.file("mappings/namedToSrg.tsrg")
@@ -34,8 +35,10 @@ val generateNamedToSrg by tasks.registering {
         }
 
         srgFile.get().asFile.bufferedReader().use { reader ->
-            val renamer = MappingNsRenamer(tree, mapOf("obf" to "official"))
-            MappingReader.read(reader, MappingFormat.TSRG_2_FILE, renamer)
+            val renameMap = if (legacy) mapOf("source" to "official", "target" to "srg") else mapOf("obf" to "official")
+            val mappingFormat = if (legacy) MappingFormat.TSRG_FILE else MappingFormat.TSRG_2_FILE
+            val renamer = MappingNsRenamer(tree, renameMap)
+            MappingReader.read(reader, mappingFormat, renamer)
         }
 
         MappingWriter.create(
@@ -161,12 +164,19 @@ fun remapAtLine(line: String, remapper: MappingTree): String {
     if (trimmed.isEmpty() || trimmed.startsWith("#")) return line
 
     val parts = trimmed.split(" ")
-    if (parts.size < 3) return line
+    if (parts.size < 2) return line
+    if (parts.size < 3 && !legacy) return line
 
     val className = parts[1].replace('.', '/')
-    val member = parts[2]
+    val member = if (parts.size > 2) parts[2] else ""
 
+    val remappedClass = when {
+        legacy -> (remapper.getClass(className)?.getName(srgId) ?: className)
+            .replace('/', '.')
+        else -> parts[1]
+    }
     val remappedMember = when {
+        member.isEmpty() -> ""
         member.contains("(") -> {
             val name = member.substringBefore("(")
             val desc = member.substringAfter(name)
@@ -177,6 +187,6 @@ fun remapAtLine(line: String, remapper: MappingTree): String {
         }
     }
 
-    val newLineParts = parts.take(2) + remappedMember + parts.drop(3)
+    val newLineParts = parts.take(1) + remappedClass + remappedMember + parts.drop(3)
     return newLineParts.joinToString(" ")
 }
