@@ -8,6 +8,7 @@ import net.xolt.freecam.model.ModMetadata
 import net.xolt.freecam.model.ModMetadataToml
 import net.xolt.freecam.model.ParchmentVersion
 import net.xolt.freecam.model.PropertyProvider
+import net.xolt.freecam.model.Relationship
 import net.xolt.freecam.model.StaticModMetadata
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -62,6 +63,38 @@ private class ProjectModMetadata(
         get() = requireNotNull(sc) {
             "${project.path} without `stonecutter` extension cannot read `loader` "
         }.branch.id
+
+    override val relationships: List<Relationship> by lazy {
+        props
+            .asSequence()
+            .mapNotNull { (key, value) ->
+                if (key is String && value is String) key to value else null
+            }
+            // Collect relationship properties
+            .mapNotNull { (key, value) ->
+                val path = key.split('.')
+                if (path.size == 3 && path[0] == "relationship") path[1] to (path[2] to value)
+                else null
+            }
+            // Group by relationship name
+            .groupBy({ it.first }, { it.second })
+            // Construct a Relationship object
+            .map { (name, fields) ->
+                val props = fields.toMap()
+                val unknown = props.keys - setOf("curseforge_slug", "modrinth_id", "type")
+                require(unknown.isEmpty()) {
+                    "${project.path} unknown relationship fields: " + unknown.joinToString(" ") { "relationship.$name.$it" }
+                }
+                Relationship(
+                    curseforgeSlug = props["curseforge_slug"]!!,
+                    modrinthId = props["modrinth_id"]!!,
+                    type = props["type"]
+                        ?.let { Relationship.Type.valueOf(it.uppercase()) }
+                        ?: Relationship.Type.OPTIONAL
+                )
+            }
+            .toList()
+    }
 
     override fun parchment(block: (mappings: String, minecraft: String) -> Unit) {
         deps.orNull("parchment")

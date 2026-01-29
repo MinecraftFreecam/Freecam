@@ -81,4 +81,8 @@ tasks {
 
         inputs.properties(commonExpansions)
     }
+
+    generateReleaseMetadata {
+        artifactFileName = remapJar.flatMap { it.archiveFileName }
+    }
 }
