@@ -58,6 +58,8 @@
   "text.autoconfig.freecam.option.visual.fullBright": "Full Brightness",
   "text.autoconfig.freecam.option.visual.fullBright.@Tooltip": "Increases brightness while in freecam.",
   "text.autoconfig.freecam.option.visual.showSubmersion": "Show Submersion Fog",
+  "text.autoconfig.freecam.option.visual.outlinePlayer.@Tooltip": "Outlines the playermodel through walls.",
+  "text.autoconfig.freecam.option.visual.outlinePlayer": "Player Outline",
   "text.autoconfig.freecam.option.visual.showSubmersion.@Tooltip": "Whether you see a fog overlay underwater, in lava, or powdered snow.",
   "text.autoconfig.freecam.option.utility": "Utility Options",
   "text.autoconfig.freecam.option.utility.@Tooltip": "Freecam enhancements.",

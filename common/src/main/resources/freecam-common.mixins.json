@@ -16,6 +16,7 @@
     "IrisHandRendererMixin",
     "IrisShadowRendererMixin",
     "ItemInHandRendererMixin",
+    "LevelRendererMixin",
     "LightTextureMixin",
     "LivingEntityMixin",
     "LocalPlayerMixin",
