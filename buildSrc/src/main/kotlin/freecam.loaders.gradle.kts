@@ -1,3 +1,5 @@
+import net.xolt.freecam.gradle.ProjectReleaseMetadataTask
+
 plugins {
     id("freecam.common")
 }
@@ -25,6 +27,11 @@ tasks {
     processResources {
         dependsOn(commonResources)
         from(commonResources)
+    }
+
+    register<ProjectReleaseMetadataTask>("generateReleaseMetadata") {
+        group = "publishing"
+        description = "Generates release metadata for publishing"
     }
 }
 

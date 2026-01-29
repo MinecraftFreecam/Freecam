@@ -1,4 +1,8 @@
 import net.xolt.freecam.gradle.BumpVersionTask
+import net.xolt.freecam.gradle.ProjectReleaseMetadataTask
+import net.xolt.freecam.gradle.RootReleaseMetadataTask
+import org.jetbrains.changelog.Changelog
+import org.jetbrains.changelog.ChangelogPluginExtension
 import org.jetbrains.changelog.tasks.BaseChangelogTask
 
 // This file represents the version-less `rootProject` (:)
@@ -87,4 +91,30 @@ changelog {
     // Regex used to find versions in headings.
     // The default regex only supports semantic versions, this one is more lenient.
     headerParserRegex = Regex("(\\d+(?:\\.\\d+)+(?:-[-a-z]+\\d*)?)")
+}
+
+tasks.register<RootReleaseMetadataTask>("generateReleaseMetadata") {
+    group = "publishing"
+    description = "Generates release metadata for publishing"
+
+    changelog = provider {
+        val version = project.property("mod.version") as String
+        val entry = project.changelog.getOrNull(version) ?: project.changelog.getUnreleased()
+
+        project.changelog.renderItem(
+            entry.withHeader(false)
+                .withLinks(false)
+                .withEmptySections(false)
+                .withSummary(true),
+            Changelog.OutputType.MARKDOWN
+        )
+    }
+
+    projectMetadataFiles = subprojects.flatMap { subproject ->
+        subproject.tasks.withType<ProjectReleaseMetadataTask>().map { it.outputFile.get() }
+    }
+
+    dependsOn(subprojects.flatMap { subproject ->
+        subproject.tasks.withType<ProjectReleaseMetadataTask>()
+    })
 }
