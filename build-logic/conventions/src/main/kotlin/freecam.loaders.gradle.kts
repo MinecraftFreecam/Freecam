@@ -1,6 +1,5 @@
 plugins {
     id("freecam.common")
-    id("freecam.publish")
 }
 
 sourceSets {
