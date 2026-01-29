@@ -1,4 +1,4 @@
-package net.xolt.freecam.gradle
+package net.xolt.freecam.model
 
 import kotlinx.serialization.Serializable
 
