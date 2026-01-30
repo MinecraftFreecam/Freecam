@@ -9,11 +9,13 @@ tomlj = "1.1.1"
 mapping-io = "0.8.0"
 jetbrains-changelog = "2.2.0"
 serialization-json = "1.10.0"
+coroutines = "1.10.2"
 
 [libraries]
 tomlj = { group = "org.tomlj", name = "tomlj", version.ref = "tomlj" }
 mapping-io = { group = "net.fabricmc", name = "mapping-io", version.ref = "mapping-io"}
 kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization-json" }
+kotlin-coroutines = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "coroutines" }
 
 [plugins]
 stonecutter = { id = "dev.kikugie.stonecutter", version.ref = "stonecutter" }
