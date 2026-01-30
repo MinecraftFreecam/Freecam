@@ -103,10 +103,6 @@ tasks.jar {
     finalizedBy("reobfJar")
 }
 
-publisher {
-    artifact.set(tasks.named("jar"))
-}
-
 fun DependencyHandlerScope.forgeDependency(group: String, name: String, version: String) {
     compileOnly(group, name, version)
     modRuntimeOnly(group, name, version)

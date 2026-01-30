@@ -1,0 +1,249 @@
+{
+    "mod_version": "1.3.6",
+    "display_name": "Freecam 1.3.6",
+    "release_type": "release",
+    "changelog": "### Added\n\n- 1.21.11 Support ([332](https://github.com/MinecraftFreecam/Freecam/pull/332))\n",
+    "platforms": {
+        "curseforge": {
+            "project_id": "557076"
+        },
+        "modrinth": {
+            "project_id": "XeEZ3fK2"
+        },
+        "github": {
+            "tag": "v1.3.6"
+        }
+    },
+    "versions": [
+        {
+            "loader": "1.17.1",
+            "minecraft_version": "1.17.1",
+            "filename": "freecam-fabric-1.3.6+mc1.17.1.jar",
+            "game_versions": [
+                "1.17.1"
+            ],
+            "java_versions": [
+                "VERSION_16"
+            ],
+            "relationships": [
+                {
+                    "curseforge_slug": "fabric-api",
+                    "modrinth_id": "P7dR8mSH",
+                    "type": "required"
+                },
+                {
+                    "curseforge_slug": "cloth-config",
+                    "modrinth_id": "9s6osm5g",
+                    "type": "bundled"
+                },
+                {
+                    "curseforge_slug": "modmenu",
+                    "modrinth_id": "mOgUt4GM",
+                    "type": "optional"
+                }
+            ]
+        },
+        {
+            "loader": "1.17.1",
+            "minecraft_version": "1.17.1",
+            "filename": "freecam-forge-1.3.6+mc1.17.1.jar",
+            "game_versions": [
+                "1.17.1"
+            ],
+            "java_versions": [
+                "VERSION_16"
+            ],
+            "relationships": [
+                {
+                    "curseforge_slug": "cloth-config",
+                    "modrinth_id": "9s6osm5g",
+                    "type": "required"
+                }
+            ]
+        },
+        {
+            "loader": "1.18.2",
+            "minecraft_version": "1.18.2",
+            "filename": "freecam-fabric-1.3.6+mc1.18.2.jar",
+            "game_versions": [
+                "1.18.2"
+            ],
+            "java_versions": [
+                "VERSION_17"
+            ],
+            "relationships": [
+                {
+                    "curseforge_slug": "fabric-api",
+                    "modrinth_id": "P7dR8mSH",
+                    "type": "required"
+                },
+                {
+                    "curseforge_slug": "cloth-config",
+                    "modrinth_id": "9s6osm5g",
+                    "type": "bundled"
+                },
+                {
+                    "curseforge_slug": "modmenu",
+                    "modrinth_id": "mOgUt4GM",
+                    "type": "optional"
+                }
+            ]
+        },
+        {
+            "loader": "1.18.2",
+            "minecraft_version": "1.18.2",
+            "filename": "freecam-forge-1.3.6+mc1.18.2.jar",
+            "game_versions": [
+                "1.18.2"
+            ],
+            "java_versions": [
+                "VERSION_17"
+            ],
+            "relationships": [
+                {
+                    "curseforge_slug": "cloth-config",
+                    "modrinth_id": "9s6osm5g",
+                    "type": "bundled"
+                }
+            ]
+        },
+        {
+            "loader": "1.19.4",
+            "minecraft_version": "1.19.4",
+            "filename": "freecam-fabric-1.3.6+mc1.19.4.jar",
+            "game_versions": [
+                "1.19.4"
+            ],
+            "java_versions": [
+                "VERSION_17"
+            ],
+            "relationships": [
+                {
+                    "curseforge_slug": "fabric-api",
+                    "modrinth_id": "P7dR8mSH",
+                    "type": "required"
+                },
+                {
+                    "curseforge_slug": "cloth-config",
+                    "modrinth_id": "9s6osm5g",
+                    "type": "bundled"
+                },
+                {
+                    "curseforge_slug": "modmenu",
+                    "modrinth_id": "mOgUt4GM",
+                    "type": "optional"
+                }
+            ]
+        },
+        {
+            "loader": "1.19.4",
+            "minecraft_version": "1.19.4",
+            "filename": "freecam-forge-1.3.6+mc1.19.4.jar",
+            "game_versions": [
+                "1.19.4"
+            ],
+            "java_versions": [
+                "VERSION_17"
+            ],
+            "relationships": [
+                {
+                    "curseforge_slug": "cloth-config",
+                    "modrinth_id": "9s6osm5g",
+                    "type": "bundled"
+                }
+            ]
+        },
+        {
+            "loader": "1.20.6",
+            "minecraft_version": "1.20.6",
+            "filename": "freecam-fabric-1.3.6+mc1.20.6.jar",
+            "game_versions": [
+                "1.20.6"
+            ],
+            "java_versions": [
+                "VERSION_21"
+            ],
+            "relationships": [
+                {
+                    "curseforge_slug": "fabric-api",
+                    "modrinth_id": "P7dR8mSH",
+                    "type": "required"
+                },
+                {
+                    "curseforge_slug": "cloth-config",
+                    "modrinth_id": "9s6osm5g",
+                    "type": "bundled"
+                },
+                {
+                    "curseforge_slug": "modmenu",
+                    "modrinth_id": "mOgUt4GM",
+                    "type": "optional"
+                }
+            ]
+        },
+        {
+            "loader": "1.20.6",
+            "minecraft_version": "1.20.6",
+            "filename": "freecam-neoforge-1.3.6+mc1.20.6.jar",
+            "game_versions": [
+                "1.20.6"
+            ],
+            "java_versions": [
+                "VERSION_21"
+            ],
+            "relationships": [
+                {
+                    "curseforge_slug": "cloth-config",
+                    "modrinth_id": "9s6osm5g",
+                    "type": "bundled"
+                }
+            ]
+        },
+        {
+            "loader": "1.21.11",
+            "minecraft_version": "1.21.11",
+            "filename": "freecam-fabric-1.3.6+mc1.21.11.jar",
+            "game_versions": [
+                "1.21.11"
+            ],
+            "java_versions": [
+                "VERSION_21"
+            ],
+            "relationships": [
+                {
+                    "curseforge_slug": "fabric-api",
+                    "modrinth_id": "P7dR8mSH",
+                    "type": "required"
+                },
+                {
+                    "curseforge_slug": "cloth-config",
+                    "modrinth_id": "9s6osm5g",
+                    "type": "bundled"
+                },
+                {
+                    "curseforge_slug": "modmenu",
+                    "modrinth_id": "mOgUt4GM",
+                    "type": "optional"
+                }
+            ]
+        },
+        {
+            "loader": "1.21.11",
+            "minecraft_version": "1.21.11",
+            "filename": "freecam-neoforge-1.3.6+mc1.21.11.jar",
+            "game_versions": [
+                "1.21.11"
+            ],
+            "java_versions": [
+                "VERSION_21"
+            ],
+            "relationships": [
+                {
+                    "curseforge_slug": "cloth-config",
+                    "modrinth_id": "9s6osm5g",
+                    "type": "bundled"
+                }
+            ]
+        }
+    ]
+}

@@ -2,6 +2,7 @@ import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import dev.kikugie.stonecutter.controller.StonecutterControllerExtension
 import dev.kikugie.stonecutter.data.tree.ProjectNode
 import net.xolt.freecam.model.ParchmentVersion
+import net.xolt.freecam.model.Relationship
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
@@ -110,6 +111,33 @@ value class ModData(private val project: Project) {
     val curseforge: String get() = modProp("curseforge")
     val modrinth: String get() = modProp("modrinth")
     val crowdin: String get() = modProp("crowdin")
+    val relationships: List<Relationship> get() =
+        project.properties
+            .asSequence()
+            // Collect relationship properties
+            .mapNotNull { (key, value) ->
+                val path = key.split('.')
+                if (path.size == 3 && path[0] == "relationship") path[1] to (path[2] to value.toString())
+                else null
+            }
+            // Group by relationship name
+            .groupBy({ it.first }, { it.second })
+            // Construct a Relationship object
+            .map { (name, fields) ->
+                val props = fields.toMap()
+                val unknown = props.keys - setOf("curseforge_slug", "modrinth_id", "type")
+                if (unknown.isNotEmpty()) {
+                    error("Unknown relationship fields: " + unknown.joinToString(" ") { "relationship.$name.$it" })
+                }
+                Relationship(
+                    curseforgeSlug = props["curseforge_slug"]!!,
+                    modrinthId = props["modrinth_id"]!!,
+                    type = props["type"]
+                        ?.let { Relationship.Type.valueOf(it.uppercase()) }
+                        ?: Relationship.Type.OPTIONAL
+                )
+            }
+            .toList()
     val parchment: ParchmentVersion? get() = depOrNull("parchment")?.let(ParchmentVersion::parse)
     val mc: String get() = depOrNull("minecraft") ?: project.stonecutterBuild.current.version
 

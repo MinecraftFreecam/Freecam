@@ -89,7 +89,3 @@ tasks.processResources {
 
     inputs.properties(commonExpansions)
 }
-
-publisher {
-    artifact.set(tasks.named("jar"))
-}

@@ -17,17 +17,47 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     outputs:
-      versions: ${{ steps.versions.outputs.result }}
+      matrix: ${{ steps.matrix.outputs.result }}
+      mod_version: ${{ steps.mod_version.outputs.version }}
+      do_release: ${{ steps.release.outputs.do_release }}
 
     steps:
       - name: Checkout versions file
         uses: actions/checkout@v6
         with:
-          sparse-checkout: stonecutter.versions.toml
+          sparse-checkout: |
+            stonecutter.versions.toml
+            gradle.properties
           sparse-checkout-cone-mode: false
 
+      - name: Read mod version
+        id: mod_version
+        run: |
+          version=$(sed -n 's/^mod_version=//p' gradle.properties)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
+
+      - name: Check if a release should be made
+        id: release
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        env:
+          GH_TOKEN: ${{ github.token }}
+          local: ${{ steps.mod_version.outputs.version }}
+        run: |
+          # Get the version from the newest published release
+          published=$(gh release view --json tagName --jq .tagName 2>/dev/null || echo "")
+          published="${published#v}"
+
+          # Determine the latest version
+          latest=$(printf "%s\n" "$published" "$local" | sort --version-sort | tail -n1)
+
+          # Do a release if local is newer than published
+          if [ "$local" = "$latest" ] && [ "$local" != "$published" ]; then
+            echo "Pushed version $local is newer than latest release $published"
+            echo "do_release=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Generate versions matrix
-        id: versions
+        id: matrix
         uses: mikefarah/yq@v4
         with:
           cmd: |
@@ -46,7 +76,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        include: ${{ fromJson(needs.prepare.outputs.versions) }}
+        include: ${{ fromJson(needs.prepare.outputs.matrix) }}
     timeout-minutes: 120
     env:
       artifact_name: freecam-${{ matrix.minecraft }}-builds
@@ -139,3 +169,60 @@ jobs:
             echo "_Expires on **$(date --utc --date=+90days +%F)** (UTC)._"
             echo
           } >> "$GITHUB_STEP_SUMMARY"
+
+  releaseMetadata:
+    name: Release Metadata
+    if: needs.prepare.outputs.do_release || github.event.pull_request
+    needs: prepare
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - uses: actions/checkout@v6
+      - uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: temurin
+      - uses: gradle/actions/setup-gradle@v5
+
+      - name: Generate release metadata
+        run: ./gradlew :generateReleaseMetadata
+
+      - uses: actions/upload-artifact@v6
+        with:
+          name: release-metadata
+          path: build/release-metadata/*.json"
+          retention-days: 5
+          if-no-files-found: error
+
+  publish:
+    if: needs.prepare.outputs.do_release
+    needs:
+      - build
+      - releaseMetadata
+    runs-on: ubuntu-slim
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout required files
+        uses: actions/checkout@v6
+        with:
+          sparse-checkout: ci
+          sparse-checkout-cone-mode: false
+
+      - name: Download artifacts
+        uses: actions/download-artifact@v7
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - uses: actions/setup-python@v6
+        with:
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install --requirement ci/requirements.txt
+
+      - name: Publish release
+        run: |
+          python ci/publish_release.py artifacts --no-dry-run
