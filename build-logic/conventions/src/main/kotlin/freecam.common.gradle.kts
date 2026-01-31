@@ -1,9 +1,7 @@
-import org.gradle.kotlin.dsl.invoke
-
 plugins {
-    id("idea")
-    id("java-library")
-    id("maven-publish")
+    idea
+    `java-library`
+    `maven-publish`
 }
 
 version = "${loader}-${currentMod.version}+mc${currentMod.mc}"
