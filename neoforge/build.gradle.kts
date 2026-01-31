@@ -4,7 +4,7 @@ plugins {
     id("freecam.loaders")
 }
 
-val processedAw = stonecutterBuild.process(project(":common").file("src/main/resources/freecam.accesswidener"), "build/stonecutter/processed.aw");
+val processedAw = stonecutter.process(project(":common").file("src/main/resources/freecam.accesswidener"), "build/stonecutter/processed.aw");
 
 fletchingTable {
     // Convert accesswidener to META-INF/accesstransformer.cfg

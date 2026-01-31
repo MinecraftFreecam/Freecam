@@ -15,7 +15,7 @@ val json = Json {
     ignoreUnknownKeys = true
 }
 
-val legacy = stonecutterBuild.current.parsed <= "1.16.5"
+val legacy = stonecutter.current.parsed <= "1.16.5"
 val srgFile = layout.buildDirectory.file("mappings/srg.tsrg")
 val mojMapFile = layout.buildDirectory.file("mappings/mojMap.txt")
 val namedToSrgFile = layout.buildDirectory.file("mappings/namedToSrg.tsrg")

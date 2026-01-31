@@ -5,7 +5,7 @@ plugins {
     id("freecam.atremapper")
 }
 
-val processedAw = stonecutterBuild.process(project(":common").file("src/main/resources/freecam.accesswidener"), "build/stonecutter/processed.aw");
+val processedAw = stonecutter.process(project(":common").file("src/main/resources/freecam.accesswidener"), "build/stonecutter/processed.aw");
 
 fletchingTable {
     j52j.register("main") {
