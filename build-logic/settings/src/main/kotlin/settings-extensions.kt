@@ -3,6 +3,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
 import org.gradle.api.initialization.Settings
 import org.slf4j.LoggerFactory.getLogger
+import kotlin.collections.mutableSetOf
 
 private val logger = getLogger("stonecutter.settings")
 
@@ -12,24 +13,18 @@ private data class VersionEntry(val projects: List<String> = emptyList())
 private typealias VersionsToml = Map<String, VersionEntry>
 
 private fun VersionsToml.toProjectVersionsMap(): Map<String, List<String>> =
-    entries.fold(
-        initial = mutableMapOf<String, MutableSet<String>>()
-    ) { acc, (version, entry) ->
-        val (projects) = entry
-
-        if (projects.isEmpty()) {
-            // A configured version without any projects is an error, but avoid throwing as it could be done to
-            // temporarily disable a build
-            logger.error("{} has no projects.", version)
+    buildMap<String, MutableSet<String>> {
+        this@toProjectVersionsMap.forEach { (version, entry) ->
+            entry.projects
+                .takeUnless { it.isEmpty() }
+                ?.forEach { project ->
+                    getOrPut(project) { mutableSetOf() }.add(version)
+                }
+                // A configured version without any projects is an error, but avoid throwing as it could be done to
+                // temporarily disable a build
+                ?: logger.error("{} has no projects.", version)
         }
-
-        projects.forEach {
-            acc.getOrPut(it) { mutableSetOf() }.add(version)
-        }
-
-        acc
     }.mapValues { (_, versions) -> versions.sorted() }
-
 
 /**
  * Loads `stonecutter.versions.toml` and returns a map of Gradle project names
