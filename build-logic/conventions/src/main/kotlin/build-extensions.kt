@@ -17,20 +17,29 @@ fun RepositoryHandler.strictMaven(url: String, alias: String, vararg groups: Str
     filter { groups.forEach(::includeGroup) }
 }
 
-val Project.stonecutterBuild get() = extensions.getByType<StonecutterBuildExtension>()
-val Project.stonecutterController get() = extensions.getByType<StonecutterControllerExtension>()
+/**
+ * The `stonecutter` extension on :loader:version projects is a [StonecutterBuildExtension].
+ * This binding provides access within build-logic.
+ */
+internal val Project.stonecutter get() = extensions.getByType<StonecutterBuildExtension>()
+
+/**
+ * The `stonecutter` extension in `stonecutter.gradle.kts` is a [StonecutterControllerExtension].
+ * This binding provides access within build-logic.
+ */
+internal val Project.stonecutterController get() = extensions.getByType<StonecutterControllerExtension>()
 
 /**
  * The stonecutter [ProjectNode] for the current version's `:common` project, e.g. `:common:1.12.11`.
  */
-val Project.commonNode: ProjectNode get() = requireNotNull(stonecutterBuild.node.sibling("common")) {
+val Project.commonNode: ProjectNode get() = requireNotNull(stonecutter.node.sibling("common")) {
     "No common project for $project"
 }
 
 /**
  * The current version's `rootProject`, e.g. `project(":1.21.11")`.
  */
-val Project.currentRootProject get() = rootProject.project(stonecutterBuild.current.project)!!
+val Project.currentRootProject get() = rootProject.project(stonecutter.current.project)!!
 
 /**
  * [Project.mod] for the [current version's root project][Project.currentRootProject].
@@ -38,9 +47,9 @@ val Project.currentRootProject get() = rootProject.project(stonecutterBuild.curr
 val Project.currentMod get() = currentRootProject.mod
 
 val Project.requiredJava get() = when {
-    stonecutterBuild.current.parsed >= "1.20.6" -> JavaVersion.VERSION_21
-    stonecutterBuild.current.parsed >= "1.18" -> JavaVersion.VERSION_17
-    stonecutterBuild.current.parsed >= "1.17" -> JavaVersion.VERSION_16
+    stonecutter.current.parsed >= "1.20.6" -> JavaVersion.VERSION_21
+    stonecutter.current.parsed >= "1.18" -> JavaVersion.VERSION_17
+    stonecutter.current.parsed >= "1.17" -> JavaVersion.VERSION_16
     else -> JavaVersion.VERSION_1_8
 }
 val Project.javaVersion get() = requiredJava.majorVersion.toInt()
@@ -111,7 +120,7 @@ value class ModData(private val project: Project) {
     val modrinth: String get() = modProp("modrinth")
     val crowdin: String get() = modProp("crowdin")
     val parchment: ParchmentVersion? get() = depOrNull("parchment")?.let(ParchmentVersion.Companion::parse)
-    val mc: String get() = depOrNull("minecraft") ?: project.stonecutterBuild.current.version
+    val mc: String get() = depOrNull("minecraft") ?: project.stonecutter.current.version
 
     inline fun parchment(block: (mappings: String, minecraft: String) -> Unit) {
         parchment?.let { block(it.mappings, it.minecraft ?: mc) }

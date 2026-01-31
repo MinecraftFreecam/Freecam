@@ -36,7 +36,7 @@ dependencies {
 }
 
 loom {
-    accessWidenerPath = stonecutterBuild.process(project(":common").file("src/main/resources/freecam.accesswidener"), "build/stonecutter/processed.aw")
+    accessWidenerPath = stonecutter.process(project(":common").file("src/main/resources/freecam.accesswidener"), "build/stonecutter/processed.aw")
     runs {
         getByName("client") {
             client()
