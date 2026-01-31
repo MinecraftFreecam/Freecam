@@ -65,8 +65,8 @@ tasks.withType<BaseChangelogTask>().configureEach {
 changelog {
     // Use the mod_version in gradle.properties as the release version/tag.
     // Build tag/diff links using the github repo URL.
-    version = property("mod.version") as String
-    repositoryUrl = property("mod.source") as String
+    version = meta.version
+    repositoryUrl = meta.sourceUrl.toString()
 
     // Title & intro are printed right at the start of the changelog.
     // The values here will replace whatever exists in the file when patching.

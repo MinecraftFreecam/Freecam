@@ -20,6 +20,7 @@ pluginManagement {
 
 plugins {
     id("freecam.settings")
+    id("freecam.modmetadata")
 }
 
 stonecutter {

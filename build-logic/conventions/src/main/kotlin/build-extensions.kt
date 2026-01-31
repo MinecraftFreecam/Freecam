@@ -1,6 +1,7 @@
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import dev.kikugie.stonecutter.controller.StonecutterControllerExtension
 import dev.kikugie.stonecutter.data.tree.ProjectNode
+import net.xolt.freecam.model.ModMetadata
 import net.xolt.freecam.model.ParchmentVersion
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
@@ -16,6 +17,11 @@ fun RepositoryHandler.strictMaven(url: String, alias: String, vararg groups: Str
     forRepository { maven(url) { name = alias } }
     filter { groups.forEach(::includeGroup) }
 }
+
+/**
+ * Alias for [`meta`][ModMetadata], as seen outside build-logic.
+ */
+internal val Project.meta get() = extensions.getByType<ModMetadata>()
 
 /**
  * The `stonecutter` extension on :loader:version projects is a [StonecutterBuildExtension].
@@ -59,20 +65,20 @@ val Project.commonExpansions: Map<String, String>
     get() {
         return mapOf(
             "mixinCompatLevel" to "JAVA_$javaVersion",
-            "modId" to currentMod.id,
-            "modName" to currentMod.name,
-            "modVersion" to currentMod.version,
-            "modGroup" to currentMod.group,
-            "modAuthors" to currentMod.authors.joinToString(", "),
-            "modDescription" to currentMod.description,
-            "modLicense" to currentMod.license,
-            "modHomepage" to currentMod.homepage,
-            "modSource" to currentMod.source,
-            "modIssues" to currentMod.issues,
-            "modGhReleases" to currentMod.ghReleases,
-            "modCurseforge" to currentMod.curseforge,
-            "modModrinth" to currentMod.modrinth,
-            "modCrowdin" to currentMod.crowdin,
+            "modId" to meta.id,
+            "modName" to meta.name,
+            "modVersion" to meta.version,
+            "modGroup" to meta.group,
+            "modAuthors" to meta.authors.joinToString(", "),
+            "modDescription" to meta.description,
+            "modLicense" to meta.license,
+            "modHomepage" to meta.homepageUrl.toString(),
+            "modSource" to meta.sourceUrl.toString(),
+            "modIssues" to meta.issuesUrl.toString(),
+            "modGhReleases" to meta.githubReleasesUrl.toString(),
+            "modCurseforge" to meta.curseforgeUrl.toString(),
+            "modModrinth" to meta.modrinthUrl.toString(),
+            "modCrowdin" to meta.crowdinUrl.toString(),
             "minecraftVersion" to currentMod.propOrNull("minecraft_version"),
             "fabricLoaderVersion" to currentMod.depOrNull("fabric_loader"),
             "fabricLoaderReq" to currentMod.propOrNull("fabric_loader_req"),
@@ -93,32 +99,13 @@ val Project.commonExpansions: Map<String, String>
 val Project.commonJsonExpansions get() = buildMap {
     putAll(project.commonExpansions)
     mapValues { (_, v) -> v.replace("\n", "\\\\n") }
-    put("modAuthorsJson", currentMod.authors.joinToString("\", \""))
+    put("modAuthorsJson", meta.authors.joinToString("\", \""))
 }
 
 val Project.loader: String? get() = prop("loader")
 
 @JvmInline
 value class ModData(private val project: Project) {
-    val id: String get() = modProp("id")
-    val name: String get() = modProp("name")
-    val version: String get() = modProp("version")
-    val releaseType: String get() = modProp("release_type")
-    val group: String get() = modProp("group")
-    val authors: List<String> get() =
-        modProp("authors")
-            .split(',')
-            .map(String::trim)
-            .filter(String::isNotEmpty)
-    val description: String get() = modProp("description")
-    val license: String get() = modProp("license")
-    val homepage: String get() = modProp("homepage")
-    val source: String get() = modProp("source")
-    val issues: String get() = modProp("issues")
-    val ghReleases: String get() = modProp("gh_releases")
-    val curseforge: String get() = modProp("curseforge")
-    val modrinth: String get() = modProp("modrinth")
-    val crowdin: String get() = modProp("crowdin")
     val parchment: ParchmentVersion? get() = depOrNull("parchment")?.let(ParchmentVersion.Companion::parse)
     val mc: String get() = depOrNull("minecraft") ?: project.stonecutter.current.version
 
