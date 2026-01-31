@@ -1,12 +1,13 @@
-import net.xolt.freecam.gradle.BumpVersionTask
 import org.jetbrains.changelog.tasks.BaseChangelogTask
 
 // This file represents the version-less `rootProject` (:)
 // Version-agnostic tasks should go here, as well as configuration for stonecutter itself
 
 plugins {
+    id("freecam.api")
+    id("freecam.bump-version")
     id("dev.kikugie.stonecutter")
-    id("org.jetbrains.changelog")
+    alias(libs.plugins.jetbrains.changelog)
 }
 
 stonecutter active "1.21.11"
@@ -16,10 +17,12 @@ stonecutter {
         val rootVersionProject = rootProject.project(node.metadata.project)
         val clothVersion = rootVersionProject.property("deps.cloth") as String
         dependencies["cloth"] = clothVersion
-        if (rootVersionProject.hasProperty("deps.neoforge"))
-            dependencies["neoforge"] = rootVersionProject.prop("deps.neoforge").orEmpty()
-        if (rootVersionProject.hasProperty("deps.forge"))
-            dependencies["forge"] = rootVersionProject.prop("deps.forge").orEmpty()
+        rootVersionProject.findProperty("deps.neoforge")?.let {
+            dependencies["neoforge"] = it as String
+        }
+        rootVersionProject.findProperty("deps.forge")?.let {
+            dependencies["forge"] = it as String
+        }
 
         replacements {
             string(current.parsed >= "1.21.11") {
@@ -49,9 +52,7 @@ tasks.named<Wrapper>("wrapper") {
     gradleVersion = "9.2.1"
 }
 
-// Helper task that bumps the version number
-tasks.register<BumpVersionTask>("bumpVersion") {
-    group = "version"
+tasks.bumpVersion {
     input = file("gradle.properties")
     key = "mod.version"
 }
