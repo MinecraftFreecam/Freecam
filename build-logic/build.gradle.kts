@@ -1,19 +1,26 @@
 plugins {
     `kotlin-dsl`
+    alias(libs.plugins.kotlin.serialization)
 }
 
 dependencies {
-    implementation(libs.tomlj)
     implementation(plugin(libs.plugins.stonecutter))
     implementation(plugin(libs.plugins.foojay.resolver))
+    implementation(plugin(libs.plugins.jetbrains.changelog))
+    implementation(plugin(libs.plugins.modpublisher))
+    implementation(libs.mapping.io)
+    implementation(libs.kotlin.serialization.json)
+    implementation(libs.tomlj)
     testImplementation(kotlin("test"))
 }
 
 repositories {
     mavenCentral()
     gradlePluginPortal()
+    maven("https://maven.firstdark.dev/releases/")
+    maven("https://maven.firstdark.dev/snapshots/")
     maven("https://maven.kikugie.dev/snapshots")
-    maven("https://maven.kikugie.dev/releases")
+    maven("https://maven.fabricmc.net/")
 }
 
 tasks.test {

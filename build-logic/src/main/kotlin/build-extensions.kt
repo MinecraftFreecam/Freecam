@@ -110,7 +110,7 @@ value class ModData(private val project: Project) {
     val curseforge: String get() = modProp("curseforge")
     val modrinth: String get() = modProp("modrinth")
     val crowdin: String get() = modProp("crowdin")
-    val parchment: ParchmentVersion? get() = depOrNull("parchment")?.let(ParchmentVersion::parse)
+    val parchment: ParchmentVersion? get() = depOrNull("parchment")?.let(ParchmentVersion.Companion::parse)
     val mc: String get() = depOrNull("minecraft") ?: project.stonecutterBuild.current.version
 
     inline fun parchment(block: (mappings: String, minecraft: String) -> Unit) {

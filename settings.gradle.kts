@@ -10,14 +10,16 @@ pluginManagement {
         maven("https://maven.fabricmc.net/")
         maven("https://maven.neoforged.net/releases/")
         maven("https://maven.minecraftforge.net")
+        maven("https://maven.firstdark.dev/releases/")
+        maven("https://maven.firstdark.dev/snapshots/")
         maven("https://maven.kikugie.dev/snapshots")
         maven("https://maven.kikugie.dev/releases")
     }
-    includeBuild("./gradle/settings")
+    includeBuild("build-logic")
 }
 
 plugins {
-    id("freecam.settings-plugin")
+    id("freecam.settings")
 }
 
 stonecutter {
