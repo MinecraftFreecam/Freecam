@@ -1,0 +1,20 @@
+[mod]
+name = "Freecam"
+id = "freecam"
+group = "net.xolt.freecam"
+version = "1.3.6"
+# release, beta or alpha. Used for publishMod task.
+release_type = "release"
+authors = ["hashalite", "Matt Sturgeon"]
+description = "A highly customizable freecam mod."
+license = "MIT"
+homepage = "https://www.curseforge.com/minecraft/mc-mods/free-cam"
+source= "https://github.com/MinecraftFreecam/Freecam"
+issues = "https://github.com/MinecraftFreecam/Freecam/issues"
+github_releases = "https://github.com/MinecraftFreecam/Freecam/releases"
+curseforge = "https://www.curseforge.com/minecraft/mc-mods/free-cam"
+modrinth = "https://modrinth.com/mod/freecam"
+crowdin = "https://crowdin.com/project/freecam"
+curseforge_id = "557076"
+modrinth_id = "XeEZ3fK2"
+

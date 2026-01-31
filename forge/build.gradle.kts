@@ -57,7 +57,7 @@ legacyForge {
     }
 
     mods {
-        register(currentMod.id) {
+        register(meta.id) {
             sourceSet(sourceSets.main.get())
         }
     }
@@ -77,7 +77,7 @@ sourceSets.main {
 tasks.register<Copy>("buildAndCollect") {
     group = "build"
     from(tasks.jar.map { it.archiveFile })
-    into(rootProject.layout.buildDirectory.file("libs/${currentMod.version}"))
+    into(rootProject.layout.buildDirectory.file("libs/${meta.version}"))
     dependsOn("build")
 }
 

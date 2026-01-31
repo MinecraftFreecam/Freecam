@@ -4,10 +4,10 @@ plugins {
     `maven-publish`
 }
 
-version = "${loader}-${currentMod.version}+mc${currentMod.mc}"
-group = currentMod.group
+version = "${loader}-${meta.version}+mc${currentMod.mc}"
+group = meta.group
 base {
-    archivesName = currentMod.id
+    archivesName = meta.id
 }
 
 // ensure that the encoding is set to UTF-8, no matter what the system default is
