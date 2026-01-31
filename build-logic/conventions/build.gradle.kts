@@ -11,5 +11,4 @@ dependencies {
     implementation(plugin(libs.plugins.modpublisher))
     implementation(libs.mapping.io)
     implementation(libs.kotlin.serialization.json)
-    implementation(libs.tomlj)
 }

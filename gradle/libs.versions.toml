@@ -5,16 +5,16 @@ fabric-loom = "1.14-SNAPSHOT"
 moddev = "2.0.140"
 fletchingtable = "0.1.0-alpha.22"
 foojay-resolver = "1.0.0"
-tomlj = "1.1.1"
+tomlkt = "0.6.0"
 mapping-io = "0.8.0"
 modpublisher = "2.1.7+snapshot.0"
 jetbrains-changelog = "2.2.0"
 serialization-json = "1.10.0"
 
 [libraries]
-tomlj = { group = "org.tomlj", name = "tomlj", version.ref = "tomlj" }
 mapping-io = { group = "net.fabricmc", name = "mapping-io", version.ref = "mapping-io"}
 kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization-json" }
+kotlin-serialization-toml = { group = "dev.eav.tomlkt", name = "tomlkt", version.ref = "tomlkt" }
 
 [plugins]
 stonecutter = { id = "dev.kikugie.stonecutter", version.ref = "stonecutter" }
