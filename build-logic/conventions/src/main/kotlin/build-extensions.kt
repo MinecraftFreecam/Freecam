@@ -45,7 +45,7 @@ val Project.commonNode: ProjectNode get() = requireNotNull(stonecutter.node.sibl
 /**
  * The current version's `rootProject`, e.g. `project(":1.21.11")`.
  */
-val Project.currentRootProject get() = rootProject.project(stonecutter.current.project)!!
+val Project.currentRootProject get() = rootProject.project(stonecutter.current.version)!!
 
 /**
  * [Project.mod] for the [current version's root project][Project.currentRootProject].
