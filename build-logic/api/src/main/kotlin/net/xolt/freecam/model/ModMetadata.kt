@@ -3,7 +3,12 @@ package net.xolt.freecam.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-interface ModMetadata {
+interface ModMetadata : StaticModMetadata {
+    val mc: String
+    val loader: String
+}
+
+interface StaticModMetadata {
     val id: String
     val name: String
     val group: String
@@ -52,4 +57,4 @@ data class ModMetadataToml(
     override val modrinthId: String,
     @SerialName("crowdin")
     override val crowdinUrl: UrlString,
-) : ModMetadata
+) : StaticModMetadata
