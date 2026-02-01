@@ -15,4 +15,5 @@ value class UrlString(val value: String) {
 
     fun toJavaUri(): URI = URI(value)
     fun toJavaUrl(): URL = toJavaUri().toURL()
+    override fun toString(): String = value
 }
