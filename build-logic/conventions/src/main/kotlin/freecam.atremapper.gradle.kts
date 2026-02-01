@@ -56,15 +56,15 @@ val downloadMojMappings by tasks.registering {
     outputs.file(mojMapFile)
 
     // Out of date when MC version changes
-    inputs.property("minecraftVersion", currentMod.mc)
+    inputs.property("minecraftVersion", meta.mc)
 
     doLast {
         val manifestUrl = URI("https://piston-meta.mojang.com/mc/game/version_manifest_v2.json").toURL()
 
         val manifest: MCVersionManifest = manifestUrl.openStream().use(json::decodeFromStream)
 
-        val version = manifest.versions.firstOrNull { it.id == currentMod.mc }
-            ?: error("Minecraft version ${currentMod.mc} not found in Mojang manifest")
+        val version = manifest.versions.firstOrNull { it.id == meta.mc }
+            ?: error("Minecraft version ${meta.mc} not found in Mojang manifest")
 
         val versionUrl = URI(version.url).toURL()
         val versionJson: MCVersionJson = versionUrl.openStream().use(json::decodeFromStream)
@@ -83,10 +83,10 @@ val downloadSrgMappings by tasks.registering {
     outputs.file(srgFile)
 
     // Out of date when MC version changes
-    inputs.property("minecraftVersion", currentMod.mc)
+    inputs.property("minecraftVersion", meta.mc)
 
     doLast {
-        val mcpVersion = currentMod.mc
+        val mcpVersion = meta.mc
         val config = project.configurations.detachedConfiguration(
                 project.dependencies.create("de.oceanlabs.mcp:mcp_config:${mcpVersion}@zip")
                 )

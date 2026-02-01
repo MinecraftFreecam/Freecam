@@ -33,17 +33,17 @@ loom {
 }
 
 dependencies {
-    minecraft("com.mojang:minecraft:${currentMod.mc}")
+    minecraft("com.mojang:minecraft:${meta.mc}")
     mappings(loom.layered {
         officialMojangMappings()
-        currentMod.parchment { mappings, mc ->
+        meta.parchment { mappings, mc ->
             parchment("org.parchmentmc.data:parchment-${mc}:$mappings@zip")
         }
     })
 
-    compileOnly("org.spongepowered:mixin:${currentMod.dep("mixin")}")
-    modCompileOnly("net.fabricmc:fabric-loader:${currentMod.dep("fabric_loader")}")
-    modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:${currentMod.dep("cloth")}")
+    compileOnly("org.spongepowered:mixin:${meta.deps["mixin"]}")
+    modCompileOnly("net.fabricmc:fabric-loader:${meta.deps["fabric_loader"]}")
+    modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:${meta.deps["cloth"]}")
 }
 
 tasks.processResources {

@@ -21,7 +21,7 @@ publisher {
 
     // Format display name, e.g. "1.2.4 for MC 1.20.4 (fabric)"
     displayName =
-        "${meta.version} for MC ${currentMod.mc} (${loader})"
+        "${meta.version} for MC ${meta.mc} (${meta.loader})"
 
     projectVersion = meta.version
     versionType = meta.releaseType.toString()
@@ -51,10 +51,10 @@ publisher {
     // Supported game versions
     gameVersions.set(provider {
         val prop = "supported_mc_versions"
-        val primary = currentMod.mc
-        val common = currentMod.propOrNull(prop).orEmpty()
+        val primary = meta.mc
+        val common = meta.properties.orNull(prop).orEmpty()
         val specific =
-            rootProject.findProperty("${loader}_$prop")?.toString().orEmpty()
+            rootProject.findProperty("${meta.loader}_$prop")?.toString().orEmpty()
 
         (common.split(",") + specific.split(",") + primary)
             .map { it.trim() }

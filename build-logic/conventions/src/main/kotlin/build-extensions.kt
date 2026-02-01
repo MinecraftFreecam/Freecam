@@ -79,19 +79,19 @@ val Project.commonExpansions: Map<String, String>
             "modCurseforge" to meta.curseforgeUrl.toString(),
             "modModrinth" to meta.modrinthUrl.toString(),
             "modCrowdin" to meta.crowdinUrl.toString(),
-            "minecraftVersion" to currentMod.propOrNull("minecraft_version"),
-            "fabricLoaderVersion" to currentMod.depOrNull("fabric_loader"),
-            "fabricLoaderReq" to currentMod.propOrNull("fabric_loader_req"),
-            "fabricMcReq" to currentMod.propOrNull("fabric_mc_req"),
-            "fabricApiVersion" to currentMod.depOrNull("fabric_api"),
-            "neoForgeVersion" to currentMod.depOrNull("neoforge"),
-            "neoforgeLoaderReq" to currentMod.propOrNull("neoforge_loader_req"),
-            "neoforgeReq" to currentMod.propOrNull("neoforge_req"),
-            "neoforgeMcReq" to currentMod.propOrNull("neoforge_mc_req"),
-            "forgeVersion" to currentMod.depOrNull("forge"),
-            "forgeLoaderReq" to currentMod.propOrNull("forge_loader_req"),
-            "forgeReq" to currentMod.propOrNull("forge_req"),
-            "forgeMcReq" to currentMod.propOrNull("forge_mc_req"),
+            "minecraftVersion" to meta.properties.orNull("minecraft_version"),
+            "fabricLoaderVersion" to meta.deps.orNull("fabric_loader"),
+            "fabricLoaderReq" to meta.properties.orNull("fabric_loader_req"),
+            "fabricMcReq" to meta.properties.orNull("fabric_mc_req"),
+            "fabricApiVersion" to meta.deps.orNull("fabric_api"),
+            "neoForgeVersion" to meta.deps.orNull("neoforge"),
+            "neoforgeLoaderReq" to meta.properties.orNull("neoforge_loader_req"),
+            "neoforgeReq" to meta.properties.orNull("neoforge_req"),
+            "neoforgeMcReq" to meta.properties.orNull("neoforge_mc_req"),
+            "forgeVersion" to meta.deps.orNull("forge"),
+            "forgeLoaderReq" to meta.properties.orNull("forge_loader_req"),
+            "forgeReq" to meta.properties.orNull("forge_req"),
+            "forgeMcReq" to meta.properties.orNull("forge_mc_req"),
         ).filterValues { it?.isNotEmpty() == true }.mapValues { it.value!! }
     }
 
@@ -102,15 +102,12 @@ val Project.commonJsonExpansions get() = buildMap {
     put("modAuthorsJson", meta.authors.joinToString("\", \""))
 }
 
-val Project.loader: String? get() = prop("loader")
-
 @JvmInline
 value class ModData(private val project: Project) {
     val parchment: ParchmentVersion? get() = depOrNull("parchment")?.let(ParchmentVersion.Companion::parse)
-    val mc: String get() = depOrNull("minecraft") ?: project.stonecutter.current.version
 
     inline fun parchment(block: (mappings: String, minecraft: String) -> Unit) {
-        parchment?.let { block(it.mappings, it.minecraft ?: mc) }
+        parchment?.let { block(it.mappings, it.minecraft) }
     }
 
     fun propOrNull(key: String) = project.prop(key)
