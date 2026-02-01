@@ -4,7 +4,7 @@ plugins {
     `maven-publish`
 }
 
-version = "${loader}-${meta.version}+mc${currentMod.mc}"
+version = "${meta.loader}-${meta.version}+mc${meta.mc}"
 group = meta.group
 base {
     archivesName = meta.id
@@ -33,7 +33,7 @@ repositories {
     mavenCentral()
     maven("https://maven.parchmentmc.org/")
     maven("https://maven.neoforged.net/releases/")
-    currentMod.depOrNull("neoforge_pr")?.let {
+    meta.deps.orNull("neoforge_pr")?.let {
         maven {
             url = uri("https://prmaven.neoforged.net/NeoForge/pr${it}")
             content { includeModule("net.neoforged", "neoforge") }

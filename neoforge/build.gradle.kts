@@ -14,13 +14,13 @@ fletchingTable {
 
 neoForge {
     enable {
-        version = currentMod.dep("neoforge")
+        version = meta.deps["neoforge"]
     }
 }
 
 dependencies {
-    api("me.shedaniel.cloth:cloth-config-neoforge:${currentMod.dep("cloth")}")
-    jarJar(implementation("me.shedaniel.cloth:cloth-config-neoforge:${currentMod.dep("cloth")}") as Any)
+    api("me.shedaniel.cloth:cloth-config-neoforge:${meta.deps["cloth"]}")
+    jarJar(implementation("me.shedaniel.cloth:cloth-config-neoforge:${meta.deps["cloth"]}") as Any)
 }
 
 neoForge {
@@ -42,7 +42,7 @@ neoForge {
     }
 
     parchment {
-        currentMod.parchment { mappings, mc ->
+        meta.parchment { mappings, mc ->
             minecraftVersion = mc
             mappingsVersion = mappings
         }

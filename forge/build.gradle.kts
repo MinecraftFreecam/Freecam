@@ -19,14 +19,14 @@ fletchingTable {
 
 legacyForge {
     enable {
-        forgeVersion = "${mod.mc}-${currentMod.dep("forge")}"
+        forgeVersion = "${meta.mc}-${meta.deps["forge"]}"
     }
 }
 
 dependencies {
     compileOnlyApi("org.jetbrains:annotations:26.0.2")
-    annotationProcessor("org.spongepowered:mixin:${currentMod.dep("mixin")}:processor")
-    forgeDependency(group = "me.shedaniel.cloth", name = "cloth-config-forge", version = currentMod.dep("cloth"))
+    annotationProcessor("org.spongepowered:mixin:${meta.deps["mixin"]}:processor")
+    forgeDependency(group = "me.shedaniel.cloth", name = "cloth-config-forge", version = meta.deps["cloth"])
 }
 
 legacyForge {
@@ -46,7 +46,7 @@ legacyForge {
     }
 
     parchment {
-        currentMod.parchment { mappings, mc ->
+        meta.parchment { mappings, mc ->
             minecraftVersion = mc
             mappingsVersion = mappings
         }
