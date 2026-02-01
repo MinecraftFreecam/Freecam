@@ -43,10 +43,6 @@ repositories {
     maven("https://maven.terraformersmc.com/")
 }
 
-sourceSets.main {
-    resources.srcDir("src/generated/resources")
-}
-
-tasks.named("processResources") {
-    dependsOn(":common:${project.name}:stonecutterGenerate")
+tasks.processResources {
+    dependsOn(tasks.named("stonecutterGenerate"))
 }

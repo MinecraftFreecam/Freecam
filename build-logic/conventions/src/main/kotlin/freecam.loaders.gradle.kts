@@ -11,10 +11,9 @@ val commonResources: Configuration by configurations.creating {
 }
 
 dependencies {
-    val commonPath = commonNode.hierarchy.toString()
-    compileOnly(project(path = commonPath))
-    commonJava(project(path = commonPath, configuration = "commonJava"))
-    commonResources(project(path = commonPath, configuration = "commonResources"))
+    compileOnly(commonNode.project)
+    commonJava(project(path = commonNode.project.path, configuration = "commonJava"))
+    commonResources(project(path = commonNode.project.path, configuration = "commonResources"))
 }
 
 tasks {
