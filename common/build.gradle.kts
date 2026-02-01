@@ -46,27 +46,6 @@ dependencies {
     modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:${currentMod.dep("cloth")}")
 }
 
-val commonJava: Configuration by configurations.creating {
-    isCanBeResolved = false
-    isCanBeConsumed = true
-}
-
-val commonResources: Configuration by configurations.creating {
-    isCanBeResolved = false
-    isCanBeConsumed = true
-}
-
-artifacts {
-    afterEvaluate {
-        val mainSourceSet = sourceSets.main.get()
-        mainSourceSet.java.sourceDirectories.files.forEach {
-            add(commonJava.name, it)
-        }
-
-        add(commonResources.name, tasks.processResources)
-    }
-}
-
 tasks.processResources {
     filesMatching("freecam-common.mixins.json") {
         expand(commonJsonExpansions)
