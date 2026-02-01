@@ -3,28 +3,14 @@ plugins {
     id("freecam.publish")
 }
 
-val commonJava: Configuration by configurations.creating {
-    isCanBeResolved = true
-}
-val commonResources: Configuration by configurations.creating {
-    isCanBeResolved = true
-}
-
-dependencies {
-    compileOnly(commonNode.project)
-    commonJava(project(path = commonNode.project.path, configuration = "commonJava"))
-    commonResources(project(path = commonNode.project.path, configuration = "commonResources"))
-}
-
-tasks {
-    compileJava {
-        dependsOn(commonJava)
-        source(commonJava)
-    }
-
-    processResources {
-        dependsOn(commonResources)
-        from(commonResources)
+sourceSets {
+    main {
+        // Manually depend on common's pre-processed sources.
+        // NOTE: loaders have no build dependency on common, so API/implementation
+        //  classes and transitive dependencies must be manually propagated.
+        val commonTasks = commonNode.project.tasks
+        java.srcDirs(commonTasks.named<Sync>("stonecutterGenerate").map { it.destinationDir })
+        resources.srcDirs(commonTasks.processResources.map { it.destinationDir })
     }
 }
 
