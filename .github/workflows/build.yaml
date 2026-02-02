@@ -120,19 +120,21 @@ jobs:
           upload_path: ${{ matrix.upload_path }}
           upload_url: ${{ steps.upload.outputs.artifact-url }}
         run: |
-          shopt -s nullglob
           {
             echo "## Build artifacts"
             echo
             echo "**Files:**"
             echo
-            for file in $upload_path; do
-              echo "- \`$(basename "$file")\`"
-            done
+            (
+              shopt -s nullglob
+              IFS=$'\n'
+              for file in $upload_path; do
+                echo "- \`$(basename "$file")\`"
+              done
+            )
             echo
             echo "**Download:** [$upload_name.zip]($upload_url)"
             echo
             echo "_Expires on **$(date --utc --date=+90days +%F)** (UTC)._"
             echo
           } >> "$GITHUB_STEP_SUMMARY"
-          shopt -u nullglob
