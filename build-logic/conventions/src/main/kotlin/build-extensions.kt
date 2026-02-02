@@ -2,7 +2,6 @@ import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import dev.kikugie.stonecutter.controller.StonecutterControllerExtension
 import dev.kikugie.stonecutter.data.tree.ProjectNode
 import net.xolt.freecam.model.ModMetadata
-import net.xolt.freecam.model.ParchmentVersion
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
 import org.gradle.api.artifacts.dsl.RepositoryHandler
@@ -10,7 +9,6 @@ import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.kotlin.dsl.getByType
 import org.gradle.kotlin.dsl.maven
 
-val Project.mod: ModData get() = ModData(this)
 fun Project.prop(key: String): String? = findProperty(key)?.toString()
 
 fun RepositoryHandler.strictMaven(url: String, alias: String, vararg groups: String) = exclusiveContent {
@@ -46,11 +44,6 @@ val Project.commonNode: ProjectNode get() = requireNotNull(stonecutter.node.sibl
  * The current version's `rootProject`, e.g. `project(":1.21.11")`.
  */
 val Project.currentRootProject get() = rootProject.project(stonecutter.current.version)!!
-
-/**
- * [Project.mod] for the [current version's root project][Project.currentRootProject].
- */
-val Project.currentMod get() = currentRootProject.mod
 
 val Project.requiredJava get() = when {
     stonecutter.current.parsed >= "1.20.6" -> JavaVersion.VERSION_21
@@ -100,20 +93,4 @@ val Project.commonJsonExpansions get() = buildMap {
     putAll(project.commonExpansions)
     mapValues { (_, v) -> v.replace("\n", "\\\\n") }
     put("modAuthorsJson", meta.authors.joinToString("\", \""))
-}
-
-@JvmInline
-value class ModData(private val project: Project) {
-    val parchment: ParchmentVersion? get() = depOrNull("parchment")?.let(ParchmentVersion.Companion::parse)
-
-    inline fun parchment(block: (mappings: String, minecraft: String) -> Unit) {
-        parchment?.let { block(it.mappings, it.minecraft) }
-    }
-
-    fun propOrNull(key: String) = project.prop(key)
-    fun prop(key: String) = requireNotNull(propOrNull(key)) { "Missing '$key'" }
-    fun modPropOrNull(key: String) = project.prop("mod.$key")
-    fun modProp(key: String) = requireNotNull(modPropOrNull(key)) { "Missing 'mod.$key'" }
-    fun depOrNull(key: String): String? = project.prop("deps.$key")?.takeIf { it.isNotEmpty() && it != "" }
-    fun dep(key: String) = requireNotNull(depOrNull(key)) { "Missing 'deps.$key'" }
 }
