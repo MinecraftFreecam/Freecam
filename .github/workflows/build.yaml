@@ -99,7 +99,7 @@ jobs:
           tasks: ${{ toJSON(matrix.tasks) }}
         run: |
           # Build each task
-          mapfile -t tasks < <( echo "$tasks" | jq --compact-output . )
+          mapfile -t tasks < <( echo "$tasks" | jq --raw-output .[] )
           ./gradlew "${tasks[@]}"
 
       - name: Upload build
