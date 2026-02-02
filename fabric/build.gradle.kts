@@ -1,8 +1,9 @@
+import dev.kikugie.stonecutter.StonecutterExperimentalAPI
+
 plugins {
     alias(libs.plugins.fabric.loom)
     alias(libs.plugins.fletchingtable.fabric)
     id("freecam.loaders")
-
 }
 
 stonecutter {
@@ -36,7 +37,16 @@ dependencies {
 }
 
 loom {
-    accessWidenerPath = stonecutter.process(project(":common").file("src/main/resources/freecam.accesswidener"), "build/stonecutter/processed.aw")
+    // Loom reads the AW during configuration, so the :stonecutterGenerate one is too late
+    // We still use the task-generated AW during the actual build
+    accessWidenerPath = provider {
+        @OptIn(StonecutterExperimentalAPI::class)
+        stonecutter.process(
+            file = rootDir.resolve("common/src/main/resources/freecam.accesswidener"),
+            destination = "build/generated-eval/freecam.accesswidener"
+        )
+    }
+
     runs {
         getByName("client") {
             client()
