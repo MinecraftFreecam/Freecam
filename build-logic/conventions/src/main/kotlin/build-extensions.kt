@@ -4,17 +4,8 @@ import dev.kikugie.stonecutter.data.tree.ProjectNode
 import net.xolt.freecam.model.ModMetadata
 import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.api.artifacts.dsl.RepositoryHandler
 import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.kotlin.dsl.getByType
-import org.gradle.kotlin.dsl.maven
-
-fun Project.prop(key: String): String? = findProperty(key)?.toString()
-
-fun RepositoryHandler.strictMaven(url: String, alias: String, vararg groups: String) = exclusiveContent {
-    forRepository { maven(url) { name = alias } }
-    filter { groups.forEach(::includeGroup) }
-}
 
 /**
  * Alias for [`meta`][ModMetadata], as seen outside build-logic.
@@ -39,11 +30,6 @@ internal val Project.stonecutterController get() = extensions.getByType<Stonecut
 val Project.commonNode: ProjectNode get() = requireNotNull(stonecutter.node.sibling("common")) {
     "No common project for $project"
 }
-
-/**
- * The current version's `rootProject`, e.g. `project(":1.21.11")`.
- */
-val Project.currentRootProject get() = rootProject.project(stonecutter.current.version)!!
 
 val Project.requiredJava get() = when {
     stonecutter.current.parsed >= "1.20.5" -> JavaVersion.VERSION_21
