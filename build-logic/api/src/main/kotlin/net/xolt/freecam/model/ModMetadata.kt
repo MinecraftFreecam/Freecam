@@ -3,9 +3,19 @@ package net.xolt.freecam.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
+interface PropertyProvider {
+    operator fun get(prop: String): String
+    fun orNull(prop: String): String?
+}
+
 interface ModMetadata : StaticModMetadata {
     val mc: String
     val loader: String
+    val properties: PropertyProvider
+    val mod: PropertyProvider
+    val deps: PropertyProvider
+
+    fun parchment(block: (mappings: String, minecraft: String) -> Unit)
 }
 
 interface StaticModMetadata {
