@@ -48,19 +48,28 @@ jobs:
         with:
           cmd: |
             yq --output-format=json --indent=0 '
-              to_entries | map(
-                .key as $mc 
-                | .value
-                | {
-                    "name": "Build \($mc)",
-                    "tasks": (
-                      (.projects - ["common"])
-                      | map(["", ., $mc, "buildAndCollect"] | join(":"))
-                    ),
-                    "upload_name": "freecam-\($mc)-builds",
-                    "upload_path": "build/libs/\(strenv(version))/*.jar"
-                  }
+              (
+                to_entries | map(
+                  .key as $mc 
+                  | .value
+                  | {
+                      "name": "Build \($mc)",
+                      "tasks": (
+                        (.projects - ["common"])
+                        | map(["", ., $mc, "buildAndCollect"] | join(":"))
+                      ),
+                      "upload_name": "freecam-\($mc)-builds",
+                      "upload_path": "build/libs/\(strenv(version))/*.jar"
+                    }
+                )
               )
+              +
+              [
+                {
+                  "name": "Build logic tests",
+                  "tasks": [":build-logic:check"]
+                }
+              ]
             ' stonecutter.versions.toml
 
   build:
