@@ -113,25 +113,14 @@ jobs:
         env:
           artifact_url: ${{ steps.upload.outputs.artifact-url }}
         run: |
-          mapfile -t jars < <(
-            # Sort by MC version first (descending), then lexicographically
-            # Field 2 is "+mc<version>"; .3 skips the "mc" prefix
-            # Key flags: V = version sort, r = reverse
-            printf '%s\n' "$version_dir"/*.jar |
-            sed 's|.*/||' |
-            sort \
-              --field-separator=+ \
-              --key=2.3Vr,2 \
-              --key=1,1
-          )
-
+          shopt -s nullglob
           {
             echo "## Build artifacts"
             echo
             echo "**Files:**"
             echo
-            for jar in "${jars[@]}"; do
-              echo "- \`$jar\`"
+            for file in "$version_dir"/*.jar; do
+              echo "- \`$(basename "$file")\`"
             done
             echo
             echo "**Download:** [$artifact_name.zip]($artifact_url)"
@@ -139,3 +128,4 @@ jobs:
             echo "_Expires on **$(date --utc --date=+90days +%F)** (UTC)._"
             echo
           } >> "$GITHUB_STEP_SUMMARY"
+          shopt -u nullglob
