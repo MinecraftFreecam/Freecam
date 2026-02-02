@@ -9,11 +9,16 @@ tomlkt = "0.6.0"
 mapping-io = "0.8.0"
 jetbrains-changelog = "2.2.0"
 serialization-json = "1.10.0"
+kotest = "6.1.2"
+mockk = "1.14.9"
 
 [libraries]
 mapping-io = { group = "net.fabricmc", name = "mapping-io", version.ref = "mapping-io"}
 kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization-json" }
 kotlin-serialization-toml = { group = "dev.eav.tomlkt", name = "tomlkt", version.ref = "tomlkt" }
+kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
+kotest-assertions = { group = "io.kotest", name = "kotest-assertions-core", version.ref = "kotest" }
+mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
