@@ -54,7 +54,7 @@ jobs:
                   | .value
                   | {
                       "name": "Build \($mc)",
-                      "tasks": (
+                      "gradle_args": (
                         (.projects - ["common"])
                         | map(["", ., $mc, "buildAndCollect"] | join(":"))
                       ),
@@ -67,7 +67,7 @@ jobs:
               [
                 {
                   "name": "Build logic tests",
-                  "tasks": [":build-logic:check"]
+                  "gradle_args": ["--project-dir", "build-logic", ":check"]
                 }
               ]
             ' stonecutter.versions.toml
@@ -96,11 +96,11 @@ jobs:
 
       - name: Run gradle
         env:
-          tasks: ${{ toJSON(matrix.tasks) }}
+          args: ${{ toJSON(matrix.gradle_args) }}
         run: |
           # Build each task
-          mapfile -t tasks < <( echo "$tasks" | jq --raw-output .[] )
-          ./gradlew "${tasks[@]}"
+          mapfile -t args < <( echo "$args" | jq --raw-output .[] )
+          ./gradlew "${args[@]}"
 
       - name: Upload build
         if: matrix.upload_name && matrix.upload_path
