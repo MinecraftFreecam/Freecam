@@ -1,3 +1,6 @@
+plugins {
+    `kotlin-dsl` apply false
+}
 
 val check by tasks.registering {
     aggregateByName()
