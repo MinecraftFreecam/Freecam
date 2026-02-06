@@ -5,7 +5,6 @@ import org.jetbrains.changelog.tasks.BaseChangelogTask
 
 plugins {
     id("freecam.api")
-    id("freecam.bump-version")
     id("dev.kikugie.stonecutter")
     alias(libs.plugins.jetbrains.changelog)
 }
@@ -50,11 +49,6 @@ tasks.named<Wrapper>("wrapper") {
     // Use "all" so we get sources and javadoc too
     distributionType = Wrapper.DistributionType.ALL
     gradleVersion = "9.2.1"
-}
-
-tasks.bumpVersion {
-    input = file("gradle.properties")
-    key = "mod.version"
 }
 
 // Move the changelog tasks to the "version" group
