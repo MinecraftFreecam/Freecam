@@ -17,7 +17,6 @@ dependencyResolutionManagement {
 
 include(
     "api",
-    "bump-version",
     "conventions",
     "settings",
 )
