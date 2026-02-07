@@ -28,9 +28,7 @@ stonecutter {
     centralScript = "build.gradle.kts"
 
     create(rootProject) {
-        val projectVersions = loadStonecutterVersions()
-        versions(projectVersions.values.flatten().distinct())
-        projectVersions.forEach { (name, mcVersions) ->
+        loadStonecutterVersions().forEach { (name, mcVersions) ->
             branch(name) { versions(mcVersions) }
         }
     }
