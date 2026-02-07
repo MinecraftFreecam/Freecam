@@ -13,14 +13,13 @@ stonecutter active "1.21.11"
 
 stonecutter {
     parameters {
-        val rootVersionProject = rootProject.project(node.metadata.project)
-        val clothVersion = rootVersionProject.property("deps.cloth") as String
-        dependencies["cloth"] = clothVersion
-        rootVersionProject.findProperty("deps.neoforge")?.let {
-            dependencies["neoforge"] = it as String
+        val meta = node.project.meta
+        dependencies["cloth"] = meta.deps["cloth"]
+        meta.deps.orNull("neoforge")?.also {
+            dependencies["neoforge"] = it
         }
-        rootVersionProject.findProperty("deps.forge")?.let {
-            dependencies["forge"] = it as String
+        meta.deps.orNull("forge")?.also {
+            dependencies["forge"] = it
         }
 
         replacements {
