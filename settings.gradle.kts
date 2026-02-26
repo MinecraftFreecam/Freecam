@@ -27,4 +27,11 @@ stonecutter {
     create(rootProject, file("stonecutter.json5"))
 }
 
+include(
+    "publish",
+    "publish:api",
+    "publish:cli",
+    "publish:platforms",
+)
+
 rootProject.name = "freecam"
