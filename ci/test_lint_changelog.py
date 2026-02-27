@@ -30,10 +30,20 @@ def test_valid_changelog():
     )
 
 
-def test_invalid_version_file():
+@pytest.mark.parametrize(
+    "metadata_file",
+    [
+        "missing_file.toml",
+        "missing_version.toml",
+        "missing_mod_table.toml",
+        "empty_version.toml",
+        "non_str_version.toml",
+    ],
+)
+def test_invalid_version_file(metadata_file):
     with pytest.raises(SystemExit):
-        read_version(FIXTURES / "invalid_version.properties")
+        read_version(FIXTURES / metadata_file)
 
 
 def test_valid_version_file():
-    read_version(FIXTURES / "valid_version.properties")
+    read_version(FIXTURES / "valid_version.toml")
