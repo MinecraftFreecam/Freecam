@@ -21,34 +21,36 @@ CHANGELOG_FILE = ROOT / "CHANGELOG.md"
 METADATA_FILE = ROOT / "metadata.toml"
 
 
-def fail(msg: str) -> None:
-    print("Changelog lint failed:\n", file=sys.stderr)
-    print(f"- {msg}", file=sys.stderr)
-    sys.exit(1)
+class LintError(Exception):
+    """Raised when the changelog is invalid."""
+
+    pass
+
+
+class MetadataError(Exception):
+    """Raised when the metadata is invalid."""
+
+    pass
 
 
 def read_version(metadata_file: Path) -> str:
     if not metadata_file.exists():
-        fail(f"{metadata_file.name} not found")
-        raise AssertionError  # unreachable
+        raise MetadataError(f"{metadata_file.name} not found")
 
     data = toml.loads(metadata_file.read_text())
 
     try:
         mod = data["mod"]
     except KeyError:
-        fail(f"No `mod` table found in {metadata_file.name}")
-        raise AssertionError  # unreachable
+        raise MetadataError(f"No `mod` table found in {metadata_file.name}")
 
     try:
         version = mod["version"]
     except KeyError:
-        fail(f"No `mod.version` entry found in {metadata_file.name}")
-        raise AssertionError  # unreachable
+        raise MetadataError(f"No `mod.version` entry found in {metadata_file.name}")
 
     if not version or not isinstance(version, str):
-        fail(f"Invalid `mod.version` found in {metadata_file.name}")
-        raise AssertionError  # unreachable
+        raise MetadataError(f"Invalid `mod.version` found in {metadata_file.name}")
 
     return version
 
@@ -86,11 +88,13 @@ def parse_changelog(text: str):
 
 def lint(version: str, changelog_file: Path) -> None:
     if not changelog_file.exists():
-        fail(f"{changelog_file.name} not found")
+        raise LintError(f"{changelog_file.name} not found")
 
     text_raw = changelog_file.read_text()
     if "\r\n" in text_raw:
-        fail(f"{changelog_file.name} contains CRLF line endings; please convert to LF")
+        raise LintError(
+            f"{changelog_file.name} contains CRLF line endings; please convert to LF"
+        )
         text = text_raw.replace("\r\n", "\n")
     else:
         text = text_raw
@@ -99,35 +103,44 @@ def lint(version: str, changelog_file: Path) -> None:
 
     # Must have a release section matching the current version
     if version not in releases:
-        fail(
+        raise LintError(
             f"Changelog has no release section for version {version} "
             "(did you forget to run patchChangelog?)"
         )
 
     # Must have an Unreleased section
     if unreleased_line is None:
-        fail("Changelog is missing an [Unreleased] section")
+        raise LintError("Changelog is missing an [Unreleased] section")
 
     # Unreleased must appear before the current release
     if unreleased_line > releases[version]:
-        fail("[Unreleased] section must appear before the current release section")
+        raise LintError(
+            "[Unreleased] section must appear before the current release section"
+        )
 
     # Footer links must exist
     if "Unreleased" not in footer_links:
-        fail("Missing footer link for [Unreleased]")
+        raise LintError("Missing footer link for [Unreleased]")
 
     if version not in footer_links:
-        fail(f"Missing footer link for version {version}")
+        raise LintError(f"Missing footer link for version {version}")
 
     # All good
     print(f"Changelog OK for version {version}")
 
 
 def main() -> None:
-    lint(
-        version=(read_version(METADATA_FILE)),
-        changelog_file=CHANGELOG_FILE,
-    )
+    try:
+        version = read_version(METADATA_FILE)
+        lint(version, CHANGELOG_FILE)
+    except LintError as e:
+        print("Changelog lint failed:\n", file=sys.stderr)
+        print(f"- {e}", file=sys.stderr)
+        sys.exit(1)
+    except MetadataError as e:
+        print("Changelog lint failed to read metadata:\n", file=sys.stderr)
+        print(f"- {e}", file=sys.stderr)
+        sys.exit(1)
 
 
 if __name__ == "__main__":

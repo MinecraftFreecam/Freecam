@@ -1,7 +1,7 @@
 import pytest
 from pathlib import Path
 
-from lint_changelog import lint, read_version
+from lint_changelog import lint, read_version, LintError, MetadataError
 
 
 FIXTURES = Path(__file__).parent / "test_fixtures"
@@ -16,7 +16,7 @@ FIXTURES = Path(__file__).parent / "test_fixtures"
     ],
 )
 def test_invalid_changelog(changelog_file):
-    with pytest.raises(SystemExit):
+    with pytest.raises(LintError):
         lint(
             version="1.2.3",
             changelog_file=(FIXTURES / changelog_file),
@@ -41,7 +41,7 @@ def test_valid_changelog():
     ],
 )
 def test_invalid_version_file(metadata_file):
-    with pytest.raises(SystemExit):
+    with pytest.raises(MetadataError):
         read_version(FIXTURES / metadata_file)
 
 
