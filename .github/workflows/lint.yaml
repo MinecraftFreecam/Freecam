@@ -20,7 +20,7 @@ jobs:
           sparse-checkout: |
             ci
             CHANGELOG.md
-            gradle.properties
+            metadata.toml
           sparse-checkout-cone-mode: false
 
       - uses: actions/setup-python@v6
