@@ -11,14 +11,14 @@ Ensures:
 This intentionally does NOT validate changelog contents or section structure.
 """
 
+import tomllib as toml
 from pathlib import Path
 import re
 import sys
 
 ROOT = Path(__file__).resolve().parents[1]
 CHANGELOG_FILE = ROOT / "CHANGELOG.md"
-VERSION_FILE = ROOT / "gradle.properties"
-VERSION_PREFIX = "mod_version="
+METADATA_FILE = ROOT / "metadata.toml"
 
 
 def fail(msg: str) -> None:
@@ -27,16 +27,30 @@ def fail(msg: str) -> None:
     sys.exit(1)
 
 
-def read_version(version_file: Path) -> str:
-    if not version_file.exists():
-        fail(f"{version_file.name} not found")
+def read_version(metadata_file: Path) -> str:
+    if not metadata_file.exists():
+        fail(f"{metadata_file.name} not found")
+        raise AssertionError  # unreachable
 
-    for line in version_file.read_text().splitlines():
-        if line.startswith(VERSION_PREFIX):
-            return line.removeprefix(VERSION_PREFIX).strip()
+    data = toml.loads(metadata_file.read_text())
 
-    fail("No version= entry found in gradle.properties")
-    raise AssertionError  # unreachable
+    try:
+        mod = data["mod"]
+    except KeyError:
+        fail(f"No `mod` table found in {metadata_file.name}")
+        raise AssertionError  # unreachable
+
+    try:
+        version = mod["version"]
+    except KeyError:
+        fail(f"No `mod.version` entry found in {metadata_file.name}")
+        raise AssertionError  # unreachable
+
+    if not version or not isinstance(version, str):
+        fail(f"Invalid `mod.version` found in {metadata_file.name}")
+        raise AssertionError  # unreachable
+
+    return version
 
 
 def parse_changelog(text: str):
@@ -111,7 +125,7 @@ def lint(version: str, changelog_file: Path) -> None:
 
 def main() -> None:
     lint(
-        version=(read_version(VERSION_FILE)),
+        version=(read_version(METADATA_FILE)),
         changelog_file=CHANGELOG_FILE,
     )
 
