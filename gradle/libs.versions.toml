@@ -16,6 +16,7 @@ kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-s
 kotlin-serialization-toml = { group = "dev.eav.tomlkt", name = "tomlkt", version.ref = "tomlkt" }
 
 [plugins]
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 stonecutter = { id = "dev.kikugie.stonecutter", version.ref = "stonecutter" }
 fabric-loom = { id = "fabric-loom", version.ref = "fabric-loom" }
 moddev = { id = "net.neoforged.moddev", version.ref = "moddev" }
