@@ -13,6 +13,7 @@ serialization-json = "1.10.0"
 coroutines = "1.10.2"
 clikt = "5.1.0"
 ktor = "3.4.0"
+graphql-kotlin = "9.0.0"
 kotest = "6.1.2"
 mockk = "1.14.9"
 
@@ -27,6 +28,7 @@ clikt = { group = "com.github.ajalt.clikt", name = "clikt", version.ref = "clikt
 ktor-client = { group = "io.ktor", name = "ktor-client-core", version.ref = "ktor" }
 ktor-client-cio = { group = "io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
 ktor-client-contentnegotiation = { group = "io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-client-graphql = { group = "com.expediagroup", name = "graphql-kotlin-ktor-client", version.ref = "graphql-kotlin" }
 ktor-client-mock = { group = "io.ktor", name = "ktor-client-mock", version.ref = "ktor" }
 ktor-serialization-json = { group = "io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 kotlin-test = { group = "org.jetbrains.kotlin", name = "kotlin-test", version.ref = "kotlin" }
