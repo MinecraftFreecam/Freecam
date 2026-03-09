@@ -19,7 +19,13 @@ class PublishCliCommandValidationTest {
         val dir = Path("artifacts-dir")
         val cmd = testCommand(metadata = metadata)
 
-        val result = cmd.test(dir.absolutePathString())
+        val result = cmd.test(listOf(
+            "--gh-token", "token",
+            "--gh-owner", "owner",
+            "--gh-repo", "repo",
+            "--git-sha", "committish",
+            dir.absolutePathString(),
+        ))
 
         result.statusCode shouldBe 1
         result.stderr shouldContain "${dir.absolute()} does not exist"
@@ -32,7 +38,13 @@ class PublishCliCommandValidationTest {
         val file = createTestFile()
         val cmd = testCommand(metadata = metadata)
 
-        val result = cmd.test(file.absolutePathString())
+        val result = cmd.test(listOf(
+            "--gh-token", "token",
+            "--gh-owner", "owner",
+            "--gh-repo", "repo",
+            "--git-sha", "committish",
+            file.absolutePathString(),
+        ))
 
         result.statusCode shouldBe 1
         result.stderr shouldContain "${file.absolute()} is not a directory"
