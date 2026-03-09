@@ -15,6 +15,7 @@ import com.github.ajalt.clikt.parameters.types.path
 import net.xolt.freecam.model.ReleaseMetadata
 import net.xolt.freecam.publish.PublisherFactory
 import net.xolt.freecam.publish.logging.*
+import net.xolt.freecam.publish.model.GitHubConfig
 import java.nio.file.Path
 import kotlin.io.path.absolute
 import kotlin.io.path.exists
@@ -44,6 +45,7 @@ internal class PublishCliCommand(
         publisherFactory.create(
             dryRun = dryRun,
             artifactsDir = artifactsDir,
+            githubConfig = github,
         )
     }
 
@@ -62,6 +64,8 @@ internal class PublishCliCommand(
 
     val dryRun: Boolean by option("--dry-run").flag()
         .help("Perform a dry run without making any actual API calls")
+
+    val github: GitHubConfig by GitHubOptionGroup()
 
     private val verbosity by VerbosityOptionGroup()
     val logLevel: LogLevel get() = verbosity.level

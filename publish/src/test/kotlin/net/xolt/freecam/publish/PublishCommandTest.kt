@@ -5,6 +5,7 @@ import io.mockk.coVerify
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import net.xolt.freecam.publish.cli.PublishCommand
+import net.xolt.freecam.publish.model.GitHubConfig
 import net.xolt.freecam.test.createTestDir
 import java.nio.file.Path
 import kotlin.io.path.pathString
@@ -19,6 +20,7 @@ class PublishCommandTest {
             override fun create(
                 dryRun: Boolean,
                 artifactsDir: Path,
+                githubConfig: GitHubConfig,
             ) = publisher
         }
 
@@ -26,7 +28,13 @@ class PublishCommandTest {
             PublishCommand(
                 metadataSupplier = ::loadMetadata,
                 publisherFactory = publisherFactory,
-            ).main(arrayOf(createTestDir().pathString))
+            ).main(arrayOf(
+                "--gh-token", "token",
+                "--gh-owner", "owner",
+                "--gh-repo", "repo",
+                "--git-sha", "committish",
+                createTestDir().pathString,
+            ))
         }
 
         withClue("Command should publish with expected metadata") {
