@@ -5,6 +5,7 @@ import net.xolt.freecam.model.ReleaseMetadata
 import net.xolt.freecam.publish.model.GitHubConfig
 import net.xolt.freecam.publish.model.ReleaseArtifact
 import net.xolt.freecam.publish.model.resolveArtifact
+import net.xolt.freecam.publish.platforms.CurseForgePlatform
 import net.xolt.freecam.publish.platforms.GitHubPlatform
 import net.xolt.freecam.publish.platforms.ModrinthPlatform
 import net.xolt.freecam.publish.platforms.create
@@ -21,6 +22,7 @@ object DefaultPublisherFactory: PublisherFactory {
         artifactsDir = artifactsDir,
         github = GitHubPlatform.create(dryRun, githubConfig),
         modrinth = ModrinthPlatform.create(dryRun),
+        curseforge = CurseForgePlatform.create(dryRun),
     )
 }
 
@@ -28,6 +30,7 @@ data class DefaultPublisher(
     val artifactsDir: Path,
     val github: GitHubPlatform,
     val modrinth: ModrinthPlatform,
+    val curseforge: CurseForgePlatform,
 ) : AutoCloseable, Publisher {
 
     override suspend fun publish(metadata: ReleaseMetadata) {
@@ -36,6 +39,7 @@ data class DefaultPublisher(
         }
         github.publishRelease(metadata, artifacts)
         modrinth.publishRelease(metadata, artifacts)
+        curseforge.publishRelease(metadata, artifacts)
     }
 
     private fun Path.resolveArtifacts(metadata: List<ProjectReleaseMetadata>): List<ReleaseArtifact> =
@@ -55,7 +59,7 @@ data class DefaultPublisher(
     }
 
     override fun close() =
-        sequenceOf(github, modrinth)
+        sequenceOf(github, modrinth, curseforge)
             .mapNotNull { it as? AutoCloseable }
             .forEach(AutoCloseable::close)
 }

@@ -4,6 +4,7 @@ import io.kotest.assertions.assertSoftly
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.types.shouldBeInstanceOf
 import net.xolt.freecam.publish.model.GitHubConfig
+import net.xolt.freecam.publish.platforms.CurseForgePlatform
 import net.xolt.freecam.publish.platforms.GitHubPlatform
 import net.xolt.freecam.publish.platforms.ModrinthPlatform
 import net.xolt.freecam.publish.platforms.Platform
@@ -35,6 +36,7 @@ class DefaultPublisherFactoryTest {
                 publisher.shouldBeInstanceOf<DefaultPublisher>()
                 publisher.github.shouldBeImplOf<GitHubPlatform>(prefix)
                 publisher.modrinth.shouldBeImplOf<ModrinthPlatform>(prefix)
+                publisher.curseforge.shouldBeImplOf<CurseForgePlatform>(prefix)
             }
         }
     }

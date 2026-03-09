@@ -10,6 +10,7 @@ import kotlinx.coroutines.test.runTest
 import net.xolt.freecam.model.ProjectReleaseMetadata
 import net.xolt.freecam.model.Relationship
 import net.xolt.freecam.publish.model.ReleaseArtifact
+import net.xolt.freecam.publish.platforms.CurseForgePlatform
 import net.xolt.freecam.publish.platforms.GitHubPlatform
 import net.xolt.freecam.publish.platforms.ModrinthPlatform
 import net.xolt.freecam.test.MetadataFixtures.testMetadata
@@ -32,6 +33,7 @@ class DefaultPublisherTest {
     fun `publisher calls each platform with all artifacts`() = runTest {
         val github = mockk<GitHubPlatform>(relaxUnitFun = true)
         val modrinth = mockk<ModrinthPlatform>(relaxUnitFun = true)
+        val curseforge = mockk<CurseForgePlatform>(relaxUnitFun = true)
 
         val dir = createTestDir()
         val metadata = testMetadata(versions = testVersions)
@@ -39,7 +41,7 @@ class DefaultPublisherTest {
             dir.resolve(it.filename).apply(Path::createFile)
         }
 
-        DefaultPublisher(dir, github, modrinth).publish(metadata)
+        DefaultPublisher(dir, github, modrinth, curseforge).publish(metadata)
 
         fun MockKMatcherScope.verifyArtifacts() = match<List<ReleaseArtifact>> { artifacts ->
             artifacts.map { it.artifact } == metadataArtifacts
@@ -47,16 +49,18 @@ class DefaultPublisherTest {
 
         coVerify { github.publishRelease(metadata, verifyArtifacts()) }
         coVerify { modrinth.publishRelease(metadata, verifyArtifacts()) }
+        coVerify { curseforge.publishRelease(metadata, verifyArtifacts()) }
     }
 
     @Test
     fun `fails if artifact missing`(): Unit = runTest {
         val github = mockk<GitHubPlatform>(relaxUnitFun = true)
         val modrinth = mockk<ModrinthPlatform>(relaxUnitFun = true)
+        val curseforge = mockk<CurseForgePlatform>(relaxUnitFun = true)
 
         val dir = createTestDir()
         val metadata = testMetadata(versions = testVersions)
-        val publisher = DefaultPublisher(dir, github, modrinth)
+        val publisher = DefaultPublisher(dir, github, modrinth, curseforge)
 
         val ex = shouldThrowExactly<IllegalArgumentException> {
             publisher.publish(metadata)
