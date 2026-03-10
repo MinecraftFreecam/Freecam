@@ -1,8 +1,8 @@
-import pytest
 from pathlib import Path
 
-from lint_changelog import lint, read_version, LintError, MetadataError
+import pytest
 
+from lint_changelog import lint, LintError
 
 FIXTURES = Path(__file__).parent / "test_fixtures"
 
@@ -28,22 +28,3 @@ def test_valid_changelog():
         version="1.2.3",
         changelog_file=(FIXTURES / "ok_current_version.md"),
     )
-
-
-@pytest.mark.parametrize(
-    "metadata_file",
-    [
-        "missing_file.toml",
-        "missing_version.toml",
-        "missing_mod_table.toml",
-        "empty_version.toml",
-        "non_str_version.toml",
-    ],
-)
-def test_invalid_version_file(metadata_file):
-    with pytest.raises(MetadataError):
-        read_version(FIXTURES / metadata_file)
-
-
-def test_valid_version_file():
-    read_version(FIXTURES / "valid_version.toml")

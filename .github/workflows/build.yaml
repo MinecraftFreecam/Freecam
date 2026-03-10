@@ -21,13 +21,22 @@ jobs:
       matrix: ${{ steps.matrix.outputs.matrix }}
 
     steps:
-      - name: Checkout metadata files
+      - name: Checkout required files
         uses: actions/checkout@v6
         with:
           sparse-checkout: |
+            ci
             metadata.toml
             stonecutter.versions.toml
           sparse-checkout-cone-mode: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          cache: pip
+
+      - name: Install test dependencies
+        run: pip install --requirement ci/requirements.txt
 
       - name: Read project version
         id: version
@@ -40,30 +49,7 @@ jobs:
         env:
           version: ${{ steps.version.outputs.version }}
         run: |
-          yq --output-format=json --indent=0 '
-              (
-                to_entries | map(
-                  .key as $mc
-                  | .value
-                  | {
-                      "name": "Build \($mc)",
-                      "gradle_args": (
-                        (.projects - ["common"])
-                        | map(["", ., $mc, "buildAndCollect"] | join(":"))
-                      ),
-                      "upload_name": "freecam-\($mc)-builds",
-                      "upload_path": "build/libs/\(strenv(version))/*.jar"
-                    }
-                )
-              )
-              +
-              [
-                {
-                  "name": "Build logic tests",
-                  "gradle_args": ["--project-dir", "build-logic", ":check"]
-                }
-              ]
-          ' stonecutter.versions.toml > matrix.json
+          python ci/build_matrix.py --version "$version" --output matrix.json
           echo "matrix=$(cat matrix.json)" >> "$GITHUB_OUTPUT"
 
   build:
