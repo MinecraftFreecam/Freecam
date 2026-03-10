@@ -27,7 +27,7 @@ jobs:
           sparse-checkout: |
             ci
             metadata.toml
-            stonecutter.versions.toml
+            stonecutter.json5
           sparse-checkout-cone-mode: false
 
       - name: Set up Python

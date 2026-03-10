@@ -5,16 +5,18 @@ Used by .github/workflows/build.yml (prepare) to generate the job matrix.
 
 import argparse
 import json
-import tomllib as toml
 from dataclasses import dataclass, asdict
 from pathlib import Path
 from typing import Any, List
 
+import json5
+
 from read_version import read_version
+from stonecutter_model import ProjectEntry
 
 ROOT = Path(__file__).resolve().parents[1]
 METADATA_FILE = ROOT / "metadata.toml"
-STONECUTTER_FILE = ROOT / "stonecutter.versions.toml"
+STONECUTTER_FILE = ROOT / "stonecutter.json5"
 
 
 @dataclass
@@ -38,15 +40,20 @@ def build_matrix(
 ) -> list[MatrixJob]:
     matrix: list[MatrixJob] = []
 
-    for mc, entry in data.items():
-        projects = entry.get("projects", [])
-        gradle_args = [f":{p}:{mc}:buildAndCollect" for p in projects if p != "common"]
+    for version_name, projects in data["versions"].items():
+        normalized: list[ProjectEntry] = [ProjectEntry.parse(item) for item in projects]
+
+        gradle_args: list[str] = [
+            f":{entry.project}:{version_name}:buildAndCollect"
+            for entry in normalized
+            if entry.build_in_ci
+        ]
 
         matrix.append(
             MatrixJob(
-                name=f"Build {mc}",
+                name=f"Build {version_name}",
                 gradle_args=gradle_args,
-                upload_name=f"freecam-{version}-{mc}",
+                upload_name=f"freecam-{version}-{version_name}",
                 upload_path=f"build/libs/{version}/*.jar",
             )
         )
@@ -68,7 +75,7 @@ def parse_args() -> argparse.Namespace:
         "--versions-file",
         type=Path,
         default=STONECUTTER_FILE,
-        help="path to stonecutter.versions.toml",
+        help="path to stonecutter config file",
     )
     parser.add_argument(
         "--version", type=str, help="project version (default read from metadata.toml)"
@@ -87,7 +94,7 @@ def main() -> None:
 
     matrix = build_matrix(
         version=args.version,
-        data=toml.loads(args.versions_file.read_text()),
+        data=json5.loads(args.versions_file.read_text()),
     )
 
     # Convert all jobs to dicts for JSON output

@@ -24,11 +24,7 @@ plugins {
 }
 
 stonecutter {
-    create(rootProject) {
-        loadStonecutterVersions().forEach { (name, mcVersions) ->
-            branch(name) { versions(mcVersions) }
-        }
-    }
+    create(rootProject, file("stonecutter.json5"))
 }
 
 rootProject.name = "freecam"
