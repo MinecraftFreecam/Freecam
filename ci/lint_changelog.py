@@ -11,10 +11,11 @@ Ensures:
 This intentionally does NOT validate changelog contents or section structure.
 """
 
-import tomllib as toml
-from pathlib import Path
 import re
 import sys
+from pathlib import Path
+
+from read_version import MetadataError, read_version
 
 ROOT = Path(__file__).resolve().parents[1]
 CHANGELOG_FILE = ROOT / "CHANGELOG.md"
@@ -25,34 +26,6 @@ class LintError(Exception):
     """Raised when the changelog is invalid."""
 
     pass
-
-
-class MetadataError(Exception):
-    """Raised when the metadata is invalid."""
-
-    pass
-
-
-def read_version(metadata_file: Path) -> str:
-    if not metadata_file.exists():
-        raise MetadataError(f"{metadata_file.name} not found")
-
-    data = toml.loads(metadata_file.read_text())
-
-    try:
-        mod = data["mod"]
-    except KeyError:
-        raise MetadataError(f"No `mod` table found in {metadata_file.name}")
-
-    try:
-        version = mod["version"]
-    except KeyError:
-        raise MetadataError(f"No `mod.version` entry found in {metadata_file.name}")
-
-    if not version or not isinstance(version, str):
-        raise MetadataError(f"Invalid `mod.version` found in {metadata_file.name}")
-
-    return version
 
 
 def parse_changelog(text: str):
