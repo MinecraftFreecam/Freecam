@@ -14,63 +14,43 @@ defaults:
 
 jobs:
   prepare:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     timeout-minutes: 5
     outputs:
-      version: ${{ steps.version.outputs.result }}
-      matrix: ${{ steps.matrix.outputs.result }}
+      version: ${{ steps.version.outputs.version }}
+      matrix: ${{ steps.matrix.outputs.matrix }}
 
     steps:
-      - name: Checkout metadata files
+      - name: Checkout required files
         uses: actions/checkout@v6
         with:
           sparse-checkout: |
+            ci
             metadata.toml
-            stonecutter.versions.toml
+            stonecutter.json5
           sparse-checkout-cone-mode: false
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          cache: pip
+
+      - name: Install test dependencies
+        run: pip install --requirement ci/requirements.txt
 
       - name: Read project version
         id: version
-        uses: mikefarah/yq@v4
-        with:
-          cmd: |
-            yq .mod.version metadata.toml
-
-      - name: Write project version env
-        env:
-          version: ${{ steps.version.outputs.result }}
         run: |
-          echo "version=$version" >> "$GITHUB_ENV"
+          version=$(yq .mod.version metadata.toml)
+          echo "version=$version" >> "$GITHUB_OUTPUT"
 
       - name: Generate build matrix
         id: matrix
-        uses: mikefarah/yq@v4
-        with:
-          cmd: |
-            yq --output-format=json --indent=0 '
-              (
-                to_entries | map(
-                  .key as $mc 
-                  | .value
-                  | {
-                      "name": "Build \($mc)",
-                      "gradle_args": (
-                        (.projects - ["common"])
-                        | map(["", ., $mc, "buildAndCollect"] | join(":"))
-                      ),
-                      "upload_name": "freecam-\($mc)-builds",
-                      "upload_path": "build/libs/\(strenv(version))/*.jar"
-                    }
-                )
-              )
-              +
-              [
-                {
-                  "name": "Build logic tests",
-                  "gradle_args": ["--project-dir", "build-logic", ":check"]
-                }
-              ]
-            ' stonecutter.versions.toml
+        env:
+          version: ${{ steps.version.outputs.version }}
+        run: |
+          python ci/build_matrix.py --version "$version" --output matrix.json
+          echo "matrix=$(cat matrix.json)" >> "$GITHUB_OUTPUT"
 
   build:
     name: ${{ matrix.name }}
