@@ -24,9 +24,6 @@ plugins {
 }
 
 stonecutter {
-    kotlinController = true
-    centralScript = "build.gradle.kts"
-
     create(rootProject) {
         loadStonecutterVersions().forEach { (name, mcVersions) ->
             branch(name) { versions(mcVersions) }
