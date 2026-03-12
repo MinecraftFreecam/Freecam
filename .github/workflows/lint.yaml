@@ -21,17 +21,23 @@ jobs:
             ci
             CHANGELOG.md
             metadata.toml
+            poetry.lock
+            pyproject.toml
           sparse-checkout-cone-mode: false
+
+      - name: Install poetry
+        run: pipx install poetry==2.3.0
 
       - uses: actions/setup-python@v6
         with:
-          cache: pip
+          python-version: '3.12' # pre-installed
+          cache: poetry
 
-      - name: Install test dependencies
-        run: pip install --requirement ci/requirements.txt
+      - name: Install CI dependencies
+        run: poetry install
 
       - name: Run tests
-        run: python -m pytest
+        run: poetry run pytest
 
       - name: Lint changelog
-        run: python ci/lint_changelog.py
+        run: poetry run ci/lint_changelog.py
