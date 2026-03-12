@@ -10,8 +10,10 @@ defaults:
 jobs:
   lint:
     runs-on: ubuntu-slim
-
     timeout-minutes: 30
+
+    env:
+      RUFF_OUTPUT_FORMAT: github
 
     steps:
       - name: Checkout required files
@@ -38,6 +40,13 @@ jobs:
 
       - name: Run tests
         run: poetry run pytest
+
+      - name: Python Formatting
+        # Need preview for output-format support
+        run: poetry run ruff format --check --preview
+
+      - name: Lint Python
+        run: poetry run ruff check
 
       - name: Lint changelog
         run: poetry run ci/lint_changelog.py
