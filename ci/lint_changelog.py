@@ -63,14 +63,11 @@ def lint(version: str, changelog_file: Path) -> None:
     if not changelog_file.exists():
         raise LintError(f"{changelog_file.name} not found")
 
-    text_raw = changelog_file.read_text()
-    if "\r\n" in text_raw:
+    text = changelog_file.read_text()
+    if "\r\n" in text:
         raise LintError(
             f"{changelog_file.name} contains CRLF line endings; please convert to LF"
         )
-        text = text_raw.replace("\r\n", "\n")
-    else:
-        text = text_raw
 
     unreleased_line, releases, footer_links = parse_changelog(text)
 
