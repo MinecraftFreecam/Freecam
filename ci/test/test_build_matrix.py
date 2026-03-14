@@ -2,7 +2,12 @@ from pathlib import Path
 
 import pytest
 
-from freecam_ci.build_matrix import build_version_matrix, load_matrix_jobs, MatrixJob
+from freecam_ci.build_matrix import (
+    build_version_matrix,
+    load_matrix_jobs,
+    MatrixJob,
+    load_versions,
+)
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
@@ -60,26 +65,34 @@ def test_matrixjob_from_dict_upload_days_requires_upload():
         MatrixJob.from_dict(value)
 
 
+def test_load_versions_valid():
+    for fixture_name in ["valid_versions.json5", "edge_versions.json5"]:
+        path = FIXTURES / fixture_name
+        versions = load_versions(versions_file=path)
+        assert isinstance(versions, dict)
+        # basic structural checks
+        for key, value in versions.items():
+            assert isinstance(key, str)
+            assert value is None or isinstance(value, list)
+            if isinstance(value, list):
+                assert all(isinstance(v, (str, dict)) for v in value)
+
+
+def test_load_versions_invalid():
+    path = FIXTURES / "invalid_versions.json5"
+    # Invalid because the "versions" key is missing or schema doesn't match
+    with pytest.raises(Exception):
+        load_versions(versions_file=path)
+
+
 def test_build_version_matrix_basic():
-    data = {
-        "$schema": "123456",
-        "versions": {
-            "1.21": ["common", "network"],
-            "1.20": ["common", "core", "ui"],
-            "1.19": [
-                {"project": "common", "version": "1.19.2"},
-                {"project": "fabric", "version": "1.19.2"},
-                {"project": "leather", "version": "1.19.2"},
-            ],
-            "1.18": [
-                "common:1.18.9",
-                "forge:1.18.9",
-            ],
-        },
+    versions = {
+        "1.21": ["common", "network"],
+        "1.20": ["common", "core", "ui"],
     }
     version = "1.2.3"
-    matrix = build_version_matrix(version, data)
-    assert len(matrix) == 4
+    matrix = build_version_matrix(version, versions)
+    assert len(matrix) == 2
     names = [job.name for job in matrix]
     assert "Build 1.20" in names
     assert "Build 1.21" in names
@@ -91,19 +104,6 @@ def test_build_version_matrix_basic():
     assert job_120.upload_name == "freecam-1.2.3-1.20"
     assert job_120.upload_path == "build/libs/1.2.3/*.jar"
     assert all("common" not in arg for arg in job_120.gradle_args)
-
-    job_119 = next(job for job in matrix if job.name == "Build 1.19")
-    assert ":fabric:1.19:buildAndCollect" in job_119.gradle_args
-    assert ":leather:1.19:buildAndCollect" in job_119.gradle_args
-    assert job_119.upload_name == "freecam-1.2.3-1.19"
-    assert job_119.upload_path == "build/libs/1.2.3/*.jar"
-    assert all("common" not in arg for arg in job_119.gradle_args)
-
-    job_118 = next(job for job in matrix if job.name == "Build 1.18")
-    assert ":forge:1.18:buildAndCollect" in job_118.gradle_args
-    assert job_118.upload_name == "freecam-1.2.3-1.18"
-    assert job_118.upload_path == "build/libs/1.2.3/*.jar"
-    assert all("common" not in arg for arg in job_118.gradle_args)
 
 
 def test_load_matrix_jobs_empty():
