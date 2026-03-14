@@ -1,0 +1,3 @@
+[[build]]
+name = "broken"
+# missing gradle_args

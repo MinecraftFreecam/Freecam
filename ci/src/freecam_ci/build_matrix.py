@@ -4,39 +4,25 @@ Used by .github/workflows/build.yml (prepare) to generate the job matrix.
 
 import argparse
 import json
-from dataclasses import dataclass, asdict
+import tomllib as toml
 from pathlib import Path
-from typing import Any, List
+from typing import Any
 
 import json5
 
-from .project_files import STONECUTTER_FILE
+from .matrix_model import MatrixJob
+from .project_files import MATRIX_JOBS_FILE, STONECUTTER_FILE
 from .read_version import read_version
 from .stonecutter_model import ProjectEntry
 
 
-@dataclass
-class MatrixJob:
-    """A job in a GHA 'include' matrix."""
-
-    name: str
-    gradle_args: List[str]
-    upload_name: str | None = None
-    upload_path: str | None = None
-    upload_days: int | None = None
-
-    def to_dict(self) -> dict:
-        """Convert to dict, omitting None values."""
-        return {k: v for k, v in asdict(self).items() if v is not None}
-
-
-def build_matrix(
+def build_version_matrix(
     version: str,
-    data: dict[str, Any],
+    versions: dict[str, Any],
 ) -> list[MatrixJob]:
     matrix: list[MatrixJob] = []
 
-    for version_name, projects in data["versions"].items():
+    for version_name, projects in versions.items():
         normalized: list[ProjectEntry] = [ProjectEntry.parse(item) for item in projects]
 
         gradle_args: list[str] = [
@@ -54,15 +40,30 @@ def build_matrix(
             )
         )
 
-    # Extra jobs
-    matrix.append(
-        MatrixJob(
-            name="Build logic tests",
-            gradle_args=["--project-dir", "build-logic", ":check"],
-        )
-    )
-
     return matrix
+
+
+def load_versions(
+    key: str = "versions", versions_file: Path = STONECUTTER_FILE
+) -> dict[str, Any]:
+    with versions_file.open("rb") as file:
+        return json5.load(file)[key]
+
+
+def load_matrix_jobs(
+    key: str = "build",
+    matrix_jobs_file: Path = MATRIX_JOBS_FILE,
+) -> list[MatrixJob]:
+    with matrix_jobs_file.open("rb") as file:
+        data = toml.load(file)
+    return [MatrixJob.from_dict(job) for job in data.get(key, [])]
+
+
+def optional_path(value) -> Path | None:
+    """argparse type representing a Path or 'none'"""
+    if isinstance(value, str) and value.lower() in ["none", "null"]:
+        return None
+    return Path(value)
 
 
 def parse_args() -> argparse.Namespace:
@@ -72,6 +73,12 @@ def parse_args() -> argparse.Namespace:
         type=Path,
         default=STONECUTTER_FILE,
         help="path to stonecutter config file",
+    )
+    parser.add_argument(
+        "--jobs-file",
+        type=optional_path,
+        default=MATRIX_JOBS_FILE,
+        help="path to static matrix jobs file (pass 'none' to disable)",
     )
     parser.add_argument(
         "--version", type=str, help="project version (default read from metadata.toml)"
@@ -88,13 +95,20 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
 
-    jobs = build_matrix(
+    version_jobs = build_version_matrix(
         version=args.version,
-        data=json5.loads(args.versions_file.read_text()),
+        versions=load_versions(versions_file=args.versions_file),
     )
 
+    static_jobs: list[MatrixJob] = []
+    if args.jobs_file:
+        static_jobs = load_matrix_jobs(matrix_jobs_file=args.jobs_file)
+
     # Convert all jobs to dicts for JSON output
-    matrix = [job.to_dict() for job in jobs]
+    matrix = [
+        job.to_dict()
+        for job in sorted(version_jobs + static_jobs, key=lambda job: job.name)
+    ]
 
     # Print compact to output
     if args.output:
