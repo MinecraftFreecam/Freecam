@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Used by .github/workflows/build.yml (prepare) to generate the job matrix.
 """
@@ -11,12 +10,9 @@ from typing import Any, List
 
 import json5
 
-from read_version import read_version
-from stonecutter_model import ProjectEntry
-
-ROOT = Path(__file__).resolve().parents[1]
-METADATA_FILE = ROOT / "metadata.toml"
-STONECUTTER_FILE = ROOT / "stonecutter.json5"
+from .project_files import STONECUTTER_FILE
+from .read_version import read_version
+from .stonecutter_model import ProjectEntry
 
 
 @dataclass
@@ -84,7 +80,7 @@ def parse_args() -> argparse.Namespace:
     args = parser.parse_args()
 
     if not args.version:
-        args.version = read_version(METADATA_FILE)
+        args.version = read_version()
 
     return args
 

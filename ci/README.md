@@ -6,7 +6,7 @@ This directory contains scripts used in CI workflows.
 
 [uv] is used to manage python dependencies.
 Once installed, use `uv sync` to setup a project `.venv`.
-You can run scripts via `uv run`, e.g. `uv run pytest` or `uv run ci/build_matrix.py`.
+You can run scripts via `uv run`, e.g. `uv run build-matrix` or `uv run python -m freecam_ci.build_matrix`.
 
 ## IDE setup
 
@@ -23,7 +23,16 @@ You can run scripts via `uv run`, e.g. `uv run pytest` or `uv run ci/build_matri
   - Select "create module from existing sources".
   - In the module's "dependencies" tab, set "Module SDK" to the uv SDK created earlier.
 
-Intellij can run scripts and tests using its usual ▶ button.
+Intellij can run tests using its usual ▶ button.
+When using ▶ to run module files, Intellij may attempt to run the file as a standalone script.
+This fails because the modules use package-relative imports.
+
+If you need to run modules directly, either:
+- Configure a _Python module_ run configuration:
+  - "Run Configurations" → "Add new configuration" → "Python"
+  - Change "script" to "module"
+  - Enter the module (e.g. `freecam_ci.build_matrix`).
+- Run them via the CLI, using `uv run python -m <module>`.
 
 ## Managing dependencies
 

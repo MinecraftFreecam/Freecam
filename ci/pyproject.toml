@@ -8,8 +8,13 @@ dependencies = [
     "json5 ~= 0.13.0",
 ]
 
-[tool.uv]
-package = false
+[project.scripts]
+build-matrix = "freecam_ci.build_matrix:main"
+lint-changelog = "freecam_ci.lint_changelog:main"
+
+[build-system]
+requires = ["uv_build >= 0.10"]
+build-backend = "uv_build"
 
 [tool.pytest.ini_options]
 strict = true

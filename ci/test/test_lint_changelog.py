@@ -2,9 +2,9 @@ from pathlib import Path
 
 import pytest
 
-from lint_changelog import lint, LintError
+from freecam_ci.lint_changelog import lint, LintError
 
-FIXTURES = Path(__file__).parent / "test_fixtures"
+FIXTURES = Path(__file__).parent / "fixtures"
 
 
 @pytest.mark.parametrize(

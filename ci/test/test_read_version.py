@@ -1,10 +1,9 @@
 from pathlib import Path
 
 import pytest
+from freecam_ci.read_version import read_version, MetadataError
 
-from lint_changelog import read_version, MetadataError
-
-FIXTURES = Path(__file__).parent / "test_fixtures"
+FIXTURES = Path(__file__).parent / "fixtures"
 
 
 @pytest.mark.parametrize(
