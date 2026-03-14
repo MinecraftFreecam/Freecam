@@ -88,13 +88,13 @@ def parse_args() -> argparse.Namespace:
 def main() -> None:
     args = parse_args()
 
-    matrix = build_matrix(
+    jobs = build_matrix(
         version=args.version,
         data=json5.loads(args.versions_file.read_text()),
     )
 
     # Convert all jobs to dicts for JSON output
-    matrix = [job.to_dict() for job in matrix]
+    matrix = [job.to_dict() for job in jobs]
 
     # Print compact to output
     if args.output:
