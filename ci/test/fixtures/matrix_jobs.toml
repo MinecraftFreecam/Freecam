@@ -1,0 +1,7 @@
+[unknown]
+hello = "world"
+
+# Actual definition:
+[[build]]
+name = "test job 1"
+gradle_args = ["a", "b", "c"]
