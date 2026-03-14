@@ -60,11 +60,11 @@ class MatrixJob:
 
 def build_version_matrix(
     version: str,
-    data: dict[str, Any],
+    versions: dict[str, Any],
 ) -> list[MatrixJob]:
     matrix: list[MatrixJob] = []
 
-    for version_name, projects in data["versions"].items():
+    for version_name, projects in versions.items():
         normalized: list[ProjectEntry] = [ProjectEntry.parse(item) for item in projects]
 
         gradle_args: list[str] = [
@@ -83,6 +83,13 @@ def build_version_matrix(
         )
 
     return matrix
+
+
+def load_versions(
+    key: str = "versions", versions_file: Path = STONECUTTER_FILE
+) -> dict[str, Any]:
+    with versions_file.open("rb") as file:
+        return json5.load(file)[key]
 
 
 def load_matrix_jobs(
@@ -132,7 +139,7 @@ def main() -> None:
 
     version_jobs = build_version_matrix(
         version=args.version,
-        data=json5.loads(args.versions_file.read_text()),
+        versions=load_versions(versions_file=args.versions_file),
     )
 
     static_jobs: list[MatrixJob] = []
