@@ -1,9 +1,7 @@
 import tomllib as toml
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-CHANGELOG_FILE = ROOT / "CHANGELOG.md"
-METADATA_FILE = ROOT / "metadata.toml"
+from .project_files import METADATA_FILE
 
 
 class MetadataError(Exception):
@@ -12,7 +10,7 @@ class MetadataError(Exception):
     pass
 
 
-def read_version(metadata_file: Path) -> str:
+def read_version(metadata_file: Path = METADATA_FILE) -> str:
     """Reads the project version from metadata_file."""
 
     if not metadata_file.exists():

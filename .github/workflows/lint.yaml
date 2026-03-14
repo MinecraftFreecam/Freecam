@@ -23,30 +23,22 @@ jobs:
             ci
             CHANGELOG.md
             metadata.toml
-            poetry.lock
             pyproject.toml
+            uv.lock
           sparse-checkout-cone-mode: false
-
-      - name: Install poetry
-        run: pipx install poetry==2.3.0
 
       - uses: actions/setup-python@v6
         with:
-          python-version: '3.12' # pre-installed
-          cache: poetry
+          python-version-file: pyproject.toml
 
-      - name: Install CI dependencies
-        run: poetry install
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
 
-      - name: Run tests
-        run: poetry run pytest
+      - name: Install CI dev dependencies
+        run: uv sync --locked --group dev
 
-      - name: Python Formatting
-        # Need preview for output-format support
-        run: poetry run ruff format --check --preview
-
-      - name: Lint Python
-        run: poetry run ruff check
+      - name: Check Python
+        run: uv run check
 
       - name: Lint changelog
-        run: poetry run ci/lint_changelog.py
+        run: uv run lint-changelog

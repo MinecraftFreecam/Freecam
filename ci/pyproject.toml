@@ -1,0 +1,23 @@
+[project]
+name = "freecam-ci"
+version = "0.0.0"
+description = "Scripts for Freecam CI"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "json5 ~= 0.13.0",
+]
+
+[project.scripts]
+build-matrix = "freecam_ci.build_matrix:main"
+lint-changelog = "freecam_ci.lint_changelog:main"
+check = "freecam_ci.dev:check_python"
+format = "freecam_ci.dev:format_python"
+
+[build-system]
+requires = ["uv_build >= 0.10"]
+build-backend = "uv_build"
+
+[tool.pytest.ini_options]
+strict = true
+testpaths = ["test"]

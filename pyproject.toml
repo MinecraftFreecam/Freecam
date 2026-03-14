@@ -1,16 +1,25 @@
-[tool.poetry]
+[project]
 name = "freecam"
-package-mode = false
+version = "0.0.0"
+requires-python = ">=3.12"
+dependencies = [
+    "freecam-ci",
+]
 
-[tool.poetry.dependencies]
-python = "^3.12"
-json5 = "^0.13.0"
+[dependency-groups]
+dev = [
+    "mypy>=1.19.0",
+    "pytest>=9.0.0",
+    "ruff>=0.15.6",
+]
 
-[tool.poetry.group.dev.dependencies]
-pytest = "^9.0.2"
-ruff = "^0.15.5"
-mypy = "^1.19.1"
+[tool.uv]
+package = false
 
-[build-system]
-requires = ["poetry-core"]
-build-backend = "poetry.core.masonry.api"
+[tool.uv.sources]
+freecam-ci = { workspace = true }
+
+[tool.uv.workspace]
+members = [
+    "ci",
+]

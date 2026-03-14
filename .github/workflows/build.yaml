@@ -27,21 +27,20 @@ jobs:
           sparse-checkout: |
             ci
             metadata.toml
-            poetry.lock
-            pyproject.toml
             stonecutter.json5
+            pyproject.toml
+            uv.lock
           sparse-checkout-cone-mode: false
-
-      - name: Install poetry
-        run: pipx install poetry==2.3.0
 
       - uses: actions/setup-python@v6
         with:
-          python-version: '3.12' # pre-installed
-          cache: poetry
+          python-version-file: pyproject.toml
+
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
 
       - name: Install CI dependencies
-        run: poetry install --only main
+        run: uv sync --locked --no-group dev
 
       - name: Read project version
         id: version
@@ -54,7 +53,7 @@ jobs:
         env:
           version: ${{ steps.version.outputs.version }}
         run: |
-          poetry run ci/build_matrix.py --version "$version" --output matrix.json
+          uv run build-matrix --version "$version" --output matrix.json
           echo "matrix=$(cat matrix.json)" >> "$GITHUB_OUTPUT"
 
   build:
