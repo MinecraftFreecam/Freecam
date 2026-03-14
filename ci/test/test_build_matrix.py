@@ -20,12 +20,11 @@ def test_matrixjob_to_dict():
         upload_path="build/libs/*.jar",
         upload_days=None,
     )
-    d = job.to_dict()
-    assert "name" in d
-    assert "gradle_args" in d
-    assert "upload_name" not in d
-    assert "upload_path" in d
-    assert "upload_days" not in d
+    assert job.to_dict() == {
+        "name": "Build test",
+        "gradle_args": [":common:test"],
+        "upload_path": "build/libs/*.jar",
+    }
 
 
 def test_matrixjob_from_dict():
