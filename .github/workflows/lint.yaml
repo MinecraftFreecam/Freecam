@@ -37,14 +37,8 @@ jobs:
       - name: Install CI dev dependencies
         run: uv sync --locked --group dev
 
-      - name: Run tests
-        run: uv run pytest
-
-      - name: Python Formatting
-        run: uv run ruff format --check
-
-      - name: Lint Python
-        run: uv run ruff check
+      - name: Check Python
+        run: uv run check
 
       - name: Lint changelog
         run: uv run lint-changelog
