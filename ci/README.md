@@ -8,6 +8,8 @@ This directory contains scripts used in CI workflows.
 Once installed, use `uv sync` to setup a project `.venv`.
 You can run scripts via `uv run`, e.g. `uv run build-matrix` or `uv run python -m freecam_ci.build_matrix`.
 
+You can check your code using `uv run check` and format using `uv run format`.
+
 ## IDE setup
 
 - Install [uv].
