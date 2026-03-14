@@ -33,7 +33,7 @@ dev = [
 ]
 
 [package.metadata]
-requires-dist = [{ name = "freecam-ci", virtual = "ci" }]
+requires-dist = [{ name = "freecam-ci", editable = "ci" }]
 
 [package.metadata.requires-dev]
 dev = [
@@ -45,7 +45,7 @@ dev = [
 [[package]]
 name = "freecam-ci"
 version = "0.0.0"
-source = { virtual = "ci" }
+source = { editable = "ci" }
 dependencies = [
     { name = "json5" },
 ]

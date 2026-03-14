@@ -1,4 +1,4 @@
-from build_matrix import build_matrix, MatrixJob
+from freecam_ci.build_matrix import build_matrix, MatrixJob
 
 
 def test_matrixjob_to_dict():

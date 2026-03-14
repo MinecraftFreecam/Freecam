@@ -53,7 +53,7 @@ jobs:
         env:
           version: ${{ steps.version.outputs.version }}
         run: |
-          uv run ci/build_matrix.py --version "$version" --output matrix.json
+          uv run build-matrix --version "$version" --output matrix.json
           echo "matrix=$(cat matrix.json)" >> "$GITHUB_OUTPUT"
 
   build:

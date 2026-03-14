@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """
 Changelog lint: ensure CHANGELOG.md corresponds to the current project version.
 
@@ -15,11 +14,8 @@ import re
 import sys
 from pathlib import Path
 
-from read_version import MetadataError, read_version
-
-ROOT = Path(__file__).resolve().parents[1]
-CHANGELOG_FILE = ROOT / "CHANGELOG.md"
-METADATA_FILE = ROOT / "metadata.toml"
+from .project_files import CHANGELOG_FILE
+from .read_version import MetadataError, read_version
 
 
 class LintError(Exception):
@@ -101,7 +97,7 @@ def lint(version: str, changelog_file: Path) -> None:
 
 def main() -> None:
     try:
-        version = read_version(METADATA_FILE)
+        version = read_version()
         lint(version, CHANGELOG_FILE)
     except LintError as e:
         print("Changelog lint failed:\n", file=sys.stderr)
