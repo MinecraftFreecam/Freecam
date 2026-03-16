@@ -1,3 +1,4 @@
+import org.jetbrains.changelog.Changelog
 import org.jetbrains.changelog.tasks.BaseChangelogTask
 
 // This file represents the version-less `rootProject` (:)
@@ -5,6 +6,7 @@ import org.jetbrains.changelog.tasks.BaseChangelogTask
 
 plugins {
     id("freecam.api")
+    id("freecam.release-metadata")
     id("dev.kikugie.stonecutter")
     alias(libs.plugins.jetbrains.changelog)
 }
@@ -81,4 +83,17 @@ changelog {
     // Regex used to find versions in headings.
     // The default regex only supports semantic versions, this one is more lenient.
     headerParserRegex = Regex("(\\d+(?:\\.\\d+)+(?:-[-a-z]+\\d*)?)")
+}
+
+tasks.generateReleaseMetadata {
+    changelog = provider {
+        val entry = project.changelog.getOrNull(meta.version) ?: project.changelog.getUnreleased()
+        project.changelog.renderItem(
+            entry.withHeader(false)
+                .withLinks(false)
+                .withEmptySections(false)
+                .withSummary(true),
+            outputType = Changelog.OutputType.MARKDOWN
+        )
+    }
 }

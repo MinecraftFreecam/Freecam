@@ -17,8 +17,12 @@ dependencyResolutionManagement {
 
 include(
     "api",
+    "api:plugin",
     "conventions",
+    "release-metadata",
     "settings",
 )
+
+project(":api:plugin").projectDir = file("api-plugin")
 
 rootProject.name = "build-logic"

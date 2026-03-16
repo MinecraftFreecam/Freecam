@@ -6,9 +6,9 @@ plugins {
 
 dependencies {
     implementation(project(":api"))
+    implementation(project(":release-metadata"))
     implementation(plugin(libs.plugins.stonecutter))
     implementation(plugin(libs.plugins.jetbrains.changelog))
-    implementation(plugin(libs.plugins.modpublisher))
     implementation(libs.mapping.io)
     implementation(libs.kotlin.serialization.json)
 }

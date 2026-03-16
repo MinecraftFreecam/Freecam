@@ -14,6 +14,7 @@ interface ModMetadata : StaticModMetadata {
     val properties: PropertyProvider
     val mod: PropertyProvider
     val deps: PropertyProvider
+    val relationships: List<Relationship>
 
     fun parchment(block: (mappings: String, minecraft: String) -> Unit)
 }
