@@ -3,9 +3,12 @@ package net.xolt.freecam.model
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-interface PropertyProvider {
+interface PropertyProvider : Iterable<Pair<String, String>> {
     operator fun get(prop: String): String
     fun orNull(prop: String): String?
+    fun asSequence(): Sequence<Pair<String, String>>
+    override fun iterator(): Iterator<Pair<String, String>> =
+        asSequence().iterator()
 }
 
 interface ModMetadata : StaticModMetadata {
