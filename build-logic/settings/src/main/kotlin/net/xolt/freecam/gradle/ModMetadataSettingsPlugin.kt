@@ -10,8 +10,6 @@ import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.findByType
-import java.io.File
-import java.util.*
 
 @Serializable
 private data class MetadataToml(
@@ -26,29 +24,6 @@ private class ProjectModMetadata(
 {
     private val sc get() = project.extensions.findByType<StonecutterBuildExtension>()
 
-    private val props by lazy {
-        val sc = requireNotNull(this.sc) {
-            "${project.path} without `stonecutter` does not have version-specific properties"
-        }
-
-        // Emulate Gradle's property cascade, but include version-specific properties too
-        Properties().apply {
-            sequenceOf(
-                    // rootProject properties
-                    project.rootDir.resolve("gradle.properties"),
-                    // version project properties
-                    project.rootDir.resolve("versions/${sc.current.version}/gradle.properties"),
-                    // loader project properties
-                    project.rootDir.resolve("${sc.branch.id}/gradle.properties"),
-                    // project properties
-                    project.projectDir.resolve("gradle.properties"),
-                )
-                .filter(File::exists)
-                .map(File::inputStream)
-                .forEach { it.use(::load) }
-        }
-    }
-
     override val mc: String
         get() = requireNotNull(sc) {
             "${project.path} without `stonecutter` extension cannot read `mc` "
@@ -60,10 +35,10 @@ private class ProjectModMetadata(
         }.branch.id
 
     override val relationships: List<Relationship> by lazy {
-        props
+        project.properties
             .asSequence()
             .mapNotNull { (key, value) ->
-                if (key is String && value is String) key to value else null
+                if (value is String) key to value else null
             }
             // Collect relationship properties
             .mapNotNull { (key, value) ->
@@ -97,29 +72,28 @@ private class ProjectModMetadata(
             ?.let { block(it.mappings, it.minecraft ?: mc) }
     }
 
-    override val properties = PrefixedPropertyProvider { props }
-    override val mod = PrefixedPropertyProvider("mod.") { props }
-    override val deps = PrefixedPropertyProvider("deps.") { props }
+    override val properties = PrefixedPropertyProvider { project.properties }
+    override val mod = PrefixedPropertyProvider("mod.") { project.properties }
+    override val deps = PrefixedPropertyProvider("deps.") { project.properties }
 }
 
 private class PrefixedPropertyProvider(
     private val prefix: String = "",
-    private val properties: () -> Properties,
+    private val properties: () -> Map<String, Any?>,
 ) : PropertyProvider {
     override fun get(prop: String) = requireNotNull(orNull(prop)) { "Missing ${prefix + prop}" }
     override fun orNull(prop: String) = properties()[prefix + prop]?.toString()
     override fun asSequence() = properties()
         .asSequence()
-        .mapNotNull { entry ->
-            (entry.key as? String)
-                ?.takeIf { it.startsWith(prefix) }
-                ?.let { it.removePrefix(prefix) to entry.value.toString() }
-        }
+        .filter { it.key.startsWith(prefix) && it.value != null }
+        .map { it.key.removePrefix(prefix) to it.value.toString() }
 }
 
 class ModMetadataSettingsPlugin : Plugin<Settings> {
     override fun apply(settings: Settings) {
         val name = "meta"
+
+        // Load StaticModMetadata ourselves, rather than using stonecutter centralized properties
         val file = settings.rootDir.resolve("metadata.toml")
         val toml = file.readText()
         val metadata = Toml.decodeFromString<MetadataToml>(toml).mod
