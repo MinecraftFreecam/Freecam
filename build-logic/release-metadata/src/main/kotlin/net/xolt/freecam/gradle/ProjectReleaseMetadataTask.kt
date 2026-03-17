@@ -30,6 +30,9 @@ abstract class ProjectReleaseMetadataTask : DefaultTask() {
     abstract val minecraft: Property<String>
 
     @get:Input
+    abstract val supportedMinecraftVersions: ListProperty<String>
+
+    @get:Input
     abstract val relationships: ListProperty<Relationship>
 
     @get:Input
@@ -50,6 +53,7 @@ abstract class ProjectReleaseMetadataTask : DefaultTask() {
         }
         loader.convention(meta.map { it.loader })
         minecraft.convention(meta.map { it.mc })
+        supportedMinecraftVersions.convention(meta.map { it.supportedMinecraftVersions })
         relationships.convention(meta.map { it.relationships })
         targetCompatibility.convention(java.map { it.targetCompatibility })
         artifactFileName.convention(
@@ -72,7 +76,7 @@ abstract class ProjectReleaseMetadataTask : DefaultTask() {
             loader = loader.get(),
             minecraft = mc,
             filename = artifactFileName.get(),
-            gameVersions = listOf(mc),
+            gameVersions = listOf(mc) + supportedMinecraftVersions.get(),
             javaVersions = listOf(targetCompatibility.map(JavaVersion::toReleaseMetadataSlug).get()),
             relationships = relationships.get(),
         )

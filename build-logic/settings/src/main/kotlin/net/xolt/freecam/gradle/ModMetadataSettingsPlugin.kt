@@ -66,6 +66,16 @@ private class ProjectModMetadata(
             .toList()
     }
 
+    override val supportedMinecraftVersions: List<String> by lazy {
+        project.properties.getOrDefault("supported_mc_versions", null)
+            ?.let { it as String }
+            ?.splitToSequence(',')
+            ?.map { it.trim() }
+            ?.filter { it.isNotBlank() }
+            ?.toList()
+            ?: emptyList()
+    }
+
     override fun parchment(block: (mappings: String, minecraft: String) -> Unit) {
         deps.orNull("parchment")
             ?.let(ParchmentVersion.Companion::parse)
