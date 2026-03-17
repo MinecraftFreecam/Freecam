@@ -4,19 +4,14 @@ import dev.eav.tomlkt.Toml
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
-import net.xolt.freecam.model.ModMetadata
-import net.xolt.freecam.model.ModMetadataToml
-import net.xolt.freecam.model.ParchmentVersion
-import net.xolt.freecam.model.PropertyProvider
-import net.xolt.freecam.model.Relationship
-import net.xolt.freecam.model.StaticModMetadata
+import net.xolt.freecam.model.*
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.findByType
 import java.io.File
-import java.util.Properties
+import java.util.*
 
 @Serializable
 private data class MetadataToml(
@@ -113,6 +108,13 @@ private class PrefixedPropertyProvider(
 ) : PropertyProvider {
     override fun get(prop: String) = requireNotNull(orNull(prop)) { "Missing ${prefix + prop}" }
     override fun orNull(prop: String) = properties()[prefix + prop]?.toString()
+    override fun asSequence() = properties()
+        .asSequence()
+        .mapNotNull { entry ->
+            (entry.key as? String)
+                ?.takeIf { it.startsWith(prefix) }
+                ?.let { it.removePrefix(prefix) to entry.value.toString() }
+        }
 }
 
 class ModMetadataSettingsPlugin : Plugin<Settings> {

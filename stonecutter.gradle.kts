@@ -16,13 +16,16 @@ stonecutter active "1.21.11"
 stonecutter {
     parameters {
         val meta = node.project.meta
-        dependencies["cloth"] = meta.deps["cloth"]
-        meta.deps.orNull("neoforge")?.also {
-            dependencies["neoforge"] = it
-        }
-        meta.deps.orNull("forge")?.also {
-            dependencies["forge"] = it
-        }
+
+        // Register project dependencies with stonecutter
+        meta.deps.asSequence()
+            .filter { (key, value) ->
+                // Parchment has an incompatible version syntax
+                key != "parchment" && value.isNotBlank()
+            }
+            .forEach { (key, value) ->
+                dependencies[key] = value
+            }
 
         replacements {
             string(current.parsed >= "1.21.11") {
