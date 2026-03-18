@@ -24,7 +24,7 @@ plugins {
 }
 
 stonecutter {
-    create(rootProject, file("stonecutter.json5"))
+    create(rootProject, file("stonecutter.settings.toml"))
 }
 
 include(

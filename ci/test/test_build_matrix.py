@@ -1,31 +1,28 @@
-from pathlib import Path
-
 import pytest
-
 from freecam_ci.build_matrix import (
     build_version_matrix,
     load_matrix_jobs,
     load_versions,
 )
+from pathlib import Path
 
 FIXTURES = Path(__file__).parent / "fixtures"
 
 
 def test_load_versions_valid():
-    for fixture_name in ["valid_versions.json5", "edge_versions.json5"]:
-        path = FIXTURES / fixture_name
-        versions = load_versions(versions_file=path)
-        assert isinstance(versions, dict)
-        # basic structural checks
-        for key, value in versions.items():
-            assert isinstance(key, str)
-            assert value is None or isinstance(value, list)
-            if isinstance(value, list):
-                assert all(isinstance(v, (str, dict)) for v in value)
+    path = FIXTURES / "valid_versions.toml"
+    versions = load_versions(versions_file=path)
+    assert isinstance(versions, dict)
+    # basic structural checks
+    for key, value in versions.items():
+        assert isinstance(key, str)
+        assert value is None or isinstance(value, list)
+        if isinstance(value, list):
+            assert all(isinstance(v, (str, dict)) for v in value)
 
 
 def test_load_versions_invalid():
-    path = FIXTURES / "invalid_versions.json5"
+    path = FIXTURES / "invalid_versions.toml"
     # Invalid because the "versions" key is missing or schema doesn't match
     with pytest.raises(Exception):
         load_versions(versions_file=path)

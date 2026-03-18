@@ -5,10 +5,9 @@ Used by .github/workflows/build.yml (prepare) to generate the job matrix.
 import argparse
 import json
 import tomllib as toml
-from pathlib import Path
 from typing import Any
 
-import json5
+from pathlib import Path
 
 from .matrix_model import MatrixJob
 from .project_files import MATRIX_JOBS_FILE, STONECUTTER_FILE
@@ -47,7 +46,7 @@ def load_versions(
     key: str = "versions", versions_file: Path = STONECUTTER_FILE
 ) -> dict[str, Any]:
     with versions_file.open("rb") as file:
-        return json5.load(file)[key]
+        return toml.load(file)[key]
 
 
 def load_matrix_jobs(

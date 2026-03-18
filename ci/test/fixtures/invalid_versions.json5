@@ -1,5 +1,0 @@
-// Invalid versions objects
-{
-  "foo": 123,
-  // missing "versions" key
-}
