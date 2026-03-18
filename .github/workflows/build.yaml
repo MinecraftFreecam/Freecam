@@ -33,7 +33,7 @@ jobs:
           sparse-checkout: |
             ci
             metadata.toml
-            stonecutter.json5
+            stonecutter.settings.toml
             pyproject.toml
             uv.lock
           sparse-checkout-cone-mode: false
