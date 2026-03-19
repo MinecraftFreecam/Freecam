@@ -58,7 +58,7 @@ neoforge_mc_req = "[1.21.11,)"
 
 
 ["1.20.6"]
-deps.parchment = "1.21.10-2025.10.12"
+deps.parchment = "1.20.6-2024.06.16"
 deps.cloth = "14.0.126"
 
 deps.fabric_api = "0.100.8+1.20.6"
