@@ -7,10 +7,6 @@
 # 3. Flattened keys (tables become dotted properties)
 
 
-# TODO: move runtime requirements into a table
-fabric_loader_req = ">=0.14.0"
-
-
 [relationship]
 cloth-config.type = "bundled"
 cloth-config.curseforge_slug = "cloth-config"
@@ -49,6 +45,7 @@ deps.cloth = "21.11.153"
 deps.fabric_api = "0.139.4+1.21.11"
 deps.modmenu = "17.0.0-beta.2"
 fabric_mc_req = ">=1.21.11"
+fabric_loader_req = ">=0.14.0"
 
 deps.neoforge = "21.11.6-beta"
 deps.neoforge_pr = ""
@@ -64,6 +61,7 @@ deps.cloth = "14.0.126"
 deps.fabric_api = "0.100.8+1.20.6"
 deps.modmenu = "10.0.0"
 fabric_mc_req = "~1.20.5"
+fabric_loader_req = ">=0.14.0"
 
 deps.neoforge = "20.6.139"
 deps.neoforge_pr = ""
@@ -144,6 +142,7 @@ deps.forge = "36.2.41"
 forge_req = "[34,)"
 forge_loader_req = "[34,)"
 forge_mc_req = "[1.16.2,1.17)"
+
 
 ["forge:1.16.5"]
 relationship.cloth-config.type = "required"
