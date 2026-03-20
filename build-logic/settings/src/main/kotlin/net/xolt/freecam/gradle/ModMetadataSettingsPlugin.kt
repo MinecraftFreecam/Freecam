@@ -27,15 +27,14 @@ private class ProjectModMetadata(
 {
     private val sc get() = project.extensions.findByType<StonecutterBuildExtension>()
 
+    private fun requireStonecutter(property: String) =
+        sc ?: error("${project.path} without `stonecutter` extension cannot read `$property`")
+
     override val mc: String
-        get() = requireNotNull(sc) {
-            "${project.path} without `stonecutter` extension cannot read `mc` "
-        }.current.version
+        get() = requireStonecutter("mc").current.version
 
     override val loader: String
-        get() = requireNotNull(sc) {
-            "${project.path} without `stonecutter` extension cannot read `loader` "
-        }.branch.id
+        get() = requireStonecutter("loader").branch.id
 
     override val relationships: List<Relationship> by lazy {
         project.properties
@@ -71,7 +70,7 @@ private class ProjectModMetadata(
 
     @OptIn(StonecutterExperimentalAPI::class)
     override val supportedMinecraftVersions: List<String> by lazy {
-        (sc ?: error("${project.path} without `stonecutter` extension cannot read `supportedMinecraftVersions` "))
+        requireStonecutter("supportedMinecraftVersions")
             .properties
             .rawOrNull("supported_mc_versions")
             ?.let { Json.decodeFromJsonElement(it) }
