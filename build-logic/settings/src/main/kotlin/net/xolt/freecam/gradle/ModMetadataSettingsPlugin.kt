@@ -1,9 +1,12 @@
 package net.xolt.freecam.gradle
 
 import dev.eav.tomlkt.Toml
+import dev.kikugie.stonecutter.StonecutterExperimentalAPI
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromJsonElement
 import net.xolt.freecam.model.*
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -66,13 +69,12 @@ private class ProjectModMetadata(
             .toList()
     }
 
+    @OptIn(StonecutterExperimentalAPI::class)
     override val supportedMinecraftVersions: List<String> by lazy {
-        project.properties.getOrDefault("supported_mc_versions", null)
-            ?.let { it as String }
-            ?.splitToSequence(',')
-            ?.map { it.trim() }
-            ?.filter { it.isNotBlank() }
-            ?.toList()
+        (sc ?: error("${project.path} without `stonecutter` extension cannot read `supportedMinecraftVersions` "))
+            .properties
+            .rawOrNull("supported_mc_versions")
+            ?.let { Json.decodeFromJsonElement(it) }
             ?: emptyList()
     }
 
