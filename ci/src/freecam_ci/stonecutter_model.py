@@ -4,16 +4,11 @@ from typing import Any
 
 @dataclass
 class ProjectEntry:
-    """Structured representation of a stonecutter version-project entry."""
+    """Structured representation of a stonecutter project entry."""
 
     project: str
     version: str | None = None
     buildscript: str | None = None
-
-    @property
-    def build_in_ci(self) -> bool:
-        """Whether this project should be built by CI."""
-        return self.project != "common"
 
     @classmethod
     def parse(cls, value: str | dict[str, Any]) -> "ProjectEntry":

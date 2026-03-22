@@ -16,9 +16,9 @@ def test_parse_string_entries():
 
 
 def test_parse_dict_entries():
-    value = {"project": "fabric", "version": "1.19.2"}
+    value = {"project": "1.19", "version": "1.19.2"}
     entry = ProjectEntry.parse(value)
-    assert entry.project == "fabric"
+    assert entry.project == "1.19"
     assert entry.version == "1.19.2"
     assert entry.buildscript is None
 
@@ -31,11 +31,3 @@ def test_parse_invalid_entries():
 
     with pytest.raises(ValueError):
         ProjectEntry.parse({"version": "1.0"})  # missing 'project'
-
-
-def test_build_in_ci_property():
-    common_entry = ProjectEntry.parse("common:1.18")
-    assert common_entry.build_in_ci is False
-
-    other_entry = ProjectEntry.parse("core:1.20")
-    assert other_entry.build_in_ci is True
