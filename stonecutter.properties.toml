@@ -69,9 +69,7 @@ neoforge_req = "[20.6.11-beta,)"
 neoforge_loader_req = "[1,)"
 neoforge_mc_req = "[1.20.6,)"
 
-
-["fabric:1.20.6"]
-supported_mc_versions = "1.20.5"
+fabric.supported_mc_versions = ["1.20.5"]
 
 
 ["1.19.4"]
@@ -118,17 +116,13 @@ forge_req = "[37,)"
 forge_loader_req = "[37,)"
 forge_mc_req = "[1.17.1,1.18)"
 
+fabric.supported_mc_versions = ["1.17"]
 
-["fabric:1.17.1"]
-supported_mc_versions = "1.17"
-
-
-["forge:1.17.1"]
-relationship.cloth-config.type = "required"
+forge.relationship.cloth-config.type = "required"
 
 
 ["1.16.5"]
-supported_mc_versions = "1.16.2,1.16.3,1.16.4"
+supported_mc_versions = ["1.16.2", "1.16.3", "1.16.4"]
 
 deps.parchment = "1.16.5-2022.03.06"
 deps.cloth = "4.17.101"
@@ -143,6 +137,4 @@ forge_req = "[34,)"
 forge_loader_req = "[34,)"
 forge_mc_req = "[1.16.2,1.17)"
 
-
-["forge:1.16.5"]
-relationship.cloth-config.type = "required"
+forge.relationship.cloth-config.type = "required"

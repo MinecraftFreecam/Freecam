@@ -1,9 +1,12 @@
 package net.xolt.freecam.gradle
 
 import dev.eav.tomlkt.Toml
+import dev.kikugie.stonecutter.StonecutterExperimentalAPI
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.decodeFromJsonElement
 import net.xolt.freecam.model.*
 import org.gradle.api.Plugin
 import org.gradle.api.Project
@@ -24,15 +27,14 @@ private class ProjectModMetadata(
 {
     private val sc get() = project.extensions.findByType<StonecutterBuildExtension>()
 
+    private fun requireStonecutter(property: String) =
+        sc ?: error("${project.path} without `stonecutter` extension cannot read `$property`")
+
     override val mc: String
-        get() = requireNotNull(sc) {
-            "${project.path} without `stonecutter` extension cannot read `mc` "
-        }.current.version
+        get() = requireStonecutter("mc").current.version
 
     override val loader: String
-        get() = requireNotNull(sc) {
-            "${project.path} without `stonecutter` extension cannot read `loader` "
-        }.branch.id
+        get() = requireStonecutter("loader").branch.id
 
     override val relationships: List<Relationship> by lazy {
         project.properties
@@ -66,13 +68,12 @@ private class ProjectModMetadata(
             .toList()
     }
 
+    @OptIn(StonecutterExperimentalAPI::class)
     override val supportedMinecraftVersions: List<String> by lazy {
-        project.properties.getOrDefault("supported_mc_versions", null)
-            ?.let { it as String }
-            ?.splitToSequence(',')
-            ?.map { it.trim() }
-            ?.filter { it.isNotBlank() }
-            ?.toList()
+        requireStonecutter("supportedMinecraftVersions")
+            .properties
+            .rawOrNull("supported_mc_versions")
+            ?.let { Json.decodeFromJsonElement(it) }
             ?: emptyList()
     }
 
