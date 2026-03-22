@@ -1,7 +1,7 @@
 [versions]
 kotlin = "2.2.0"
 stonecutter = "0.9.1-beta.2"
-fabric-loom = "1.14-SNAPSHOT"
+fabric-loom = "1.15-SNAPSHOT"
 moddev = "2.0.140"
 fletchingtable = "0.1.0-alpha.22"
 foojay-resolver = "1.0.0"
