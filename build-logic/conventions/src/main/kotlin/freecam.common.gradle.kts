@@ -5,7 +5,6 @@ plugins {
 }
 
 version = "${meta.loader}-${meta.version}+mc${meta.mc}"
-group = meta.group
 base {
     archivesName = meta.id
 }

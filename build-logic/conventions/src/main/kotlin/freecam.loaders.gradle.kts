@@ -4,15 +4,15 @@ plugins {
     id("freecam.common")
 }
 
-sourceSets {
-    main {
-        // Manually depend on common's pre-processed sources.
-        // NOTE: loaders have no build dependency on common, so API/implementation
-        //  classes and transitive dependencies must be manually propagated.
-        val commonTasks = commonNode.project.tasks
-        java.srcDirs(commonTasks.named<Sync>("stonecutterGenerate").map { it.destinationDir })
-        resources.srcDirs(commonTasks.processResources.map { it.destinationDir })
-    }
+dependencies {
+    implementation(commonNode.project)
+}
+
+tasks.processResources {
+    // We do some loader-specific processing in processResources...
+    // it's a little ugly that we add resources via `implementation` _and_ processResources
+    // FIXME: decide whether we will process in :common or loaders and stick to one
+    from(commonNode.project.tasks.processResources)
 }
 
 tasks.register<ProjectReleaseMetadataTask>("generateReleaseMetadata") {
