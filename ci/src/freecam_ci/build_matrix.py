@@ -5,9 +5,8 @@ Used by .github/workflows/build.yml (prepare) to generate the job matrix.
 import argparse
 import json
 import tomllib as toml
-from typing import Any
-
 from pathlib import Path
+from typing import Any
 
 from .matrix_model import MatrixJob
 from .project_files import MATRIX_JOBS_FILE, STONECUTTER_FILE
@@ -21,20 +20,20 @@ def build_version_matrix(
 ) -> list[MatrixJob]:
     matrix: list[MatrixJob] = []
 
-    for version_name, projects in versions.items():
-        normalized: list[ProjectEntry] = [ProjectEntry.parse(item) for item in projects]
+    for key, branches in versions.items():
+        entry = ProjectEntry.parse(key)
 
         gradle_args: list[str] = [
-            f":{entry.project}:{version_name}:buildAndCollect"
-            for entry in normalized
-            if entry.build_in_ci
+            f":{branch}:{entry.project}:buildAndCollect"
+            for branch in branches
+            if branch != "common"
         ]
 
         matrix.append(
             MatrixJob(
-                name=f"Build {version_name}",
+                name=f"Build {entry.project}",
                 gradle_args=gradle_args,
-                upload_name=f"freecam-{version}-{version_name}",
+                upload_name=f"freecam-{version}-{entry.project}",
                 upload_path=f"build/libs/{version}/*.jar",
             )
         )
@@ -43,7 +42,8 @@ def build_version_matrix(
 
 
 def load_versions(
-    key: str = "versions", versions_file: Path = STONECUTTER_FILE
+    key: str = "versions",
+    versions_file: Path = STONECUTTER_FILE,
 ) -> dict[str, Any]:
     with versions_file.open("rb") as file:
         return toml.load(file)[key]
