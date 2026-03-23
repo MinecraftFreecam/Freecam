@@ -2,7 +2,7 @@ package net.xolt.freecam.config.gui;
 
 import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
 import me.shedaniel.clothconfig2.gui.entries.BooleanListEntry;
-import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.config.AutoConfigModConfig;
 
 import static net.xolt.freecam.config.gui.AutoConfigExtensions.isField;
 
@@ -18,11 +18,11 @@ class CollisionWhitelistDependencies {
                     ignoreCustom = guis.stream()
                             .filter(BooleanListEntry.class::isInstance)
                             .map(BooleanListEntry.class::cast)
-                            .reduce((prev, next) -> { throw new IllegalStateException("Multiple BooleanListEntries added to %s.ignoreCustom".formatted(ModConfig.CollisionConfig.class.getSimpleName())); })
-                            .orElseThrow(() -> new IllegalStateException("No BooleanListEntries added to %s.ignoreCustom".formatted(ModConfig.CollisionConfig.class.getSimpleName())));
+                            .reduce((prev, next) -> { throw new IllegalStateException("Multiple BooleanListEntries added to %s.ignoreCustom".formatted(AutoConfigModConfig.CollisionConfig.class.getSimpleName())); })
+                            .orElseThrow(() -> new IllegalStateException("No BooleanListEntries added to %s.ignoreCustom".formatted(AutoConfigModConfig.CollisionConfig.class.getSimpleName())));
                     return guis;
                 },
-                isField(ModConfig.CollisionConfig.class, "ignoreCustom")
+                isField(AutoConfigModConfig.CollisionConfig.class, "ignoreCustom")
         );
 
         // Whitelist group dependency
@@ -33,7 +33,7 @@ class CollisionWhitelistDependencies {
                     guis.forEach(gui -> gui.setDisplayRequirement(() -> ignoreCustom == null || ignoreCustom.getValue()));
                     return guis;
                 },
-                isField(ModConfig.CollisionConfig.class, "whitelist")
+                isField(AutoConfigModConfig.CollisionConfig.class, "whitelist")
         );
     }
 }

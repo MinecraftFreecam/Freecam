@@ -2,15 +2,15 @@ package net.xolt.freecam.mixins;
 
 import net.minecraft.client.renderer.LightTexture;
 import net.xolt.freecam.Freecam;
-import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.config.ModConfigProvider;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 //? if >= 1.21.11 {
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 //? } else {
 /*import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 *///? }
 //? if > 1.18.2 {
 import net.minecraft.world.level.dimension.DimensionType;
@@ -25,7 +25,7 @@ public class LightTextureMixin {
     @WrapOperation(method = "updateLightTexture",
             at = @At(value="INVOKE", target="Lnet/minecraft/world/level/dimension/DimensionType;ambientLight()F"))
     private float onSetBrightnessFactor(DimensionType instance, Operation<Float> original) {
-        if (Freecam.isEnabled() && ModConfig.INSTANCE.visual.fullBright) {
+        if (Freecam.isEnabled() && ModConfigProvider.instance().isFullBrightEnabled()) {
             return 1.0f;
         }
         return original.call(instance);
@@ -40,7 +40,7 @@ public class LightTextureMixin {
             int lightLevel,
             CallbackInfoReturnable<Float> cir
     ) {
-        if (Freecam.isEnabled() && ModConfig.INSTANCE.visual.fullBright) {
+        if (Freecam.isEnabled() && ModConfigProvider.instance().isFullBrightEnabled()) {
             cir.setReturnValue(1.0f);
         }
     }

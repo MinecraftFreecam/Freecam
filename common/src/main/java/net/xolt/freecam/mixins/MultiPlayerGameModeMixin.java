@@ -9,7 +9,7 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.xolt.freecam.Freecam;
-import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.config.ModConfigProvider;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -64,6 +64,6 @@ public class MultiPlayerGameModeMixin {
 
     @Unique
     private static boolean freecam$disableInteract() {
-        return Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !ModConfig.INSTANCE.utility.allowInteract;
+        return Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && ModConfigProvider.instance().shouldPreventInteractions();
     }
 }

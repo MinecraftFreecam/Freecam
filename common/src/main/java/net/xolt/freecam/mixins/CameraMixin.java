@@ -5,7 +5,7 @@ import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.material.FogType;
 import net.xolt.freecam.Freecam;
-import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.config.ModConfigProvider;
 import net.xolt.freecam.util.FreeCamera;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -48,7 +48,7 @@ public class CameraMixin {
     // Removes the submersion overlay when underwater, in lava, or powdered snow.
     @Inject(method = "getFluidInCamera", at = @At("HEAD"), cancellable = true)
     public void onGetSubmersionType(CallbackInfoReturnable<FogType> cir) {
-        if (Freecam.isEnabled() && !ModConfig.INSTANCE.visual.showSubmersion) {
+        if (Freecam.isEnabled() && ModConfigProvider.instance().shouldHideSubmersionFog()) {
             cir.setReturnValue(FogType.NONE);
         }
     }

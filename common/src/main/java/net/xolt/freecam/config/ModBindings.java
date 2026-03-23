@@ -2,7 +2,6 @@ package net.xolt.freecam.config;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
-import me.shedaniel.autoconfig.AutoConfig;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.keys.FreecamKeyMapping;
 import org.jetbrains.annotations.NotNull;
@@ -29,7 +28,7 @@ public enum ModBindings {
             .holdAction(Freecam::resetTripodHandler)
             .build()),
     KEY_CONFIG_GUI(() -> builder("configGui")
-            .action(() -> MC.setScreen(ModConfig.getConfigScreen()))
+            .action(() -> MC.setScreen(ModConfigProvider.getConfigScreen(MC.screen)))
             .build());
 
     private final Supplier<FreecamKeyMapping> lazyMapping;
