@@ -13,7 +13,6 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static net.xolt.freecam.Freecam.MC;
 import static net.xolt.freecam.config.keys.FreecamKeyMappingBuilder.builder;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_F4;
 
@@ -35,8 +34,7 @@ public enum ModBindings {
                     .map(provider -> (Runnable) provider::openConfigScreen)
                     .orElseGet(() -> () -> {
                         logger().info("Attempted to open config screen with no {} available", ConfigScreenProvider.class.getSimpleName());
-                        Optional.ofNullable(MC.player)
-                                .ifPresent(player -> player.displayClientMessage(Component.translatable(  "msg.freecam.configGuiMissing"), true));
+                        Freecam.sendOverlayMessage(Component.translatable(  "msg.freecam.configGuiMissing"));
                     }))
             .build());
 
