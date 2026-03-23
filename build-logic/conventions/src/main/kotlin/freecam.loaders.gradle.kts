@@ -5,7 +5,7 @@ plugins {
 }
 
 dependencies {
-    compileOnly(project(path = commonNode.project.path, configuration = "namedElements"))
+    implementation(project(path = commonNode.project.path, configuration = "namedElements"))
 }
 
 tasks {
