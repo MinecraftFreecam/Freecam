@@ -1,5 +1,3 @@
-import net.xolt.freecam.gradle.plugin
-
 plugins {
     `kotlin-dsl`
 }
@@ -7,8 +5,8 @@ plugins {
 dependencies {
     implementation(project(":api"))
     implementation(project(":release-metadata"))
-    implementation(plugin(libs.plugins.stonecutter))
-    implementation(plugin(libs.plugins.jetbrains.changelog))
+    implementation(libs.plugins.stonecutter.coords)
+    implementation(libs.plugins.jetbrains.changelog.coords)
     implementation(libs.mapping.io)
     implementation(libs.kotlin.serialization.json)
 }
