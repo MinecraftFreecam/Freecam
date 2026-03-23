@@ -33,6 +33,7 @@ stonecutter parameters {
         }
 
     dependencies["java"] = when {
+        current.parsed >= "26.0" -> JavaVersion.VERSION_25
         current.parsed >= "1.20.5" -> JavaVersion.VERSION_21
         current.parsed >= "1.18" -> JavaVersion.VERSION_17
         current.parsed >= "1.17" -> JavaVersion.VERSION_16
@@ -44,6 +45,13 @@ stonecutter parameters {
     constants["cloth_dependencies"] = sc.eval(meta.deps["cloth"], ">=8.4")
 
     replacements {
+        string(current.parsed >= "26.0") {
+            replace("accessWidener v2 named", "accessWidener v2 official")
+            replace("GuiGraphics", "GuiGraphicsExtractor")
+            replace("renderTextureOverlay", "extractTextureOverlay")
+            replace("net.minecraft.client.renderer.state.CameraRenderState", "net.minecraft.client.renderer.state.level.CameraRenderState")
+            replace("net.minecraft.client.renderer.state.LevelRenderState", "net.minecraft.client.renderer.state.level.LevelRenderState")
+        }
         string(current.parsed >= "1.21.11") {
             replace("ResourceLocation", "Identifier")
             replace("input.jumping", "input.keyPresses.jump()")

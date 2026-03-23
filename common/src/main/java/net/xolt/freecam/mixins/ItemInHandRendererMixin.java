@@ -109,10 +109,10 @@ public class ItemInHandRendererMixin {
 
     // Makes arm shading depend upon FreeCamera position rather than player position.
     @ModifyVariable(method = "renderHandsWithItems", at = @At("HEAD"), argsOnly = true)
-    private int onRenderItemSetLight(int light) {
+    private int onRenderItemSetLight(int lightCoords) {
         if (Freecam.isEnabled()) {
             return MC.getEntityRenderDispatcher().getPackedLightCoords(Freecam.getFreeCamera(), freecam$tickDelta);
         }
-        return light;
+        return lightCoords;
     }
 }

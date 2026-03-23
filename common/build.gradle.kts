@@ -6,10 +6,6 @@ plugins {
     id("freecam.common")
 }
 
-stonecutter {
-
-}
-
 fletchingTable {
     j52j.register("main") {
         extension("json", "**/*.json5")
@@ -34,12 +30,14 @@ loom {
 
 dependencies {
     minecraft("com.mojang:minecraft:${meta.mc}")
-    mappings(loom.layered {
-        officialMojangMappings()
-        meta.parchment { mappings, mc ->
-            parchment("org.parchmentmc.data:parchment-${mc}:$mappings@zip")
-        }
-    })
+    if (loomAdapter.hasMappings) {
+        mappings(loom.layered {
+            officialMojangMappings()
+            meta.parchment { mappings, mc ->
+                parchment("org.parchmentmc.data:parchment-${mc}:$mappings@zip")
+            }
+        })
+    }
 
     compileOnly("org.spongepowered:mixin:${meta.deps["mixin"]}")
     modCompileOnly("net.fabricmc:fabric-loader:${meta.deps["fabric_loader"]}")
