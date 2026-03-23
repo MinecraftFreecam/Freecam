@@ -29,11 +29,16 @@ dependencies {
         exclude(module = "fabric-loader")
     }
 
-    modApi("me.shedaniel.cloth:cloth-config-fabric:${meta.deps["cloth"]}") {
-        exclude(module = "fabric-api")
-        exclude(module = "fabric-loader")
-    }
-    include("me.shedaniel.cloth:cloth-config-fabric:${meta.deps["cloth"]}")
+    sc.node.sibling("cloth-config")?.let {
+        include(it.project)
+        api(project(path = it.project.path, configuration = "namedElements"))
+
+        include("me.shedaniel.cloth:cloth-config-fabric:${meta.deps["cloth"]}")
+        modApi("me.shedaniel.cloth:cloth-config-fabric:${meta.deps["cloth"]}") {
+            exclude(module = "fabric-api")
+            exclude(module = "fabric-loader")
+        }
+    } ?: logger.warn("No :cloth-config project for ${project.path}")
 }
 
 loom {

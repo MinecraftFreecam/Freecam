@@ -1,26 +1,32 @@
 package net.xolt.freecam.config;
 
 import net.minecraft.client.gui.screens.Screen;
-import org.jetbrains.annotations.Nullable;
-//~ if cloth: >=21.11 'AutoConfig' -> 'AutoConfigClient'
-import me.shedaniel.autoconfig.AutoConfigClient;
+import net.xolt.freecam.util.SingleInstanceServiceLoader;
 
-public class ModConfigProvider {
+public abstract class ModConfigProvider {
 
-    public static MCAwareModConfig instance() {
-        // TODO: ServiceLoader
-        // TODO: init internally?
-        return AutoConfigModConfig.INSTANCE;
+    private static ModConfigProvider self = null;
+
+    protected ModConfigProvider() {}
+
+    public abstract MCAwareModConfig getConfig();
+    public abstract void setupConfig();
+    public abstract Screen createConfigScreen(Screen parent);
+
+    private static ModConfigProvider self() {
+        if (self == null) self = SingleInstanceServiceLoader.get(ModConfigProvider.class);
+        return self;
     }
 
     public static void init() {
-        AutoConfigModConfig.init();
+        self().setupConfig();
     }
 
-    public static Screen getConfigScreen(@Nullable Screen parent) {
-        //~ if cloth: >=21.11 'AutoConfig.' -> 'AutoConfigClient.'
-        return AutoConfigClient.getConfigScreen(AutoConfigModConfig.class, parent).get();
+    public static MCAwareModConfig instance() {
+        return self().getConfig();
     }
 
-    private ModConfigProvider() {}
+    public static Screen getConfigScreen(Screen parent) {
+        return self().createConfigScreen(parent);
+    }
 }

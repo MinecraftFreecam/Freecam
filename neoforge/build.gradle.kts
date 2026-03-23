@@ -19,8 +19,10 @@ neoForge {
 }
 
 dependencies {
-    api("me.shedaniel.cloth:cloth-config-neoforge:${meta.deps["cloth"]}")
-    jarJar(implementation("me.shedaniel.cloth:cloth-config-neoforge:${meta.deps["cloth"]}") as Any)
+    sc.node.sibling("cloth-config")?.let {
+        jarJar(implementation(it.project) as Any)
+        jarJar(implementation("me.shedaniel.cloth:cloth-config-neoforge:${meta.deps["cloth"]}") as Any)
+    } ?: logger.warn("No :cloth-config project for ${project.path}")
 }
 
 neoForge {

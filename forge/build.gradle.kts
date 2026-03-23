@@ -38,7 +38,11 @@ legacyForge {
 dependencies {
     compileOnlyApi("org.jetbrains:annotations:26.0.2")
     annotationProcessor("org.spongepowered:mixin:${meta.deps["mixin"]}:processor")
-    forgeDependency(group = "me.shedaniel.cloth", name = "cloth-config-forge", version = meta.deps["cloth"])
+    sc.node.sibling("cloth-config")?.let {
+        jarJar(it.project)
+        implementation(project(path = it.project.path, configuration = "namedElements"))
+        forgeDependency(group = "me.shedaniel.cloth", name = "cloth-config-forge", version = meta.deps["cloth"])
+    } ?: logger.warn("No :cloth-config project for ${project.path}")
 }
 
 legacyForge {
@@ -109,7 +113,7 @@ tasks.jar {
 }
 
 fun DependencyHandlerScope.forgeDependency(group: String, name: String, version: String) {
-    compileOnly(group, name, version)
+    modCompileOnly(group, name, version)
     modRuntimeOnly(group, name, version)
     jarJar(modImplementation(group, name, version))
 }
