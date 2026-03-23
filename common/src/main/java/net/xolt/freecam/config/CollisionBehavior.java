@@ -3,11 +3,8 @@ package net.xolt.freecam.config;
 import me.shedaniel.autoconfig.ConfigHolder;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.block.*;
-//? if > 1.18.2 {
+//~ if >= 1.19 '.Registry' -> '.registries.BuiltInRegistries'
 import net.minecraft.core.registries.BuiltInRegistries;
-//? } else {
-/*import net.minecraft.core.Registry;
-*///? }
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -19,10 +16,8 @@ import java.util.regex.Pattern;
 public class CollisionBehavior {
 
     private static final Predicate<Block> transparent = Builder.builder()
-            //? if >=1.20.6 {
+            //~ if >=1.20.6 'AbstractGlassBlock' -> 'TransparentBlock'
             .matching(TransparentBlock.class)
-            //? } else
-            //.matching(AbstractGlassBlock.class)
             .matching(IronBarsBlock.class)
             .matching(BarrierBlock.class)
             .build();
@@ -73,12 +68,8 @@ public class CollisionBehavior {
     }
 
     private static String getBlockId(Block block) {
-        return
-                //? if > 1.18.2 {
-                BuiltInRegistries
-                //? } else
-                //Registry
-                        .BLOCK.getKey(block).toString();
+        //~ if >= 1.19 'Registry' -> 'BuiltInRegistries'
+        return BuiltInRegistries.BLOCK.getKey(block).toString();
     }
 
     private static class Builder {

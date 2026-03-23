@@ -30,12 +30,8 @@ public class ModConfig implements ConfigData {
     public static ModConfig INSTANCE;
 
     public static Screen getConfigScreen() {
-        return
-                //? cloth: >=21.11 {
-                AutoConfigClient
-                //? } else
-                //AutoConfig
-                        .getConfigScreen(ModConfig.class, MC.screen).get();
+        //~ if cloth: >=21.11 'AutoConfig' -> 'AutoConfigClient'
+        return AutoConfigClient.getConfigScreen(ModConfig.class, MC.screen).get();
     }
 
     public static void init() {
