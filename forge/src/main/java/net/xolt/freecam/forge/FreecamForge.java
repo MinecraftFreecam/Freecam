@@ -1,6 +1,5 @@
 package net.xolt.freecam.forge;
 
-import me.shedaniel.autoconfig.AutoConfig;
 import net.minecraft.client.Minecraft;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.event.TickEvent;
@@ -10,18 +9,14 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
+import net.minecraftforge.fmlclient.ConfigGuiHandler;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfig;
-//? forge: > 40.2.14 {
-/*import net.minecraftforge.client.ConfigScreenHandler;
-import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-*///? } else if forge: > 37.1.1 {
-/*import net.minecraftforge.client.ClientRegistry;
-import net.minecraftforge.client.ConfigGuiHandler;
-*///? } else {
+//? forge: >= 41 {
+//import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+//? } else {
 import net.minecraftforge.fmlclient.registry.ClientRegistry;
-import net.minecraftforge.fmlclient.ConfigGuiHandler;
 //? }
 
 @Mod(value = Freecam.MOD_ID)
@@ -33,22 +28,15 @@ public class FreecamForge {
     public static void clientSetup(FMLClientSetupEvent event) {
         ModConfig.init();
         // Register our config screen with Forge
-        ModLoadingContext.get().registerExtensionPoint(
-                //? forge: > 40.2.14 {
-                /*ConfigScreenHandler.ConfigScreenFactory.class,
-                *///? } else
-                ConfigGuiHandler.ConfigGuiFactory.class,
-                //? forge: > 40.2.14 {
-                /*() -> new ConfigScreenHandler.ConfigScreenFactory((client, parent) ->
-                *///? } else
-                () -> new ConfigGuiHandler.ConfigGuiFactory((client, parent) ->
-                        AutoConfig.getConfigScreen(ModConfig.class, parent).get()
-        ));
-        //? forge: <= 40.2.14
+        ModLoadingContext.get().registerExtensionPoint(ConfigGuiHandler.ConfigGuiFactory.class, () ->
+            new ConfigGuiHandler.ConfigGuiFactory((mc, parent) -> ModConfig.getConfigScreen())
+        );
+        //? forge: < 41 {
         ModBindings.forEach(ClientRegistry::registerKeyBinding);
+        //? }
     }
 
-    //? forge: > 40.2.14 {
+    //? forge: >= 41 {
     /*@SubscribeEvent
     public static void registerKeymappings(RegisterKeyMappingsEvent event) {
         ModBindings.forEach(event::register);

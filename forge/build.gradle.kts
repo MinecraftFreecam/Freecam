@@ -5,6 +5,18 @@ plugins {
     id("freecam.atremapper")
 }
 
+stonecutter replacements {
+    val forge = meta.deps["forge"]
+    string(sc.eval(forge, ">= 41")) {
+        replace( "net.minecraftforge.client.ConfigGuiHandler", "net.minecraftforge.client.ConfigScreenHandler")
+        replace( "ConfigGuiHandler.ConfigGuiFactory", "ConfigScreenHandler.ConfigScreenFactory")
+    }
+    string(sc.eval(forge, "> 37.1.1")) {
+        replace("net.minecraftforge.fmlclient.ConfigGuiHandler", "net.minecraftforge.client.ConfigGuiHandler")
+        replace("net.minecraftforge.fmlclient.registry.ClientRegistry", "net.minecraftforge.client.ClientRegistry")
+    }
+}
+
 fletchingTable {
     j52j.register("main") {
         extension("json", "**/*.json5")
