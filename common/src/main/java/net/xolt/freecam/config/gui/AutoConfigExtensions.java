@@ -42,6 +42,7 @@ public class AutoConfigExtensions {
                         .getGuiRegistry(configClass);
 
         ModBindingsConfigImpl.apply(registry);
+        TranslatableEnumButtonImpl.apply(registry);
         ValidateRegexImpl.apply(registry);
         BoundedContinuousImpl.apply(registry);
 

@@ -5,16 +5,10 @@ import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.ConfigHolder;
 import me.shedaniel.autoconfig.annotation.Config;
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
-import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler.EnumDisplayOption;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
-import me.shedaniel.clothconfig2.gui.entries.SelectionListEntry;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.block.Block;
-import net.xolt.freecam.config.gui.AutoConfigExtensions;
-import net.xolt.freecam.config.gui.BoundedContinuous;
-import net.xolt.freecam.config.gui.ModBindingsConfig;
-import net.xolt.freecam.config.gui.ValidateRegex;
-import org.jetbrains.annotations.NotNull;
+import net.xolt.freecam.config.gui.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -165,8 +159,8 @@ public class AutoConfigModConfig implements ConfigData, MCAwareModConfig {
     @ConfigEntry.Gui.CollapsibleObject
     public MovementConfig movement = new MovementConfig();
     public static class MovementConfig {
+        @TranslatableEnumButton
         @ConfigEntry.Gui.Tooltip
-        @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
         public FlightMode flightMode = FlightMode.DEFAULT;
 
         @ConfigEntry.Gui.Tooltip
@@ -215,8 +209,8 @@ public class AutoConfigModConfig implements ConfigData, MCAwareModConfig {
     @ConfigEntry.Gui.CollapsibleObject
     public VisualConfig visual = new VisualConfig();
     public static class VisualConfig {
+        @TranslatableEnumButton
         @ConfigEntry.Gui.Tooltip
-        @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
         public Perspective perspective = Perspective.INSIDE;
 
         @ConfigEntry.Gui.Tooltip
@@ -245,8 +239,8 @@ public class AutoConfigModConfig implements ConfigData, MCAwareModConfig {
         @ConfigEntry.Gui.Tooltip(count = 2)
         public boolean allowInteract = false;
 
+        @TranslatableEnumButton
         @ConfigEntry.Gui.Tooltip
-        @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
         public InteractionMode interactionMode = InteractionMode.CAMERA;
     }
 
@@ -254,8 +248,8 @@ public class AutoConfigModConfig implements ConfigData, MCAwareModConfig {
     @ConfigEntry.Gui.CollapsibleObject
     public ServerConfig servers = new ServerConfig();
     public static class ServerConfig {
+        @TranslatableEnumButton
         @ConfigEntry.Gui.Tooltip(count = 2)
-        @ConfigEntry.Gui.EnumHandler(option = EnumDisplayOption.BUTTON)
         public ServerRestriction mode = ServerRestriction.NONE;
 
         // These must be mutable lists, so no Collections.emptyList()
@@ -274,28 +268,11 @@ public class AutoConfigModConfig implements ConfigData, MCAwareModConfig {
         public boolean notifyTripod = true;
     }
 
-    public enum InteractionMode implements SelectionListEntry.Translatable {
-        CAMERA("camera"),
-        PLAYER("player");
-
-        private final String key;
-
-        InteractionMode(String name) {
-            this.key = "text.autoconfig.freecam.option.utility.interactionMode." + name;
-        }
-
-        @Override
-        public @NotNull String getKey() {
-            return key;
-        }
+    public enum InteractionMode {
+        CAMERA, PLAYER
     }
 
-    public enum ServerRestriction implements SelectionListEntry.Translatable {
-        NONE, WHITELIST, BLACKLIST;
-
-        @Override
-        public @NotNull String getKey() {
-            return "text.autoconfig.freecam.option.servers.mode." + toString().toLowerCase();
-        }
+    public enum ServerRestriction {
+        NONE, WHITELIST, BLACKLIST
     }
 }
