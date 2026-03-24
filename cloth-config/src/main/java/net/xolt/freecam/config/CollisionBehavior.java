@@ -1,7 +1,5 @@
 package net.xolt.freecam.config;
 
-import me.shedaniel.autoconfig.ConfigHolder;
-import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.block.*;
 //~ if >= 1.19 '.Registry' -> '.registries.BuiltInRegistries'
 import net.minecraft.core.registries.BuiltInRegistries;
@@ -13,7 +11,9 @@ import java.util.function.Predicate;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class CollisionBehavior {
+class CollisionBehavior {
+
+    private AutoConfigModConfig.CollisionConfig config;
 
     private static final Predicate<Block> transparent = Builder.builder()
             //~ if >=1.20.6 'AbstractGlassBlock' -> 'TransparentBlock'
@@ -22,40 +22,44 @@ public class CollisionBehavior {
             .matching(BarrierBlock.class)
             .build();
 
-    private static final Predicate<Block> openable = Builder.builder()
+    private final Predicate<Block> openable = Builder.builder()
             .matching(FenceGateBlock.class)
             .matching(DoorBlock.class, TrapDoorBlock.class)
             .build();
 
-    private static Predicate<Block> custom = block -> false;
+    private Predicate<Block> custom = block -> false;
+
+    CollisionBehavior(AutoConfigModConfig.CollisionConfig config) {
+        rebuild(config);
+    }
 
     @SuppressWarnings("RedundantIfStatement")
-    public static boolean isIgnored(Block block) {
-        if (ModConfig.INSTANCE.collision.ignoreAll) {
+    public boolean isIgnored(Block block) {
+        if (config.ignoreAll) {
             return true;
         }
 
-        if (ModConfig.INSTANCE.collision.ignoreTransparent && transparent.test(block)) {
+        if (config.ignoreTransparent && transparent.test(block)) {
             return true;
         }
 
-        if (ModConfig.INSTANCE.collision.ignoreOpenable && openable.test(block)) {
+        if (config.ignoreOpenable && openable.test(block)) {
             return true;
         }
 
-        if (ModConfig.INSTANCE.collision.ignoreCustom && custom.test(block)) {
+        if (config.ignoreCustom && custom.test(block)) {
             return true;
         }
 
         return false;
     }
 
-    static InteractionResult onConfigChange(ConfigHolder<ModConfig> holder, ModConfig config) {
-        String[] ids = config.collision.whitelist.ids.stream()
+    void rebuild(AutoConfigModConfig.CollisionConfig config) {
+        String[] ids = config.whitelist.ids.stream()
                 .map(id -> id.contains(":") ? id : "minecraft:" + id)
                 .toArray(String[]::new);
 
-        Pattern[] patterns = config.collision.whitelist.patterns.stream()
+        Pattern[] patterns = config.whitelist.patterns.stream()
                 .map(Pattern::compile)
                 .toArray(Pattern[]::new);
 
@@ -64,7 +68,7 @@ public class CollisionBehavior {
                 .matching(patterns)
                 .build();
 
-        return InteractionResult.PASS;
+        this.config = config;
     }
 
     private static String getBlockId(Block block) {

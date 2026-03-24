@@ -12,7 +12,8 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec2;
-import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.config.ModConfigProvider;
+import net.xolt.freecam.config.Perspective;
 import org.jetbrains.annotations.ApiStatus;
 //? if >=1.21.11 {
 import net.minecraft.client.player.ClientInput;
@@ -81,7 +82,7 @@ public class FreeCamera extends AbstractClientPlayer {
 
     // Mutate the position and rotation based on perspective
     // If checkCollision is true, move as far as possible without colliding
-    public void applyPerspective(ModConfig.Perspective perspective, boolean checkCollision) {
+    public void applyPerspective(Perspective perspective, boolean checkCollision) {
         FreecamPosition position = new FreecamPosition(this);
 
         switch (perspective) {
@@ -200,7 +201,7 @@ public class FreeCamera extends AbstractClientPlayer {
     // Prevents pistons from moving FreeCamera when collision.ignoreAll is enabled.
     @Override
     public PushReaction getPistonPushReaction() {
-        return ModConfig.INSTANCE.collision.ignoreAll ? PushReaction.IGNORE : PushReaction.NORMAL;
+        return ModConfigProvider.instance().ignoreAllCollision() ? PushReaction.IGNORE : PushReaction.NORMAL;
     }
 
     // Prevents collision with solid entities (shulkers, boats)
@@ -227,15 +228,18 @@ public class FreeCamera extends AbstractClientPlayer {
     protected void doWaterSplashEffect() {}
 
     private void doMotion() {
-        if (ModConfig.INSTANCE.movement.flightMode.equals(ModConfig.FlightMode.DEFAULT)) {
-            getAbilities().setFlyingSpeed(0);
-            Motion.doMotion(this, ModConfig.INSTANCE.movement.horizontalSpeed, ModConfig.INSTANCE.movement.verticalSpeed);
-        } else {
-            getAbilities().setFlyingSpeed((float) ModConfig.INSTANCE.movement.verticalSpeed / 10);
+        switch (ModConfigProvider.instance().getFlightMode()) {
+            case DEFAULT -> {
+                getAbilities().setFlyingSpeed(0);
+                Motion.doMotion(this, ModConfigProvider.instance().getHorizontalSpeed(), ModConfigProvider.instance().getVerticalSpeed());
+            }
+            case CREATIVE -> {
+                getAbilities().setFlyingSpeed((float) ModConfigProvider.instance().getVerticalSpeed() / 10);
 
-            if (this.input.keyPresses.shift() ^ this.input.keyPresses.jump()) {
-                int direction = this.input.keyPresses.jump() ? 1 : -1;
-                this.setDeltaMovement(this.getDeltaMovement().add(0.0F, ((float) direction * this.getAbilities().getFlyingSpeed() * 3.0F), 0.0F));
+                if (this.input.keyPresses.shift() ^ this.input.keyPresses.jump()) {
+                    int direction = this.input.keyPresses.jump() ? 1 : -1;
+                    this.setDeltaMovement(this.getDeltaMovement().add(0.0F, ((float) direction * this.getAbilities().getFlyingSpeed() * 3.0F), 0.0F));
+                }
             }
         }
         getAbilities().flying = true;

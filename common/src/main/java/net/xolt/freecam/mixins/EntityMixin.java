@@ -2,7 +2,7 @@ package net.xolt.freecam.mixins;
 
 import net.minecraft.world.entity.Entity;
 import net.xolt.freecam.Freecam;
-import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.config.ModConfigProvider;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -71,6 +71,6 @@ public class EntityMixin {
 
     @Unique
     private boolean freecam$allowFreeze() {
-        return ModConfig.INSTANCE.utility.freezePlayer && !Freecam.isPlayerControlEnabled();
+        return ModConfigProvider.instance().shouldFreezePlayer() && !Freecam.isPlayerControlEnabled();
     }
 }

@@ -43,7 +43,6 @@ dependencies {
 
     compileOnly("org.spongepowered:mixin:${meta.deps["mixin"]}")
     modCompileOnly("net.fabricmc:fabric-loader:${meta.deps["fabric_loader"]}")
-    modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:${meta.deps["cloth"]}")
 }
 
 tasks.processResources {
