@@ -30,8 +30,8 @@ def test_load_versions_invalid():
 
 def test_build_version_matrix_basic():
     versions = {
-        "1.21": ["common", "network"],
-        "1.20": ["common", "core", "ui"],
+        "1.21": ["foo", "bar", "neoforge"],
+        "1.20": ["common", "fabric", "forge"],
     }
     version = "1.2.3"
     matrix = build_version_matrix(version, versions)
@@ -40,10 +40,14 @@ def test_build_version_matrix_basic():
     assert "Build 1.20" in names
     assert "Build 1.21" in names
 
-    # Check gradle_args
+    job_121 = next(job for job in matrix if job.name == "Build 1.21")
+    assert job_121.gradle_args == [":neoforge:1.21:buildAndCollect"]
+
     job_120 = next(job for job in matrix if job.name == "Build 1.20")
-    assert ":core:1.20:buildAndCollect" in job_120.gradle_args
-    assert ":ui:1.20:buildAndCollect" in job_120.gradle_args
+    assert job_120.gradle_args == [
+        ":fabric:1.20:buildAndCollect",
+        ":forge:1.20:buildAndCollect",
+    ]
     assert job_120.upload_name == "freecam-1.2.3-1.20"
     assert job_120.upload_path == "build/libs/1.2.3/*.jar"
     assert all("common" not in arg for arg in job_120.gradle_args)

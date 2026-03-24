@@ -18,15 +18,16 @@ def build_version_matrix(
     version: str,
     versions: dict[str, Any],
 ) -> list[MatrixJob]:
+    loaders = ["fabric", "forge", "neoforge"]
     matrix: list[MatrixJob] = []
 
     for key, branches in versions.items():
         entry = ProjectEntry.parse(key)
 
         gradle_args: list[str] = [
-            f":{branch}:{entry.project}:buildAndCollect"
-            for branch in branches
-            if branch != "common"
+            f":{loader}:{entry.project}:buildAndCollect"
+            for loader in loaders
+            if loader in branches
         ]
 
         matrix.append(
