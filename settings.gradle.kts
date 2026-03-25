@@ -9,10 +9,7 @@ pluginManagement {
             forRepository {
                 maven("https://maven.fabricmc.net") { name = "Fabric" }
             }
-            filter {
-                includeGroup("fabric-loom")
-                includeGroupAndSubgroups("net.fabricmc")
-            }
+            filter { includeGroupAndSubgroups("net.fabricmc") }
         }
         exclusiveContent {
             forRepository {

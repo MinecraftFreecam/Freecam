@@ -7,6 +7,12 @@ dependencyResolutionManagement {
     }
     repositories {
         exclusiveContent {
+            forRepository {
+                maven("https://maven.fabricmc.net") { name = "Fabric" }
+            }
+            filter { includeGroupAndSubgroups("net.fabricmc") }
+        }
+        exclusiveContent {
             forRepositories(
                 maven("https://maven.kikugie.dev/releases") { name = "KikuGie" },
                 maven("https://maven.kikugie.dev/snapshots") { name = "KikuGie snapshots" },
@@ -22,6 +28,7 @@ include(
     "api",
     "api:plugin",
     "conventions",
+    "loom-adapter",
     "release-metadata",
     "settings",
 )

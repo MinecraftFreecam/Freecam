@@ -2,8 +2,8 @@ import dev.kikugie.stonecutter.StonecutterExperimentalAPI
 import net.fabricmc.loom.task.FabricModJsonV1Task
 
 plugins {
-    alias(libs.plugins.fabric.loom)
     alias(libs.plugins.fletchingtable.fabric)
+    id("freecam.loom-adapter")
     id("freecam.loaders")
 }
 
