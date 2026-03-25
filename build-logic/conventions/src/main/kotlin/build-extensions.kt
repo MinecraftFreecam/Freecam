@@ -32,6 +32,7 @@ val Project.commonNode: ProjectNode get() = requireNotNull(stonecutter.node.sibl
 }
 
 val Project.requiredJava get() = when {
+    stonecutter.current.parsed >= "26.0" -> JavaVersion.VERSION_25
     stonecutter.current.parsed >= "1.20.5" -> JavaVersion.VERSION_21
     stonecutter.current.parsed >= "1.18" -> JavaVersion.VERSION_17
     stonecutter.current.parsed >= "1.17" -> JavaVersion.VERSION_16

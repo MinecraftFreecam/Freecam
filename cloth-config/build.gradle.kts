@@ -1,6 +1,6 @@
 plugins {
-    alias(libs.plugins.fabric.loom)
     alias(libs.plugins.fletchingtable.fabric)
+    id("freecam.loom-adapter")
     id("freecam.common")
 }
 
