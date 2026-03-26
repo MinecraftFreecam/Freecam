@@ -39,6 +39,7 @@ dependencies {
     compileOnlyApi("org.jetbrains:annotations:26.0.2")
     annotationProcessor("org.spongepowered:mixin:${meta.deps["mixin"]}:processor")
     sc.node.sibling("cloth-config")?.let {
+        // FIXME: forge expects SRG dependencies
         jarJar(it.project)
         implementation(project(path = it.project.path, configuration = "namedElements"))
         forgeDependency(group = "me.shedaniel.cloth", name = "cloth-config-forge", version = meta.deps["cloth"])
