@@ -62,6 +62,7 @@ val Project.commonExpansions: Map<String, String>
             "fabricLoaderVersion" to meta.deps.orNull("fabric_loader"),
             "fabricLoaderReq" to meta.properties.orNull("fabric_loader_req"),
             "fabricMcReq" to meta.properties.orNull("fabric_mc_req"),
+            "fabricApiId" to if (stonecutter.current.parsed < "1.19.2") "fabric" else "fabric-api",
             "fabricApiVersion" to meta.deps.orNull("fabric_api"),
             "neoForgeVersion" to meta.deps.orNull("neoforge"),
             "neoforgeLoaderReq" to meta.properties.orNull("neoforge_loader_req"),

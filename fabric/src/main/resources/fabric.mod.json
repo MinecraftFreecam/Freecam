@@ -29,7 +29,7 @@
   ],
   "depends": {
     "fabricloader": "${fabricLoaderReq}",
-    "fabric": "*",
+    "${fabricApiId}": "*",
     "minecraft": "${fabricMcReq}"
   },
   "custom": {
