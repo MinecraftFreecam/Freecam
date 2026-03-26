@@ -88,7 +88,7 @@ sourceSets.main {
 
 tasks.register<Copy>("buildAndCollect") {
     group = "build"
-    from(tasks.jar.map { it.archiveFile })
+    from(tasks.named<Jar>("reobfJar").map { it.archiveFile })
     into(rootProject.layout.buildDirectory.file("libs/${meta.version}"))
     dependsOn("build")
 }
