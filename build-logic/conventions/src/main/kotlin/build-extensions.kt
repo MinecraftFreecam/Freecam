@@ -72,6 +72,7 @@ val Project.commonExpansions: Map<String, String>
             "forgeLoaderReq" to meta.properties.orNull("forge_loader_req"),
             "forgeReq" to meta.properties.orNull("forge_req"),
             "forgeMcReq" to meta.properties.orNull("forge_mc_req"),
+            "clothConfigReq" to meta.properties.orNull("cloth_config_req"),
         ).filterValues { it?.isNotEmpty() == true }.mapValues { it.value!! }
     }
 

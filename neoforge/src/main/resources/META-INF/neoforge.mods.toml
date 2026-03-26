@@ -34,3 +34,10 @@ versionRange = "${neoforgeMcReq}"
 type = "required"
 ordering = "NONE"
 side = "CLIENT"
+
+[[dependencies.${modId}]]
+modId = "cloth_config"
+versionRange = "${clothConfigReq}"
+type = "required"
+ordering = "NONE"
+side = "CLIENT"

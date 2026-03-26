@@ -41,6 +41,7 @@ mixin = "0.8.5"
 ["1.21.11"]
 deps.parchment = "1.21.10-2025.10.12"
 deps.cloth = "21.11.153"
+cloth_config_req = "[21.11,21.12)"
 
 deps.fabric_api = "0.139.4+1.21.11"
 deps.modmenu = "17.0.0-beta.2"
@@ -57,6 +58,7 @@ neoforge_mc_req = "[1.21.11,)"
 ["1.20.6"]
 deps.parchment = "1.20.6-2024.06.16"
 deps.cloth = "14.0.126"
+cloth_config_req = "[14,15)"
 
 deps.fabric_api = "0.100.8+1.20.6"
 deps.modmenu = "10.0.0"
@@ -75,6 +77,7 @@ fabric.supported_mc_versions = ["1.20.5"]
 ["1.19.4"]
 deps.parchment = "1.19.4-2023.06.26"
 deps.cloth = "10.1.117"
+cloth_config_req = "[10.1,11)"
 
 deps.fabric_api = "0.87.2+1.19.4"
 deps.modmenu = "6.3.1"
@@ -90,6 +93,7 @@ forge_mc_req = "[1.19.4,1.20)"
 ["1.18.2"]
 deps.parchment = "1.18.2-2022.11.06"
 deps.cloth = "6.5.102"
+cloth_config_req = "[6,7)"
 
 deps.fabric_api = "0.77.0+1.18.2"
 deps.modmenu = "3.2.5"
@@ -105,6 +109,7 @@ forge_mc_req = "[1.18.2,1.19)"
 ["1.17.1"]
 deps.parchment = "1.17.1-2021.12.12"
 deps.cloth = "5.3.63"
+cloth_config_req = "[5,6)"
 
 deps.fabric_api = "0.46.1+1.17"
 deps.modmenu = "2.0.17"
