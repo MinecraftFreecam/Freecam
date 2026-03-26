@@ -48,14 +48,24 @@ val bundle by configurations.creating {
     }
 }
 
+/**
+ * Wrapper for [jarJar], only applied on Forge versions that support jar-in-jar.
+ *
+ * Jar-in-jar added in [Forge 40.1.60](https://maven.minecraftforge.net/net/minecraftforge/forge/1.18.2-40.1.60/forge-1.18.2-40.1.60-changelog.txt)
+ */
+fun DependencyHandler.include(dependency: Any) {
+    if (sc.eval(meta.deps["forge"], "<40.1.60")) return
+    jarJar(dependency)
+}
+
 dependencies {
     compileOnlyApi("org.jetbrains:annotations:26.0.2")
     annotationProcessor("org.spongepowered:mixin:${meta.deps["mixin"]}:processor")
     sc.node.sibling("cloth-config")?.let {
         // `jarJar` requires a SRG dependency, which we don't have for `:cloth-config`.
         // Instead, we can include named-classes in jar and reobfJar will remap them.
-        bundle(implementation(project(path = it.project.path, configuration = "namedElements")) as Any)
-        jarJar(modImplementation("me.shedaniel.cloth:cloth-config-forge:${meta.deps["cloth"]}") as Any)
+        bundle(implementation(project(path = it.project.path, configuration = "namedElements"))!!)
+        include(modImplementation("me.shedaniel.cloth:cloth-config-forge:${meta.deps["cloth"]}")!!)
     } ?: logger.warn("No :cloth-config project for ${project.path}")
 }
 
