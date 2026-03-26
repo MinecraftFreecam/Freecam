@@ -55,7 +55,7 @@ dependencies {
         // `jarJar` requires a SRG dependency, which we don't have for `:cloth-config`.
         // Instead, we can include named-classes in jar and reobfJar will remap them.
         bundle(implementation(project(path = it.project.path, configuration = "namedElements")) as Any)
-        forgeDependency(group = "me.shedaniel.cloth", name = "cloth-config-forge", version = meta.deps["cloth"])
+        jarJar(modImplementation("me.shedaniel.cloth:cloth-config-forge:${meta.deps["cloth"]}") as Any)
     } ?: logger.warn("No :cloth-config project for ${project.path}")
 }
 
@@ -134,10 +134,4 @@ tasks.jar {
     }
     duplicatesStrategy = DuplicatesStrategy.FAIL
     finalizedBy("reobfJar")
-}
-
-fun DependencyHandlerScope.forgeDependency(group: String, name: String, version: String) {
-    modCompileOnly(group, name, version)
-    modRuntimeOnly(group, name, version)
-    jarJar(modImplementation(group, name, version))
 }
