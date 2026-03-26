@@ -65,7 +65,12 @@ dependencies {
         // `jarJar` requires a SRG dependency, which we don't have for `:cloth-config`.
         // Instead, we can include named-classes in jar and reobfJar will remap them.
         bundle(implementation(project(path = it.project.path, configuration = "namedElements"))!!)
-        include(modImplementation("me.shedaniel.cloth:cloth-config-forge:${meta.deps["cloth"]}")!!)
+        include(modImplementation("me.shedaniel.cloth:cloth-config-forge") {
+            version {
+                prefer(meta.deps["cloth"])
+                strictly(sc.properties["cloth_config_req"])
+            }
+        })
     } ?: logger.warn("No :cloth-config project for ${project.path}")
 }
 

@@ -21,7 +21,12 @@ neoForge {
 dependencies {
     sc.node.sibling("cloth-config")?.let {
         jarJar(implementation(project(path = it.project.path, configuration = "namedElements")) as Any)
-        jarJar(implementation("me.shedaniel.cloth:cloth-config-neoforge:${meta.deps["cloth"]}") as Any)
+        jarJar(implementation("me.shedaniel.cloth:cloth-config-neoforge") {
+            version {
+                prefer(meta.deps["cloth"])
+                strictly(sc.properties["cloth_config_req"])
+            }
+        })
     } ?: logger.warn("No :cloth-config project for ${project.path}")
 }
 
