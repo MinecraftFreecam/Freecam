@@ -22,6 +22,7 @@
   "text.autoconfig.freecam.option.movement.horizontalSpeed": "Horizontal Speed",
   "text.autoconfig.freecam.option.movement.horizontalSpeed.@Tooltip": "The horizontal speed of freecam.",
   "text.autoconfig.freecam.option.movement.verticalSpeed": "Vertical Speed",
+  "text.autoconfig.freecam.option.movement.speedValue": "Value: %01.2f",
   "text.autoconfig.freecam.option.movement.verticalSpeed.@Tooltip": "The vertical speed of freecam.",
   "text.autoconfig.freecam.option.collision": "Collision Options",
   "text.autoconfig.freecam.option.collision.@Tooltip": "Which blocks you can travel through in freecam.",

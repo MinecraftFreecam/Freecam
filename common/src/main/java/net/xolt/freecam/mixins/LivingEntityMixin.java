@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static net.xolt.freecam.Freecam.MC;
-import static net.xolt.freecam.config.FlightMode.CREATIVE;
+import static net.xolt.freecam.config.model.FlightMode.CREATIVE;
 
 @Mixin(LivingEntity.class)
 @SuppressWarnings("EqualsBetweenInconvertibleTypes")

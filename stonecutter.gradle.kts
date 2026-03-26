@@ -32,6 +32,10 @@ stonecutter parameters {
             dependencies[key] = value
         }
 
+    // Experimental cloth-config dependencies API added in v8.4
+    // Forward-ported to newer versions but not backported to older versions.
+    constants["cloth_dependencies"] = sc.eval(meta.deps["cloth"], ">=8.4")
+
     replacements {
         string(current.parsed >= "1.21.11") {
             replace("ResourceLocation", "Identifier")

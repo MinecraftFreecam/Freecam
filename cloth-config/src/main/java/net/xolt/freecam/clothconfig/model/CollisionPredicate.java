@@ -1,7 +1,7 @@
 package net.xolt.freecam.clothconfig.model;
 
 import net.minecraft.world.level.block.Block;
-import net.xolt.freecam.clothconfig.AutoConfigModConfig.CollisionConfig;
+import net.xolt.freecam.clothconfig.model.ModConfigDTO.CollisionConfig;
 
 import static net.xolt.freecam.clothconfig.model.CollisionPredicateBuilder.builder;
 import static net.xolt.freecam.clothconfig.model.CollisionPredicates.*;
