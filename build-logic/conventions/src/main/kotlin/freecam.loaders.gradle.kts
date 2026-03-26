@@ -4,19 +4,18 @@ plugins {
     id("freecam.common")
 }
 
-dependencies {
-    implementation(project(path = commonNode.project.path, configuration = "namedElements"))
+sourceSets {
+    main {
+        // Manually depend on common's pre-processed sources.
+        // NOTE: loaders have no build dependency on common, so API/implementation
+        //  classes and transitive dependencies must be manually propagated.
+        val commonTasks = commonNode.project.tasks
+        java.srcDirs(commonTasks.named<Sync>("stonecutterGenerate").map { it.destinationDir })
+        resources.srcDirs(commonTasks.processResources.map { it.destinationDir })
+    }
 }
 
 tasks {
-    processResources {
-        from(commonNode.project.tasks.processResources)
-    }
-
-    jar {
-        from(commonNode.project.tasks.compileJava)
-    }
-
     register<ProjectReleaseMetadataTask>("generateReleaseMetadata") {
         group = "publishing"
         description = "Generates release metadata for publishing"
