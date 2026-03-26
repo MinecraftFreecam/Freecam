@@ -1,3 +1,5 @@
+import net.neoforged.moddevgradle.legacyforge.internal.MinecraftMappings
+
 plugins {
     alias(libs.plugins.moddev.legacy)
     alias(libs.plugins.fletchingtable)
@@ -35,13 +37,24 @@ legacyForge {
     }
 }
 
+// Include bundled dependencies in `jar`.
+// Not suitable for third-party libs — consider using the gradleup shadow plugin.
+val bundle by configurations.creating {
+    isCanBeResolved = true
+    isCanBeConsumed = false
+
+    attributes {
+        attribute(MinecraftMappings.ATTRIBUTE, objects.named(MinecraftMappings.NAMED))
+    }
+}
+
 dependencies {
     compileOnlyApi("org.jetbrains:annotations:26.0.2")
     annotationProcessor("org.spongepowered:mixin:${meta.deps["mixin"]}:processor")
     sc.node.sibling("cloth-config")?.let {
-        // FIXME: forge expects SRG dependencies
-        jarJar(it.project)
-        implementation(project(path = it.project.path, configuration = "namedElements"))
+        // `jarJar` requires a SRG dependency, which we don't have for `:cloth-config`.
+        // Instead, we can include named-classes in jar and reobfJar will remap them.
+        bundle(implementation(project(path = it.project.path, configuration = "namedElements")) as Any)
         forgeDependency(group = "me.shedaniel.cloth", name = "cloth-config-forge", version = meta.deps["cloth"])
     } ?: logger.warn("No :cloth-config project for ${project.path}")
 }
@@ -110,6 +123,16 @@ tasks.processResources {
 }
 
 tasks.jar {
+    from(provider { bundle.map(::zipTree) }) {
+        exclude(
+            "META-INF/mods.toml",
+            "META-INF/*.MF",
+            "META-INF/*.SF",
+            "META-INF/*.DSA",
+            "META-INF/*.RSA",
+        )
+    }
+    duplicatesStrategy = DuplicatesStrategy.FAIL
     finalizedBy("reobfJar")
 }
 
