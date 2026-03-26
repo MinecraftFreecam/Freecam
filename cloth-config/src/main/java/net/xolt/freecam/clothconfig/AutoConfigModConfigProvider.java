@@ -1,8 +1,10 @@
-package net.xolt.freecam.config;
+package net.xolt.freecam.clothconfig;
 
 //~ if cloth: >=21.11 'AutoConfig' -> 'AutoConfigClient'
 import me.shedaniel.autoconfig.AutoConfigClient;
 import net.minecraft.client.gui.screens.Screen;
+import net.xolt.freecam.config.MCAwareModConfig;
+import net.xolt.freecam.config.ModConfigProvider;
 import org.jetbrains.annotations.Nullable;
 
 public class AutoConfigModConfigProvider extends ModConfigProvider {

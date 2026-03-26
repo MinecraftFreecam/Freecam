@@ -1,4 +1,4 @@
-package net.xolt.freecam.config.gui;
+package net.xolt.freecam.clothconfig.gui;
 
 import com.google.common.util.concurrent.AtomicDouble;
 import com.mojang.blaze3d.platform.Window;

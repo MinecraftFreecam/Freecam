@@ -1,4 +1,4 @@
-package net.xolt.freecam.config.gui;
+package net.xolt.freecam.clothconfig.gui;
 
 import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static net.xolt.freecam.config.gui.AutoConfigExtensions.ENTRY_BUILDER;
+import static net.xolt.freecam.clothconfig.gui.AutoConfigExtensions.ENTRY_BUILDER;
 
 class ModBindingsConfigImpl {
 

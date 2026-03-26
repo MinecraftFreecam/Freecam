@@ -1,4 +1,4 @@
-package net.xolt.freecam.config.gui;
+package net.xolt.freecam.clothconfig.gui;
 
 import me.shedaniel.autoconfig.annotation.ConfigEntry.Gui.EnumHandler;
 import net.xolt.freecam.config.TranslationName;

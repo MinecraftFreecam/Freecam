@@ -1,4 +1,4 @@
-package net.xolt.freecam.config.gui;
+package net.xolt.freecam.clothconfig.gui;
 
 import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
 import me.shedaniel.clothconfig2.gui.entries.StringListEntry;
@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
-import static net.xolt.freecam.config.gui.AutoConfigExtensions.isArrayOrListOfType;
+import static net.xolt.freecam.clothconfig.gui.AutoConfigExtensions.isArrayOrListOfType;
 import static org.apache.commons.lang3.StringUtils.substringBefore;
 
 class ValidateRegexImpl {

@@ -1,4 +1,4 @@
-package net.xolt.freecam.config;
+package net.xolt.freecam.clothconfig;
 
 import net.minecraft.world.level.block.*;
 //~ if >= 1.19 '.Registry' -> '.registries.BuiltInRegistries'

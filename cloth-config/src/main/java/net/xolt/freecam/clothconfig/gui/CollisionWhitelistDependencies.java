@@ -1,10 +1,10 @@
-package net.xolt.freecam.config.gui;
+package net.xolt.freecam.clothconfig.gui;
 
 import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
 import me.shedaniel.clothconfig2.gui.entries.BooleanListEntry;
-import net.xolt.freecam.config.AutoConfigModConfig;
+import net.xolt.freecam.clothconfig.AutoConfigModConfig;
 
-import static net.xolt.freecam.config.gui.AutoConfigExtensions.isField;
+import static net.xolt.freecam.clothconfig.gui.AutoConfigExtensions.isField;
 
 class CollisionWhitelistDependencies {
 

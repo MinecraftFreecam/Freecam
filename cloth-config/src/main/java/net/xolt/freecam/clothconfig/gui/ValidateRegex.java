@@ -1,4 +1,4 @@
-package net.xolt.freecam.config.gui;
+package net.xolt.freecam.clothconfig.gui;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

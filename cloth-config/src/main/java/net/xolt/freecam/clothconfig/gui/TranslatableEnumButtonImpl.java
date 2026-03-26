@@ -1,4 +1,4 @@
-package net.xolt.freecam.config.gui;
+package net.xolt.freecam.clothconfig.gui;
 
 import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
 import me.shedaniel.autoconfig.util.Utils;
@@ -11,7 +11,7 @@ import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
-import static net.xolt.freecam.config.gui.AutoConfigExtensions.ENTRY_BUILDER;
+import static net.xolt.freecam.clothconfig.gui.AutoConfigExtensions.ENTRY_BUILDER;
 
 class TranslatableEnumButtonImpl {
 

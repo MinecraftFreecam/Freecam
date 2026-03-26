@@ -1,4 +1,4 @@
-package net.xolt.freecam.config.gui;
+package net.xolt.freecam.clothconfig.gui;
 
 import me.shedaniel.autoconfig.ConfigData;
 import me.shedaniel.autoconfig.gui.DefaultGuiProviders;

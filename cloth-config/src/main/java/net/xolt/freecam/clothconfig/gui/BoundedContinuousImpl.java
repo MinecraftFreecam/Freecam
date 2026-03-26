@@ -1,4 +1,4 @@
-package net.xolt.freecam.config.gui;
+package net.xolt.freecam.clothconfig.gui;
 
 import me.shedaniel.autoconfig.gui.registry.GuiRegistry;
 import me.shedaniel.autoconfig.util.Utils;
@@ -8,7 +8,7 @@ import java.util.Collections;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
-import static net.xolt.freecam.config.gui.AutoConfigExtensions.RESET_TEXT;
+import static net.xolt.freecam.clothconfig.gui.AutoConfigExtensions.RESET_TEXT;
 
 class BoundedContinuousImpl {
 

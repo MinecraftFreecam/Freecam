@@ -1,4 +1,4 @@
-package net.xolt.freecam.config;
+package net.xolt.freecam.clothconfig;
 
 import me.shedaniel.autoconfig.AutoConfig;
 import me.shedaniel.autoconfig.ConfigData;
@@ -8,7 +8,10 @@ import me.shedaniel.autoconfig.annotation.ConfigEntry;
 import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.block.Block;
-import net.xolt.freecam.config.gui.*;
+import net.xolt.freecam.clothconfig.gui.*;
+import net.xolt.freecam.config.FlightMode;
+import net.xolt.freecam.config.MCAwareModConfig;
+import net.xolt.freecam.config.Perspective;
 
 import java.util.ArrayList;
 import java.util.List;
