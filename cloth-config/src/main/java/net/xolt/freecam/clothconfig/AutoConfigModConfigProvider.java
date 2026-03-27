@@ -7,9 +7,7 @@ import net.xolt.freecam.config.MCAwareModConfig;
 import net.xolt.freecam.config.ModConfigProvider;
 import org.jetbrains.annotations.Nullable;
 
-public class AutoConfigModConfigProvider extends ModConfigProvider {
-
-    public AutoConfigModConfigProvider() {}
+public class AutoConfigModConfigProvider implements ModConfigProvider {
 
     @Override
     public MCAwareModConfig getConfig() {
