@@ -2,7 +2,7 @@ package net.xolt.freecam.mixins;
 
 import net.minecraft.client.Minecraft;
 import net.xolt.freecam.Freecam;
-import net.xolt.freecam.config.ModConfigProvider;
+import net.xolt.freecam.config.ModConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -69,6 +69,6 @@ public class MinecraftMixin {
 
     @Unique
     private static boolean freecam$disableInteract() {
-        return Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && ModConfigProvider.instance().shouldPreventInteractions();
+        return Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && ModConfig.get().shouldPreventInteractions();
     }
 }

@@ -5,7 +5,7 @@ import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.*;
 import net.minecraft.world.entity.Entity;
 import net.xolt.freecam.Freecam;
-import net.xolt.freecam.config.ModConfigProvider;
+import net.xolt.freecam.config.ModConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -49,7 +49,7 @@ public abstract class LevelRendererMixin {
 
     @Inject(method = "extractVisibleEntities", at = @At(value = "RETURN"))
     private void onExtractVisibleEntities(Camera camera, Frustum frustum, DeltaTracker deltaTracker, LevelRenderState renderState, CallbackInfo ci) {
-        if (MC.level != null && Freecam.isEnabled() && ModConfigProvider.instance().shouldShowPlayer()) {
+        if (MC.level != null && Freecam.isEnabled() && ModConfig.get().shouldShowPlayer()) {
             Entity player = MC.player;
             TickRateManager tickRateManager = MC.level.tickRateManager();
             float g = deltaTracker.getGameTimeDeltaPartialTick(!tickRateManager.isEntityFrozen(player));
@@ -108,7 +108,7 @@ public abstract class LevelRendererMixin {
 
     @Unique
     private void onRender(Vec3 cameraPos, float partialTick, PoseStack poseStack, RenderBuffers renderBuffers) {
-        if (Freecam.isEnabled() && ModConfigProvider.instance().shouldShowPlayer()) {
+        if (Freecam.isEnabled() && ModConfig.get().shouldShowPlayer()) {
             renderEntity(MC.player, cameraPos.x, cameraPos.y, cameraPos.z, partialTick, poseStack, renderBuffers.bufferSource());
         }
     }

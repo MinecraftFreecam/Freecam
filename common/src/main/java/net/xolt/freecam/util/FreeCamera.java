@@ -12,7 +12,7 @@ import net.minecraft.world.entity.Pose;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec2;
-import net.xolt.freecam.config.ModConfigProvider;
+import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.config.Perspective;
 import org.jetbrains.annotations.ApiStatus;
 //? if >=1.21.11 {
@@ -201,7 +201,7 @@ public class FreeCamera extends AbstractClientPlayer {
     // Prevents pistons from moving FreeCamera when collision.ignoreAll is enabled.
     @Override
     public PushReaction getPistonPushReaction() {
-        return ModConfigProvider.instance().ignoreAllCollision() ? PushReaction.IGNORE : PushReaction.NORMAL;
+        return ModConfig.get().ignoreAllCollision() ? PushReaction.IGNORE : PushReaction.NORMAL;
     }
 
     // Prevents collision with solid entities (shulkers, boats)
@@ -228,13 +228,13 @@ public class FreeCamera extends AbstractClientPlayer {
     protected void doWaterSplashEffect() {}
 
     private void doMotion() {
-        switch (ModConfigProvider.instance().getFlightMode()) {
+        switch (ModConfig.get().getFlightMode()) {
             case DEFAULT -> {
                 getAbilities().setFlyingSpeed(0);
-                Motion.doMotion(this, ModConfigProvider.instance().getHorizontalSpeed(), ModConfigProvider.instance().getVerticalSpeed());
+                Motion.doMotion(this, ModConfig.get().getHorizontalSpeed(), ModConfig.get().getVerticalSpeed());
             }
             case CREATIVE -> {
-                getAbilities().setFlyingSpeed((float) ModConfigProvider.instance().getVerticalSpeed() / 10);
+                getAbilities().setFlyingSpeed((float) ModConfig.get().getVerticalSpeed() / 10);
 
                 if (this.input.keyPresses.shift() ^ this.input.keyPresses.jump()) {
                     int direction = this.input.keyPresses.jump() ? 1 : -1;

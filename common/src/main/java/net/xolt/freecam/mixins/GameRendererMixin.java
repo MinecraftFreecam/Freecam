@@ -3,7 +3,7 @@ package net.xolt.freecam.mixins;
 import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.entity.Entity;
 import net.xolt.freecam.Freecam;
-import net.xolt.freecam.config.ModConfigProvider;
+import net.xolt.freecam.config.ModConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -19,7 +19,7 @@ public class GameRendererMixin {
     // Hide hand in freecam if showHand is disabled
     @Inject(method = "renderItemInHand", at = @At("HEAD"), cancellable = true)
     private void onRenderItemInHand(CallbackInfo ci) {
-        if (Freecam.isEnabled() && ModConfigProvider.instance().shouldHideHand()) {
+        if (Freecam.isEnabled() && ModConfig.get().shouldHideHand()) {
             ci.cancel();
         }
     }
@@ -27,7 +27,7 @@ public class GameRendererMixin {
     // Disables block outlines when allowInteract is disabled.
     @Inject(method = "shouldRenderBlockOutline", at = @At("HEAD"), cancellable = true)
     private void onShouldRenderBlockOutline(CallbackInfoReturnable<Boolean> cir) {
-        if (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && ModConfigProvider.instance().shouldPreventInteractions()) {
+        if (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && ModConfig.get().shouldPreventInteractions()) {
             cir.setReturnValue(false);
         }
     }
@@ -35,7 +35,7 @@ public class GameRendererMixin {
     // Makes mouse clicks come from the player rather than the freecam entity when player control is enabled or if interaction mode is set to player.
     @ModifyVariable(method = "pick(F)V", name = "entity", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/Minecraft;getCameraEntity()Lnet/minecraft/world/entity/Entity;"))
     private Entity onUpdateTargetedEntity(Entity entity) {
-        if (Freecam.isEnabled() && (Freecam.isPlayerControlEnabled() || ModConfigProvider.instance().allowInteractionsFromPlayer())) {
+        if (Freecam.isEnabled() && (Freecam.isPlayerControlEnabled() || ModConfig.get().allowInteractionsFromPlayer())) {
             return MC.player;
         }
         return entity;

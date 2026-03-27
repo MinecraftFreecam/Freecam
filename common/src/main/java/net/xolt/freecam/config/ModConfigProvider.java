@@ -7,12 +7,8 @@ public interface ModConfigProvider {
     MCAwareModConfig getConfig();
     void setupConfig();
 
-    static void init() {
-        Holder.INSTANCE.setupConfig();
-    }
-
-    static MCAwareModConfig instance() {
-        return Holder.INSTANCE.getConfig();
+    static ModConfigProvider instance() {
+        return Holder.INSTANCE;
     }
 
     class Holder {

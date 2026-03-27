@@ -13,7 +13,7 @@ import net.minecraftforge.fmlclient.ConfigGuiHandler;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ConfigScreenProvider;
 import net.xolt.freecam.config.ModBindings;
-import net.xolt.freecam.config.ModConfigProvider;
+import net.xolt.freecam.config.ModConfig;
 //? forge: >= 41 {
 //import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 //? } else {
@@ -27,7 +27,7 @@ public class FreecamForge {
 
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
-        ModConfigProvider.init();
+        ModConfig.setup();
         // Register our config screen with Forge
         ModLoadingContext.get().registerExtensionPoint(ConfigGuiHandler.ConfigGuiFactory.class, () ->
             new ConfigGuiHandler.ConfigGuiFactory((mc, parent) -> ConfigScreenProvider.instance().getConfigScreen(parent))

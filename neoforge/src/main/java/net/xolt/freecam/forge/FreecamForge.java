@@ -13,7 +13,7 @@ import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ConfigScreenProvider;
 import net.xolt.freecam.config.ModBindings;
-import net.xolt.freecam.config.ModConfigProvider;
+import net.xolt.freecam.config.ModConfig;
 
 @Mod(value = Freecam.MOD_ID, dist = Dist.CLIENT)
 @EventBusSubscriber(
@@ -25,7 +25,7 @@ import net.xolt.freecam.config.ModConfigProvider;
 public class FreecamForge {
 
     public FreecamForge(ModContainer container) {
-        ModConfigProvider.init();
+        ModConfig.setup();
         // Register our config screen with Forge
         container.registerExtensionPoint(IConfigScreenFactory.class, (_container, parent) ->
             ConfigScreenProvider.instance().getConfigScreen(parent)

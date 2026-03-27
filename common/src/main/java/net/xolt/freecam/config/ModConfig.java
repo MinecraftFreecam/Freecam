@@ -2,6 +2,18 @@ package net.xolt.freecam.config;
 
 public interface ModConfig {
 
+    /**
+     * Called once, early during mod initialization.
+     * Will load config from disk and perform internal setup.
+     */
+    static void setup() {
+        ModConfigProvider.instance().setupConfig();
+    }
+
+    static ModConfig get() {
+        return ModConfigProvider.instance().getConfig();
+    }
+
     FlightMode getFlightMode();
 
     double getHorizontalSpeed();
