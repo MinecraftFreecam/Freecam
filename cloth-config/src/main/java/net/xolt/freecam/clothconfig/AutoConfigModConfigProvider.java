@@ -3,11 +3,12 @@ package net.xolt.freecam.clothconfig;
 //~ if cloth: >=21.11 'AutoConfig' -> 'AutoConfigClient'
 import me.shedaniel.autoconfig.AutoConfigClient;
 import net.minecraft.client.gui.screens.Screen;
+import net.xolt.freecam.config.ConfigScreenProvider;
 import net.xolt.freecam.config.MCAwareModConfig;
 import net.xolt.freecam.config.ModConfigProvider;
 import org.jetbrains.annotations.Nullable;
 
-public class AutoConfigModConfigProvider implements ModConfigProvider {
+public class AutoConfigModConfigProvider implements ModConfigProvider, ConfigScreenProvider {
 
     @Override
     public MCAwareModConfig getConfig() {
@@ -20,7 +21,7 @@ public class AutoConfigModConfigProvider implements ModConfigProvider {
     }
 
     @Override
-    public Screen createConfigScreen(@Nullable Screen parent) {
+    public Screen getConfigScreen(@Nullable Screen parent) {
         //~ if cloth: >=21.11 'AutoConfig.' -> 'AutoConfigClient.'
         return AutoConfigClient.getConfigScreen(AutoConfigModConfig.class, parent).get();
     }

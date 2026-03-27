@@ -11,6 +11,7 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.xolt.freecam.Freecam;
+import net.xolt.freecam.config.ConfigScreenProvider;
 import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfigProvider;
 
@@ -27,7 +28,7 @@ public class FreecamForge {
         ModConfigProvider.init();
         // Register our config screen with Forge
         container.registerExtensionPoint(IConfigScreenFactory.class, (_container, parent) ->
-            ModConfigProvider.getConfigScreen(parent)
+            ConfigScreenProvider.instance().getConfigScreen(parent)
         );
     }
 

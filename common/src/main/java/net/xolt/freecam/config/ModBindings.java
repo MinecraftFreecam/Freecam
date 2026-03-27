@@ -10,7 +10,6 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static net.xolt.freecam.Freecam.MC;
 import static net.xolt.freecam.config.keys.FreecamKeyMappingBuilder.builder;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_F4;
 
@@ -28,7 +27,7 @@ public enum ModBindings {
             .holdAction(Freecam::resetTripodHandler)
             .build()),
     KEY_CONFIG_GUI(() -> builder("configGui")
-            .action(() -> MC.setScreen(ModConfigProvider.getConfigScreen(MC.screen)))
+            .action(ConfigScreenProvider.instance()::openConfigScreen)
             .build());
 
     private final Supplier<FreecamKeyMapping> lazyMapping;
