@@ -6,11 +6,15 @@ import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.xolt.freecam.config.ConfigScreenProvider;
 
+import java.util.Optional;
+
 @Environment(EnvType.CLIENT)
 public class ModMenuIntegration implements ModMenuApi {
 
     @Override
     public ConfigScreenFactory<?> getModConfigScreenFactory() {
-        return ConfigScreenProvider.instance()::getConfigScreen;
+        Optional<ConfigScreenFactory<?>> factory = ConfigScreenProvider.provider()
+                .map(provider -> provider::getConfigScreen);
+        return factory.orElseGet(ModMenuApi.super::getModConfigScreenFactory);
     }
 }
