@@ -9,6 +9,7 @@ import me.shedaniel.autoconfig.serializer.JanksonConfigSerializer;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.level.block.Block;
 import net.xolt.freecam.clothconfig.gui.*;
+import net.xolt.freecam.clothconfig.model.CollisionPredicate;
 import net.xolt.freecam.config.FlightMode;
 import net.xolt.freecam.config.MCAwareModConfig;
 import net.xolt.freecam.config.Perspective;
@@ -22,6 +23,9 @@ public class AutoConfigModConfig implements ConfigData, MCAwareModConfig {
     @ConfigEntry.Gui.Excluded
     static AutoConfigModConfig INSTANCE;
 
+    @ConfigEntry.Gui.Excluded
+    private transient CollisionPredicate collisionPredicate;
+
     public static void init() {
         ConfigHolder<AutoConfigModConfig> holder = AutoConfig.register(AutoConfigModConfig.class, JanksonConfigSerializer::new);
         AutoConfigExtensions.apply(AutoConfigModConfig.class);
@@ -31,7 +35,7 @@ public class AutoConfigModConfig implements ConfigData, MCAwareModConfig {
     }
 
     public InteractionResult onConfigChange(ConfigHolder<AutoConfigModConfig> holder, AutoConfigModConfig config) {
-        collision.behavior.rebuild(config.collision);
+        collisionPredicate = CollisionPredicate.create(collision);
         return InteractionResult.PASS;
     }
 
@@ -62,7 +66,7 @@ public class AutoConfigModConfig implements ConfigData, MCAwareModConfig {
 
     @Override
     public boolean ignoreCollisionWith(Block block) {
-        return collision.ignoreAll || collision.behavior.isIgnored(block);
+        return collision.ignoreAll || collisionPredicate.shouldIgnore(block);
     }
 
     @Override
@@ -203,9 +207,6 @@ public class AutoConfigModConfig implements ConfigData, MCAwareModConfig {
 
         @ConfigEntry.Gui.Tooltip(count = 2)
         public boolean alwaysCheck = false;
-
-        @ConfigEntry.Gui.Excluded
-        private final transient CollisionBehavior behavior = new CollisionBehavior(this);
     }
 
     @ConfigEntry.Gui.Tooltip
