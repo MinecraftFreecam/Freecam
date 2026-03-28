@@ -1,7 +1,7 @@
 package net.xolt.freecam.clothconfig;
 
 import net.xolt.freecam.Freecam;
-import net.xolt.freecam.clothconfig.model.JanksonConfigLoader;
+import net.xolt.freecam.clothconfig.model.GsonConfigLoader;
 import net.xolt.freecam.clothconfig.model.ModConfigDTO;
 import net.xolt.freecam.config.model.ConfigController;
 import net.xolt.freecam.config.model.ConfigLoader;
@@ -14,7 +14,7 @@ final class SingletonModConfigController implements ConfigController<ModConfigDT
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SingletonModConfigController.class);
 
-    private final ConfigLoader<ModConfigDTO> loader = new JanksonConfigLoader<>(ModConfigDTO.class, Freecam.MOD_ID);
+    private final ConfigLoader<ModConfigDTO> loader = new GsonConfigLoader<>(ModConfigDTO.class, Freecam.MOD_ID);
     private final ModConfigDTO defaults = new ModConfigDTO();
     private ModConfigDTO config;
 

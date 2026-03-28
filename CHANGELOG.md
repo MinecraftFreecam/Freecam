@@ -11,6 +11,10 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Changed
 
+- Config file renamed from `freecam.json5` to `freecam.json` ([376](https://github.com/MinecraftFreecam/Freecam/pull/376))
+  - Existing `freecam.json5` configs are read when `freecam.json` isn't present
+  - All changes are saved to `freecam.json`
+
 ### Removed
 
 ### Fixed
