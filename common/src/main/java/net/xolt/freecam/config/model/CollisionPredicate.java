@@ -1,10 +1,10 @@
-package net.xolt.freecam.clothconfig.model;
+package net.xolt.freecam.config.model;
 
 import net.minecraft.world.level.block.Block;
-import net.xolt.freecam.clothconfig.model.ModConfigDTO.CollisionConfig;
+import net.xolt.freecam.config.model.ModConfigDTO.CollisionConfig;
 
-import static net.xolt.freecam.clothconfig.model.CollisionPredicateBuilder.builder;
-import static net.xolt.freecam.clothconfig.model.CollisionPredicates.*;
+import static net.xolt.freecam.config.model.CollisionPredicateBuilder.builder;
+import static net.xolt.freecam.config.model.CollisionPredicates.*;
 
 @FunctionalInterface
 public interface CollisionPredicate {

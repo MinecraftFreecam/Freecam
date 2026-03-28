@@ -1,11 +1,11 @@
-package net.xolt.freecam.clothconfig.model;
+package net.xolt.freecam.config.model;
 
 import net.minecraft.world.level.block.*;
-import net.xolt.freecam.clothconfig.model.ModConfigDTO.CollisionConfig.CollisionWhitelist;
+import net.xolt.freecam.config.model.ModConfigDTO.CollisionConfig.CollisionWhitelist;
 
 import java.util.regex.Pattern;
 
-import static net.xolt.freecam.clothconfig.model.CollisionPredicateBuilder.builder;
+import static net.xolt.freecam.config.model.CollisionPredicateBuilder.builder;
 
 class CollisionPredicates {
     private CollisionPredicates() {}

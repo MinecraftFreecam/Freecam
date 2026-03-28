@@ -1,6 +1,8 @@
 package net.xolt.freecam.config;
 
+import net.xolt.freecam.config.controller.ConfigControllerRegistry;
 import net.xolt.freecam.config.model.FlightMode;
+import net.xolt.freecam.config.model.ModConfigDTO;
 import net.xolt.freecam.config.model.Perspective;
 
 public interface ModConfig {
@@ -10,11 +12,12 @@ public interface ModConfig {
      * Will load config from disk and perform internal setup.
      */
     static void setup() {
-        ModConfigProvider.instance().setupConfig();
+        ConfigControllerRegistry.init();
+        ConfigControllerRegistry.get(ModConfigDTO.class).load();
     }
 
     static ModConfig get() {
-        return ModConfigProvider.instance().getConfig();
+        return ConfigControllerRegistry.get(ModConfigDTO.class).getConfig();
     }
 
     FlightMode getFlightMode();

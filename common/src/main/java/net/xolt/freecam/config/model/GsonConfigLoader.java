@@ -1,9 +1,8 @@
-package net.xolt.freecam.clothconfig.model;
+package net.xolt.freecam.config.model;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import net.minecraft.client.Minecraft;
-import net.xolt.freecam.config.model.ConfigLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

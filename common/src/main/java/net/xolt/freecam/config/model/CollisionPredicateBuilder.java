@@ -1,4 +1,4 @@
-package net.xolt.freecam.clothconfig.model;
+package net.xolt.freecam.config.model;
 
 //~ if >= 1.19 '.Registry' -> '.registries.BuiltInRegistries'
 import net.minecraft.core.registries.BuiltInRegistries;

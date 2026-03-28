@@ -1,4 +1,4 @@
-package net.xolt.freecam.config.model;
+package net.xolt.freecam.config.controller;
 
 public interface ConfigController<T> {
     /** Returns the currently loaded config, or defaults if not yet loaded. */

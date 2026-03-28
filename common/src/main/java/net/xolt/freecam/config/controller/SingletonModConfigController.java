@@ -1,16 +1,15 @@
-package net.xolt.freecam.clothconfig;
+package net.xolt.freecam.config.controller;
 
 import net.xolt.freecam.Freecam;
-import net.xolt.freecam.clothconfig.model.GsonConfigLoader;
-import net.xolt.freecam.clothconfig.model.ModConfigDTO;
-import net.xolt.freecam.config.model.ConfigController;
+import net.xolt.freecam.config.model.GsonConfigLoader;
+import net.xolt.freecam.config.model.ModConfigDTO;
 import net.xolt.freecam.config.model.ConfigLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 final class SingletonModConfigController implements ConfigController<ModConfigDTO> {
 
-    public static final SingletonModConfigController INSTANCE = new SingletonModConfigController();
+    static final SingletonModConfigController INSTANCE = new SingletonModConfigController();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SingletonModConfigController.class);
 

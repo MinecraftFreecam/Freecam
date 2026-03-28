@@ -1,9 +1,7 @@
-package net.xolt.freecam.clothconfig.model;
+package net.xolt.freecam.config.model;
 
 import net.minecraft.world.level.block.Block;
 import net.xolt.freecam.config.MCAwareModConfig;
-import net.xolt.freecam.config.model.FlightMode;
-import net.xolt.freecam.config.model.Perspective;
 
 import java.util.ArrayList;
 import java.util.List;

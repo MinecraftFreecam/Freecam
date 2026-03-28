@@ -16,7 +16,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 - Config file renamed from `freecam.json5` to `freecam.json` ([376](https://github.com/MinecraftFreecam/Freecam/pull/376))
   - Existing `freecam.json5` configs are read when `freecam.json` isn't present
   - All changes are saved to `freecam.json`
-- Refactor config system internals ([373](https://github.com/MinecraftFreecam/Freecam/pull/373), [374](https://github.com/MinecraftFreecam/Freecam/pull/374))
+- Refactor config system internals ([373](https://github.com/MinecraftFreecam/Freecam/pull/373), [374](https://github.com/MinecraftFreecam/Freecam/pull/374), [377](https://github.com/MinecraftFreecam/Freecam/pull/377))
+  - Separated Cloth Config GUI from the core config system
 - Refactor collision filtering logic ([375](https://github.com/MinecraftFreecam/Freecam/pull/375))
 
 ### Removed
