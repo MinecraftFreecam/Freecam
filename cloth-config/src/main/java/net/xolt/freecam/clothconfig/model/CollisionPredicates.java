@@ -1,7 +1,7 @@
 package net.xolt.freecam.clothconfig.model;
 
 import net.minecraft.world.level.block.*;
-import net.xolt.freecam.clothconfig.AutoConfigModConfig.CollisionConfig.CollisionWhitelist;
+import net.xolt.freecam.clothconfig.model.ModConfigDTO.CollisionConfig.CollisionWhitelist;
 
 import java.util.regex.Pattern;
 

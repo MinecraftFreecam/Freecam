@@ -13,7 +13,7 @@ import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.Vec2;
 import net.xolt.freecam.config.ModConfig;
-import net.xolt.freecam.config.Perspective;
+import net.xolt.freecam.config.model.Perspective;
 import org.jetbrains.annotations.ApiStatus;
 //? if >=1.21.11 {
 import net.minecraft.client.player.ClientInput;

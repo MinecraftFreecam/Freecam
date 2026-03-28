@@ -1,5 +1,8 @@
 package net.xolt.freecam.config;
 
+import net.xolt.freecam.config.model.FlightMode;
+import net.xolt.freecam.config.model.Perspective;
+
 public interface ModConfig {
 
     /**
