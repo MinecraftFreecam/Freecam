@@ -137,11 +137,6 @@ public class ModConfigDTO implements MCAwareModConfig {
         return notification.notifyTripod;
     }
 
-    public ControlsConfig controls = new ControlsConfig();
-    public static class ControlsConfig {
-        private transient Object keys;
-    }
-
     public MovementConfig movement = new MovementConfig();
     public static class MovementConfig {
         public FlightMode flightMode = FlightMode.DEFAULT;
