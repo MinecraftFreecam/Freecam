@@ -35,6 +35,8 @@
   "text.autoconfig.freecam.option.collision.whitelist.ids.@Tooltip[0]": "Usar id del bloque, p.ej. \"grass_block\".",
   "text.autoconfig.freecam.option.collision.whitelist.ids.@Tooltip[1]": "Si se omite el namespace, se asume \"minecraft:\".",
   "text.autoconfig.freecam.option.collision.whitelist.patterns": "Ignorar Expresiones Regulares",
+  "text.autoconfig.freecam.option.collision.whitelist.patterns.@Tooltip[0]": "Usar sintaxis de expresiones regulares.",
+  "text.autoconfig.freecam.option.collision.whitelist.patterns.@Tooltip[1]": "Coincide con el id completo del bloque, ej. \"minecraft:grass_block\".",
   "text.autoconfig.freecam.option.collision.ignoreAll": "Ignorar Toda Colisión",
   "text.autoconfig.freecam.option.collision.ignoreAll.@Tooltip[0]": "Permite atravesar todos los bloques en freecam.",
   "text.autoconfig.freecam.option.collision.ignoreAll.@Tooltip[1]": "§eAnula las opciones de arriba.",
@@ -74,5 +76,18 @@
   "text.autoconfig.freecam.option.servers": "Opciones de Multijugador",
   "text.autoconfig.freecam.option.servers.@Tooltip": "Opciones relacionadas con servidores multijugador.",
   "text.autoconfig.freecam.option.servers.mode": "Modo de restricción",
-  "text.autoconfig.freecam.option.servers.mode.@Tooltip[0]": "Permite o prohíbe usar freecam en ciertos servidores."
+  "text.autoconfig.freecam.option.servers.mode.@Tooltip[0]": "Permite o prohíbe usar freecam en ciertos servidores.",
+  "text.autoconfig.freecam.option.servers.mode.@Tooltip[1]": "(usando una lista blanca o una lista negra).",
+  "text.autoconfig.freecam.option.servers.mode.none": "Sin restricción",
+  "text.autoconfig.freecam.option.servers.mode.whitelist": "Lista blanca",
+  "text.autoconfig.freecam.option.servers.mode.blacklist": "Lista negra",
+  "text.autoconfig.freecam.option.servers.whitelist": "Lista blanca:",
+  "text.autoconfig.freecam.option.servers.blacklist": "Lista negra:",
+  "text.autoconfig.freecam.option.notification": "Opciones de Notificación",
+  "text.autoconfig.freecam.option.notification.@Tooltip": "Mostrar u ocultar notificaciones.",
+  "text.autoconfig.freecam.option.notification.notifyFreecam": "Notificaciones de Freecam",
+  "text.autoconfig.freecam.option.notification.notifyFreecam.@Tooltip": "Te notifica al entrar/salir de Freecam.",
+  "text.autoconfig.freecam.option.notification.notifyTripod": "Notificaciones de tripié",
+  "text.autoconfig.freecam.option.notification.notifyTripod.@Tooltip": "Te notifica al entrar/salir de las cámaras con tripié.",
+  "text.autoconfig.freecam.error.invalidRegex": "Regex inválido: %s"
 }
