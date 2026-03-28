@@ -123,7 +123,7 @@ forge_mc_req = "[1.17.1,1.18)"
 
 fabric.supported_mc_versions = ["1.17"]
 
-forge.relationship.cloth-config.type = "required"
+forge.relationship.cloth-config.type = "optional"
 
 
 ["1.16.5"]
@@ -142,4 +142,4 @@ forge_req = "[34,)"
 forge_loader_req = "[34,)"
 forge_mc_req = "[1.16.2,1.17)"
 
-forge.relationship.cloth-config.type = "required"
+forge.relationship.cloth-config.type = "optional"

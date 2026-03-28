@@ -38,6 +38,6 @@ side = "CLIENT"
 [[dependencies.${modId}]]
 modId = "cloth_config"
 versionRange = "${clothConfigReq}"
-type = "required"
+type = "optional"
 ordering = "NONE"
 side = "CLIENT"

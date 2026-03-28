@@ -29,9 +29,10 @@ public class FreecamForge {
     public static void clientSetup(FMLClientSetupEvent event) {
         ModConfig.setup();
         // Register our config screen with Forge
-        ModLoadingContext.get().registerExtensionPoint(ConfigGuiHandler.ConfigGuiFactory.class, () ->
-            new ConfigGuiHandler.ConfigGuiFactory((mc, parent) -> ConfigScreenProvider.instance().getConfigScreen(parent))
-        );
+        ConfigScreenProvider.provider().ifPresent(provider -> ModLoadingContext.get().registerExtensionPoint(
+                ConfigGuiHandler.ConfigGuiFactory.class,
+                () -> new ConfigGuiHandler.ConfigGuiFactory((mc, parent) -> provider.getConfigScreen(parent))
+        ));
         //? forge: < 41 {
         ModBindings.forEach(ClientRegistry::registerKeyBinding);
         //? }
