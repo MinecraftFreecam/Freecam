@@ -14,7 +14,7 @@ import java.util.stream.Collectors;
 
 import static net.xolt.freecam.Freecam.MC;
 
-public interface ConfigScreenProvider extends OptionalProvider {
+public interface ConfigScreenProvider {
 
     String getName();
 
@@ -51,7 +51,7 @@ public interface ConfigScreenProvider extends OptionalProvider {
             INSTANCE = providers.stream()
                     .map(Holder::attemptLoad)
                     .filter(Objects::nonNull)
-                    .filter(OptionalProvider::isAvailable)
+                    .filter(provider -> !(provider instanceof OptionalProvider optional) || optional.isAvailable())
                     .findFirst();
 
             INSTANCE.ifPresentOrElse(
