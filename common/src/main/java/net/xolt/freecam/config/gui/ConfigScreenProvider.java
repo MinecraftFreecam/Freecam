@@ -1,4 +1,4 @@
-package net.xolt.freecam.config;
+package net.xolt.freecam.config.gui;
 
 import net.minecraft.client.gui.screens.Screen;
 import net.xolt.freecam.util.OptionalService;

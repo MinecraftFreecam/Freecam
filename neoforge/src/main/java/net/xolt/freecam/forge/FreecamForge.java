@@ -11,9 +11,9 @@ import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 import net.xolt.freecam.Freecam;
-import net.xolt.freecam.config.ConfigScreenProvider;
 import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.config.gui.ConfigScreenProvider;
 
 @Mod(value = Freecam.MOD_ID, dist = Dist.CLIENT)
 @EventBusSubscriber(

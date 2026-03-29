@@ -1,8 +1,8 @@
 package net.xolt.freecam.clothconfig;
 
 import net.minecraft.client.gui.screens.Screen;
-import net.xolt.freecam.config.ConfigScreenProvider;
 import net.xolt.freecam.config.controller.ConfigControllerRegistry;
+import net.xolt.freecam.config.gui.ConfigScreenProvider;
 import net.xolt.freecam.config.model.ModConfigDTO;
 import org.jetbrains.annotations.Nullable;
 

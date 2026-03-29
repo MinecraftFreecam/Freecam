@@ -4,6 +4,7 @@ import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
 import net.minecraft.network.chat.Component;
 import net.xolt.freecam.Freecam;
+import net.xolt.freecam.config.gui.ConfigScreenProvider;
 import net.xolt.freecam.config.keys.FreecamKeyMapping;
 import org.jetbrains.annotations.NotNull;
 import org.slf4j.Logger;

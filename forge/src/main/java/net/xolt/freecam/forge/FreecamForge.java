@@ -11,9 +11,9 @@ import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fmlclient.ConfigGuiHandler;
 import net.xolt.freecam.Freecam;
-import net.xolt.freecam.config.ConfigScreenProvider;
 import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.config.gui.ConfigScreenProvider;
 //? forge: >= 41 {
 //import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 //? } else {
