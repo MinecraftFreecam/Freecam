@@ -1,23 +1,29 @@
 import dev.kikugie.stonecutter.StonecutterExperimentalAPI
 
 plugins {
-    alias(libs.plugins.fabric.loom)
     alias(libs.plugins.fletchingtable.fabric)
+    id("freecam.loom-adapter")
     id("freecam.loaders")
 }
 
-stonecutter {
-
+stonecutter replacements {
+    string(sc.current.parsed >= "26.0") {
+        replace("net.fabricmc.fabric.api.client.keybinding", "net.fabricmc.fabric.api.client.keymapping")
+        replace("KeyBindingHelper", "KeyMappingHelper")
+        replace("registerKeyBinding", "registerKeyMapping")
+    }
 }
 
 dependencies {
     minecraft("com.mojang:minecraft:${meta.mc}")
-    mappings(loom.layered {
-        officialMojangMappings()
-        meta.parchment { mappings, mc ->
-            parchment("org.parchmentmc.data:parchment-${mc}:$mappings@zip")
-        }
-    })
+    if (loomAdapter.hasMappings) {
+        mappings(loom.layered {
+            officialMojangMappings()
+            meta.parchment { mappings, mc ->
+                parchment("org.parchmentmc.data:parchment-${mc}:$mappings@zip")
+            }
+        })
+    }
 
     modImplementation("net.fabricmc:fabric-loader:${meta.deps["fabric_loader"]}")
     modApi("net.fabricmc.fabric-api:fabric-api:${meta.deps["fabric_api"]}") {
@@ -69,7 +75,7 @@ loom {
 
 tasks.register<Copy>("buildAndCollect") {
     group = "build"
-    from(tasks.remapJar.map { it.archiveFile })
+    from(loomAdapter.modJar.map { it.archiveFile })
     into(rootProject.layout.buildDirectory.file("libs/${meta.version}"))
     dependsOn(tasks.build)
 }
@@ -88,6 +94,6 @@ tasks {
     }
 
     generateReleaseMetadata {
-        artifactFileName = remapJar.flatMap { it.archiveFileName }
+        artifactFileName = loomAdapter.modJar.flatMap { it.archiveFileName }
     }
 }

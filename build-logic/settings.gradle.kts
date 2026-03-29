@@ -17,6 +17,7 @@ include(
     "api",
     "api:plugin",
     "conventions",
+    "loom-adapter",
     "release-metadata",
     "settings",
 )
