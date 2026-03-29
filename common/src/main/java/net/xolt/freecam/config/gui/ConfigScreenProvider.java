@@ -6,8 +6,6 @@ import net.xolt.freecam.util.OptionalServiceLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Optional;
-
 import static net.xolt.freecam.Freecam.MC;
 
 public interface ConfigScreenProvider extends OptionalService {
@@ -24,7 +22,7 @@ public interface ConfigScreenProvider extends OptionalService {
         MC.setScreen(getConfigScreen(parent));
     }
 
-    static Optional<ConfigScreenProvider> provider() {
+    static ConfigScreenProvider provider() {
         return Holder.INSTANCE;
     }
 
@@ -32,13 +30,12 @@ public interface ConfigScreenProvider extends OptionalService {
         private Holder() {}
 
         private static final Logger LOGGER = LoggerFactory.getLogger(ConfigScreenProvider.class);
-        private static final Optional<ConfigScreenProvider> INSTANCE = OptionalServiceLoader.get(ConfigScreenProvider.class);
+        private static final ConfigScreenProvider INSTANCE = OptionalServiceLoader
+                .get(ConfigScreenProvider.class)
+                .orElseGet(FallbackConfigScreenProvider::new);
 
         static {
-            INSTANCE.ifPresentOrElse(
-                    service -> LOGGER.info("Using {}", service.getName()),
-                    () -> LOGGER.info("No config screen provider available — GUI disabled")
-            );
+            LOGGER.info("Using {}", INSTANCE.getName());
         }
     }
 }
