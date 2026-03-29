@@ -15,10 +15,9 @@ import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.config.gui.ConfigScreenProvider;
 //? forge: >= 41 {
-//import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-//? } else {
+/*import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+*///? } else
 import net.minecraftforge.fmlclient.registry.ClientRegistry;
-//? }
 
 @Mod(value = Freecam.MOD_ID)
 @Mod.EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
