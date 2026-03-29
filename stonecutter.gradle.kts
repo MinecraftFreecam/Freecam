@@ -48,6 +48,7 @@ stonecutter parameters {
         }
         string(current.parsed >= "1.20") {
             replace("canEnterPose(", "wouldNotSuffocateAtTargetPose(")
+            replace("GenericDirtMessageScreen", "GenericMessageScreen")
         }
         string(current.parsed >= "1.19") {
             replace("new net.minecraft.network.chat.TranslatableComponent(", "Component.translatable(")

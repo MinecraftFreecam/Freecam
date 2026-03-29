@@ -2,7 +2,6 @@ package net.xolt.freecam.config;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
-import net.minecraft.network.chat.Component;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.gui.ConfigScreenProvider;
 import net.xolt.freecam.config.keys.FreecamKeyMapping;
@@ -14,7 +13,6 @@ import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static net.xolt.freecam.Freecam.MC;
 import static net.xolt.freecam.config.keys.FreecamKeyMappingBuilder.builder;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_F4;
 
@@ -32,13 +30,7 @@ public enum ModBindings {
             .holdAction(Freecam::resetTripodHandler)
             .build()),
     KEY_CONFIG_GUI(() -> builder("configGui")
-            .action(ConfigScreenProvider.provider()
-                    .map(provider -> (Runnable) provider::openConfigScreen)
-                    .orElseGet(() -> () -> {
-                        logger().info("Attempted to open config screen with no {} available", ConfigScreenProvider.class.getSimpleName());
-                        Optional.ofNullable(MC.player)
-                                .ifPresent(player -> player.displayClientMessage(Component.translatable(  "msg.freecam.configGuiMissing"), true));
-                    }))
+            .action(ConfigScreenProvider.provider()::openConfigScreen)
             .build());
 
     private static final Logger LOGGER = LoggerFactory.getLogger(ModBindings.class);

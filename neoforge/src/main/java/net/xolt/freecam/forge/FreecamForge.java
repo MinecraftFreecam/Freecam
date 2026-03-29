@@ -27,10 +27,10 @@ public class FreecamForge {
     public FreecamForge(ModContainer container) {
         ModConfig.setup();
         // Register our config screen with Forge
-        ConfigScreenProvider.provider().ifPresent(provider -> container.registerExtensionPoint(
+        container.registerExtensionPoint(
                 IConfigScreenFactory.class,
-                (_container, parent) -> provider.getConfigScreen(parent)
-        ));
+                (_container, parent) -> ConfigScreenProvider.provider().getConfigScreen(parent)
+        );
     }
 
 
