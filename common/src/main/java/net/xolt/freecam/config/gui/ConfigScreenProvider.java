@@ -8,7 +8,6 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Collection;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.ServiceLoader.Provider;
 import java.util.stream.Collectors;
 
@@ -28,7 +27,7 @@ public interface ConfigScreenProvider {
         MC.setScreen(getConfigScreen(parent));
     }
 
-    static Optional<ConfigScreenProvider> provider() {
+    static ConfigScreenProvider provider() {
         return Holder.INSTANCE;
     }
 
@@ -36,7 +35,7 @@ public interface ConfigScreenProvider {
         private Holder() {}
 
         private static final Logger LOGGER = LoggerFactory.getLogger(ConfigScreenProvider.class);
-        private static final Optional<ConfigScreenProvider> INSTANCE;
+        private static final ConfigScreenProvider INSTANCE;
 
         static {
             // ConfigScreenProviders that are on the classpath.
@@ -52,12 +51,10 @@ public interface ConfigScreenProvider {
                     .map(Holder::attemptLoad)
                     .filter(Objects::nonNull)
                     .filter(provider -> !(provider instanceof OptionalProvider optional) || optional.isAvailable())
-                    .findFirst();
+                    .findFirst()
+                    .orElseGet(FallbackConfigScreenProvider::new);
 
-            INSTANCE.ifPresentOrElse(
-                    service -> LOGGER.info("Using {}", service.getName()),
-                    () -> LOGGER.info("No config screen provider available — GUI disabled")
-            );
+            LOGGER.info("Using {}", INSTANCE.getName());
         }
 
         private static @Nullable ConfigScreenProvider attemptLoad(Provider<ConfigScreenProvider> provider) {
