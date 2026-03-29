@@ -19,7 +19,7 @@ public class GameRendererMixin {
     // Hide hand in freecam if showHand is disabled
     @Inject(method = "renderItemInHand", at = @At("HEAD"), cancellable = true)
     private void onRenderItemInHand(CallbackInfo ci) {
-        if (Freecam.isEnabled() && !ModConfig.INSTANCE.visual.showHand) {
+        if (Freecam.isEnabled() && ModConfig.get().shouldHideHand()) {
             ci.cancel();
         }
     }
@@ -27,15 +27,15 @@ public class GameRendererMixin {
     // Disables block outlines when allowInteract is disabled.
     @Inject(method = "shouldRenderBlockOutline", at = @At("HEAD"), cancellable = true)
     private void onShouldRenderBlockOutline(CallbackInfoReturnable<Boolean> cir) {
-        if (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !ModConfig.INSTANCE.utility.allowInteract) {
+        if (Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && ModConfig.get().shouldPreventInteractions()) {
             cir.setReturnValue(false);
         }
     }
 
     // Makes mouse clicks come from the player rather than the freecam entity when player control is enabled or if interaction mode is set to player.
-    @ModifyVariable(method = "pick(F)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/Minecraft;getCameraEntity()Lnet/minecraft/world/entity/Entity;"))
+    @ModifyVariable(method = "pick(F)V", name = "entity", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/Minecraft;getCameraEntity()Lnet/minecraft/world/entity/Entity;"))
     private Entity onUpdateTargetedEntity(Entity entity) {
-        if (Freecam.isEnabled() && (Freecam.isPlayerControlEnabled() || ModConfig.INSTANCE.utility.interactionMode.equals(ModConfig.InteractionMode.PLAYER))) {
+        if (Freecam.isEnabled() && (Freecam.isPlayerControlEnabled() || ModConfig.get().allowInteractionsFromPlayer())) {
             return MC.player;
         }
         return entity;

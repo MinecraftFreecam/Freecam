@@ -10,7 +10,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Pseudo
 @Mixin(
+        //? if >=1.20 {
         targets = "net.irisshaders.iris.shadows.ShadowRenderer",
+        //? } else
+        //targets = "net.coderbot.iris.pipeline.ShadowRenderer",
         remap = false
 )
 public class IrisShadowRendererMixin {
@@ -18,7 +21,7 @@ public class IrisShadowRendererMixin {
     // Hide player shadow in freecam if showPlayer is disabled
     @Inject(method = "renderPlayerEntity", at = @At("HEAD"), cancellable = true)
     private void onRenderPlayerShadow(CallbackInfoReturnable<Integer> cir) {
-        if (Freecam.isEnabled() && !ModConfig.INSTANCE.visual.showPlayer) {
+        if (Freecam.isEnabled() && ModConfig.get().shouldHidePlayer()) {
             cir.setReturnValue(0);
         }
     }

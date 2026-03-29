@@ -71,6 +71,6 @@ public class EntityMixin {
 
     @Unique
     private boolean freecam$allowFreeze() {
-        return ModConfig.INSTANCE.utility.freezePlayer && !Freecam.isPlayerControlEnabled();
+        return ModConfig.get().shouldFreezePlayer() && !Freecam.isPlayerControlEnabled();
     }
 }

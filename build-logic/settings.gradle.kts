@@ -1,0 +1,26 @@
+
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            from(files("../gradle/libs.versions.toml"))
+        }
+    }
+    repositories {
+        mavenCentral()
+        gradlePluginPortal()
+        maven("https://maven.kikugie.dev/snapshots")
+        maven("https://maven.fabricmc.net/")
+    }
+}
+
+include(
+    "api",
+    "api:plugin",
+    "conventions",
+    "release-metadata",
+    "settings",
+)
+
+project(":api:plugin").projectDir = file("api-plugin")
+
+rootProject.name = "build-logic"

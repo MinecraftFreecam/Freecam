@@ -9,8 +9,7 @@ import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.Shapes;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import net.xolt.freecam.Freecam;
-import net.xolt.freecam.config.CollisionBehavior;
-import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.config.MCAwareModConfig;
 import net.xolt.freecam.util.FreeCamera;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -25,13 +24,11 @@ public abstract class BlockStateBaseMixin {
 
     @Inject(method = "getCollisionShape(Lnet/minecraft/world/level/BlockGetter;Lnet/minecraft/core/BlockPos;Lnet/minecraft/world/phys/shapes/CollisionContext;)Lnet/minecraft/world/phys/shapes/VoxelShape;", at = @At("HEAD"), cancellable = true)
     private void onGetCollisionShape(BlockGetter world, BlockPos pos, CollisionContext context, CallbackInfoReturnable<VoxelShape> cir) {
-        if (context instanceof EntityCollisionContext entityShapeContext && entityShapeContext.getEntity() instanceof FreeCamera) {
-            // Return early if "Always Check Initial Collision" is on and Freecam isn't enabled yet
-            if (ModConfig.INSTANCE.collision.alwaysCheck && !Freecam.isEnabled()) {
-                return;
-            }
-            // Otherwise, check the collision config
-            if (CollisionBehavior.isIgnored(getBlock())) {
+        if (context instanceof EntityCollisionContext entityShapeContext
+                && entityShapeContext.getEntity()/*? if <1.18 >>*//*.orElse(null)*/ instanceof FreeCamera
+                && Freecam.isEnabled()) {
+
+            if (MCAwareModConfig.get().ignoreCollisionWith(getBlock())) {
                 cir.setReturnValue(Shapes.empty());
             }
         }

@@ -10,7 +10,7 @@ import net.xolt.freecam.config.ModConfig;
 public class FreecamFabric implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
-        ModConfig.init();
+        ModConfig.setup();
         ModBindings.forEach(KeyBindingHelper::registerKeyBinding);
         ClientTickEvents.START_CLIENT_TICK.register(Freecam::preTick);
         ClientTickEvents.END_CLIENT_TICK.register(Freecam::postTick);
