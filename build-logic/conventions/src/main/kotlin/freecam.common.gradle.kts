@@ -14,13 +14,11 @@ base {
 // see http://yodaconditions.net/blog/fix-for-java-file-encoding-problems-with-gradle.html
 tasks.withType<JavaCompile>().configureEach {
     options.encoding = "UTF-8"
-    options.release = javaVersion
+    options.release = meta.javaVersion
 }
 
 java {
-    toolchain {
-        languageVersion.set(javaLanguageVersion)
-    }
+    toolchain.languageVersion = JavaLanguageVersion.of(meta.javaVersion)
     withSourcesJar()
 }
 

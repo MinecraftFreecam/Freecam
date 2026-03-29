@@ -2,9 +2,7 @@ import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import dev.kikugie.stonecutter.controller.StonecutterControllerExtension
 import dev.kikugie.stonecutter.data.tree.ProjectNode
 import net.xolt.freecam.model.ModMetadata
-import org.gradle.api.JavaVersion
 import org.gradle.api.Project
-import org.gradle.jvm.toolchain.JavaLanguageVersion
 import org.gradle.kotlin.dsl.getByType
 
 /**
@@ -31,19 +29,10 @@ val Project.commonNode: ProjectNode get() = requireNotNull(stonecutter.node.sibl
     "No common project for $project"
 }
 
-val Project.requiredJava get() = when {
-    stonecutter.current.parsed >= "1.20.5" -> JavaVersion.VERSION_21
-    stonecutter.current.parsed >= "1.18" -> JavaVersion.VERSION_17
-    stonecutter.current.parsed >= "1.17" -> JavaVersion.VERSION_16
-    else -> JavaVersion.VERSION_1_8
-}
-val Project.javaVersion get() = requiredJava.majorVersion.toInt()
-val Project.javaLanguageVersion get() = JavaLanguageVersion.of(javaVersion)
-
 val Project.commonExpansions: Map<String, String>
     get() {
         return mapOf(
-            "mixinCompatLevel" to "JAVA_$javaVersion",
+            "mixinCompatLevel" to "JAVA_${meta.javaVersion}",
             "modId" to meta.id,
             "modName" to meta.name,
             "modVersion" to meta.version,

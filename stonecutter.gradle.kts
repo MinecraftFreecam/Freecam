@@ -32,6 +32,13 @@ stonecutter parameters {
             dependencies[key] = value
         }
 
+    dependencies["java"] = when {
+        current.parsed >= "1.20.5" -> JavaVersion.VERSION_21
+        current.parsed >= "1.18" -> JavaVersion.VERSION_17
+        current.parsed >= "1.17" -> JavaVersion.VERSION_16
+        else -> JavaVersion.VERSION_1_8
+    }.majorVersion
+
     // Experimental cloth-config dependencies API added in v8.4
     // Forward-ported to newer versions but not backported to older versions.
     constants["cloth_dependencies"] = sc.eval(meta.deps["cloth"], ">=8.4")

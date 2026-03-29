@@ -1,6 +1,7 @@
 package net.xolt.freecam.gradle
 
 import dev.eav.tomlkt.Toml
+import dev.kikugie.stonecutter.AnyVersion
 import dev.kikugie.stonecutter.StonecutterExperimentalAPI
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import kotlinx.serialization.Serializable
@@ -75,6 +76,14 @@ private class ProjectModMetadata(
             .rawOrNull("supported_mc_versions")
             ?.let { Json.decodeFromJsonElement(it) }
             ?: emptyList()
+    }
+
+    override val javaVersion: Int by lazy {
+        requireStonecutter("javaVersion")
+            .dependencies
+            .getting("java")
+            .map(AnyVersion::toInt)
+            .get()
     }
 
     override fun parchment(block: (mappings: String, minecraft: String) -> Unit) {
