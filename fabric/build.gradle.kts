@@ -24,8 +24,18 @@ dependencies {
     sequenceOf(
         "fabric-lifecycle-events-v1",
         "fabric-key-binding-api-v1",
-    ).forEach { module ->
-        modImplementation(fabricApi.module(module, meta.deps["fabric_api"]))
+    ).map { name ->
+        fabricApi.module(name, meta.deps["fabric_api"])
+    }.forEach { module ->
+        // TODO: include via jar-in-jar and drop `requires: fabric-api` from fabric.mod.json.
+        // include(module)
+        modImplementation(module)
+    }
+
+    // Note: cloth-config and our fabric.mod.json require the entire fabric-api at runtime
+    modRuntimeOnly("net.fabricmc.fabric-api:fabric-api") {
+        version { prefer(meta.deps["fabric_api"]) }
+        exclude(module = "fabric-loader")
     }
 
     modImplementation("com.terraformersmc:modmenu:${meta.deps["modmenu"]}") {
