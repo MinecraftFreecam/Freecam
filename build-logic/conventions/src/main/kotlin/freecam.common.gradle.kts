@@ -27,17 +27,53 @@ tasks.named<Jar>("jar") {
 }
 
 repositories {
-    mavenCentral()
-    maven("https://maven.parchmentmc.org/")
-    maven("https://maven.neoforged.net/releases/")
-    meta.deps.orNull("neoforge_pr")?.let {
-        maven {
-            url = uri("https://prmaven.neoforged.net/NeoForge/pr${it}")
-            content { includeModule("net.neoforged", "neoforge") }
+    meta.parchment { _, _ ->
+        exclusiveContent {
+            forRepository {
+                maven("https://maven.parchmentmc.org") { name = "Parchment" }
+            }
+            filter { includeGroup("org.parchmentmc.data") }
         }
     }
-    maven("https://maven.shedaniel.me/")
-    maven("https://maven.terraformersmc.com/")
+    maven("https://maven.neoforged.net/releases") {
+        name = "NeoForge"
+        content { includeGroup("net.neoforged") }
+    }
+    meta.deps.orNull("neoforge_pr").takeUnless { it.isNullOrBlank() }?.let {
+        exclusiveContent {
+            forRepository {
+                maven("https://prmaven.neoforged.net/NeoForge/pr$it") {
+                    name = "NeoForge PR#$it"
+                }
+            }
+            filter { includeModule("net.neoforged", "neoforge") }
+        }
+    }
+    exclusiveContent {
+        forRepository {
+            maven("https://maven.fabricmc.net") { name = "Fabric" }
+        }
+        filter { includeGroupAndSubgroups("net.fabricmc") }
+    }
+    exclusiveContent {
+        forRepository {
+            maven("https://repo.spongepowered.org/repository/maven-public") { name = "Sponge" }
+        }
+        filter { includeGroupAndSubgroups("org.spongepowered") }
+    }
+    exclusiveContent {
+        forRepository {
+            maven("https://maven.shedaniel.me") { name = "Shedaniel" }
+        }
+        filter { includeGroup("me.shedaniel.cloth") }
+    }
+    exclusiveContent {
+        forRepository {
+            maven("https://maven.terraformersmc.com") { name = "TerraformersMC" }
+        }
+        filter { includeGroup("com.terraformersmc") }
+    }
+    mavenCentral()
 }
 
 tasks.processResources {

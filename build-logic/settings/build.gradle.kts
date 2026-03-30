@@ -11,12 +11,6 @@ dependencies {
     implementation(libs.kotlin.serialization.toml)
 }
 
-repositories {
-    mavenCentral()
-    gradlePluginPortal()
-    maven("https://maven.kikugie.dev/snapshots")
-}
-
 gradlePlugin {
     plugins {
         create("modMetadata") {

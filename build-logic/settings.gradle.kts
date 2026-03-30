@@ -6,10 +6,15 @@ dependencyResolutionManagement {
         }
     }
     repositories {
-        mavenCentral()
+        exclusiveContent {
+            forRepositories(
+                maven("https://maven.kikugie.dev/releases") { name = "KikuGie" },
+                maven("https://maven.kikugie.dev/snapshots") { name = "KikuGie snapshots" },
+            )
+            filter { includeGroupAndSubgroups("dev.kikugie") }
+        }
         gradlePluginPortal()
-        maven("https://maven.kikugie.dev/snapshots")
-        maven("https://maven.fabricmc.net/")
+        mavenCentral()
     }
 }
 

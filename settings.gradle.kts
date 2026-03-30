@@ -5,13 +5,30 @@ gradle.startParameter.isConfigureOnDemand = !isCi
 
 pluginManagement {
     repositories {
+        exclusiveContent {
+            forRepository {
+                maven("https://maven.fabricmc.net") { name = "Fabric" }
+            }
+            filter {
+                includeGroup("fabric-loom")
+                includeGroupAndSubgroups("net.fabricmc")
+            }
+        }
+        exclusiveContent {
+            forRepository {
+                maven("https://maven.neoforged.net/releases") { name = "Neoforge" }
+            }
+            filter { includeGroupAndSubgroups( "net.neoforged") }
+        }
+        exclusiveContent {
+            forRepositories(
+                maven("https://maven.kikugie.dev/releases") { name = "KikuGie" },
+                maven("https://maven.kikugie.dev/snapshots") { name = "KikuGie snapshots" },
+            )
+            filter { includeGroupAndSubgroups("dev.kikugie") }
+        }
         gradlePluginPortal()
         mavenCentral()
-        maven("https://maven.fabricmc.net/")
-        maven("https://maven.neoforged.net/releases/")
-        maven("https://maven.minecraftforge.net")
-        maven("https://maven.kikugie.dev/snapshots")
-        maven("https://maven.kikugie.dev/releases")
     }
     includeBuild("build-logic")
 }
