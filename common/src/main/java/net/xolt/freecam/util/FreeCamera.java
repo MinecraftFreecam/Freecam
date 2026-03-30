@@ -1,6 +1,7 @@
 package net.xolt.freecam.util;
 
 import com.mojang.authlib.GameProfile;
+import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.KeyboardInput;
 import net.minecraft.core.BlockPos;
@@ -15,15 +16,10 @@ import net.minecraft.world.phys.Vec2;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.config.model.Perspective;
 import org.jetbrains.annotations.ApiStatus;
-//? if >=1.21.11 {
+//~ if >=1.21.11 Input -> ClientInput
 import net.minecraft.client.player.ClientInput;
-//? } else {
-/*import net.minecraft.client.player.Input;
-*///? }
-//? if >=1.20.6 {
+//? if >=1.20.6
 import net.minecraft.core.Holder;
-import net.minecraft.client.multiplayer.ClientLevel;
-//? }
 
 import java.util.UUID;
 
@@ -32,10 +28,8 @@ import static net.xolt.freecam.Freecam.MC;
 @ApiStatus.Internal
 @ApiStatus.AvailableSince("0.4.0")
 public class FreeCamera extends AbstractClientPlayer {
-    //? if >=1.21.11 {
+    //~ if >=1.21.11 Input -> ClientInput
     public ClientInput input;
-    //? } else
-    //public Input input;
     public float yBob;
     public float xBob;
     public float yBobO;
@@ -54,9 +48,9 @@ public class FreeCamera extends AbstractClientPlayer {
     public void tick() {
         input.tick(
             //? if <1.21.11
-            //false
-            //? if <1.21.11 && > 1.18.2
-            //, 0.3F
+            //false // isMovingSlowly
+            //? if <1.21.11 && >=1.19
+            //, 0.3F // sneakSpeedMultiplier
         );
         doMotion();
         super.tick();
@@ -68,12 +62,8 @@ public class FreeCamera extends AbstractClientPlayer {
     }
 
     public void applyPosition(FreecamPosition position) {
-        //? if >=1.21.11 {
-        snapTo(
-        //? } else
-        //moveTo(
-                position.x, position.y, position.z, position.yaw, position.pitch
-        );
+        //~ if >=1.21.11 moveTo -> snapTo
+        snapTo(position.x, position.y, position.z, position.yaw, position.pitch);
         xBob = getXRot();
         yBob = getYRot();
         xBobO = xBob; // Prevents camera from rotating upon entering freecam.
@@ -138,18 +128,18 @@ public class FreeCamera extends AbstractClientPlayer {
         return true;
     }
 
+    private ClientLevel getClientLevel() {
+        //~ if >=1.20.6 'clientLevel' -> '(ClientLevel) level()'
+        return (ClientLevel) level();
+    }
+
     public void spawn() {
-        //? if >=1.20.6 {
-        ((ClientLevel) level()).addEntity(this);
-        //? } else
-        //clientLevel.putNonPlayerEntity(getId(), this);
+        //~ if >=1.20.6 'putNonPlayerEntity(getId(), this)' -> 'addEntity(this)'
+        getClientLevel().addEntity(this);
     }
 
     public void despawn() {
-        //? if >=1.20.6 {
-        ((ClientLevel) level()).removeEntity(getId(), RemovalReason.DISCARDED);
-        //? } else
-        //clientLevel.removeEntity(getId(), RemovalReason.DISCARDED);
+        getClientLevel().removeEntity(getId(), RemovalReason.DISCARDED);
     }
 
     // Prevents fall damage sound when FreeCamera touches ground with noClip disabled.
@@ -189,12 +179,8 @@ public class FreeCamera extends AbstractClientPlayer {
 
     // Makes night vision apply to FreeCamera when Iris is enabled.
     @Override
-    public MobEffectInstance getEffect(
-            //? if >=1.20.6 {
-            Holder<MobEffect> effect
-            //? } else
-            //MobEffect effect
-    ) {
+    //~ if >=1.20.6 'MobEffect effect' -> 'Holder<MobEffect> effect'
+    public MobEffectInstance getEffect(Holder<MobEffect> effect) {
         return MC.player.getEffect(effect);
     }
 
