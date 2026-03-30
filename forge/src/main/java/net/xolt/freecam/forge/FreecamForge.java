@@ -9,15 +9,15 @@ import net.minecraftforge.fml.ModLoadingContext;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventBusSubscriber.Bus;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
-import net.minecraftforge.fmlclient.ConfigGuiHandler;
+import net.minecraftforge.client.ConfigScreenHandler;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.config.gui.ConfigScreenProvider;
 //? forge: >= 41 {
-/*import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
-*///? } else
-import net.minecraftforge.fmlclient.registry.ClientRegistry;
+import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
+//? } else
+//import net.minecraftforge.client.ClientRegistry;
 
 @Mod(value = Freecam.MOD_ID)
 @Mod.EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
@@ -29,20 +29,20 @@ public class FreecamForge {
         ModConfig.setup();
         // Register our config screen with Forge
         ConfigScreenProvider.provider().ifPresent(provider -> ModLoadingContext.get().registerExtensionPoint(
-                ConfigGuiHandler.ConfigGuiFactory.class,
-                () -> new ConfigGuiHandler.ConfigGuiFactory((mc, parent) -> provider.getConfigScreen(parent))
+                ConfigScreenHandler.ConfigScreenFactory.class,
+                () -> new ConfigScreenHandler.ConfigScreenFactory((mc, parent) -> provider.getConfigScreen(parent))
         ));
         //? forge: < 41 {
-        ModBindings.forEach(ClientRegistry::registerKeyBinding);
-        //? }
+        /*ModBindings.forEach(ClientRegistry::registerKeyBinding);
+        *///? }
     }
 
     //? forge: >= 41 {
-    /*@SubscribeEvent
+    @SubscribeEvent
     public static void registerKeymappings(RegisterKeyMappingsEvent event) {
         ModBindings.forEach(event::register);
     }
-    *///? }
+    //? }
 
     @Mod.EventBusSubscriber(bus = Bus.FORGE, value = Dist.CLIENT)
     public static class GlobalEventHandler {
