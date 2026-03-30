@@ -23,7 +23,9 @@ java {
 }
 
 tasks.named<Jar>("jar") {
-    from("LICENSE")
+    from(rootDir.resolve("LICENSE")) {
+        rename { "${meta.id}.$it" }
+    }
 }
 
 repositories {

@@ -140,6 +140,7 @@ tasks.processResources {
 tasks.jar {
     from(provider { bundle.map(::zipTree) }) {
         exclude(
+            "${meta.id}.LICENSE",
             "META-INF/mods.toml",
             "META-INF/*.MF",
             "META-INF/*.SF",
