@@ -48,11 +48,6 @@ val Project.commonExpansions: Map<String, String>
             "modModrinth" to meta.modrinthUrl.toString(),
             "modCrowdin" to meta.crowdinUrl.toString(),
             "minecraftVersion" to meta.properties.orNull("minecraft_version"),
-            "fabricLoaderVersion" to meta.deps.orNull("fabric_loader"),
-            "fabricLoaderReq" to meta.properties.orNull("fabric_loader_req"),
-            "fabricMcReq" to meta.properties.orNull("fabric_mc_req"),
-            "fabricApiId" to if (stonecutter.current.parsed < "1.19.2") "fabric" else "fabric-api",
-            "fabricApiVersion" to meta.deps.orNull("fabric_api"),
             "neoForgeVersion" to meta.deps.orNull("neoforge"),
             "neoforgeLoaderReq" to meta.properties.orNull("neoforge_loader_req"),
             "neoforgeReq" to meta.properties.orNull("neoforge_req"),
@@ -64,10 +59,3 @@ val Project.commonExpansions: Map<String, String>
             "clothConfigReq" to meta.properties.orNull("cloth_config_req"),
         ).filterValues { it?.isNotEmpty() == true }.mapValues { it.value!! }
     }
-
-// TODO: handle JSON as structured data, to avoid string injection hacks
-val Project.commonJsonExpansions get() = buildMap {
-    putAll(project.commonExpansions)
-    mapValues { (_, v) -> v.replace("\n", "\\\\n") }
-    put("modAuthorsJson", meta.authors.joinToString("\", \""))
-}

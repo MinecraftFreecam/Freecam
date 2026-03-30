@@ -127,11 +127,11 @@ tasks.processResources {
     }
 
     filesMatching("freecam-forge.mixins.json") {
-        expand(commonJsonExpansions)
+        expand(commonExpansions)
     }
 
     filesMatching("pack.mcmeta") {
-        expand(commonJsonExpansions)
+        expand(commonExpansions)
     }
 
     inputs.properties(commonExpansions)

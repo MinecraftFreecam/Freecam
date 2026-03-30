@@ -47,6 +47,6 @@ dependencies {
 
 tasks.processResources {
     filesMatching("freecam-common.mixins.json") {
-        expand(commonJsonExpansions)
+        expand(commonExpansions)
     }
 }

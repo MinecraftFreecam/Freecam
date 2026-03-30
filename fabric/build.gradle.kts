@@ -1,4 +1,5 @@
 import dev.kikugie.stonecutter.StonecutterExperimentalAPI
+import net.fabricmc.loom.task.FabricModJsonV1Task
 
 plugins {
     alias(libs.plugins.fabric.loom)
@@ -88,13 +89,65 @@ tasks.register<Copy>("buildAndCollect") {
 }
 
 tasks {
-    processResources {
-        filesMatching("fabric.mod.json") {
-            expand(commonJsonExpansions)
+    val generateModJson by registering(FabricModJsonV1Task::class) {
+        outputFile = layout.buildDirectory.dir("generated-mod-json").map {
+            it.file("fabric.mod.json")
         }
 
+        json {
+            modId = meta.id
+            name = meta.name
+            version = meta.version
+            description = meta.description
+            licenses = listOf(meta.license)
+            meta.authors.forEach(::author)
+
+            icon {
+                size = 128
+                path = "icon.png"
+            }
+
+            client()
+            entrypoint("client", "net.xolt.freecam.fabric.FreecamFabric")
+            entrypoint("modmenu", "net.xolt.freecam.fabric.ModMenuIntegration")
+
+            accessWidener = "freecam.accesswidener"
+            sequenceOf("common", "fabric").forEach {
+                mixin {
+                    environment = "client"
+                    value = "freecam-$it.mixins.json"
+                }
+            }
+
+            depends("minecraft", sc.properties.get<String>("fabric_mc_req"))
+            depends("fabricloader", sc.properties.get<String>("fabric_loader_req"))
+            depends(if (sc.current.parsed < "1.19.2") "fabric" else "fabric-api", "*")
+            recommends("modmenu", "*")
+
+            contactInformation = mapOf(
+                "homepage" to meta.homepageUrl.toString(),
+                "sources" to meta.sourceUrl.toString(),
+                "issues" to meta.issuesUrl.toString(),
+            )
+
+            customData = mapOf(
+                "modmenu" to mapOf(
+                    "links" to mapOf(
+                        "modmenu.crowdin" to meta.crowdinUrl.toString(),
+                        "modmenu.curseforge" to meta.curseforgeUrl.toString(),
+                        "modmenu.modrinth" to meta.modrinthUrl.toString(),
+                        "modmenu.github_releases" to meta.githubReleasesUrl.toString(),
+                    ),
+                ),
+            )
+        }
+    }
+
+    processResources {
+        from(generateModJson)
+
         filesMatching("freecam-fabric.mixins.json") {
-            expand(commonJsonExpansions)
+            expand(commonExpansions)
         }
 
         inputs.properties(commonExpansions)
