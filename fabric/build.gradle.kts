@@ -20,12 +20,15 @@ dependencies {
     })
 
     modImplementation("net.fabricmc:fabric-loader:${meta.deps["fabric_loader"]}")
-    modApi("net.fabricmc.fabric-api:fabric-api:${meta.deps["fabric_api"]}") {
-        exclude(module = "fabric-loader")
+
+    sequenceOf(
+        "fabric-lifecycle-events-v1",
+        "fabric-key-binding-api-v1",
+    ).forEach { module ->
+        modImplementation(fabricApi.module(module, meta.deps["fabric_api"]))
     }
 
     modImplementation("com.terraformersmc:modmenu:${meta.deps["modmenu"]}") {
-        exclude(module = "fabric-api")
         exclude(module = "fabric-loader")
     }
 
