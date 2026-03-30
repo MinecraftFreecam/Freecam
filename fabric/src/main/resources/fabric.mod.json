@@ -23,6 +23,7 @@
       "net.xolt.freecam.fabric.ModMenuIntegration"
     ]
   },
+  "accessWidener": "freecam.accesswidener",
   "mixins": [
     "freecam-fabric.mixins.json",
     "freecam-common.mixins.json"
