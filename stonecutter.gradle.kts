@@ -109,7 +109,7 @@ changelog {
 
     // Regex used to find versions in headings.
     // The default regex only supports semantic versions, this one is more lenient.
-    headerParserRegex = Regex("(\\d+(?:\\.\\d+)+(?:-[-a-z]+\\d*)?)")
+    headerParserRegex = Regex("(\\d+(?:\\.\\d+)+(?:-[-a-z]+(?:\\.\\d+)?)?)")
 }
 
 tasks.generateReleaseMetadata {

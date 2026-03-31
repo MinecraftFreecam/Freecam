@@ -2,8 +2,9 @@
 name = "Freecam"
 id = "freecam"
 group = "net.xolt.freecam"
+# Version can specify a semver pre-release, e.g. -alpha.1
+# Remember to run `:patchChangelog` when updating
 version = "1.3.6"
-release_type = "release" # alpha, beta, release
 authors = ["hashalite", "Matt Sturgeon"]
 description = "A highly customizable freecam mod."
 license = "MIT"
