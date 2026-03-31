@@ -28,6 +28,7 @@ include(
     "api",
     "api:plugin",
     "conventions",
+    "i18n-plugin",
     "loom-adapter",
     "release-metadata",
     "settings",
