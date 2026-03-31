@@ -10,36 +10,26 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-//? if >=26.1 {
-/*import org.spongepowered.asm.mixin.injection.Redirect;
-*///? } else {
-import net.minecraft.world.level.Level;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-//? }
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+//? if <26.1
+import net.minecraft.world.level.Level;
 //? if <1.21.11
 //import net.minecraft.world.level.BlockGetter;
 
 @Mixin(Camera.class)
-public abstract class CameraMixin {
+public class CameraMixin {
 
     @Shadow private Entity entity;
     @Shadow private float eyeHeightOld;
     @Shadow private float eyeHeight;
 
-    //? if >= 26.1
-    //@Shadow protected abstract void alignWithEntity(float par1);
-
     // When toggling freecam, update the camera's eye height instantly without any transition.
     //? if >=26.1 {
-    /*@Redirect(method = "update", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Camera;alignWithEntity(F)V"))
-    private void onAlignWithEntity(Camera instance, float tickDelta) {
-        // FIXME: this approach is likely flawed.
-        // We dont cancel the transition when _exiting_ freecam
-        if (entity instanceof FreeCamera) {
-            eyeHeightOld = eyeHeight = entity.getEyeHeight();
-        } else {
-            alignWithEntity(tickDelta);
+    /*@Inject(method = "setEntity", at = @At("HEAD"))
+    private void onSetEntity(Entity entity, CallbackInfo ci) {
+        if (entity instanceof FreeCamera || this.entity instanceof FreeCamera) {
+            this.eyeHeightOld = this.eyeHeight = entity.getEyeHeight();
         }
     }
     *///? } else {
