@@ -2,16 +2,17 @@ package net.xolt.freecam.config;
 
 import com.google.common.base.Supplier;
 import com.google.common.base.Suppliers;
-import me.shedaniel.autoconfig.AutoConfigClient;
 import net.xolt.freecam.Freecam;
+import net.xolt.freecam.config.gui.ConfigScreenProvider;
 import net.xolt.freecam.config.keys.FreecamKeyMapping;
 import org.jetbrains.annotations.NotNull;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.*;
 import java.util.function.Consumer;
 import java.util.stream.Stream;
 
-import static net.xolt.freecam.Freecam.MC;
 import static net.xolt.freecam.config.keys.FreecamKeyMappingBuilder.builder;
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_F4;
 
@@ -29,8 +30,10 @@ public enum ModBindings {
             .holdAction(Freecam::resetTripodHandler)
             .build()),
     KEY_CONFIG_GUI(() -> builder("configGui")
-            .action(() -> MC.setScreen(AutoConfigClient.getConfigScreen(ModConfig.class, MC.screen).get()))
+            .action(ConfigScreenProvider.provider()::openConfigScreen)
             .build());
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(ModBindings.class);
 
     private final Supplier<FreecamKeyMapping> lazyMapping;
 
@@ -80,5 +83,9 @@ public enum ModBindings {
      */
     public static @NotNull Stream<FreecamKeyMapping> stream() {
         return Arrays.stream(values()).map(ModBindings::get);
+    }
+
+    private static Logger logger() {
+        return LOGGER;
     }
 }

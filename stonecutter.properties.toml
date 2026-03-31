@@ -1,0 +1,145 @@
+# Stonecutter centralized properties
+# https://stonecutter.kikugie.dev/wiki/config/properties#centralized-properties
+#
+# Resolution order:
+# 1. Project path scopes (e.g., "forge:1.17.1")
+# 2. Tag scopes (branch id, version, project name)
+# 3. Flattened keys (tables become dotted properties)
+
+
+[relationship]
+cloth-config.type = "bundled"
+cloth-config.curseforge_slug = "cloth-config"
+cloth-config.modrinth_id = "9s6osm5g"
+
+
+[fabric.relationship]
+fabric-api.type = "required"
+fabric-api.curseforge_slug = "fabric-api"
+fabric-api.modrinth_id = "P7dR8mSH"
+modmenu.type = "optional"
+modmenu.curseforge_slug = "modmenu"
+modmenu.modrinth_id = "mOgUt4GM"
+
+
+# Parchment mappings: https://maven.parchmentmc.org/org/parchmentmc/data
+# Cloth Config: https://mvnrepository.com/artifact/me.shedaniel.cloth/cloth-config
+# ModMenu: https://maven.terraformersmc.com/releases/com/terraformersmc/modmenu
+# NeoForge project: https://projects.neoforged.net/neoforged/neoforge
+# Fabric version range syntax:
+# https://wiki.fabricmc.net/documentation:fabric_mod_json_spec
+# Forge and NeoForge uses Maven version ranges:
+# https://maven.apache.org/enforcer/enforcer-rules/versionRanges.html
+[deps]
+# Fabric loader: https://fabricmc.net/develop
+fabric_loader = "0.18.0"
+# Sponge Mixin: https://repo.spongepowered.org/repository/maven-public/org/spongepowered/mixin/
+# TODO: move to version catalog
+mixin = "0.8.5"
+
+
+["1.21.11"]
+deps.parchment = "1.21.10-2025.10.12"
+deps.cloth = "21.11.153"
+cloth_config_req = "[21.11,21.12)"
+
+deps.fabric_api = "0.139.4+1.21.11"
+deps.modmenu = "17.0.0-beta.2"
+fabric_mc_req = ">=1.21.11"
+fabric_loader_req = ">=0.14.0"
+
+deps.neoforge = "21.11.6-beta"
+deps.neoforge_pr = ""
+neoforge_req = "[21.9.0-beta,)"
+neoforge_loader_req = "[1,)"
+neoforge_mc_req = "[1.21.11,)"
+
+
+["1.20.6"]
+deps.parchment = "1.20.6-2024.06.16"
+deps.cloth = "14.0.126"
+cloth_config_req = "[14,15)"
+
+deps.fabric_api = "0.100.8+1.20.6"
+deps.modmenu = "10.0.0"
+fabric_mc_req = "~1.20.5"
+fabric_loader_req = ">=0.14.0"
+
+deps.neoforge = "20.6.139"
+deps.neoforge_pr = ""
+neoforge_req = "[20.6.11-beta,)"
+neoforge_loader_req = "[1,)"
+neoforge_mc_req = "[1.20.6,)"
+
+fabric.supported_mc_versions = ["1.20.5"]
+
+
+["1.19.4"]
+deps.parchment = "1.19.4-2023.06.26"
+deps.cloth = "10.1.117"
+cloth_config_req = "[10.1,11)"
+
+deps.fabric_api = "0.87.2+1.19.4"
+deps.modmenu = "6.3.1"
+fabric_mc_req = "~1.19.4"
+fabric_loader_req = ">=0.12.11"
+
+deps.forge = "45.2.6"
+forge_req = "[45,)"
+forge_loader_req = "[45,)"
+forge_mc_req = "[1.19.4,1.20)"
+
+
+["1.18.2"]
+deps.parchment = "1.18.2-2022.11.06"
+deps.cloth = "6.5.102"
+cloth_config_req = "[6,7)"
+
+deps.fabric_api = "0.77.0+1.18.2"
+deps.modmenu = "3.2.5"
+fabric_mc_req = "~1.18.2"
+fabric_loader_req = ">=0.12.11"
+
+deps.forge = "40.2.14"
+forge_req = "[40,)"
+forge_loader_req = "[40,)"
+forge_mc_req = "[1.18.2,1.19)"
+
+
+["1.17.1"]
+deps.parchment = "1.17.1-2021.12.12"
+deps.cloth = "5.3.63"
+cloth_config_req = "[5,6)"
+
+deps.fabric_api = "0.46.1+1.17"
+deps.modmenu = "2.0.17"
+fabric_mc_req = "~1.17"
+fabric_loader_req = ">=0.12.11"
+
+deps.forge = "37.1.1"
+forge_req = "[37,)"
+forge_loader_req = "[37,)"
+forge_mc_req = "[1.17.1,1.18)"
+
+fabric.supported_mc_versions = ["1.17"]
+
+forge.relationship.cloth-config.type = "optional"
+
+
+["1.16.5"]
+supported_mc_versions = ["1.16.2", "1.16.3", "1.16.4"]
+
+deps.parchment = "1.16.5-2022.03.06"
+deps.cloth = "4.17.101"
+
+deps.fabric_api = "0.42.0+1.16"
+deps.modmenu = "1.16.23"
+fabric_mc_req = "~1.16.2"
+fabric_loader_req = ">=0.12.11"
+
+deps.forge = "36.2.41"
+forge_req = "[34,)"
+forge_loader_req = "[34,)"
+forge_mc_req = "[1.16.2,1.17)"
+
+forge.relationship.cloth-config.type = "optional"

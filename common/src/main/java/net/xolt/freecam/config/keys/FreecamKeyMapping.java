@@ -8,7 +8,10 @@ import java.util.function.Consumer;
 
 public class FreecamKeyMapping extends KeyMapping implements Tickable {
 
+    //? if >=1.21.11 {
     private static final Category FREECAM_CATEGORY = Category.register(Identifier.fromNamespaceAndPath("freecam", "freecam"));
+    //? } else
+    //private static final String FREECAM_CATEGORY = "key.category.freecam.freecam";
 
     private final Consumer<FreecamKeyMapping> onTick;
 

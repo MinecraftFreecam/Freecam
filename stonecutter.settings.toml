@@ -1,0 +1,13 @@
+# See https://stonecutter.kikugie.dev/wiki/config/settings#data-driven-setup
+"$schema" = "https://codeberg.org/stonecutter/stonecutter/src/branch/0.8/tools/settings-schema.json"
+
+# The version used by "reset active project"
+vcs = "1.21.11"
+
+# Gradle projects to build for the corresponding Minecraft version.
+[versions]
+"1.21.11" = ["cloth-config", "common", "fabric", "neoforge"]
+"1.20.6" = ["cloth-config", "common", "fabric", "neoforge"]
+"1.19.4" = ["cloth-config", "common", "fabric", "forge"]
+"1.18.2" = ["cloth-config", "common", "fabric", "forge"]
+"1.17.1" = ["cloth-config", "common", "fabric", "forge"]

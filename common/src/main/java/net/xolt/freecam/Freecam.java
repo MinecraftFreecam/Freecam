@@ -4,11 +4,9 @@ import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.client.player.ClientInput;
 import net.minecraft.client.player.KeyboardInput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
-import net.minecraft.world.entity.player.Input;
 import net.minecraft.world.level.ChunkPos;
 import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfig;
@@ -19,6 +17,12 @@ import net.xolt.freecam.util.FreeCamera;
 import net.xolt.freecam.util.FreecamPosition;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
+//? if >=1.21.11 {
+import net.minecraft.client.player.ClientInput;
+import net.minecraft.world.entity.player.Input;
+//? } else {
+/*import net.minecraft.client.player.Input;
+*///? }
 
 public class Freecam {
 
@@ -46,6 +50,7 @@ public class Freecam {
         if (isEnabled()) {
             // Prevent player from being controlled when freecam is enabled
             if (mc.player != null && mc.player.input instanceof KeyboardInput && !isPlayerControlEnabled()) {
+                //? if >=1.21.11 {
                 ClientInput input = new ClientInput();
                 Input keyPresses = mc.player.input.keyPresses;
                 input.keyPresses = new Input(
@@ -57,6 +62,10 @@ public class Freecam {
                         keyPresses.shift(),
                         false
                 );
+                //? } else {
+                /*Input input = new Input();
+                input.keyPresses.shift() = mc.player.input.keyPresses.shift();
+                *///? }
                 mc.player.input = input;
             }
         }
@@ -102,7 +111,7 @@ public class Freecam {
     @ApiStatus.AvailableSince("0.3.1")
     public static void toggle() {
         if (isRestrictedOnServer()) {
-            if (ModConfig.INSTANCE.notification.notifyFreecam) {
+            if (ModConfig.get().shouldNotifyFreecam()) {
                 MC.player.displayClientMessage(Component.translatable("msg.freecam.restrictedByConfig", MC.getCurrentServer().ip), true);
             }
             return;
@@ -130,7 +139,7 @@ public class Freecam {
         }
 
         if (isRestrictedOnServer()) {
-            if (ModConfig.INSTANCE.notification.notifyTripod) {
+            if (ModConfig.get().shouldNotifyTripod()) {
                 MC.player.displayClientMessage(Component.translatable("msg.freecam.restrictedByConfig", MC.getCurrentServer().ip), true);
             }
             return;
@@ -166,7 +175,11 @@ public class Freecam {
             freeCamera.input = new KeyboardInput(MC.options);
         } else {
             MC.player.input = new KeyboardInput(MC.options);
-            freeCamera.input = new ClientInput();
+            freeCamera.input =
+                    //? if >=1.21.11 {
+                    new ClientInput();
+                    //? } else
+                    //new Input();
         }
         playerControlEnabled = !playerControlEnabled;
     }
@@ -197,7 +210,7 @@ public class Freecam {
         MC.setCameraEntity(freeCamera);
         activeTripod = tripod;
 
-        if (ModConfig.INSTANCE.notification.notifyTripod) {
+        if (ModConfig.get().shouldNotifyTripod()) {
             MC.player.displayClientMessage(Component.translatable("msg.freecam.openTripod", tripod), true);
         }
     }
@@ -207,7 +220,7 @@ public class Freecam {
         onDisable();
 
         if (MC.player != null) {
-            if (ModConfig.INSTANCE.notification.notifyTripod) {
+            if (ModConfig.get().shouldNotifyTripod()) {
                 MC.player.displayClientMessage(Component.translatable("msg.freecam.closeTripod", activeTripod), true);
             }
         }
@@ -221,7 +234,7 @@ public class Freecam {
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
 
-        if (ModConfig.INSTANCE.notification.notifyFreecam) {
+        if (ModConfig.get().shouldNotifyFreecam()) {
             MC.player.displayClientMessage(Component.translatable("msg.freecam.enable"), true);
         }
     }
@@ -230,7 +243,7 @@ public class Freecam {
         onDisable();
 
         if (MC.player != null) {
-            if (ModConfig.INSTANCE.notification.notifyFreecam) {
+            if (ModConfig.get().shouldNotifyFreecam()) {
                 MC.player.displayClientMessage(Component.translatable("msg.freecam.disable"), true);
             }
         }
@@ -250,7 +263,11 @@ public class Freecam {
         MC.setCameraEntity(MC.player);
         playerControlEnabled = false;
         freeCamera.despawn();
-        freeCamera.input = new ClientInput();
+        freeCamera.input =
+                //? if >=1.21.11 {
+                new ClientInput();
+                //? } else
+                //new Input();
         freeCamera = null;
 
         if (MC.player != null) {
@@ -271,7 +288,7 @@ public class Freecam {
             tripods.put(tripod, null);
         }
 
-        if (ModConfig.INSTANCE.notification.notifyTripod) {
+        if (ModConfig.get().shouldNotifyTripod()) {
             MC.player.displayClientMessage(Component.translatable("msg.freecam.tripodReset", tripod), true);
         }
     }
@@ -310,8 +327,8 @@ public class Freecam {
         }
         freeCamera.copyPosition(MC.player);
         freeCamera.applyPerspective(
-                ModConfig.INSTANCE.visual.perspective,
-                ModConfig.INSTANCE.collision.alwaysCheck || !ModConfig.INSTANCE.collision.ignoreAll
+                ModConfig.get().getInitialPerspective(),
+                ModConfig.get().shouldCheckInitialCollision()
         );
     }
 
@@ -340,22 +357,7 @@ public class Freecam {
     @ApiStatus.AvailableSince("1.2.4")
     public static boolean isRestrictedOnServer() {
         ServerData server = MC.getCurrentServer();
-        ModConfig.ServerRestriction mode = ModConfig.INSTANCE.servers.mode;
-        if (mode == ModConfig.ServerRestriction.NONE || server == null || MC.hasSingleplayerServer()) {
-            return false;
-        }
-
-        String ip = server.ip.trim().toLowerCase();
-        return switch (mode) {
-            case WHITELIST -> ModConfig.INSTANCE.servers.whitelist.stream()
-                    .map(String::trim)
-                    .map(String::toLowerCase)
-                    .noneMatch(ip::equals);
-            case BLACKLIST -> ModConfig.INSTANCE.servers.blacklist.stream()
-                    .map(String::trim)
-                    .map(String::toLowerCase)
-                    .anyMatch(ip::equals);
-            default -> throw new IllegalStateException("Unexpected mode value in Freecam.isRestrictedOnServer: " + mode);
-        };
+        return server != null && !MC.hasSingleplayerServer()
+                && ModConfig.get().isRestrictedOnServer(server.ip);
     }
 }

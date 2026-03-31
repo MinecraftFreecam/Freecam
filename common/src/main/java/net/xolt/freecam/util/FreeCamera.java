@@ -2,82 +2,58 @@ package net.xolt.freecam.util;
 
 import com.mojang.authlib.GameProfile;
 import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.multiplayer.ClientPacketListener;
-import net.minecraft.client.multiplayer.CommonListenerCookie;
-import net.minecraft.client.multiplayer.LevelLoadTracker;
+import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.KeyboardInput;
-import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.Holder;
-import net.minecraft.network.protocol.Packet;
-import net.minecraft.network.protocol.PacketFlow;
-import net.minecraft.server.ServerLinks;
 import net.minecraft.tags.FluidTags;
 import net.minecraft.world.effect.MobEffect;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.Pose;
-import net.minecraft.world.entity.player.Input;
-import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.material.PushReaction;
+import net.minecraft.world.phys.Vec2;
 import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.config.model.Perspective;
 import org.jetbrains.annotations.ApiStatus;
+//~ if >=1.21.11 Input -> ClientInput
+import net.minecraft.client.player.ClientInput;
+//? if >=1.20.6
+import net.minecraft.core.Holder;
 
-import java.util.Collections;
 import java.util.UUID;
 
 import static net.xolt.freecam.Freecam.MC;
 
 @ApiStatus.Internal
 @ApiStatus.AvailableSince("0.4.0")
-public class FreeCamera extends LocalPlayer {
-
-    private static final ClientPacketListener NETWORK_HANDLER = new ClientPacketListener(
-            MC,
-            new net.minecraft.network.Connection(PacketFlow.CLIENTBOUND),
-            new CommonListenerCookie(
-                    // levelLoadTracker
-                    new LevelLoadTracker(),
-                    // localGameProfile
-                    new GameProfile(UUID.randomUUID(), "FreeCamera"),
-                    // worldSessionTelemetryManager
-                    MC.getTelemetryManager().createWorldSessionManager(false, null, null),
-                    // receivedRegistries
-                    MC.player.registryAccess().freeze(),
-                    // enabledFeatures
-                    FeatureFlagSet.of(),
-                    // serverBrand
-                    null,
-                    // serverData
-                    null,
-                    // postDisconnectScreen
-                    null,
-                    // serverCookies
-                    Collections.emptyMap(),
-                    // chatState
-                    null,
-                    // customReportDetails
-                    Collections.emptyMap(),
-                    // serverLinks
-                    ServerLinks.EMPTY,
-                    // seenPlayers
-                    Collections.emptyMap(),
-                    // seenInsecureChatWarning
-                    false)) {
-        @Override
-        public void send(Packet<?> packet) {
-        }
-    };
+public class FreeCamera extends AbstractClientPlayer {
+    //~ if >=1.21.11 Input -> ClientInput
+    public ClientInput input;
+    public float yBob;
+    public float xBob;
+    public float yBobO;
+    public float xBobO;
 
     public FreeCamera(int id) {
-        super(MC, MC.level, NETWORK_HANDLER, MC.player.getStats(), MC.player.getRecipeBook(), Input.EMPTY, false);
+        super(MC.level, new GameProfile(UUID.randomUUID(), "FreeCamera"));
 
         setId(id);
         setPose(Pose.SWIMMING);
-        connection.setClientLoaded(true); // Otherwise input is frozen
         getAbilities().flying = true;
         input = new KeyboardInput(MC.options);
+    }
+
+    @Override
+    public void tick() {
+        input.tick(
+            //? if <1.21.11
+            //false // isMovingSlowly
+            //? if <1.21.11 && >=1.19
+            //, 0.3F // sneakSpeedMultiplier
+        );
+        doMotion();
+        super.tick();
     }
 
     @Override
@@ -86,6 +62,7 @@ public class FreeCamera extends LocalPlayer {
     }
 
     public void applyPosition(FreecamPosition position) {
+        //~ if >=1.21.11 moveTo -> snapTo
         snapTo(position.x, position.y, position.z, position.yaw, position.pitch);
         xBob = getXRot();
         yBob = getYRot();
@@ -95,7 +72,7 @@ public class FreeCamera extends LocalPlayer {
 
     // Mutate the position and rotation based on perspective
     // If checkCollision is true, move as far as possible without colliding
-    public void applyPerspective(ModConfig.Perspective perspective, boolean checkCollision) {
+    public void applyPerspective(Perspective perspective, boolean checkCollision) {
         FreecamPosition position = new FreecamPosition(this);
 
         switch (perspective) {
@@ -151,12 +128,18 @@ public class FreeCamera extends LocalPlayer {
         return true;
     }
 
+    private ClientLevel getClientLevel() {
+        //~ if >=1.20.6 'clientLevel' -> '(ClientLevel) level()'
+        return (ClientLevel) level();
+    }
+
     public void spawn() {
-        ((ClientLevel) level()).addEntity(this);
+        //~ if >=1.20.6 'putNonPlayerEntity(getId(), this)' -> 'addEntity(this)'
+        getClientLevel().addEntity(this);
     }
 
     public void despawn() {
-        ((ClientLevel) level()).removeEntity(getId(), RemovalReason.DISCARDED);
+        getClientLevel().removeEntity(getId(), RemovalReason.DISCARDED);
     }
 
     // Prevents fall damage sound when FreeCamera touches ground with noClip disabled.
@@ -196,14 +179,15 @@ public class FreeCamera extends LocalPlayer {
 
     // Makes night vision apply to FreeCamera when Iris is enabled.
     @Override
-    public MobEffectInstance getEffect(Holder<MobEffect> holder) {
-        return MC.player.getEffect(holder);
+    //~ if >=1.20.6 'MobEffect effect' -> 'Holder<MobEffect> effect'
+    public MobEffectInstance getEffect(Holder<MobEffect> effect) {
+        return MC.player.getEffect(effect);
     }
 
     // Prevents pistons from moving FreeCamera when collision.ignoreAll is enabled.
     @Override
     public PushReaction getPistonPushReaction() {
-        return ModConfig.INSTANCE.collision.ignoreAll ? PushReaction.IGNORE : PushReaction.NORMAL;
+        return ModConfig.get().ignoreAllCollision() ? PushReaction.IGNORE : PushReaction.NORMAL;
     }
 
     // Prevents collision with solid entities (shulkers, boats)
@@ -218,12 +202,6 @@ public class FreeCamera extends LocalPlayer {
         super.setPose(Pose.SWIMMING);
     }
 
-    // Prevents slow down due to being in swimming pose. (Fixes being unable to sprint)
-    @Override
-    public boolean isMovingSlowly() {
-        return false;
-    }
-
     // Prevents water submersion sounds from playing.
     @Override
     protected boolean updateIsUnderwater() {
@@ -235,16 +213,71 @@ public class FreeCamera extends LocalPlayer {
     @Override
     protected void doWaterSplashEffect() {}
 
-    @Override
-    public void aiStep() {
-        if (ModConfig.INSTANCE.movement.flightMode.equals(ModConfig.FlightMode.DEFAULT)) {
-            getAbilities().setFlyingSpeed(0);
-            Motion.doMotion(this, ModConfig.INSTANCE.movement.horizontalSpeed, ModConfig.INSTANCE.movement.verticalSpeed);
-        } else {
-            getAbilities().setFlyingSpeed((float) ModConfig.INSTANCE.movement.verticalSpeed / 10);
+    private void doMotion() {
+        switch (ModConfig.get().getFlightMode()) {
+            case DEFAULT -> {
+                getAbilities().setFlyingSpeed(0);
+                Motion.doMotion(this, ModConfig.get().getHorizontalSpeed(), ModConfig.get().getVerticalSpeed());
+            }
+            case CREATIVE -> {
+                getAbilities().setFlyingSpeed((float) ModConfig.get().getVerticalSpeed() / 10);
+
+                if (this.input.keyPresses.shift() ^ this.input.keyPresses.jump()) {
+                    int direction = this.input.keyPresses.jump() ? 1 : -1;
+                    this.setDeltaMovement(this.getDeltaMovement().add(0.0F, ((float) direction * this.getAbilities().getFlyingSpeed() * 3.0F), 0.0F));
+                }
+            }
         }
-        super.aiStep();
         getAbilities().flying = true;
         setOnGround(false);
+    }
+
+    @Override
+    public float getViewXRot(float partialTick) {
+        return this.getXRot();
+    }
+
+    @Override
+    public float getViewYRot(float partialTick) {
+        return this.getYRot();
+    }
+
+    // In newer versions, this also enables movement ticking (like below)
+    @Override
+    public boolean isEffectiveAi() {
+        return true;
+    }
+
+    //? if >=1.21.11 {
+    //In LivingEntity's aiStep(), this method decides whether to call travel(), enabling movement ticking
+    @Override
+    public boolean canSimulateMovement() {
+        return true;
+    }
+
+    @Override
+    protected void applyInput() {
+        Vec2 vec2 = this.input.getMoveVector();
+        if (vec2.lengthSquared() != 0.0F)
+            vec2 = vec2.scale(0.98F);
+        applyInputHelper(vec2, this.input.keyPresses.jump());
+    }
+    //? } else {
+    /*@Override
+    protected void serverAiStep() {
+        Vec2 moveVector = new Vec2(this.input.keyPresses.left()Impulse, this.input.forwardImpulse);
+        applyInputHelper(moveVector, this.input.keyPresses.jump());
+    }
+    *///? }
+
+    private void applyInputHelper(Vec2 moveVector, boolean jumping) {
+        this.xxa = moveVector.x;
+        this.zza = moveVector.y;
+        this.jumping = jumping;
+        this.setSprinting((MC.options.keySprint.isDown() && this.input.keyPresses.forward()) || (this.input.keyPresses.forward() && this.isSprinting()));
+        this.yBobO = this.yBob;
+        this.xBobO = this.xBob;
+        this.xBob = this.xBob + (this.getXRot() - this.xBob) * 0.5F;
+        this.yBob = this.yBob + (this.getYRot() - this.yBob) * 0.5F;
     }
 }

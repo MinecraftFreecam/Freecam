@@ -18,9 +18,14 @@ public class MinecraftMixin {
 
     // Prevents attacks when allowInteract is disabled.
     @Inject(method = "startAttack", at = @At("HEAD"), cancellable = true)
-    private void onDoAttack(CallbackInfoReturnable<Boolean> cir) {
+    private void onDoAttack(
+            //? if >1.17.1 {
+            CallbackInfoReturnable<Boolean> ci
+            //? } else
+            //CallbackInfo ci
+    ) {
         if (freecam$disableInteract()) {
-            cir.cancel();
+            ci.cancel();
         }
     }
 
@@ -49,13 +54,21 @@ public class MinecraftMixin {
     }
 
     // Disables freecam if the player disconnects.
-    @Inject(method = "disconnect", at = @At(value = "HEAD"))
+    @Inject(
+            //? if >=1.21.11 {
+            method = "disconnect",
+            //? } else if >=1.20.6 {
+            /*method = "disconnect()V",
+            *///? } else
+            //method = "clearLevel()V",
+            at = @At(value = "HEAD")
+    )
     private void onDisconnect(CallbackInfo ci) {
         Freecam.onDisconnect();
     }
 
     @Unique
     private static boolean freecam$disableInteract() {
-        return Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && !ModConfig.INSTANCE.utility.allowInteract;
+        return Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && ModConfig.get().shouldPreventInteractions();
     }
 }

@@ -10,8 +10,10 @@ defaults:
 jobs:
   lint:
     runs-on: ubuntu-slim
-
     timeout-minutes: 30
+
+    env:
+      RUFF_OUTPUT_FORMAT: github
 
     steps:
       - name: Checkout required files
@@ -20,18 +22,23 @@ jobs:
           sparse-checkout: |
             ci
             CHANGELOG.md
-            gradle.properties
+            metadata.toml
+            pyproject.toml
+            uv.lock
           sparse-checkout-cone-mode: false
 
       - uses: actions/setup-python@v6
         with:
-          cache: pip
+          python-version-file: pyproject.toml
 
-      - name: Install test dependencies
-        run: pip install --requirement ci/requirements.txt
+      - name: Install uv
+        uses: astral-sh/setup-uv@v7
 
-      - name: Run tests
-        run: python -m pytest
+      - name: Install CI dev dependencies
+        run: uv sync --locked --group dev
+
+      - name: Check Python
+        run: uv run check
 
       - name: Lint changelog
-        run: python ci/lint_changelog.py
+        run: uv run lint-changelog
