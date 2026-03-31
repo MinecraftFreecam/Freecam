@@ -12,10 +12,10 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-//? if <26.1
+//? if <1.21.11 {
+/*import net.minecraft.world.level.BlockGetter;
+*///? } else if <26.1
 //import net.minecraft.world.level.Level;
-//? if <1.21.11
-//import net.minecraft.world.level.BlockGetter;
 
 @Mixin(Camera.class)
 public class CameraMixin {
