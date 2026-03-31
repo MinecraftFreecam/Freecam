@@ -9,23 +9,34 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Added
 
+### Changed
+
+### Removed
+
+### Fixed
+
+## [1.4.0-alpha.1] - 2026-03-31
+
+This version includes major underlying changes. Feedback and bug reports are greatly appreciated!
+**[Bug tracker](https://github.com/MinecraftFreecam/Freecam/issues).**
+
+### Added
+
 - 26.1 support ([370](https://github.com/MinecraftFreecam/Freecam/pull/370))
 
 ### Changed
 
 - Releases are now built for multiple supported Minecraft versions from a single codebase ([366](https://github.com/MinecraftFreecam/Freecam/pull/366))
   - Migrated from [Architectury](https://docs.architectury.dev) to [Stonecutter](https://stonecutter.kikugie.dev)
+  - While there should be no change in behavior, there were **many internal changes** throughout the project
 - Config file renamed from `freecam.json5` to `freecam.json` ([376](https://github.com/MinecraftFreecam/Freecam/pull/376))
   - Existing `freecam.json5` configs are read when `freecam.json` isn't present
-  - All changes are saved to `freecam.json`
-- Cloth Config is now optional at runtime ([378](https://github.com/MinecraftFreecam/Freecam/pull/378))
-  - Config GUI is only available when Cloth Config is present
-  - A bundled Cloth Config distribution is still included in most builds
-- Refactor config system internals ([373](https://github.com/MinecraftFreecam/Freecam/pull/373), [374](https://github.com/MinecraftFreecam/Freecam/pull/374), [377](https://github.com/MinecraftFreecam/Freecam/pull/377))
-  - Separated Cloth Config GUI from the core config system
-- Refactor collision filtering logic ([375](https://github.com/MinecraftFreecam/Freecam/pull/375))
-
-### Removed
+  - All new changes are saved to `freecam.json`
+- Cloth Config is _technically_ now optional at runtime ([378](https://github.com/MinecraftFreecam/Freecam/pull/378))
+  - The config GUI is only available when Cloth Config is loaded
+  - A bundled Cloth Config distribution is **still included** in most builds
+- Refactored several config system internals ([373](https://github.com/MinecraftFreecam/Freecam/pull/373), [374](https://github.com/MinecraftFreecam/Freecam/pull/374), [375](https://github.com/MinecraftFreecam/Freecam/pull/375), [377](https://github.com/MinecraftFreecam/Freecam/pull/377))
+- Various translation updates
 
 ### Fixed
 
@@ -620,7 +631,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 - Minecraft 1.18 support.
 - Minecraft 1.17 support.
 
-[Unreleased]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.6...HEAD
+[Unreleased]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.0-alpha.1...HEAD
+[1.4.0-alpha.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.6...v1.4.0-alpha.1
 [1.3.6]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.5...v1.3.6
 [1.3.5]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.4...v1.3.5
 [1.3.4]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.3...v1.3.4
