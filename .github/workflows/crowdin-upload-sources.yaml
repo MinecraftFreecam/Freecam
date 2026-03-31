@@ -2,11 +2,11 @@ name: Crowdin (Upload Sources)
 
 on:
   workflow_dispatch: # Allow running manually
-  push: # Run when en_us is modified on the main branch
+  push: # Run when en_US is modified on the main branch
     branches:
       - main
     paths:
-      - '**/lang/en_us.json'
+      - i18n/src/main/en_US/*.toml
 
 # Queue this workflow after others in the 'crowdin' group, to avoid concurrency issues.
 concurrency:

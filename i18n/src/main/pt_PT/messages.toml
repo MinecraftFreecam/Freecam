@@ -1,0 +1,7 @@
+[freecam.msg]
+enabled = "Freecam habilitado"
+disabled = "Freecam desabilitado"
+tripod.open = "A abrir câmara %s"
+tripod.close = "A fechar câmara %s"
+tripod.reset = "Redefinir câmara %s"
+restricted.server = "Freecam proibido neste servidor (%s)."

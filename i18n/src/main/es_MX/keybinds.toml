@@ -1,0 +1,8 @@
+[key.category]
+freecam.controls = "Freecam"
+
+[key.freecam]
+toggle = "Alternar Freecam"
+controlPlayer.toggle = "Controlar Jugador"
+tripod.reset = "Restablecer Trípode"
+config.open = "GUI de configuración"

@@ -1,0 +1,8 @@
+[key.category]
+freecam.controls = "自由视角(Freecam)"
+
+[key.freecam]
+toggle = "切换自由视角(Freecam)"
+controlPlayer.toggle = "控制玩家"
+tripod.reset = "重置视角"
+config.open = "打开GUI"

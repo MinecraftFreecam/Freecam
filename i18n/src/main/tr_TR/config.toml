@@ -1,0 +1,115 @@
+[freecam.config.gui]
+title = "Freecam Ayarları"
+
+[freecam.config.controls]
+label = "Tuş Atamaları"
+tooltip = "Freecam tuş atamaları."
+
+[freecam.config.movement]
+label = "Hareket Ayarları"
+tooltip = "Kameranın hareketi."
+
+flightMode.label = "Uçuş Modu"
+flightMode.tooltip = "Freecam tarafından kullanılan uçuş türü."
+flightMode.DEFAULT = "Varsayılan"
+flightMode.CREATIVE = "Yaratıcı"
+
+speed.horizontal.label = "Yatay Hız"
+speed.horizontal.tooltip = "Freecam yatay hızı."
+speed.vertical.label = "Dikey Hız"
+speed.vertical.tooltip = "Freecam dikey hızı."
+
+[freecam.config.collision]
+label = "Çarpışma Ayarları"
+tooltip = "Freecam ile içinden geçebileceğiniz bloklar."
+
+ignoreAll.label = "Tüm Çarpışmaları Yoksay"
+ignoreAll."tooltip[0]" = "Freecam ile tüm blokların içinden geçmeye izin verir."
+ignoreAll."tooltip[1]" = "§eYukarıdaki ayarları geçersiz kılar."
+
+ignoreTransparent.label = "Şeffaf Blokları Yoksay"
+ignoreTransparent.tooltip = "Freecam ile şeffaf blokların içinden geçmeye izin verir."
+
+ignoreOpenable.label = "Açılabilir Blokları Yoksay"
+ignoreOpenable.tooltip = "Freecam ile kapılardan/tuzak kapılarından/çit kapılarından geçmeye izin verir."
+
+ignoreCustom.label = "Özel Yoksay Listesi"
+ignoreCustom.tooltip = "Freecam ile belirli blokların içinden geçmeye izin verir."
+
+whitelist.ids.label = "ID'leri Yoksay"
+whitelist.ids."tooltip[0]" = "Blok id kullanın, ör. \"grass_block\"."
+whitelist.ids."tooltip[1]" = "Namespace yazılmaz ise, \"minecraft:\" varsayılır."
+whitelist.patterns.label = "Düzenli İfadeleri Yoksay"
+whitelist.patterns."tooltip[0]" = "Düzenli İfade yazımı kullan."
+whitelist.patterns."tooltip[1]" = "Tam blok idleri ile karşılaştırılır, ör. \"minecraft:grass_block\"."
+
+alwaysCheck.label = "Her Zaman İlk Çarpışmayı Kontrol Edin"
+alwaysCheck."tooltip[0]" = "§7İlk Perspektifin§r çarpışmayı kontrol edip etmemesi"
+alwaysCheck."tooltip[1]" = "§7Tüm Çakışmaları Yoksay§r kullandığınızda bile."
+
+[freecam.config.visual]
+label = "Görsel Ayarlar"
+tooltip = "Freecam görünümü."
+
+perspective.label = "İlk Perspektif"
+perspective.tooltip = "Kameranın ilk perspektifi."
+perspective.FIRST_PERSON = "Birinci Şahıs"
+perspective.THIRD_PERSON = "Üçüncü Şahıs"
+perspective.THIRD_PERSON_MIRROR = "Ayna"
+perspective.INSIDE = "İçinde"
+
+showPlayer.label = "Oyuncuyu Göster"
+showPlayer.tooltip = "Oyuncunu orijinal konumunda gösterir."
+
+showHand.label = "Eli Göster"
+showHand.tooltip = "Freecam içinde elinizi görmenizi sağlar."
+
+fullBright.label = "Tam Parlaklık"
+fullBright.tooltip = "Freecam içindeyken parlaklığı arttırır."
+
+showSubmersionFog.label = "Batık Sisi Göster"
+showSubmersionFog.tooltip = "Su altında, lav altında ve ya tozlazmış kar içinde sis görmenizi sağlar."
+
+[freecam.config.utility]
+label = "İşe Yarar Ayarlar"
+tooltip = "Freecam geliştirmeleri."
+
+disableOnDamage.label = "Hasar aldığında Kapat"
+disableOnDamage.tooltip = "Hasar aldığınızda freecam kapanır."
+
+freezePlayer.label = "Oyuncuyu Dondur"
+freezePlayer."tooltip[0]" = "Freecam açık iken oyuncunun hareketini engeller."
+freezePlayer."tooltip[1]" = "§cUYARI: Çok Oyunculuda kullanım önerilmez."
+
+interact.allow.label = "Etkileşime İzin Ver"
+interact.allow."tooltip[0]" = "Freecam içinde bloklar/varlıklar ile etkileşmenize izin verir."
+interact.allow."tooltip[1]" = "§cUYARI: Çok Oyunculuda kullanım önerilmez."
+interact.mode.label = "Etkileşim Modu"
+interact.mode.tooltip = "Block/Varlık etkileşimlerinin kaynağı."
+interact.mode.CAMERA = "Kamera"
+interact.mode.PLAYER = "Oyuncu"
+
+[freecam.config.servers]
+label = "Çok Oyunculu Ayarları"
+tooltip = "Çok oyunculu sunucularla ilgili ayarlar."
+
+mode.label = "Kısıtlama Modu"
+mode."tooltip[0]" = "Belirli sunucularda freecam kullanımına izin verin ya da yasaklayın."
+mode."tooltip[1]" = "(beyaz liste veya kara liste kullanarak)."
+mode.NONE = "Kısıtlama yok"
+mode.WHITELIST = "Beyaz Liste"
+mode.BLACKLIST = "Kara Liste"
+
+whitelist.label = "Beyaz Liste:"
+
+blacklist.label = "Kara Liste:"
+
+[freecam.config.notification]
+label = "Bildirim Ayarları"
+tooltip = "Bildirimleri gizle ya da göster."
+
+freecam.label = "Freecam Bildirimleri"
+freecam.tooltip = "Freecam açılırken/kapanırken sizi bilgilendirir."
+
+tripod.label = "Tripod Bildirimleri"
+tripod.tooltip = "Tripod kameralara girerken/çıkarken sizi bilgilendirir."

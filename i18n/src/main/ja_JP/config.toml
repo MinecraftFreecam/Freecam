@@ -1,0 +1,115 @@
+[freecam.config.gui]
+title = "Freecamのオプション"
+
+[freecam.config.controls]
+label = "キー割り当て"
+tooltip = "Freecamのキー割り当て。"
+
+[freecam.config.movement]
+label = "移動オプション"
+tooltip = "カメラの動き方。"
+
+flightMode.label = "飛行モード"
+flightMode.tooltip = "Freecamが使用するフライトのタイプ。"
+flightMode.DEFAULT = "デフォルト"
+flightMode.CREATIVE = "クリエイティブ"
+
+speed.horizontal.label = "水平速度"
+speed.horizontal.tooltip = "Freecamの水平速度。"
+speed.vertical.label = "垂直速度"
+speed.vertical.tooltip = "Freecamの垂直速度。"
+
+[freecam.config.collision]
+label = "衝突オプション"
+tooltip = "Freecamで移動可能なブロック。"
+
+ignoreAll.label = "すべての衝突を無視する"
+ignoreAll."tooltip[0]" = "Freecamのすべてのブロックを通過できるようにする。"
+ignoreAll."tooltip[1]" = "§e上記の設定を上書きします。"
+
+ignoreTransparent.label = "透明ブロックを無視する"
+ignoreTransparent.tooltip = "Freecamで透明なブロックを通過できるようにする。"
+
+ignoreOpenable.label = "開閉可能なブロックを無視する"
+ignoreOpenable.tooltip = "Freecamでドア/トラップドア/ゲートを通過できるようにする。"
+
+ignoreCustom.label = "カスタム無視リスト"
+ignoreCustom.tooltip = "Freecamで特定のブロックを移動できるようにする。"
+
+whitelist.ids.label = "IDを無視する"
+whitelist.ids."tooltip[0]" = "例えば \"grass_block\" のようにブロックIDを使用します。"
+whitelist.ids."tooltip[1]" = "名前空間が省略された場合、\"minecraft:\" と仮定されます。"
+whitelist.patterns.label = "正規表現を無視する"
+whitelist.patterns."tooltip[0]" = "正規表現を使用する"
+whitelist.patterns."tooltip[1]" = "\"minecraft:grass_block\" などのフルブロック ID と一致しました。"
+
+alwaysCheck.label = "初期衝突を常にチェックする"
+alwaysCheck."tooltip[0]" = "§7すべての衝突を無視§r を使用している場合でも、"
+alwaysCheck."tooltip[1]" = "§7初期視点§r で衝突をチェックするかどうか。"
+
+[freecam.config.visual]
+label = "ビジュアルオプション"
+tooltip = "Freecamの外観。"
+
+perspective.label = "初期視点"
+perspective.tooltip = "カメラの初期視点。"
+perspective.FIRST_PERSON = "一人称"
+perspective.THIRD_PERSON = "三人称"
+perspective.THIRD_PERSON_MIRROR = "ミラー"
+perspective.INSIDE = "内部"
+
+showPlayer.label = "プレーヤーを表示"
+showPlayer.tooltip = "プレーヤーを元の位置に表示します。"
+
+showHand.label = "手を表示"
+showHand.tooltip = "Freecamで自分の手が見えるかどうか。"
+
+fullBright.label = "最大の明るさ"
+fullBright.tooltip = "Freecam時の明るさを上げる。"
+
+showSubmersionFog.label = "水没霧を表示"
+showSubmersionFog.tooltip = "水中、溶岩、または粉雪の中で霧がかかっているのが見えるかどうか。"
+
+[freecam.config.utility]
+label = "ユーティリティオプション"
+tooltip = "Freecamの機能強化。"
+
+disableOnDamage.label = "ダメージ時に無効化"
+disableOnDamage.tooltip = "ダメージを受けるとFreecamが無効になります。"
+
+freezePlayer.label = "フリーズプレイヤー"
+freezePlayer."tooltip[0]" = "フリーカムがアクティブな間、プレーヤーの移動を防ぎます。"
+freezePlayer."tooltip[1]" = "§c警告: マルチプレイヤーでの使用はお勧めしません。"
+
+interact.allow.label = "インタラクションを許可する"
+interact.allow."tooltip[0]" = "Freecamでブロック/エンティティを操作できるかどうか。"
+interact.allow."tooltip[1]" = "§c警告: マルチプレイヤーでの使用はお勧めしません。"
+interact.mode.label = "インタラクションモード"
+interact.mode.tooltip = "ブロック/エンティティ相互作用のソース。"
+interact.mode.CAMERA = "カメラ"
+interact.mode.PLAYER = "プレーヤー"
+
+[freecam.config.servers]
+label = "マルチプレイヤーオプション"
+tooltip = "マルチプレイヤーサーバーに関するオプション。"
+
+mode.label = "制限モード"
+mode."tooltip[0]" = "特定のサーバーでのfreecamの使用を許可しません。"
+mode."tooltip[1]" = "(ホワイトリストまたはブラックリストを使用。)"
+mode.NONE = "制限なし"
+mode.WHITELIST = "ホワイトリスト"
+mode.BLACKLIST = "ブラックリスト"
+
+whitelist.label = "ホワイトリスト:"
+
+blacklist.label = "ブラックリスト:"
+
+[freecam.config.notification]
+label = "通知オプション"
+tooltip = "通知を表示または非表示にします。"
+
+freecam.label = "Freecam通知"
+freecam.tooltip = "Freecamへの入室/退室を通知します。"
+
+tripod.label = "三脚の通知"
+tripod.tooltip = "三脚カメラへの入室/退室を通知します。"

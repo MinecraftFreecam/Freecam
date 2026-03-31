@@ -1,0 +1,8 @@
+[freecam.msg]
+enabled = "Freecamが有効になりました。"
+disabled = "Freecamが無効になりました。"
+tripod.open = "カメラを開く %s"
+tripod.close = "カメラを閉じる %s"
+tripod.reset = "カメラをリセット %s"
+invalidRegex = "正規表現が無効です: %s"
+restricted.server = "現在のサーバー (%s) ではFreecamが制限されています。"

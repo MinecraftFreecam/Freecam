@@ -1,0 +1,8 @@
+[key.category]
+freecam.controls = "Freecam"
+
+[key.freecam]
+toggle = "Freecamの切り替え"
+controlPlayer.toggle = "プレーヤーコントロール"
+tripod.reset = "三脚のリセット"
+config.open = "コンフィグ GUI"
