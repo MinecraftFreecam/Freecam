@@ -1,15 +1,18 @@
 package net.xolt.freecam.config.model;
 
+import com.google.gson.JsonObject;
 import net.minecraft.world.level.block.Block;
 import net.xolt.freecam.config.MCAwareModConfig;
+import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 // TODO: separate DTO from domain model
 // move CollisionBehavior and ModConfig-impl to domain model adapter
-public class ModConfigDTO implements MCAwareModConfig {
+public class ModConfigDTO implements MCAwareModConfig, RawJsonHolder {
 
+    private transient @Nullable JsonObject rawJson;
     private transient CollisionPredicate collisionPredicate;
 
     public ModConfigDTO() {
@@ -18,6 +21,16 @@ public class ModConfigDTO implements MCAwareModConfig {
 
     public void onConfigChange() {
         collisionPredicate = CollisionPredicate.create(collision);
+    }
+
+    @Override
+    public void setRawJson(@Nullable JsonObject rawJson) {
+        this.rawJson = rawJson;
+    }
+
+    @Override
+    public @Nullable JsonObject getRawJson() {
+        return rawJson;
     }
 
     @Override

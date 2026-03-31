@@ -29,6 +29,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Fixed
 
+- Config options from other Freecam versions are no longer silently dropped when saving ([389](https://github.com/MinecraftFreecam/Freecam/pull/389))
+
 ## [1.3.6] - 2025-12-20
 
 ### Added
