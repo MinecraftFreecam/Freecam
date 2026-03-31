@@ -1,13 +1,9 @@
 import dev.kikugie.stonecutter.StonecutterExperimentalAPI
 
 plugins {
-    alias(libs.plugins.fabric.loom)
     alias(libs.plugins.fletchingtable.fabric)
+    id("freecam.loom-adapter")
     id("freecam.common")
-}
-
-stonecutter {
-
 }
 
 fletchingTable {
@@ -34,12 +30,14 @@ loom {
 
 dependencies {
     minecraft("com.mojang:minecraft:${meta.mc}")
-    mappings(loom.layered {
-        officialMojangMappings()
-        meta.parchment { mappings, mc ->
-            parchment("org.parchmentmc.data:parchment-${mc}:$mappings@zip")
-        }
-    })
+    if (loomAdapter.hasMappings) {
+        mappings(loom.layered {
+            officialMojangMappings()
+            meta.parchment { mappings, mc ->
+                parchment("org.parchmentmc.data:parchment-${mc}:$mappings@zip")
+            }
+        })
+    }
 
     compileOnly("org.spongepowered:mixin:${meta.deps["mixin"]}")
     modCompileOnly("net.fabricmc:fabric-loader:${meta.deps["fabric_loader"]}")

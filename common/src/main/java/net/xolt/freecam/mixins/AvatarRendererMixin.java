@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import net.minecraft.client.renderer.SubmitNodeCollector;
 import net.minecraft.client.renderer.entity.player.AvatarRenderer;
 import net.minecraft.client.renderer.entity.state.AvatarRenderState;
-import net.minecraft.client.renderer.state.CameraRenderState;
+import net.minecraft.client.renderer.state.level.CameraRenderState;
 //? } else {
 /*import net.minecraft.client.renderer.entity.EntityRenderer;
 import net.minecraft.client.renderer.MultiBufferSource;
@@ -21,16 +21,16 @@ import net.minecraft.world.entity.Entity;
 //? if <1.21.11
 //import static net.xolt.freecam.Freecam.MC;
 
-//? if >= 1.21.11 {
+//~ if >=1.21.11 EntityRenderer -> AvatarRenderer
 @Mixin(AvatarRenderer.class)
-//? } else
-//@Mixin(EntityRenderer.class)
 public class AvatarRendererMixin {
 
     //? if >= 1.21.11 {
     // Prevent rendering of nametag in inventory screen
-    @Inject(method = "submitNameTag(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/CameraRenderState;)V", at = @At("HEAD"), cancellable = true)
-    private void onSubmitNameTag(AvatarRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState, CallbackInfo ci) {
+    //~ if >= 26.0 'state/CameraRenderState' -> 'state/level/CameraRenderState'
+    //~ if >= 26.0 'submitNameTag' -> 'submitNameDisplay'
+    @Inject(method = "submitNameDisplay(Lnet/minecraft/client/renderer/entity/state/AvatarRenderState;Lcom/mojang/blaze3d/vertex/PoseStack;Lnet/minecraft/client/renderer/SubmitNodeCollector;Lnet/minecraft/client/renderer/state/level/CameraRenderState;)V", at = @At("HEAD"), cancellable = true)
+    private void onSubmitNameDisplay(AvatarRenderState renderState, PoseStack poseStack, SubmitNodeCollector nodeCollector, CameraRenderState cameraRenderState, CallbackInfo ci) {
         if (Freecam.isEnabled() && renderState.shadowPieces.isEmpty()) {
             ci.cancel();
         }

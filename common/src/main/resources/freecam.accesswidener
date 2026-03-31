@@ -1,4 +1,4 @@
-accessWidener v2 named
+accessWidener v2 official
 #? if >=1.21
 accessible method net/minecraft/client/multiplayer/ClientPacketListener setClientLoaded (Z)V
 

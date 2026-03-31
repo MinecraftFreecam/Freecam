@@ -9,6 +9,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Added
 
+- 26.1 support ([370](https://github.com/MinecraftFreecam/Freecam/pull/370))
+
 ### Changed
 
 - Releases are now built for multiple supported Minecraft versions from a single codebase ([366](https://github.com/MinecraftFreecam/Freecam/pull/366))
