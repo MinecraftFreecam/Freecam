@@ -30,7 +30,7 @@ public class MinecraftMixin {
 
     // Prevents item pick when allowInteract is disabled.
     //~ if >=26.1 pickBlock -> pickBlockOrEntity
-    @Inject(method = "pickBlock", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "pickBlockOrEntity", at = @At("HEAD"), cancellable = true)
     private void onDoItemPick(CallbackInfo ci) {
         if (freecam$disableInteract()) {
             ci.cancel();
@@ -41,14 +41,14 @@ public class MinecraftMixin {
     // Makes mouse clicks come from the player rather than the freecam entity when player control is enabled or if interaction mode is set to player.
     // Was GameRenderer#pick before 26.1
     //? if >=26.1 {
-    /*@ModifyVariable(method = "pick(F)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/Minecraft;getCameraEntity()Lnet/minecraft/world/entity/Entity;"))
+    @ModifyVariable(method = "pick(F)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/Minecraft;getCameraEntity()Lnet/minecraft/world/entity/Entity;"))
     private Entity onUpdateTargetedEntity(Entity entity) {
         if (Freecam.isEnabled() && (Freecam.isPlayerControlEnabled() || ModConfig.get().allowInteractionsFromPlayer())) {
             return MC.player;
         }
         return entity;
     }
-    *///? }
+    //? }
 
     // Prevents block breaking when allowInteract is disabled.
     @Inject(method = "continueAttack", at = @At("HEAD"), cancellable = true)

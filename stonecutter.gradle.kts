@@ -11,7 +11,7 @@ plugins {
     alias(libs.plugins.jetbrains.changelog)
 }
 
-stonecutter active "1.21.11"
+stonecutter active "26.1"
 
 stonecutter parameters {
     // Tags that stonecutter will associate with this project when parsing TOML properties

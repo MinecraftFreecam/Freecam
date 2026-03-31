@@ -2,7 +2,7 @@
 "$schema" = "https://codeberg.org/stonecutter/stonecutter/src/branch/0.8/tools/settings-schema.json"
 
 # The version used by "reset active project"
-vcs = "1.21.11"
+vcs = "26.1"
 
 # Gradle projects to build for the corresponding Minecraft version.
 [versions]

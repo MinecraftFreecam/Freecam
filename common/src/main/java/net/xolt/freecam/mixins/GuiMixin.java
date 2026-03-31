@@ -10,7 +10,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 //? if >=1.20.6 {
-import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.GuiGraphicsExtractor;
  //? } else if > 1.18.2 {
 /*import com.mojang.blaze3d.vertex.PoseStack;
 *///? }
@@ -28,10 +28,10 @@ public class GuiMixin {
     }
 
     // Don't render equipped-item overlays while Freecam is active
-    @Inject(method = "renderTextureOverlay", at = @At("HEAD"), cancellable = true)
+    @Inject(method = "extractTextureOverlay", at = @At("HEAD"), cancellable = true)
     private void onRenderTextureOverlay(
             //? if >=1.20.6 {
-            GuiGraphics graphics,
+            GuiGraphicsExtractor graphics,
             //? } else if > 1.18.2
             //PoseStack poseStack,
             Identifier texture,

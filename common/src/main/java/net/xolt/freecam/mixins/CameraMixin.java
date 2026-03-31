@@ -13,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 //? if <26.1
-import net.minecraft.world.level.Level;
+//import net.minecraft.world.level.Level;
 //? if <1.21.11
 //import net.minecraft.world.level.BlockGetter;
 
@@ -26,14 +26,14 @@ public class CameraMixin {
 
     // When toggling freecam, update the camera's eye height instantly without any transition.
     //? if >=26.1 {
-    /*@Inject(method = "setEntity", at = @At("HEAD"))
+    @Inject(method = "setEntity", at = @At("HEAD"))
     private void onSetEntity(Entity entity, CallbackInfo ci) {
         if (entity instanceof FreeCamera || this.entity instanceof FreeCamera) {
             this.eyeHeightOld = this.eyeHeight = entity.getEyeHeight();
         }
     }
-    *///? } else {
-    @Inject(method = "setup", at = @At("HEAD"))
+    //? } else {
+    /*@Inject(method = "setup", at = @At("HEAD"))
     //~ if >=1.21.11 'BlockGetter area' -> 'Level level'
     public void onUpdate(Level level, Entity newFocusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
         if (newFocusedEntity == null || this.entity == null || newFocusedEntity.equals(this.entity)) {
@@ -44,7 +44,7 @@ public class CameraMixin {
             this.eyeHeightOld = this.eyeHeight = newFocusedEntity.getEyeHeight();
         }
     }
-    //? }
+    *///? }
 
     // Removes the submersion overlay when underwater, in lava, or powdered snow.
     @Inject(method = "getFluidInCamera", at = @At("HEAD"), cancellable = true)

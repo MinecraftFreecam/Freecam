@@ -14,7 +14,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //? if >=1.21.11 {
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
-import net.minecraft.client.renderer.state.LevelRenderState;
+import net.minecraft.client.renderer.state.level.LevelRenderState;
 //? } else {
 /*import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.world.phys.Vec3;

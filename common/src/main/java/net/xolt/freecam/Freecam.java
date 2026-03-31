@@ -192,7 +192,7 @@ public class Freecam {
         if (position != null) {
             ChunkPos chunkPos = position.getChunkPos();
             //~ if >=26.0 'chunkPos.x, chunkPos.z' -> 'chunkPos.x(), chunkPos.z()'
-            chunkLoaded = MC.level.getChunkSource().hasChunk(chunkPos.x, chunkPos.z);
+            chunkLoaded = MC.level.getChunkSource().hasChunk(chunkPos.x(), chunkPos.z());
         }
 
         if (!chunkLoaded) {
@@ -294,7 +294,7 @@ public class Freecam {
     /** Send a message to be shown over the action bar. */
     private static void sendOverlayMessage(Component message) {
         //~ if >=26.0 'displayClientMessage(message, true)' -> 'sendOverlayMessage(message)'
-        Optional.ofNullable(MC.player).ifPresent(player -> player.displayClientMessage(message, true));
+        Optional.ofNullable(MC.player).ifPresent(player -> player.sendOverlayMessage(message));
     }
 
     @ApiStatus.Experimental
