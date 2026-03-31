@@ -1,5 +1,6 @@
 package net.xolt.freecam.model
 
+import io.github.z4kn4fein.semver.Version
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -50,8 +51,6 @@ data class ModMetadataToml(
     override val name: String,
     override val group: String,
     override val version: String,
-    @SerialName("release_type")
-    override val releaseType: ReleaseType,
     override val authors: List<String>,
     override val description: String,
     override val license: String,
@@ -73,4 +72,13 @@ data class ModMetadataToml(
     override val modrinthId: String,
     @SerialName("crowdin")
     override val crowdinUrl: UrlString,
-) : StaticModMetadata
+) : StaticModMetadata {
+
+    private val semver: Version by lazy {
+        Version.parse(version, strict = false)
+    }
+
+    override val releaseType: ReleaseType by lazy {
+        semver.toReleaseType()
+    }
+}
