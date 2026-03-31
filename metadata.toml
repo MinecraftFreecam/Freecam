@@ -6,7 +6,6 @@ group = "net.xolt.freecam"
 # Remember to run :changelog:patchChangelog when updating
 version = "1.4.0-alpha.2"
 authors = ["hashalite", "Matt Sturgeon"]
-description = "A highly customizable freecam mod."
 license = "MIT"
 homepage = "https://www.curseforge.com/minecraft/mc-mods/free-cam"
 source = "https://github.com/MinecraftFreecam/Freecam"

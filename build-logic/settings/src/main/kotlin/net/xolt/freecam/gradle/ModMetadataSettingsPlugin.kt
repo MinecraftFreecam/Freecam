@@ -9,6 +9,7 @@ import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.decodeFromJsonElement
 import net.xolt.freecam.model.*
+import net.xolt.freecam.util.decodeTomlPath
 import org.gradle.api.Plugin
 import org.gradle.api.Project
 import org.gradle.api.initialization.Settings
@@ -36,6 +37,18 @@ private class ProjectModMetadata(
 
     override val loader: String
         get() = requireStonecutter("loader").branch.id
+
+    // Read `description` from the en_US i18n source file
+    override val description: String by lazy {
+        project
+            .project(":i18n")
+            .layout
+            .projectDirectory
+            .dir("src/main/en_US")
+            .file("metadata.toml")
+            .asFile
+            .decodeTomlPath(id, "mod", "description")
+    }
 
     override val relationships: List<Relationship> by lazy {
         project.properties
