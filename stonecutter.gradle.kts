@@ -40,6 +40,17 @@ stonecutter parameters {
         else -> JavaVersion.VERSION_1_8
     }.majorVersion
 
+    dependencies["gson"] = when {
+        current.parsed >= "1.21.11" -> "2.13.2"
+        current.parsed >= "1.21.4" -> "2.11.0"
+        current.parsed >= "1.20.2" -> "2.10.1"
+        current.parsed >= "1.19.3" -> "2.10"
+        current.parsed >= "1.18.2" -> "2.8.9"
+        current.parsed >= "1.18" -> "2.8.8"
+        current.parsed >= "1.12" -> "2.8.0"
+        else -> "2.2.4"
+    }
+
     // Experimental cloth-config dependencies API added in v8.4
     // Forward-ported to newer versions but not backported to older versions.
     constants["cloth_dependencies"] = sc.eval(meta.deps["cloth"], ">=8.4")
