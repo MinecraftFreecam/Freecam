@@ -23,13 +23,13 @@ public enum ModBindings {
             .holdAction(Freecam::activateTripodHandler)
             .defaultKey(GLFW_KEY_F4)
             .build()),
-    KEY_PLAYER_CONTROL(() -> builder("playerControl")
+    KEY_CONTROL_PLAYER(() -> builder("controlPlayer.toggle")
             .action(Freecam::switchControls)
             .build()),
-    KEY_TRIPOD_RESET(() -> builder("tripodReset")
+    KEY_TRIPOD_RESET(() -> builder("tripod.reset")
             .holdAction(Freecam::resetTripodHandler)
             .build()),
-    KEY_CONFIG_GUI(() -> builder("configGui")
+    KEY_CONFIG_GUI(() -> builder("config.open")
             .action(ConfigScreenProvider.provider()::openConfigScreen)
             .build());
 
