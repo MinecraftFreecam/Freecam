@@ -19,6 +19,7 @@ defaults:
 
 jobs:
   prepare:
+    name: Setup
     runs-on: ubuntu-slim
     timeout-minutes: 5
     permissions:
