@@ -1,9 +1,9 @@
 [[build]]
-name = "Build logic tests"
+name = "Tooling"
 gradle_args = ["--project-dir", "build-logic", ":check"]
 
 [[build]]
-name = "Build release publisher"
+name = "Release publisher"
 gradle_args = [":publish:check", ":publish:distTar"]
 upload_name = "release-publisher"
 upload_path = "publish/build/distributions/*.tar"

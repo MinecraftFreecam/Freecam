@@ -4,9 +4,12 @@ on:
   push:
   pull_request:
 
-# Only allow running one build per branch at a time to optimise cache hits
+# Group workflow runs by event and ref.
+# New runs cancel any pending run.
+# PR runs also cancel in-progress runs.
 concurrency:
-  group: builds-${{ github.ref }}
+  group: build-${{ github.event_name }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name != 'push' }}
 
 permissions: {}
 
@@ -16,6 +19,7 @@ defaults:
 
 jobs:
   prepare:
+    name: Setup
     runs-on: ubuntu-slim
     timeout-minutes: 5
     permissions:
