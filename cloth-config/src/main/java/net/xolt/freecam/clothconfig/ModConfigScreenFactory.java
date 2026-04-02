@@ -117,7 +117,7 @@ public class ModConfigScreenFactory {
                         Component.translatable("freecam.config.movement.flightMode.label"),
                         FlightMode.class,
                         config().movement.flightMode)
-                .setEnumNameProvider(value -> Component.translatable("freecam.config.movement.flightMode." + value.name().toLowerCase()))
+                .setEnumNameProvider(value -> Component.translatable("freecam.config.movement.flightMode." + value.name()))
                 .setTooltip(Component.translatable("freecam.config.movement.flightMode.tooltip"))
                 .setDefaultValue(defaults().movement.flightMode)
                 .setSaveConsumer(value -> config().movement.flightMode = value)
@@ -262,15 +262,7 @@ public class ModConfigScreenFactory {
                         Component.translatable("freecam.config.visual.perspective.label"),
                         Perspective.class,
                         config().visual.perspective)
-                .setEnumNameProvider(value -> {
-                    String key = switch ((Perspective) value) {
-                        case FIRST_PERSON -> "firstPerson";
-                        case THIRD_PERSON -> "thirdPerson";
-                        case THIRD_PERSON_MIRROR -> "thirdPersonMirror";
-                        case INSIDE -> "inside";
-                    };
-                    return Component.translatable("freecam.config.visual.perspective." + key);
-                })
+                .setEnumNameProvider(value -> Component.translatable("freecam.config.visual.perspective." + value.name()))
                 .setTooltip(Component.translatable("freecam.config.visual.perspective.tooltip"))
                 .setDefaultValue(defaults().visual.perspective)
                 .setSaveConsumer(value -> config().visual.perspective = value)
@@ -362,7 +354,7 @@ public class ModConfigScreenFactory {
                         Component.translatable("freecam.config.utility.interact.mode.label"),
                         ModConfigDTO.InteractionMode.class,
                         config().utility.interactionMode)
-                .setEnumNameProvider(value -> Component.translatable("freecam.config.utility.interact.mode." + value.name().toLowerCase()))
+                .setEnumNameProvider(value -> Component.translatable("freecam.config.utility.interact.mode." + value.name()))
                 .setTooltip(Component.translatable("freecam.config.utility.interact.mode.tooltip"))
                 .setDefaultValue(defaults().utility.interactionMode)
                 .setSaveConsumer(value -> config().utility.interactionMode = value)
@@ -391,7 +383,7 @@ public class ModConfigScreenFactory {
                         Component.translatable("freecam.config.servers.mode.label"),
                         ModConfigDTO.ServerRestriction.class,
                         config().servers.mode)
-                .setEnumNameProvider(value -> Component.translatable("freecam.config.servers.mode." + value.name().toLowerCase()))
+                .setEnumNameProvider(value -> Component.translatable("freecam.config.servers.mode." + value.name()))
                 .setTooltip(
                         Component.translatable("freecam.config.servers.mode.tooltip[0]"),
                         Component.translatable("freecam.config.servers.mode.tooltip[1]"))

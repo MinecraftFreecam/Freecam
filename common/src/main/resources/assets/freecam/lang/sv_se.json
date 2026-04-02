@@ -1,16 +1,16 @@
 {
   "key.freecam.controlPlayer.toggle": "Kontrollera Spelare",
   "freecam.config.movement.flightMode.label": "Flygläge",
-  "freecam.config.movement.flightMode.default": "Standard",
-  "freecam.config.movement.flightMode.creative": "Kreativt",
+  "freecam.config.movement.flightMode.DEFAULT": "Standard",
+  "freecam.config.movement.flightMode.CREATIVE": "Kreativt",
   "freecam.config.visual.label": "Visuella Alternativ",
-  "freecam.config.visual.perspective.firstPerson": "Första person",
-  "freecam.config.visual.perspective.thirdPerson": "Tredje person",
-  "freecam.config.visual.perspective.thirdPersonMirror": "Spegel",
+  "freecam.config.visual.perspective.FIRST_PERSON": "Första person",
+  "freecam.config.visual.perspective.THIRD_PERSON": "Tredje person",
+  "freecam.config.visual.perspective.THIRD_PERSON_MIRROR": "Spegel",
   "freecam.config.visual.showPlayer.label": "Visa spelare",
   "freecam.config.visual.showHand.label": "Visa hand",
-  "freecam.config.utility.interact.mode.camera": "Kamera",
-  "freecam.config.utility.interact.mode.player": "Spelare",
-  "freecam.config.servers.mode.whitelist": "Vitlista",
-  "freecam.config.servers.mode.blacklist": "Svartlista"
+  "freecam.config.utility.interact.mode.CAMERA": "Kamera",
+  "freecam.config.utility.interact.mode.PLAYER": "Spelare",
+  "freecam.config.servers.mode.WHITELIST": "Vitlista",
+  "freecam.config.servers.mode.BLACKLIST": "Svartlista"
 }
