@@ -1,4 +1,4 @@
-name: Lint
+name: Checks
 
 on:
   pull_request:
@@ -7,14 +7,15 @@ on:
 # New runs cancel any pending run.
 # In-progress runs are allowed to complete.
 concurrency:
-  group: lint-${{ github.ref }}
+  group: check-${{ github.ref }}
 
 defaults:
   run:
     shell: bash
 
 jobs:
-  lint:
+  validate:
+    name: Validation
     runs-on: ubuntu-slim
     timeout-minutes: 30
 
