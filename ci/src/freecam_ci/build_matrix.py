@@ -32,7 +32,7 @@ def build_version_matrix(
 
         matrix.append(
             MatrixJob(
-                name=f"Build {entry.project}",
+                name=f"MC {entry.project}",
                 gradle_args=gradle_args,
                 upload_name=f"freecam-{version}-{entry.project}",
                 upload_path=f"build/libs/{version}/*.jar",

@@ -37,13 +37,13 @@ def test_build_version_matrix_basic():
     matrix = build_version_matrix(version, versions)
     assert len(matrix) == 2
     names = [job.name for job in matrix]
-    assert "Build 1.20" in names
-    assert "Build 1.21" in names
+    assert "MC 1.20" in names
+    assert "MC 1.21" in names
 
-    job_121 = next(job for job in matrix if job.name == "Build 1.21")
+    job_121 = next(job for job in matrix if job.name == "MC 1.21")
     assert job_121.gradle_args == [":neoforge:1.21:buildAndCollect"]
 
-    job_120 = next(job for job in matrix if job.name == "Build 1.20")
+    job_120 = next(job for job in matrix if job.name == "MC 1.20")
     assert job_120.gradle_args == [
         ":fabric:1.20:buildAndCollect",
         ":forge:1.20:buildAndCollect",
