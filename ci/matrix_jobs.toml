@@ -1,5 +1,5 @@
 [[build]]
-name = "Build logic tests"
+name = "Tooling"
 gradle_args = ["--project-dir", "build-logic", ":check"]
 
 [[build]]
