@@ -30,9 +30,7 @@ jobs:
     runs-on: ubuntu-slim
     if: >
       github.event.workflow_run.conclusion != 'cancelled' &&
-      github.event.workflow_run.event == 'pull_request' &&
-      github.event.workflow_run.pull_requests &&
-      github.event.workflow_run.pull_requests[0]
+      github.event.workflow_run.event == 'pull_request'
     timeout-minutes: 10
 
     permissions:
@@ -41,29 +39,50 @@ jobs:
       pull-requests: write # For posting comments
 
     steps:
-      - name: Download changelog
+      - name: Download artifacts
         id: download
         uses: actions/download-artifact@v8
         with:
-          name: changelog.md
           run-id: ${{ github.event.workflow_run.id }}
           github-token: ${{ github.token }}
-        continue-on-error: true
+          merge-multiple: true
+          pattern: '{pr_number,changelog.md}'
 
       - name: Sync PR comment
         uses: actions/github-script@v8
-        env:
-          DOWNLOAD_OUTCOME: ${{ steps.download.outcome }}
         with:
           script: |
             const { readFileSync } = require("fs")
 
             const { owner, repo } = context.repo
-            const downloadConclusion = process.env.DOWNLOAD_OUTCOME
+            const runId = context.payload.workflow_run.id
             const runConclusion = context.payload.workflow_run.conclusion
-            const pr = context.payload.workflow_run.pull_requests[0].number
             const botId = 41898282 // github-actions[bot]
             const marker = "<!-- changelog-preview -->"
+
+            // Read the PR number
+            const pr = (function() {
+              try {
+                 const str = readFileSync("pr_number", "utf8").trim()
+                 const result = parseInt(str)
+                 if (result > 0) return result
+                 throw new Error(`Invalid PR number '${str}'`)
+              } catch (err) {
+                core.error(`Error getting 'pr_number' artifact for workflow run ${runId}`)
+                throw err
+              }
+            })()
+
+            // Read the optional changelog body
+            const body = (function() {
+              try {
+                 return marker + "\n\n# 📦 Changelog\n\n"
+                     + readFileSync("changelog.md", "utf8")
+              } catch (err) {
+                if (err.code !== 'ENOENT') throw err
+                return null
+              }
+            })()
 
             // Find an existing changelog comment
             const existing = await (async function() {
@@ -83,7 +102,7 @@ jobs:
               return null
             })()
 
-            if (downloadConclusion !== "success") {
+            if (!body) {
               if (runConclusion !== "success") {
                 core.notice("Workflow run unsuccessful and no changelog; leaving comment untouched")
                 return
@@ -105,8 +124,6 @@ jobs:
               )
               return
             }
-
-            const body = marker + "\n\n# 📦 Changelog\n\n" + readFileSync("changelog.md", "utf8")
 
             if (existing) {
               core.notice(`Updating and un-minimizing existing changelog comment (${existing.id})`)
