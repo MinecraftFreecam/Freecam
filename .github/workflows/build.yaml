@@ -28,6 +28,8 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.version }}
       do_release: ${{ steps.check_release.outputs.do_release }}
+      unreleased: ${{ steps.check_release.outputs.unreleased }}
+      touches_changelog: ${{ steps.changed_files.outputs.changelog }}
       matrix: ${{ steps.matrix.outputs.matrix }}
 
     steps:
@@ -52,28 +54,60 @@ jobs:
       - name: Install CI dependencies
         run: uv sync --locked --no-group dev
 
+      - name: Get changed files
+        id: changed_files
+        # Currently only used on PR events
+        if: github.event.pull_request
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const result = await github.graphql(
+              `query($owner: String!, $repo: String!, $pr: Int!) {
+                repository(owner: $owner, name: $repo) {
+                  pullRequest(number: $pr) {
+                    files(first: 100) {
+                      nodes { path }
+                    }
+                  }
+                }
+              }`,
+              {
+                ...context.repo,
+                pr: context.payload.pull_request.number,
+              }
+            )
+            const files = result.repository.pullRequest.files.nodes
+            if (files.some(f => f.path === "CHANGELOG.md")) {
+              core.notice("This PR touches the changelog")
+              core.setOutput("changelog", "true")
+            } else if (files.length === 100) {
+              core.warning("PR has ≥100 files — file detection may be incomplete")
+            }
+
       - name: Read project version
         id: version
         run: |
           version=$(yq .mod.version metadata.toml)
           echo "version=$version" >> "$GITHUB_OUTPUT"
 
-      - name: Check if a release should be made
+      - name: Check whether this version is released
         id: check_release
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        if: github.event.pull_request || github.ref == 'refs/heads/main'
         uses: actions/github-script@v8
         env:
           VERSION: ${{ steps.version.outputs.version }}
         with:
           script: |
             const tag = `v${process.env.VERSION}`
+            const push = context.eventName === "push"
             try {
               const { data } = await github.rest.repos.getReleaseByTag({ ...context.repo, tag })
               core.notice(`${tag} already published (${data.published_at})`)
             } catch (err) {
               if (err.status !== 404) throw err
               core.notice(`${tag} not published — creating release`)
-              core.setOutput("do_release", "true")
+              core.setOutput("unreleased", "true")
+              if (push) core.setOutput("do_release", "true")
             }
 
       - name: Generate build matrix
@@ -119,7 +153,7 @@ jobs:
       - name: Upload build
         if: matrix.upload_name && matrix.upload_path
         id: upload
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@v7
         with:
           name: ${{ matrix.upload_name }}
           path: ${{ matrix.upload_path }}
@@ -154,6 +188,70 @@ jobs:
             echo
           } >> "$GITHUB_STEP_SUMMARY"
 
+  changelog:
+    name: Changelog
+    needs: prepare
+    runs-on: ubuntu-slim
+    if: >
+      github.event.pull_request && (
+        needs.prepare.outputs.unreleased ||
+        needs.prepare.outputs.touches_changelog
+      )
+    timeout-minutes: 20
+
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: temurin
+      - uses: gradle/actions/setup-gradle@v5
+
+      - name: Generate changelog
+        env:
+          # If 'unreleased' is set, that means the version has been bumped.
+          # Otherwise, we build the in-progress [Unreleased] changelog section.
+          version: ${{ needs.prepare.outputs.unreleased && needs.prepare.outputs.version || 'Unreleased' }}
+        run: |
+          args=( :getChangelog --output-file build/changelog.md )
+
+          if [ "$version" = "Unreleased" ]; then
+            args+=( --unreleased )
+          else
+            args+=( --project-version "${version#v}" )
+          fi
+
+          echo "::group::Gradle"
+          ./gradlew "${args[@]}"
+          echo "::endgroup::"
+
+          if [ -s build/changelog.md ]; then
+            echo "::group::Changelog"
+            cat build/changelog.md
+            echo "::endgroup::"
+            {
+              echo "# Changelog"
+              echo
+              cat build/changelog.md
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "::error file=CHANGELOG.md::$version changelog is empty"
+            exit 1
+          fi
+
+      - name: Upload changelog
+        id: upload
+        uses: actions/upload-artifact@v7
+        with:
+          path: build/changelog.md
+          archive: false
+          retention-days: 30
+          if-no-files-found: error
+
   publish:
     if: needs.prepare.outputs.do_release || github.event.pull_request
     name: Publish ${{ github.event.pull_request && '(dry run)' || '' }}
@@ -168,7 +266,7 @@ jobs:
 
     steps:
       - name: Download artifacts
-        uses: actions/download-artifact@v7
+        uses: actions/download-artifact@v8
         with:
           path: artifacts
           merge-multiple: true

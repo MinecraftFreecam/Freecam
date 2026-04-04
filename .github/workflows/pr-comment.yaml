@@ -1,0 +1,141 @@
+name: Comment
+
+on:
+  workflow_run:
+    workflows:
+      - Build
+    types:
+      - completed
+
+# Group workflow runs by event + PR.
+# New runs cancel any pending run.
+# In-progress runs are allowed to complete.
+concurrency:
+  group: >
+    pr-comment-${{ github.event.workflow_run.event }}-${{
+      github.event.workflow_run.pull_requests &&
+      github.event.workflow_run.pull_requests[0] &&
+      github.event.workflow_run.pull_requests[0].number
+    }}
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  sync:
+    name: Sync
+    runs-on: ubuntu-slim
+    if: >
+      github.event.workflow_run.conclusion != 'cancelled' &&
+      github.event.workflow_run.event == 'pull_request' &&
+      github.event.workflow_run.pull_requests &&
+      github.event.workflow_run.pull_requests[0]
+    timeout-minutes: 10
+
+    permissions:
+      actions: read # For downloading artifacts
+      issues: write # For posting comments
+      pull-requests: write # For posting comments
+
+    steps:
+      - name: Download changelog
+        id: download
+        uses: actions/download-artifact@v8
+        with:
+          name: changelog.md
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
+        continue-on-error: true
+
+      - name: Sync PR comment
+        uses: actions/github-script@v8
+        env:
+          DOWNLOAD_OUTCOME: ${{ steps.download.outcome }}
+        with:
+          script: |
+            const { readFileSync } = require("fs")
+
+            const { owner, repo } = context.repo
+            const downloadConclusion = process.env.DOWNLOAD_OUTCOME
+            const runConclusion = context.payload.workflow_run.conclusion
+            const pr = context.payload.workflow_run.pull_requests[0].number
+            const botId = 41898282 // github-actions[bot]
+            const marker = "<!-- changelog-preview -->"
+
+            // Find an existing changelog comment
+            const existing = await (async function() {
+              const iterator = github.paginate.iterator(
+                github.rest.issues.listComments,
+                { owner, repo, issue_number: pr }
+              )
+
+              for await (const page of iterator) {
+                const match = page.data.find(comment =>
+                    comment.user?.id === botId &&
+                    comment.body?.trimStart().startsWith(marker)
+                )
+                if (match) return match
+              }
+
+              return null
+            })()
+
+            if (downloadConclusion !== "success") {
+              if (runConclusion !== "success") {
+                core.notice("Workflow run unsuccessful and no changelog; leaving comment untouched")
+                return
+              }
+
+              if (!existing) {
+                core.notice("No changelog and no existing comment")
+                return
+              }
+
+              core.notice(`Minimizing existing changelog comment (${existing.id})`)
+              await github.graphql(
+                `mutation($id: ID!) {
+                  minimizeComment(input: { subjectId: $id, classifier: OUTDATED }) {
+                    minimizedComment { isMinimized }
+                  }
+                }`,
+                { id: existing.node_id }
+              )
+              return
+            }
+
+            const body = marker + "\n\n# 📦 Changelog\n\n" + readFileSync("changelog.md", "utf8")
+
+            if (existing) {
+              core.notice(`Updating and un-minimizing existing changelog comment (${existing.id})`)
+              // Update body if necessary
+              if (body.trim() !== existing.body?.trim()) {
+                await github.rest.issues.updateComment({
+                  owner,
+                  repo,
+                  comment_id: existing.id,
+                  body,
+                })
+              }
+              // Then un-minimize
+              await github.graphql(
+                `mutation($id: ID!) {
+                  unminimizeComment(input: { subjectId: $id }) {
+                    minimizedComment { isMinimized }
+                  }
+                }`,
+                { id: existing.node_id }
+              )
+              return
+            }
+
+            // Create a new comment
+            core.notice("Creating a new changelog comment")
+            await github.rest.issues.createComment({
+              owner,
+              repo,
+              issue_number: pr,
+              body,
+            })
