@@ -22,9 +22,9 @@ import net.xolt.freecam.config.gui.ConfigScreenProvider;
         value = Dist.CLIENT
 )
 @SuppressWarnings("unused")
-public class FreecamForge {
+public class FreecamNeoforge {
 
-    public FreecamForge(ModContainer container) {
+    public FreecamNeoforge(ModContainer container) {
         ModConfig.setup();
         // Register our config screen with Forge
         container.registerExtensionPoint(
