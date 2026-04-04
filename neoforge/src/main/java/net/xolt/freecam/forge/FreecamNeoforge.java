@@ -7,6 +7,7 @@ import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
@@ -25,7 +26,6 @@ import net.xolt.freecam.config.gui.ConfigScreenProvider;
 public class FreecamNeoforge {
 
     public FreecamNeoforge(ModContainer container) {
-        ModConfig.setup();
         // Register our config screen with Forge
         container.registerExtensionPoint(
                 IConfigScreenFactory.class,
@@ -33,6 +33,10 @@ public class FreecamNeoforge {
         );
     }
 
+    @SubscribeEvent
+    public static void clientSetup(FMLClientSetupEvent event) {
+        ModConfig.setup();
+    }
 
     @SubscribeEvent
     public static void registerKeymappings(RegisterKeyMappingsEvent event) {
