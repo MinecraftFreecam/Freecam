@@ -117,7 +117,7 @@ jobs:
               await github.graphql(
                 `mutation($id: ID!) {
                   minimizeComment(input: { subjectId: $id, classifier: OUTDATED }) {
-                    minimizedComment { isMinimized }
+                    clientMutationId
                   }
                 }`,
                 { id: existing.node_id }
@@ -140,7 +140,7 @@ jobs:
               await github.graphql(
                 `mutation($id: ID!) {
                   unminimizeComment(input: { subjectId: $id }) {
-                    minimizedComment { isMinimized }
+                    clientMutationId
                   }
                 }`,
                 { id: existing.node_id }
