@@ -15,6 +15,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Fixed
 
+- Fixed a crash on NeoForge, caused by setup happening too early ([391](https://github.com/MinecraftFreecam/Freecam/issues/391), [397](https://github.com/MinecraftFreecam/Freecam/issues/397))
+
 ## [1.4.0-alpha.1] - 2026-03-31
 
 This version includes major underlying changes. Feedback and bug reports are greatly appreciated!
