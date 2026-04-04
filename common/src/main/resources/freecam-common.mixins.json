@@ -1,6 +1,7 @@
 {
   "required": true,
   "package": "net.xolt.freecam.mixins",
+  "plugin": "net.xolt.freecam.FreecamMixinConfig",
   "compatibilityLevel": "${mixinCompatLevel}",
   "minVersion": "0.8",
   "client": [
