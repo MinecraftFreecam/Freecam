@@ -191,7 +191,7 @@ jobs:
   changelog:
     name: Changelog
     needs: prepare
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     if: >
       github.event.pull_request && (
         needs.prepare.outputs.unreleased ||
