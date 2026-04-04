@@ -44,6 +44,22 @@ jobs:
             uv.lock
           sparse-checkout-cone-mode: false
 
+      - name: Save PR number
+        if: github.event.pull_request
+        env:
+          pr: ${{ github.event.pull_request.number }}
+        run: |
+          echo "$pr" > pr_number
+
+      - name: Upload PR number
+        if: github.event.pull_request
+        uses: actions/upload-artifact@v7
+        with:
+          path: pr_number
+          archive: false
+          retention-days: 30
+          if-no-files-found: error
+
       - uses: actions/setup-python@v6
         with:
           python-version-file: pyproject.toml
@@ -191,7 +207,7 @@ jobs:
   changelog:
     name: Changelog
     needs: prepare
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     if: >
       github.event.pull_request && (
         needs.prepare.outputs.unreleased ||
