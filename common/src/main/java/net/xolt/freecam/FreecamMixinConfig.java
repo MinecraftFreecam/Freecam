@@ -9,11 +9,19 @@ import java.util.Set;
 
 public class FreecamMixinConfig implements IMixinConfigPlugin {
 
+    private static final List<String> DYNAMIC_MIXINS = List.of(
+            "net.xolt.freecam.mixins.IrisHandRendererMixin",
+            "net.xolt.freecam.mixins.IrisShadowRendererMixin"
+    );
+
     @Override
     public void onLoad(String mixinPackage) {}
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
+        if (DYNAMIC_MIXINS.contains(mixinClassName)) {
+            return isClassLoaded(targetClassName);
+        }
         return true;
     }
 
@@ -35,4 +43,13 @@ public class FreecamMixinConfig implements IMixinConfigPlugin {
 
     @Override
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {}
+
+    private static boolean isClassLoaded(String className) {
+        try {
+            Class.forName(className);
+            return true;
+        } catch (ClassNotFoundException ignored) {
+            return false;
+        }
+    }
 }
