@@ -1,1 +1,0 @@
-// This file represents the per-version `rootProject` (e.g. :1.21.11)
