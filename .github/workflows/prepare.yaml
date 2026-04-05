@@ -22,6 +22,9 @@ on:
       do_release:
         description: Whether to publish a GitHub Release
         value: ${{ jobs.prepare.outputs.do_release }}
+      changelog_comment:
+        description: Whether to post a PR comment displaying the current changelog
+        value: ${{ jobs.prepare.outputs.changelog_comment }}
       matrix:
         description: The build matrix
         value: ${{ jobs.prepare.outputs.matrix }}
@@ -52,6 +55,11 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.version }}
       do_release: ${{ steps.check_release.outputs.do_release }}
+      changelog_comment: >-
+        ${{
+          steps.changed_files.outputs.changelog ||
+          steps.check_release.outputs.unreleased
+        }}
       matrix: ${{ steps.matrix.outputs.matrix }}
 
     steps:
@@ -61,27 +69,24 @@ jobs:
         with:
           sparse-checkout: |
             ci
-            metadata.toml
-            stonecutter.settings.toml
             pyproject.toml
             uv.lock
           sparse-checkout-cone-mode: false
 
-      - name: Save PR number
-        if: github.event.pull_request
-        env:
-          pr: ${{ github.event.pull_request.number }}
-        run: |
-          echo "$pr" > pr_number
-
-      - name: Upload PR number
-        if: github.event.pull_request
-        uses: actions/upload-artifact@v7
+      # Checkout metadata separately, as we want the untrusted files on pr_target runs
+      - name: Checkout PR metadata
+        uses: actions/checkout@v6
         with:
-          path: pr_number
-          archive: false
-          retention-days: 30
-          if-no-files-found: error
+          ref: >
+            ${{
+              github.event.pull_request.merge_commit_sha ||
+              github.event.pull_request.head.sha ||
+              github.sha
+            }}
+          sparse-checkout: |
+            metadata.toml
+            stonecutter.settings.toml
+          sparse-checkout-cone-mode: false
 
       - uses: actions/setup-python@v6
         if: contains(env.scopes, 'python')
