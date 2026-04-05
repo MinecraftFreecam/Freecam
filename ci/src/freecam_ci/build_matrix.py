@@ -58,17 +58,16 @@ def build_changelog_job(
     if release and version is None:
         raise ValueError("build_changelog_job: version is required when release=True")
 
-    output = f"build/{file}"
-
     return MatrixJob(
         name="Changelog",
         gradle_args=[
+            "--project-dir=changelog",
             ":getChangelog",
             f"--project-version={version}" if release else "--unreleased",
-            f"--output-file={output}",
+            f"--output-file=build/{file}",
         ],
         upload=MatrixUpload(
-            path=output,
+            path=f"changelog/build/{file}",
             archive=False,
         ),
     )

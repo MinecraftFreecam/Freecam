@@ -3,7 +3,7 @@ name = "Freecam"
 id = "freecam"
 group = "net.xolt.freecam"
 # Version can specify a semver pre-release, e.g. -alpha.1
-# Remember to run `:patchChangelog` when updating
+# Remember to run :changelog:patchChangelog when updating
 version = "1.4.0-alpha.2"
 authors = ["hashalite", "Matt Sturgeon"]
 description = "A highly customizable freecam mod."
