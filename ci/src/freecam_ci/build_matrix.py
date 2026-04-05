@@ -8,7 +8,7 @@ import tomllib as toml
 from pathlib import Path
 from typing import Any
 
-from .matrix_model import MatrixJob
+from .matrix_model import MatrixJob, MatrixUpload
 from .project_files import MATRIX_JOBS_FILE, STONECUTTER_FILE
 from .read_version import read_version
 from .stonecutter_model import ProjectEntry
@@ -34,8 +34,10 @@ def build_version_matrix(
             MatrixJob(
                 name=f"MC {entry.project}",
                 gradle_args=gradle_args,
-                upload_name=f"freecam-{version}-{entry.project}",
-                upload_path=f"build/libs/{version}/*.jar",
+                upload=MatrixUpload(
+                    name=f"freecam-{version}-{entry.project}",
+                    path=f"build/libs/{version}/*.jar",
+                ),
             )
         )
 
