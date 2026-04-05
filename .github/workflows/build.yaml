@@ -28,8 +28,6 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.version }}
       do_release: ${{ steps.check_release.outputs.do_release }}
-      unreleased: ${{ steps.check_release.outputs.unreleased }}
-      touches_changelog: ${{ steps.changed_files.outputs.changelog }}
       matrix: ${{ steps.matrix.outputs.matrix }}
 
     steps:
@@ -129,9 +127,24 @@ jobs:
       - name: Generate build matrix
         id: matrix
         env:
+          touches_changelog: ${{ steps.changed_files.outputs.changelog }}
+          unreleased: ${{ steps.check_release.outputs.unreleased }}
           version: ${{ steps.version.outputs.version }}
         run: |
-          uv run build-matrix --version "$version" --output matrix.json
+          args=(
+            --version "$version"
+            --output matrix.json
+          )
+
+          # If 'unreleased' is set, that means the version has been bumped.
+          # Otherwise, we build the in-progress [Unreleased] changelog section.
+          if [ -n "$unreleased" ]; then
+            args+=( --release-changelog )
+          elif [ -n "$touches_changelog" ]; then
+            args+=( --unreleased-changelog )
+          fi
+
+          uv run build-matrix "${args[@]}"
           echo "matrix=$(cat matrix.json)" >> "$GITHUB_OUTPUT"
 
   build:
@@ -214,70 +227,6 @@ jobs:
             echo "_Expires on **$(date --utc --date=+"$upload_days"days +%F)** (UTC)._"
             echo
           ) >> "$GITHUB_STEP_SUMMARY"
-
-  changelog:
-    name: Changelog
-    needs: prepare
-    runs-on: ubuntu-latest
-    if: >
-      github.event.pull_request && (
-        needs.prepare.outputs.unreleased ||
-        needs.prepare.outputs.touches_changelog
-      )
-    timeout-minutes: 20
-
-    permissions:
-      contents: read
-
-    steps:
-      - uses: actions/checkout@v6
-
-      - uses: actions/setup-java@v5
-        with:
-          java-version: '21'
-          distribution: temurin
-      - uses: gradle/actions/setup-gradle@v5
-
-      - name: Generate changelog
-        env:
-          # If 'unreleased' is set, that means the version has been bumped.
-          # Otherwise, we build the in-progress [Unreleased] changelog section.
-          version: ${{ needs.prepare.outputs.unreleased && needs.prepare.outputs.version || 'Unreleased' }}
-        run: |
-          args=( :getChangelog --output-file build/changelog.md )
-
-          if [ "$version" = "Unreleased" ]; then
-            args+=( --unreleased )
-          else
-            args+=( --project-version "${version#v}" )
-          fi
-
-          echo "::group::Gradle"
-          ./gradlew "${args[@]}"
-          echo "::endgroup::"
-
-          if [ -s build/changelog.md ]; then
-            echo "::group::Changelog"
-            cat build/changelog.md
-            echo "::endgroup::"
-            {
-              echo "# Changelog"
-              echo
-              cat build/changelog.md
-            } >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "::error file=CHANGELOG.md::$version changelog is empty"
-            exit 1
-          fi
-
-      - name: Upload changelog
-        id: upload
-        uses: actions/upload-artifact@v7
-        with:
-          path: build/changelog.md
-          archive: false
-          retention-days: 30
-          if-no-files-found: error
 
   publish:
     if: needs.prepare.outputs.do_release || github.event.pull_request

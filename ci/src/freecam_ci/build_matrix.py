@@ -44,6 +44,36 @@ def build_version_matrix(
     return matrix
 
 
+def build_changelog_job(
+    release: bool = False,
+    version: str | None = None,
+    file: str = "changelog.md",
+) -> MatrixJob:
+    """
+    Construct a matrix job for building the changelog.
+
+    Note: `version` is only used when `release=True`.
+    """
+
+    if release and version is None:
+        raise ValueError("build_changelog_job: version is required when release=True")
+
+    output = f"build/{file}"
+
+    return MatrixJob(
+        name="Changelog",
+        gradle_args=[
+            ":getChangelog",
+            f"--project-version={version}" if release else "--unreleased",
+            f"--output-file={output}",
+        ],
+        upload=MatrixUpload(
+            path=output,
+            archive=False,
+        ),
+    )
+
+
 def load_versions(
     key: str = "versions",
     versions_file: Path = STONECUTTER_FILE,
@@ -82,6 +112,21 @@ def parse_args() -> argparse.Namespace:
         default=MATRIX_JOBS_FILE,
         help="path to static matrix jobs file (pass 'none' to disable)",
     )
+    changelog = parser.add_mutually_exclusive_group()
+    changelog.add_argument(
+        "--release-changelog",
+        dest="changelog",
+        action="store_const",
+        const="release",
+        help="build the release changelog for the given version",
+    )
+    changelog.add_argument(
+        "--unreleased-changelog",
+        dest="changelog",
+        action="store_const",
+        const="unreleased",
+        help="build the unreleased changelog section",
+    )
     parser.add_argument(
         "--version", type=str, help="project version (default read from metadata.toml)"
     )
@@ -102,6 +147,15 @@ def main() -> None:
         versions=load_versions(versions_file=args.versions_file),
     )
 
+    changelog_jobs = []
+    if args.changelog:
+        changelog_jobs.append(
+            build_changelog_job(
+                release=args.changelog == "release",
+                version=args.version,
+            )
+        )
+
     static_jobs: list[MatrixJob] = []
     if args.jobs_file:
         static_jobs = load_matrix_jobs(matrix_jobs_file=args.jobs_file)
@@ -109,7 +163,14 @@ def main() -> None:
     # Convert all jobs to dicts for JSON output
     matrix = [
         job.to_dict()
-        for job in sorted(version_jobs + static_jobs, key=lambda job: job.name)
+        for job in sorted(
+            [
+                *changelog_jobs,
+                *static_jobs,
+                *version_jobs,
+            ],
+            key=lambda job: job.name,
+        )
     ]
 
     # Print compact to output
