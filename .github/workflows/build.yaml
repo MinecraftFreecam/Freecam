@@ -173,7 +173,8 @@ jobs:
         with:
           name: ${{ matrix.upload_name }}
           path: ${{ matrix.upload_path }}
-          retention-days: ${{ matrix.upload_days || '90' }}
+          archive: ${{ matrix.upload_archive }}
+          retention-days: ${{ matrix.upload_days }}
           if-no-files-found: error
 
       - name: Upload summary
@@ -182,27 +183,37 @@ jobs:
         env:
           upload_name: ${{ matrix.upload_name }}
           upload_path: ${{ matrix.upload_path }}
-          upload_days: ${{ matrix.upload_days || '90' }}
+          upload_days: ${{ matrix.upload_days }}
+          upload_archive: ${{ matrix.upload_archive }}
           upload_url: ${{ steps.upload.outputs.artifact-url }}
         run: |
-          {
+          (
+            shopt -s nullglob
+            files=( $upload_path )
+
             echo "## Build artifacts"
             echo
-            echo "**Files:**"
-            echo
-            (
-              shopt -s nullglob
-              IFS=$'\n'
-              for file in $upload_path; do
+
+            # `upload_archive` allows multiple files with an `upload_name`
+            if [ "$upload_archive" = "true" ]; then
+              echo "**Files:**"
+              echo
+              for file in "${files[@]}"; do
                 echo "- \`$(basename "$file")\`"
               done
-            )
-            echo
-            echo "**Download:** [$upload_name.zip]($upload_url)"
+              echo
+              echo "**Download:** [\`$upload_name.zip\`]($upload_url)"
+            elif [ ${#files[@]} = 1 ]; then
+              echo "**Download:** [\`$(basename "${files[0]}")\`]($upload_url)"
+            else
+              >&2 echo "::error::Expected one upload file, found ${#files[@]}"
+              exit 1
+            fi
+
             echo
             echo "_Expires on **$(date --utc --date=+"$upload_days"days +%F)** (UTC)._"
             echo
-          } >> "$GITHUB_STEP_SUMMARY"
+          ) >> "$GITHUB_STEP_SUMMARY"
 
   changelog:
     name: Changelog
