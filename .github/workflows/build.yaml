@@ -167,24 +167,24 @@ jobs:
           ./gradlew "${args[@]}"
 
       - name: Upload build
-        if: matrix.upload_name && matrix.upload_path
+        if: matrix.upload
         id: upload
         uses: actions/upload-artifact@v7
         with:
-          name: ${{ matrix.upload_name }}
-          path: ${{ matrix.upload_path }}
-          archive: ${{ matrix.upload_archive }}
-          retention-days: ${{ matrix.upload_days }}
+          name: ${{ matrix.upload.name }}
+          path: ${{ matrix.upload.path }}
+          archive: ${{ matrix.upload.archive }}
+          retention-days: ${{ matrix.upload.days }}
           if-no-files-found: error
 
       - name: Upload summary
         if: ${{ steps.upload.outputs.artifact-url }}
         shell: bash
         env:
-          upload_name: ${{ matrix.upload_name }}
-          upload_path: ${{ matrix.upload_path }}
-          upload_days: ${{ matrix.upload_days }}
-          upload_archive: ${{ matrix.upload_archive }}
+          upload_name: ${{ matrix.upload.name }}
+          upload_path: ${{ matrix.upload.path }}
+          upload_days: ${{ matrix.upload.days }}
+          upload_archive: ${{ matrix.upload.archive }}
           upload_url: ${{ steps.upload.outputs.artifact-url }}
         run: |
           (

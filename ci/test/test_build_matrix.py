@@ -48,8 +48,8 @@ def test_build_version_matrix_basic():
         ":fabric:1.20:buildAndCollect",
         ":forge:1.20:buildAndCollect",
     ]
-    assert job_120.upload_name == "freecam-1.2.3-1.20"
-    assert job_120.upload_path == "build/libs/1.2.3/*.jar"
+    assert job_120.upload.name == "freecam-1.2.3-1.20"
+    assert job_120.upload.path == "build/libs/1.2.3/*.jar"
     assert all("common" not in arg for arg in job_120.gradle_args)
 
 
@@ -64,9 +64,7 @@ def test_load_matrix_jobs():
 
     assert matrix[0].name == "test job 1"
     assert matrix[0].gradle_args == ["a", "b", "c"]
-    assert matrix[0].upload_name is None
-    assert matrix[0].upload_path is None
-    assert matrix[0].upload_days is None
+    assert matrix[0].upload is None
 
 
 def test_load_matrix_jobs_invalid():
