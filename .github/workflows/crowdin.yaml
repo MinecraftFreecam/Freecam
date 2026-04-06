@@ -1,0 +1,126 @@
+name: Crowdin
+
+on:
+  # Push events upload en_US source files
+  # TODO: run when translated files are pushed
+  #  - upload if no i18n PR is open?
+  #  - merge with i18n PR then upload?
+  #  - error on conflict?
+  push:
+    branches: [main]
+    paths:
+      - 'i18n/src/main/en_US/*.toml'
+
+  # Dispatch events are triggered via UI, CLI, or webhook
+  workflow_dispatch:
+    inputs:
+      upload_sources:
+        description: Whether to upload the en_US source files
+        type: boolean
+        default: true
+        required: true
+      upload_translations:
+        description: Whether to upload the translated files
+        type: boolean
+        default: false
+        required: true
+      download_translations:
+        description: Whether to download the translated files into a PR
+        type: boolean
+        default: false
+        required: true
+      last_activity:
+        description: Timestamp for the latest activity on the Crowdin project
+        type: string
+        required: false
+      last_updated:
+        description: Timestamp for the last update to the Crowdin project
+        type: string
+        required: false
+
+# Group workflow runs by event and ref.
+# New runs cancel any pending run.
+# In-progress runs are allowed to complete.
+concurrency:
+  group: crowdin-${{ github.event_name }}-${{ github.ref }}
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  upload:
+    name: Upload
+    runs-on: ubuntu-slim
+    timeout-minutes: 10
+    if: github.event_name == 'push' || inputs.upload_sources || inputs.upload_translations
+
+    permissions:
+      contents: read
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Restore Crowdin cache
+        uses: actions/cache/restore@v5
+        with:
+          path: .crowdin
+          key: crowdin-${{ hashFiles('i18n/src/main/en_US/*.toml') }}
+          restore-keys: crowdin-
+
+      - name: Crowdin push
+        uses: crowdin/github-action@v2
+        with:
+          config: crowdin.yaml
+          upload_sources: ${{ github.event_name == 'push' || inputs.upload_sources }}
+          upload_sources_args: --cache
+          upload_translations: ${{ inputs.upload_translations }}
+          download_translations: false
+          project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
+          token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+
+      - name: Save Crowdin cache
+        uses: actions/cache/save@v5
+        if: always()
+        with:
+          path: .crowdin
+          key: crowdin-${{ hashFiles('i18n/src/main/en_US/*.toml') }}
+
+  download:
+    name: Download
+    runs-on: ubuntu-slim
+    timeout-minutes: 10
+    if: inputs.download_translations
+
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - uses: actions/checkout@v6
+
+      - name: Crowdin pull
+        uses: crowdin/github-action@v2
+        with:
+          config: crowdin.yaml
+          upload_sources: false
+          upload_translations: false
+          download_translations: true
+          skip_untranslated_strings: true
+          skip_untranslated_files: true
+          create_pull_request: true
+          pull_request_title: |
+            i18n: new translations from Crowdin
+          pull_request_body: |
+            New pull request with translations from [Crowdin](https://crowdin.com/project/freecam).
+
+            Powered by [Crowdin's GitHub Action](https://github.com/crowdin/github-action).
+          pull_request_labels: enhancement, i18n
+          pull_request_base_branch_name: ${{ github.ref_name }}
+          localization_branch_name: i18n/${{ github.ref_name }}
+          commit_message: |
+            chore(i18n): new translations from Crowdin
+          project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
+          token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
