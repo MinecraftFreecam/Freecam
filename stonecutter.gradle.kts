@@ -1,6 +1,3 @@
-import org.jetbrains.changelog.Changelog
-import org.jetbrains.changelog.tasks.BaseChangelogTask
-
 // This file represents the version-less `rootProject` (:)
 // Version-agnostic tasks should go here, as well as configuration for stonecutter itself
 
@@ -8,7 +5,6 @@ plugins {
     id("freecam.api")
     id("freecam.release-metadata")
     id("dev.kikugie.stonecutter")
-    alias(libs.plugins.jetbrains.changelog)
 }
 
 stonecutter active "26.1"
@@ -84,54 +80,26 @@ stonecutter parameters {
     }
 }
 
+val releaseNotes by configurations.registering {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+}
+
+dependencies {
+    releaseNotes(project(":changelog", configuration = "releaseNotes"))
+}
+
+tasks.generateReleaseMetadata {
+    changelog = releaseNotes.map { it.singleFile.readText() }
+
+    // FIXME: the :changelog outgoing artifact should encode its dependencies,
+    //  this project shouldn't need to know about the underlying task.
+    //  See https://github.com/gradle/gradle/issues/24131
+    dependsOn(gradle.includedBuild("changelog").task(":getReleaseNotes"))
+}
+
 tasks.named<Wrapper>("wrapper") {
     // Use "all" so we get sources and javadoc too
     distributionType = Wrapper.DistributionType.ALL
     gradleVersion = "9.2.1"
-}
-
-// Move the changelog tasks to the "version" group
-tasks.withType<BaseChangelogTask>().configureEach {
-    group = "version"
-}
-
-changelog {
-    // Use the mod_version in gradle.properties as the release version/tag.
-    // Build tag/diff links using the github repo URL.
-    version = meta.version
-    repositoryUrl = meta.sourceUrl.toString()
-
-    // Title & intro are printed right at the start of the changelog.
-    // The values here will replace whatever exists in the file when patching.
-    title = "Changelog"
-    introduction = """
-    All notable changes to this project will be documented in this file.
-    
-    This file is formatted as per [Keep a Changelog](https://keepachangelog.com/en/1.0.0),
-    and Freecam's versioning is based on [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
-    """.trimIndent()
-
-    // Group sub-headings added to the "unreleased" section when patching the changelog.
-    // Other sub-headings can still be added manually, if required.
-    groups = listOf("Added",
-        "Changed",
-        "Removed",
-        "Fixed")
-
-    // Regex used to find versions in headings.
-    // The default regex only supports semantic versions, this one is more lenient.
-    headerParserRegex = Regex("(\\d+(?:\\.\\d+)+(?:-[-a-z]+(?:\\.\\d+)?)?)")
-}
-
-tasks.generateReleaseMetadata {
-    changelog = provider {
-        val entry = project.changelog.getOrNull(meta.version) ?: project.changelog.getUnreleased()
-        project.changelog.renderItem(
-            entry.withHeader(false)
-                .withLinks(false)
-                .withEmptySections(false)
-                .withSummary(true),
-            outputType = Changelog.OutputType.MARKDOWN
-        )
-    }
 }

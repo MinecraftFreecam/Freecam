@@ -46,4 +46,6 @@ include(
     "publish:platforms",
 )
 
+includeBuild("changelog")
+
 rootProject.name = "freecam"
