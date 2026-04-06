@@ -4,4 +4,4 @@ preserve_hierarchy: false
 
 files:
   - source: '/i18n/src/main/en_US/*.toml'
-    translation: '/i18n/src/main/%locale_with_underscore%/%original_file_name%.toml'
+    translation: '/i18n/src/main/%locale_with_underscore%/%original_file_name%'
