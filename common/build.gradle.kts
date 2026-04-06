@@ -28,6 +28,16 @@ loom {
     }
 }
 
+val i18nResources by configurations.registering {
+    description = "The i18n project language files"
+    isCanBeResolved = true
+    isCanBeConsumed = false
+
+    attributes {
+        attribute(ArtifactTypeDefinition.ARTIFACT_TYPE_ATTRIBUTE, "directory")
+    }
+}
+
 dependencies {
     minecraft("com.mojang:minecraft:${meta.mc}")
     if (loomAdapter.hasMappings) {
@@ -41,10 +51,17 @@ dependencies {
 
     compileOnly("org.spongepowered:mixin:${meta.deps["mixin"]}")
     modCompileOnly("net.fabricmc:fabric-loader:${meta.deps["fabric_loader"]}")
+    i18nResources(project(":i18n"))
 }
 
 tasks.processResources {
+    from(i18nResources) {
+        into("assets/${meta.id}/lang")
+    }
+
     filesMatching("freecam-common.mixins.json") {
         expand(commonExpansions)
     }
+
+    duplicatesStrategy = DuplicatesStrategy.FAIL
 }

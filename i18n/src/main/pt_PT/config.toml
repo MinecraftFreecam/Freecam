@@ -1,0 +1,89 @@
+[freecam.config.gui]
+title = "Definições do Freecam"
+
+[freecam.config.controls]
+label = "Atalhos"
+tooltip = "Atalhos do Freecam"
+
+[freecam.config.movement]
+label = "Definições de Movimento"
+tooltip = "Como a câmara desloca-se."
+
+flightMode.label = "Modo de Voo"
+flightMode.tooltip = "O modo de voo utilizado pelo Freecam."
+flightMode.DEFAULT = "Padrão"
+flightMode.CREATIVE = "Criativo"
+
+speed.horizontal.label = "Velocidade Horizontal"
+speed.horizontal.tooltip = "A velocidade horizontal do freecam."
+speed.vertical.label = "Velocidade Vertical"
+speed.vertical.tooltip = "A velocidade vertical da câmara."
+
+[freecam.config.collision]
+label = "Definições de Colisão"
+tooltip = "Em quais blocos é possível atravessar no freecam"
+
+ignoreAll.label = "Ignorar todas as colisões"
+ignoreAll."tooltip[0]" = "Permite atravessar todos os blocos no freecam."
+ignoreAll."tooltip[1]" = "Sobrepõe todas as definições."
+
+ignoreTransparent.label = "Ignorar Blocos Invisíveis"
+ignoreTransparent.tooltip = "Permite atravessar blocos invisíveis no freecam."
+
+ignoreOpenable.label = "Ignorar Blocos com Interação"
+ignoreOpenable.tooltip = "Permite atravessar portas, alçapões e portões no freecam."
+
+ignoreCustom.label = "Lista Personalizada"
+ignoreCustom.tooltip = "Permite atravessar alguns blocos no freecam."
+
+whitelist.ids.label = "Ignorar Identificadores"
+whitelist.ids."tooltip[0]" = "Usar Identificador, em exemplo, \"grass_block\"."
+whitelist.ids."tooltip[1]" = "Se o espaço de nomes for omitido, \"Minecraft: \" será assumido."
+whitelist.patterns.label = "Ignorar Expressões Regulares"
+whitelist.patterns."tooltip[0]" = "Use a sintaxe de expressão regular."
+whitelist.patterns."tooltip[1]" = "Correspondência pelo ID completo do bloco, exemplo: \"Minecraft:grass_block\"."
+
+alwaysCheck.label = "Sempre Verificar a Colisão Inicial"
+alwaysCheck."tooltip[0]" = "Se a §7Perspetiva inicial§r deve ser verificada"
+alwaysCheck."tooltip[1]" = "colisão, mesmo se utilizar §7Ignorar as Colisões§r."
+
+[freecam.config.visual]
+label = "Ajustes Visuais"
+tooltip = "O visual do Freecam."
+
+perspective.label = "Perspetiva Inicial"
+perspective.tooltip = "A perspetiva inicial da câmara."
+perspective.FIRST_PERSON = "Primeira Pessoa"
+perspective.THIRD_PERSON = "Terceira Pessoa"
+perspective.THIRD_PERSON_MIRROR = "Espelhar"
+perspective.INSIDE = "Dentro"
+
+showPlayer.label = "Mostrar Jogador"
+showPlayer.tooltip = "Mostra o Jogador na posição original."
+
+showHand.label = "Mostrar a Mão"
+showHand.tooltip = "Se pode ver a sua mão no Freecam."
+
+fullBright.label = "Brilho Total"
+fullBright.tooltip = "Aumenta o brilho no Freecam."
+
+showSubmersionFog.label = "Mostrar Neblina ao Submergir-se"
+showSubmersionFog.tooltip = "Se pode ver uma sobreposição de neblina debaixo d'água, d'lava e de neve em pó."
+
+[freecam.config.utility]
+label = "Utilidades"
+tooltip = "Reajustes no Freecam."
+
+disableOnDamage.label = "Desativar ao receber Dano"
+disableOnDamage.tooltip = "Desabilita o freecam ao aleijar-se."
+
+freezePlayer.label = "Congelar Jogador"
+freezePlayer."tooltip[0]" = "Impede o Deslocamento do jogador se estiver no freecam."
+freezePlayer."tooltip[1]" = "§cALERTA: Uso em Multijogador não recomendado."
+
+interact.allow.label = "Permitir Interação"
+interact.mode.CAMERA = "Câmara"
+interact.mode.PLAYER = "Jogador"
+
+[freecam.config.servers]
+mode.NONE = "Sem restrição"

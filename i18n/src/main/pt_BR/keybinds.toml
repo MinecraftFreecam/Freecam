@@ -1,0 +1,5 @@
+[key.freecam]
+toggle = "Alternar Freecam"
+controlPlayer.toggle = "Controle do jogador"
+tripod.reset = "Redefinir tripé"
+config.open = "Interface de ajustes"

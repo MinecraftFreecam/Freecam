@@ -40,6 +40,7 @@ stonecutter {
 }
 
 include(
+    "i18n",
     "publish",
     "publish:api",
     "publish:cli",

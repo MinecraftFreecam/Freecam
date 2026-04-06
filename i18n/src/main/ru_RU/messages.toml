@@ -1,0 +1,8 @@
+[freecam.msg]
+enabled = "Свободная камера включена."
+disabled = "Freecam выключен."
+tripod.open = "Открытие камеры %s"
+tripod.close = "Закрытие камеры %s"
+tripod.reset = "Сбросить камеру %s"
+invalidRegex = "Недопустимое регулярное выражение: %s"
+restricted.server = "Свободная камера недоступна на этом сервере (%s)."

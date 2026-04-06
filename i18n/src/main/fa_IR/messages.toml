@@ -1,0 +1,8 @@
+[freecam.msg]
+enabled = "فری کم روشن شد."
+disabled = "فری کم خاموش شد."
+tripod.open = "در حال باز کردن دوربین %s"
+tripod.close = "در حال بستن دوربین %s"
+tripod.reset = "ریست دوربین %s"
+invalidRegex = "ترکیب regex غیرمعتبر: %s"
+restricted.server = "فری کم در این سرور محدود شده است (%s)."

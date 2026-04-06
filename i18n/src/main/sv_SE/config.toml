@@ -1,0 +1,23 @@
+[freecam.config.movement]
+flightMode.label = "Flygläge"
+flightMode.DEFAULT = "Standard"
+flightMode.CREATIVE = "Kreativt"
+
+[freecam.config.visual]
+label = "Visuella Alternativ"
+
+perspective.FIRST_PERSON = "Första person"
+perspective.THIRD_PERSON = "Tredje person"
+perspective.THIRD_PERSON_MIRROR = "Spegel"
+
+showPlayer.label = "Visa spelare"
+
+showHand.label = "Visa hand"
+
+[freecam.config.utility]
+interact.mode.CAMERA = "Kamera"
+interact.mode.PLAYER = "Spelare"
+
+[freecam.config.servers]
+mode.WHITELIST = "Vitlista"
+mode.BLACKLIST = "Svartlista"

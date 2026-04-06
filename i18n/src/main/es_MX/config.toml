@@ -1,0 +1,117 @@
+[freecam.config.gui]
+title = "Opciones de Freecam"
+fallback.title = "La interfaz de configuración no está disponible."
+
+[freecam.config.controls]
+label = "Teclas Asignadas"
+tooltip = "Teclas de freecam."
+
+[freecam.config.movement]
+label = "Opciones de Movimiento"
+tooltip = "Cómo la cámara se mueve."
+
+flightMode.label = "Modo Vuelo"
+flightMode.tooltip = "El tipo de vuelo usado por freecam."
+flightMode.DEFAULT = "Predeterminado"
+flightMode.CREATIVE = "Creativo"
+
+speed.value = "Valor: %01.2f"
+speed.horizontal.label = "Velocidad Horizontal"
+speed.horizontal.tooltip = "La velocidad horizontal de la freecam."
+speed.vertical.label = "Velocidad Vertical"
+speed.vertical.tooltip = "La velocidad vertical de la freecam."
+
+[freecam.config.collision]
+label = "Opciones de Colisión"
+tooltip = "Cuales bloques puedes atravesar en freecam."
+
+ignoreAll.label = "Ignorar Toda Colisión"
+ignoreAll."tooltip[0]" = "Permite atravesar todos los bloques en freecam."
+ignoreAll."tooltip[1]" = "§eAnula las opciones de arriba."
+
+ignoreTransparent.label = "Ignorar Bloques Transparentes"
+ignoreTransparent.tooltip = "Permite atravesar bloques transparentes en freecam."
+
+ignoreOpenable.label = "Ignorar Bloques Abribles"
+ignoreOpenable.tooltip = "Permite atravesar puertas/trampillas/vallas en freecam."
+
+ignoreCustom.label = "Lista de Ignorados Personalizada"
+ignoreCustom.tooltip = "Permite atravesar bloques específicos en freecam."
+
+whitelist.ids.label = "Ignorar IDs"
+whitelist.ids."tooltip[0]" = "Usar id del bloque, p.ej. \"grass_block\"."
+whitelist.ids."tooltip[1]" = "Si se omite el namespace, se asume \"minecraft:\"."
+whitelist.patterns.label = "Ignorar Expresiones Regulares"
+whitelist.patterns."tooltip[0]" = "Usar sintaxis de expresiones regulares."
+whitelist.patterns."tooltip[1]" = "Coincide con el id completo del bloque, ej. \"minecraft:grass_block\"."
+
+alwaysCheck.label = "Siempre Verificar Colisión Inicial"
+alwaysCheck."tooltip[0]" = "Si la §7Perspectiva Inicial§r debe revisar"
+alwaysCheck."tooltip[1]" = "colisión, incluso usando §7Ignorar Toda Colisión§r."
+
+[freecam.config.visual]
+label = "Opciones Visuales"
+tooltip = "La vista de freecam."
+
+perspective.label = "Perspectiva Inicial"
+perspective.tooltip = "La perspectiva inicial de la cámara."
+perspective.FIRST_PERSON = "Primera Persona"
+perspective.THIRD_PERSON = "Tercera Persona"
+perspective.THIRD_PERSON_MIRROR = "Espejo"
+perspective.INSIDE = "Dentro"
+
+showPlayer.label = "Mostrar Jugador"
+showPlayer.tooltip = "Muestra tu personaje en su posición original."
+
+showHand.label = "Mostrar Mano"
+showHand.tooltip = "Si puedes ver tu mano en freecam."
+
+fullBright.label = "Brillo Máximo"
+fullBright.tooltip = "Aumenta el brillo mientras se usa freecam."
+
+showSubmersionFog.label = "Mostrar Borrosidad de Sumersión"
+showSubmersionFog.tooltip = "Si ves borrosidad al estar bajo el agua, en lava o en nieve en polvo."
+
+[freecam.config.utility]
+label = "Opciones de Utilidad"
+tooltip = "Mejoras de freecam."
+
+disableOnDamage.label = "Desactivar con Daño"
+disableOnDamage.tooltip = "Desactiva freecam al recibir daño."
+
+freezePlayer.label = "Congelar Jugador"
+freezePlayer."tooltip[0]" = "Previene movimiento del jugador mientras freecam está activo."
+freezePlayer."tooltip[1]" = "§cADVERTENCIA: No se aconseja usar en Multijugador."
+
+interact.allow.label = "Permitir Interacción"
+interact.allow."tooltip[0]" = "Si puedes interactuar con bloques/entidades en freecam."
+interact.allow."tooltip[1]" = "§cADVERTENCIA: No se aconseja usar en Multijugador."
+interact.mode.label = "Modo de Interacción"
+interact.mode.tooltip = "La fuente de las interacciones con bloques/entidades."
+interact.mode.CAMERA = "Cámara"
+interact.mode.PLAYER = "Jugador"
+
+[freecam.config.servers]
+label = "Opciones de Multijugador"
+tooltip = "Opciones relacionadas con servidores multijugador."
+
+mode.label = "Modo de restricción"
+mode."tooltip[0]" = "Permite o prohíbe usar freecam en ciertos servidores."
+mode."tooltip[1]" = "(usando una lista blanca o una lista negra)."
+mode.NONE = "Sin restricción"
+mode.WHITELIST = "Lista blanca"
+mode.BLACKLIST = "Lista negra"
+
+whitelist.label = "Lista blanca:"
+
+blacklist.label = "Lista negra:"
+
+[freecam.config.notification]
+label = "Opciones de Notificación"
+tooltip = "Mostrar u ocultar notificaciones."
+
+freecam.label = "Notificaciones de Freecam"
+freecam.tooltip = "Te notifica al entrar/salir de Freecam."
+
+tripod.label = "Notificaciones de tripié"
+tripod.tooltip = "Te notifica al entrar/salir de las cámaras con tripié."

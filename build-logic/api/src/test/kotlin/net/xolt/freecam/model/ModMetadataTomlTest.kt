@@ -36,7 +36,6 @@ class ModMetadataTomlTest {
         group = "",
         version = version,
         authors = emptyList(),
-        description = "",
         license = "",
         homepageUrl = url(),
         sourceUrl = url(),

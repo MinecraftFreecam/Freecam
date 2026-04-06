@@ -15,6 +15,7 @@ interface PropertyProvider : Iterable<Pair<String, String>> {
 interface ModMetadata : StaticModMetadata {
     val mc: String
     val loader: String
+    val description: String
     val properties: PropertyProvider
     val mod: PropertyProvider
     val deps: PropertyProvider
@@ -32,7 +33,6 @@ interface StaticModMetadata {
     val version: String
     val releaseType: ReleaseType
     val authors: List<String>
-    val description: String
     val license: String
     val homepageUrl: UrlString
     val sourceUrl: UrlString
@@ -52,7 +52,6 @@ data class ModMetadataToml(
     override val group: String,
     override val version: String,
     override val authors: List<String>,
-    override val description: String,
     override val license: String,
     @SerialName("homepage")
     override val homepageUrl: UrlString,

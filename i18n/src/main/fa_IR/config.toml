@@ -1,0 +1,115 @@
+[freecam.config.gui]
+title = "تنظیمات فری کم"
+
+[freecam.config.controls]
+label = "کلید های میانبر"
+tooltip = "کلید های میانبر فری کم."
+
+[freecam.config.movement]
+label = "تنظیمات حرکت"
+tooltip = "طوری که دوربین حرکت میکند."
+
+flightMode.label = "حالت پرواز"
+flightMode.tooltip = "نوع پروازی که توسط فری کم استفاده می شود."
+flightMode.DEFAULT = "پیشفرض"
+flightMode.CREATIVE = "حالت خلاق"
+
+speed.horizontal.label = "سرعت افقی"
+speed.horizontal.tooltip = "سرعت افقی فری کم."
+speed.vertical.label = "سرعت عمودی"
+speed.vertical.tooltip = "سرعت عمودی فری کم."
+
+[freecam.config.collision]
+label = "تنظیمات برخورد"
+tooltip = "بلاک هایی که در فری کم می توانید از آن رد شوید."
+
+ignoreAll.label = "نادیده گرفتن تمامی برخورد ها"
+ignoreAll."tooltip[0]" = "به عبور از همه ی بلاک ها اجازه می دهد."
+ignoreAll."tooltip[1]" = "§eتنظیمات بالا را نادیده می گیرد."
+
+ignoreTransparent.label = "نادیده گرفتن بلاک های شفاف"
+ignoreTransparent.tooltip = "به رد شدن از بلاک های شفاف در فری کم اجازه می دهد."
+
+ignoreOpenable.label = "نادیده گرفتن بلاک های قابل باز شدن"
+ignoreOpenable.tooltip = "به رد شدن از در ها/دریچه ها/دروازه ها در فری کم اجازه می دهد."
+
+ignoreCustom.label = "لیست نادیده گرفتن شخصی سازی شده"
+ignoreCustom.tooltip = "به رد شدن از بلاک خاص در فری کم اجازه می دهد."
+
+whitelist.ids.label = "نادیده گرفتن آی دی ها"
+whitelist.ids."tooltip[0]" = "از آی دی بلاک استفاده کنید، مثل \"grass_block\"."
+whitelist.ids."tooltip[1]" = "اگر namespace داده نشود، \"minecraft:\" فرض می شود."
+whitelist.patterns.label = "نادیده گرفتن عبارت های Regular Expression"
+whitelist.patterns."tooltip[0]" = "از ترکیب Regular Expression استفاده کنید."
+whitelist.patterns."tooltip[1]" = "با آی دی کامل بلاک مفایسه می شود، مثل \"minecraft:grass_block\"."
+
+alwaysCheck.label = "بررسی همیشگی برخورد اولیه"
+alwaysCheck."tooltip[0]" = "اینکه §7دید اولیه§r باید برای برخورد چک کند، حتی"
+alwaysCheck."tooltip[1]" = "موقع استفاده از §7نادیده کرفتن تمامی برخورد ها§r."
+
+[freecam.config.visual]
+label = "تنظیمات بصری"
+tooltip = "ظاهر فری کم."
+
+perspective.label = "دید اولیه"
+perspective.tooltip = "دید اولیه دوربین."
+perspective.FIRST_PERSON = "اول شخص"
+perspective.THIRD_PERSON = "سوم شخص"
+perspective.THIRD_PERSON_MIRROR = "معکوس کردن"
+perspective.INSIDE = "داخل"
+
+showPlayer.label = "نمایش بازیکن"
+showPlayer.tooltip = "بازیکن را در موقعیت اصلی نشان می دهد."
+
+showHand.label = "نمایش دست"
+showHand.tooltip = "اینکه دست خود را در فری کم ببینید."
+
+fullBright.label = "روشنایی کامل"
+fullBright.tooltip = "روشنایی را حین بودن در فری کم افزایش می دهد."
+
+showSubmersionFog.label = "نمایش مه غوطه وری"
+showSubmersionFog.tooltip = "اینکه شما یک پوششی از مه در زیر آب، گدازه یا برف پودر شده ببینید."
+
+[freecam.config.utility]
+label = "تنظیمات کاربردی"
+tooltip = "بهبود های فری کم."
+
+disableOnDamage.label = "غیرفعال کردن موقع آسیب دیدن"
+disableOnDamage.tooltip = "وقتی آسیب میبینید فری کم غیرفعال می شود."
+
+freezePlayer.label = "تثبیت بازیکن"
+freezePlayer."tooltip[0]" = "وقتی فری کم فعال است از حرکت بازیکن جلوگیری میکند."
+freezePlayer."tooltip[1]" = "§cاخطار: استفاده در چند نفره توصیه نمی شود."
+
+interact.allow.label = "اجازه دادن به تعامل"
+interact.allow."tooltip[0]" = "اینکه شما بتوانید با بلاک ها/انتیتی ها در فری کم تعامل کنید."
+interact.allow."tooltip[1]" = "§cاخطار: استفاده در چند نفره توصیه نمی شود."
+interact.mode.label = "حالت تعامل"
+interact.mode.tooltip = "منبع تعامل با بلاک ها/انتیتی ها."
+interact.mode.CAMERA = "دوربین"
+interact.mode.PLAYER = "بازیکن"
+
+[freecam.config.servers]
+label = "تنظیمات چند نفره"
+tooltip = "تنظیمات مرتبط با سرور های چند نفره."
+
+mode.label = "حالت محدودیت"
+mode."tooltip[0]" = "اجازه یا منع از استفاده فری کم بر بعضی سرور ها."
+mode."tooltip[1]" = "(با استفاده از لیست منع یا لیست مجاز)."
+mode.NONE = "بدون محدودیت"
+mode.WHITELIST = "لیست مجاز"
+mode.BLACKLIST = "لیست منع"
+
+whitelist.label = "لیست مجاز:"
+
+blacklist.label = "لیست منع:"
+
+[freecam.config.notification]
+label = "تنظیمات اعلان ها"
+tooltip = "نمایش یا پنهان کردن اعلان ها."
+
+freecam.label = "اعلان های فری کم"
+freecam.tooltip = "وقتی به فری کم وارد یا از آن خارج می شوید به شما اطلاع می دهد."
+
+tripod.label = "اعلان های دوربین سه‌پایه"
+tripod.tooltip = "وقتی به دوربین سه‌پایه وارد یا از آن خارج می شوید به شما اطلاع می دهد."

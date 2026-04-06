@@ -1,0 +1,8 @@
+[freecam.msg]
+enabled = "Freecam 已啟用。"
+disabled = "Freecam 已停用。"
+tripod.open = "開啟攝影機 %s"
+tripod.close = "關閉攝影機 %s"
+tripod.reset = "重設攝影機 %s"
+invalidRegex = "無效的規則運算式：%s"
+restricted.server = "目前的伺服器限制使用 Freecam (%s)。"

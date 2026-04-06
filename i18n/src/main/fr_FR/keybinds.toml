@@ -1,0 +1,8 @@
+[key.category]
+freecam.controls = ""
+
+[key.freecam]
+toggle = "Basculer la caméra libre"
+controlPlayer.toggle = "Contrôla Player"
+tripod.reset = "Réinitialiser le tripode"
+config.open = "Interface de configuration"

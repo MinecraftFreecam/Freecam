@@ -6,7 +6,7 @@ import net.minecraft.network.chat.Component;
 
 final class FallbackConfigScreen extends GenericMessageScreen {
 
-    private static final Component TITLE = Component.translatable("text.freecam.missingConfigGui.title");
+    private static final Component TITLE = Component.translatable("freecam.config.gui.fallback.title");
 
     private final Screen parent;
 

@@ -1,0 +1,8 @@
+[freecam.msg]
+enabled = "Freecam 角已经启用。"
+disabled = "Freecam 角已经禁用。"
+tripod.open = "启用视角 %s"
+tripod.close = "禁用视角 %s"
+tripod.reset = "重置视角 %s"
+invalidRegex = "无效的正则表达式：%s"
+restricted.server = "Freecam 在本服务器禁止使用。（%s）"

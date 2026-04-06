@@ -1,0 +1,115 @@
+[freecam.config.gui]
+title = "Opzioni Camera libera"
+
+[freecam.config.controls]
+label = "Associazione dei Tasti"
+tooltip = "Associazione dei tasti della Camera libera."
+
+[freecam.config.movement]
+label = "Opzioni di Movimento"
+tooltip = "Come si muove la telecamera."
+
+flightMode.label = "Modalità di Volo"
+flightMode.tooltip = "Il tipo di volo utilizzato dalla Camera libera."
+flightMode.DEFAULT = "Predefinito"
+flightMode.CREATIVE = "Creativa"
+
+speed.horizontal.label = "Velocità orizzontale"
+speed.horizontal.tooltip = "La velocità orizzontale della Camera libera."
+speed.vertical.label = "Velocità Verticale"
+speed.vertical.tooltip = "La velocità verticale della Camera libera."
+
+[freecam.config.collision]
+label = "Opzioni di Collisione"
+tooltip = "Quali blocchi puoi attraversare nella Camera libera."
+
+ignoreAll.label = "Ignora Tutte le Collisioni"
+ignoreAll."tooltip[0]" = "Consente di viaggiare attraverso tutti i blocchi nella Camera libera."
+ignoreAll."tooltip[1]" = "§eSostituisce le impostazioni precedenti."
+
+ignoreTransparent.label = "Ignora Blocchi Trasparenti"
+ignoreTransparent.tooltip = "Consente di viaggiare attraverso blocchi trasparenti nella Camera libera."
+
+ignoreOpenable.label = "Ignora i Blocchi Apribili"
+ignoreOpenable.tooltip = "Consente di attraversare porte/botole/cancelli nella Camera libera."
+
+ignoreCustom.label = "Elenco Personalizzato Ignorato"
+ignoreCustom.tooltip = "Consente di viaggiare attraverso blocchi specifici della Camera libera."
+
+whitelist.ids.label = "Ignora ID"
+whitelist.ids."tooltip[0]" = "Usa blocco id, es. \"grass_block\"."
+whitelist.ids."tooltip[1]" = "Se lo spazio dei nomi viene omesso, si presume che venga usato \"minecraft:\"."
+whitelist.patterns.label = "Ignora le Espressioni Regolari"
+whitelist.patterns."tooltip[0]" = "Usa le sintassi Espressioni Regolari."
+whitelist.patterns."tooltip[1]" = "Corrisponde all'ID completo del blocco, ad esempio \"minecraft:grass_block\"."
+
+alwaysCheck.label = "Controlla Sempre la Collisione Iniziale"
+alwaysCheck."tooltip[0]" = "Se la §7Prospettiva Iniziale§r deve controllare la"
+alwaysCheck."tooltip[1]" = "collisione, anche quando si utilizza §7Ignora Tutte le Collisioni§r."
+
+[freecam.config.visual]
+label = "Opzioni Visive"
+tooltip = "Lo sguardo della Camera libera."
+
+perspective.label = "Prospettiva Iniziale"
+perspective.tooltip = "La prospettiva iniziale della Camera libera."
+perspective.FIRST_PERSON = "La Prima Persona"
+perspective.THIRD_PERSON = "Terza Persona"
+perspective.THIRD_PERSON_MIRROR = "Rispecchiato"
+perspective.INSIDE = "Dentro"
+
+showPlayer.label = "Mostra Giocatore"
+showPlayer.tooltip = "Mostra il giocatore nella sua posizione originale."
+
+showHand.label = "Mostra Mano"
+showHand.tooltip = "Se puoi vedere la tua mano nella Camera libera."
+
+fullBright.label = "Luminosità Completa"
+fullBright.tooltip = "Aumenta la luminosità in Camera libera."
+
+showSubmersionFog.label = "Mostra Nebbia da Immersione"
+showSubmersionFog.tooltip = "Se vedi una copertura di nebbia sott'acqua, nella lava e nella neve farinosa."
+
+[freecam.config.utility]
+label = "Opzioni di Utilità"
+tooltip = "Miglioramenti della Camera libera."
+
+disableOnDamage.label = "Disattiva Danno"
+disableOnDamage.tooltip = "Disabilità la Camera libera quando viene ricevuto un danno."
+
+freezePlayer.label = "Blocca Giocatore"
+freezePlayer."tooltip[0]" = "Impedisce il movimento del giocatore mentre la Camera libera è attivatà."
+freezePlayer."tooltip[1]" = "§cATTENZIONE: l'utilizzo del Multigiocatore è sconsigliato."
+
+interact.allow.label = "Consenti Interazione"
+interact.allow."tooltip[0]" = "Se puoi interagire con blocchi/entità con la Camera libera."
+interact.allow."tooltip[1]" = "§cATTENZIONE: l'utilizzo del Multigiocatore è sconsigliato."
+interact.mode.label = "Modalità d'interazione"
+interact.mode.tooltip = "L'origine delle interazioni blocco/entità."
+interact.mode.CAMERA = "Camera"
+interact.mode.PLAYER = "Giocatore"
+
+[freecam.config.servers]
+label = "Opzioni Multigiocatore"
+tooltip = "Opzioni relative ai server multigiocatore."
+
+mode.label = "Modalità con Restrizione"
+mode."tooltip[0]" = "Consente o vieta l'uso la Camera libera su determinati server."
+mode."tooltip[1]" = "(utilizza una whitelist o una blacklist)."
+mode.NONE = "Nessuna restrizione"
+mode.WHITELIST = "Whitelist"
+mode.BLACKLIST = "Blacklist"
+
+whitelist.label = "Whitelist:"
+
+blacklist.label = "Blacklist:"
+
+[freecam.config.notification]
+label = "Opzioni di Notifica"
+tooltip = "Mostra o nascondi le notifiche."
+
+freecam.label = "Notifiche Camera libera"
+freecam.tooltip = "Ti avvisa quando entri/esci dalla Camera libera."
+
+tripod.label = "Notifiche Treppiedi"
+tripod.tooltip = "Ti avvisa quando entri/esci dalla Camera libera a Treppiedi."
