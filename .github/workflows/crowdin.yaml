@@ -49,7 +49,7 @@ defaults:
 jobs:
   upload:
     name: Upload
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     timeout-minutes: 10
     if: github.event_name == 'push' || inputs.upload_sources || inputs.upload_translations
 
@@ -58,8 +58,6 @@ jobs:
 
     steps:
       - name: Install Crowdin CLI
-        # Currently only used on push
-        if: github.event_name == 'push'
         run: npm install -g @crowdin/cli
 
       - uses: actions/checkout@v6
@@ -104,16 +102,21 @@ jobs:
             exit 1
           fi
 
-      - name: Crowdin push
-        uses: crowdin/github-action@v2
-        with:
-          config: crowdin.yaml
-          upload_sources: ${{ github.event_name == 'push' || inputs.upload_sources }}
-          upload_sources_args: --cache
-          upload_translations: ${{ inputs.upload_translations }}
-          download_translations: false
-          project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
-          token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+      - name: Crowdin push sources
+        if: github.event_name == 'push' || inputs.upload_sources
+        env:
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+        run: |
+          crowdin upload sources --cache --no-progress
+
+      - name: Crowdin push translations
+        if: inputs.upload_translations
+        env:
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+        run: |
+          crowdin upload translations --no-progress
 
       - name: Save Crowdin cache
         uses: actions/cache/save@v5
