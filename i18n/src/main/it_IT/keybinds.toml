@@ -1,8 +1,14 @@
-[key.category]
-freecam.controls = "Freecam"
+[key.category.freecam]
+controls = "Freecam"
 
 [key.freecam]
 toggle = "Attiva/Disattiva la freecam"
-controlPlayer.toggle = "Controlla il giocatore"
-tripod.reset = "Resetta treppiedi"
-config.open = "GUI di Configurazione"
+
+  [key.freecam.controlPlayer]
+  toggle = "Controlla il giocatore"
+
+  [key.freecam.tripod]
+  reset = "Resetta treppiedi"
+
+  [key.freecam.config]
+  open = "GUI di Configurazione"

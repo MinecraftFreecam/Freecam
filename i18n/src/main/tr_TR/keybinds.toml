@@ -1,5 +1,14 @@
+[key.category.freecam]
+controls = "Freecam"
+
 [key.freecam]
 toggle = "Freecam Aç/Kapa"
-controlPlayer.toggle = "Oyuncuyu Kontrol Et"
-tripod.reset = "Tripodu Sıfırla"
-config.open = "Ayar Arayüzü"
+
+  [key.freecam.controlPlayer]
+  toggle = "Oyuncuyu Kontrol Et"
+
+  [key.freecam.tripod]
+  reset = "Tripodu Sıfırla"
+
+  [key.freecam.config]
+  open = "Ayar Arayüzü"

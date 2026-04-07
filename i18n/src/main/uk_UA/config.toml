@@ -1,6 +1,8 @@
 [freecam.config.gui]
 title = "Параметри Freecam"
-fallback.title = "Налаштування графічного інтерфейсу недоступне."
+
+  [freecam.config.gui.fallback]
+  title = "Налаштування графічного інтерфейсу недоступне."
 
 [freecam.config.controls]
 label = "Призначення клавіш"
@@ -10,108 +12,137 @@ tooltip = "Призначення клавіш Freecam."
 label = "Параметри руху"
 tooltip = "Як рухається камера."
 
-flightMode.label = "Режим польоту"
-flightMode.tooltip = "Тип польоту, який використовує вільна камера."
-flightMode.DEFAULT = "За замовчуванням"
-flightMode.CREATIVE = "Творчий"
+  [freecam.config.movement.flightMode]
+  label = "Режим польоту"
+  tooltip = "Тип польоту, який використовує вільна камера."
+  DEFAULT = "За замовчуванням"
+  CREATIVE = "Творчий"
 
-speed.value = "Значення: %01.2f"
-speed.horizontal.label = "Горизонтальна швидкість"
-speed.horizontal.tooltip = "Горизонтальна швидкість вільної камери."
-speed.vertical.label = "Вертикальна швидкість"
-speed.vertical.tooltip = "Вертикальна швидкість вільної камери."
+  [freecam.config.movement.speed]
+  value = "Значення: %01.2f"
+
+    [freecam.config.movement.speed.horizontal]
+    label = "Горизонтальна швидкість"
+    tooltip = "Горизонтальна швидкість вільної камери."
+
+    [freecam.config.movement.speed.vertical]
+    label = "Вертикальна швидкість"
+    tooltip = "Вертикальна швидкість вільної камери."
 
 [freecam.config.collision]
 label = "Параметри зіткнення"
 tooltip = "Крізь які блоки ви можете пересуватися в режимі вільної камери."
 
-ignoreAll.label = "Ігнорувати всі зіткнення"
-ignoreAll."tooltip[0]" = "Дозволяє пересуватися крізь усі блоки в режимі вільної камери."
-ignoreAll."tooltip[1]" = "§eПеревизначає вищевказані налаштування."
+  [freecam.config.collision.ignoreAll]
+  label = "Ігнорувати всі зіткнення"
+  "tooltip[0]" = "Дозволяє пересуватися крізь усі блоки в режимі вільної камери."
+  "tooltip[1]" = "§eПеревизначає вищевказані налаштування."
 
-ignoreTransparent.label = "Ігнорувати прозорі блоки"
-ignoreTransparent.tooltip = "Дозволяє пересуватися крізь прозорі блоки в режимі вільної камери."
+  [freecam.config.collision.ignoreTransparent]
+  label = "Ігнорувати прозорі блоки"
+  tooltip = "Дозволяє пересуватися крізь прозорі блоки в режимі вільної камери."
 
-ignoreOpenable.label = "Ігнорувати блоки, що відкриваються"
-ignoreOpenable.tooltip = "Дозволяє пересуватися крізь двері, люки та хвіртки в режимі вільної камери"
+  [freecam.config.collision.ignoreOpenable]
+  label = "Ігнорувати блоки, що відкриваються"
+  tooltip = "Дозволяє пересуватися крізь двері, люки та хвіртки в режимі вільної камери"
 
-ignoreCustom.label = "Користувацький список винятків"
-ignoreCustom.tooltip = "Дозволяє пересуватися крізь певні блоки в режимі вільної камери."
+  [freecam.config.collision.ignoreCustom]
+  label = "Користувацький список винятків"
+  tooltip = "Дозволяє пересуватися крізь певні блоки в режимі вільної камери."
 
-whitelist.ids.label = "Ігнорувати ідентифікатори"
-whitelist.ids."tooltip[0]" = "Використовуйте ідентифікатор блоку, наприклад, \"grass_block\"."
-whitelist.ids."tooltip[1]" = "Якщо простір імен опущений, передбачено \"minecraft:\"."
-whitelist.patterns.label = "Ігнорувати регулярні вирази"
-whitelist.patterns."tooltip[0]" = "Використовуйте синтаксис регулярних виразів."
-whitelist.patterns."tooltip[1]" = "Відповідає повному ідентифікатору блоку, наприклад \"minecraft:grass_block\"."
+[freecam.config.collision.whitelist.ids]
+label = "Ігнорувати ідентифікатори"
+"tooltip[0]" = 'Використовуйте ідентифікатор блоку, наприклад, "grass_block".'
+"tooltip[1]" = 'Якщо простір імен опущений, передбачено "minecraft:".'
 
-alwaysCheck.label = "Завжди перевіряти початкову колізію"
-alwaysCheck."tooltip[0]" = "Чи потрібно в §7Початковій перспективі§r перевіряти на наявність"
-alwaysCheck."tooltip[1]" = "колізії, навіть при використанні §7Ігнорувати всю колізію§r."
+[freecam.config.collision.whitelist.patterns]
+label = "Ігнорувати регулярні вирази"
+"tooltip[0]" = "Використовуйте синтаксис регулярних виразів."
+"tooltip[1]" = 'Відповідає повному ідентифікатору блоку, наприклад "minecraft:grass_block".'
+
+  [freecam.config.collision.alwaysCheck]
+  label = "Завжди перевіряти початкову колізію"
+  "tooltip[0]" = "Чи потрібно в §7Початковій перспективі§r перевіряти на наявність"
+  "tooltip[1]" = "колізії, навіть при використанні §7Ігнорувати всю колізію§r."
 
 [freecam.config.visual]
 label = "Параметри вигляду"
 tooltip = "Вигляд freecam."
 
-perspective.label = "Початкова перспектива"
-perspective.tooltip = "Початкова перспектива камери."
-perspective.FIRST_PERSON = "Від першої особи"
-perspective.THIRD_PERSON = "Від третьої особи"
-perspective.THIRD_PERSON_MIRROR = "Дзеркально"
-perspective.INSIDE = "Всередині"
+  [freecam.config.visual.perspective]
+  label = "Початкова перспектива"
+  tooltip = "Початкова перспектива камери."
+  FIRST_PERSON = "Від першої особи"
+  THIRD_PERSON = "Від третьої особи"
+  THIRD_PERSON_MIRROR = "Дзеркально"
+  INSIDE = "Всередині"
 
-showPlayer.label = "Показувати гравця"
-showPlayer.tooltip = "Показує вашого гравця в початковій позиції."
+  [freecam.config.visual.showPlayer]
+  label = "Показувати гравця"
+  tooltip = "Показує вашого гравця в початковій позиції."
 
-showHand.label = "Показувати руку"
-showHand.tooltip = "Чи видно вашу руку в режимі вільної камери."
+  [freecam.config.visual.showHand]
+  label = "Показувати руку"
+  tooltip = "Чи видно вашу руку в режимі вільної камери."
 
-fullBright.label = "Максимальна яскравість"
-fullBright.tooltip = "Збільшує яскравість в режимі вільної камери."
+  [freecam.config.visual.fullBright]
+  label = "Максимальна яскравість"
+  tooltip = "Збільшує яскравість в режимі вільної камери."
 
-showSubmersionFog.label = "Показувати ефект занурення"
-showSubmersionFog.tooltip = "Чи будете ви бачити туман під водою, у лаві або в сипкому снігу."
+  [freecam.config.visual.showSubmersionFog]
+  label = "Показувати ефект занурення"
+  tooltip = "Чи будете ви бачити туман під водою, у лаві або в сипкому снігу."
 
 [freecam.config.utility]
 label = "Параметри корисности"
 tooltip = "Покращення Freecam."
 
-disableOnDamage.label = "Вимкнути при отриманні шкоди"
-disableOnDamage.tooltip = "Вимикає вільну камеру, коли отримано шкоду."
+  [freecam.config.utility.disableOnDamage]
+  label = "Вимкнути при отриманні шкоди"
+  tooltip = "Вимикає вільну камеру, коли отримано шкоду."
 
-freezePlayer.label = "Заморозити гравця"
-freezePlayer."tooltip[0]" = "Запобігає переміщенню гравця під час активної вільної камери."
-freezePlayer."tooltip[1]" = "§ПОПЕРЕДЖЕННЯ: Не рекомендується використовувати в багатокористувацькій грі."
+  [freecam.config.utility.freezePlayer]
+  label = "Заморозити гравця"
+  "tooltip[0]" = "Запобігає переміщенню гравця під час активної вільної камери."
+  "tooltip[1]" = "§ПОПЕРЕДЖЕННЯ: Не рекомендується використовувати в багатокористувацькій грі."
 
-interact.allow.label = "Дозволити взаємодію"
-interact.allow."tooltip[0]" = "Чи можна взаємодіяти з блоками / сутностями в режимі вільної камери."
-interact.allow."tooltip[1]" = "§ПОПЕРЕДЖЕННЯ: Не рекомендується використовувати в багатокористувацькій грі."
-interact.mode.label = "Режим взаємодії"
-interact.mode.tooltip = "Джерело взаємодії між блоком/сутністю."
-interact.mode.CAMERA = "Камера"
-interact.mode.PLAYER = "Гравець"
+[freecam.config.utility.interact.allow]
+label = "Дозволити взаємодію"
+"tooltip[0]" = "Чи можна взаємодіяти з блоками / сутностями в режимі вільної камери."
+"tooltip[1]" = "§ПОПЕРЕДЖЕННЯ: Не рекомендується використовувати в багатокористувацькій грі."
+
+[freecam.config.utility.interact.mode]
+label = "Режим взаємодії"
+tooltip = "Джерело взаємодії між блоком/сутністю."
+CAMERA = "Камера"
+PLAYER = "Гравець"
 
 [freecam.config.servers]
 label = "Параметри багатокористувацької гри"
 tooltip = "Параметри для багатокористувацьких серверів."
 
-mode.label = "Режим обмеження"
-mode."tooltip[0]" = "Дозволити або заборонити використання вільної камери на певних серверах."
-mode."tooltip[1]" = "(використовуючи білий або чорний список)."
-mode.NONE = "Без обмежень"
-mode.WHITELIST = "Білий список"
-mode.BLACKLIST = "Чорний список"
+  [freecam.config.servers.mode]
+  label = "Режим обмеження"
+  "tooltip[0]" = "Дозволити або заборонити використання вільної камери на певних серверах."
+  "tooltip[1]" = "(використовуючи білий або чорний список)."
+  NONE = "Без обмежень"
+  WHITELIST = "Білий список"
+  BLACKLIST = "Чорний список"
 
-whitelist.label = "Білий список:"
+  [freecam.config.servers.whitelist]
+  label = "Білий список:"
 
-blacklist.label = "Чорний список:"
+  [freecam.config.servers.blacklist]
+  label = "Чорний список:"
 
 [freecam.config.notification]
 label = "Параметри сповіщень"
 tooltip = "Показати або приховати сповіщення."
 
-freecam.label = "Сповіщення Freecam"
-freecam.tooltip = "Сповіщає вас, коли ви входите/виходите з режиму вільної камери."
+  [freecam.config.notification.freecam]
+  label = "Сповіщення Freecam"
+  tooltip = "Сповіщає вас, коли ви входите/виходите з режиму вільної камери."
 
-tripod.label = "Сповіщення штатива"
-tripod.tooltip = "Сповіщає вас, коли ви входите/виходите в режим камери зі штативом."
+  [freecam.config.notification.tripod]
+  label = "Сповіщення штатива"
+  tooltip = "Сповіщає вас, коли ви входите/виходите в режим камери зі штативом."

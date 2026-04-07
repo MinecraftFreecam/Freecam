@@ -1,2 +1,14 @@
+[key.category.freecam]
+controls = "Freecam"
+
 [key.freecam]
-controlPlayer.toggle = "Kontrollera Spelare"
+toggle = "Toggle Freecam"
+
+  [key.freecam.controlPlayer]
+  toggle = "Kontrollera Spelare"
+
+  [key.freecam.tripod]
+  reset = "Reset Tripod"
+
+  [key.freecam.config]
+  open = "Config GUI"

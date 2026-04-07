@@ -1,8 +1,14 @@
-[key.category]
-freecam.controls = "Freecam"
+[key.category.freecam]
+controls = "Freecam"
 
 [key.freecam]
 toggle = "切換 Freecam"
-controlPlayer.toggle = "控制玩家"
-tripod.reset = "重設三腳架"
-config.open = "設定 GUI"
+
+  [key.freecam.controlPlayer]
+  toggle = "控制玩家"
+
+  [key.freecam.tripod]
+  reset = "重設三腳架"
+
+  [key.freecam.config]
+  open = "設定 GUI"
