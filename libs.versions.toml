@@ -4,6 +4,7 @@ stonecutter = "0.9.1-beta.2"
 fabric-loom = "1.15-SNAPSHOT"
 fabric-loader = "0.18.4"
 mapping-io = "0.8.0"
+mixin = "0.8.5"
 moddev = "2.0.140"
 fletchingtable = "0.1.0-alpha.22"
 foojay-resolver = "1.0.0"
@@ -21,6 +22,7 @@ mockk = "1.14.9"
 [libraries]
 fabric-loader = { group = "net.fabricmc", name = "fabric-loader", version.ref = "fabric-loader"}
 mapping-io = { group = "net.fabricmc", name = "mapping-io", version.ref = "mapping-io"}
+sponge-mixin = { group = "org.spongepowered", name = "mixin", version.ref = "mixin" }
 kotlin-semver = { group = "io.github.z4kn4fein", name = "semver", version.ref = "semver" }
 kotlin-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "serialization-json" }
 kotlin-serialization-toml = { group = "dev.eav.tomlkt", name = "tomlkt", version.ref = "tomlkt" }

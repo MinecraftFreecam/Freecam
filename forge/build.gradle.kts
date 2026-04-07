@@ -60,7 +60,9 @@ fun DependencyHandler.include(dependency: Any) {
 
 dependencies {
     compileOnlyApi("org.jetbrains:annotations:26.0.2")
-    annotationProcessor("org.spongepowered:mixin:${meta.deps["mixin"]}:processor")
+    annotationProcessor(libs.sponge.mixin) {
+        artifact { classifier = "processor" }
+    }
     sc.node.sibling("cloth-config")?.let {
         // `jarJar` requires a SRG dependency, which we don't have for `:cloth-config`.
         // Instead, we can include named-classes in jar and reobfJar will remap them.
