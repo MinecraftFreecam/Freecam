@@ -179,7 +179,7 @@ jobs:
 
           declare -A outputs=( [json]=json [text]=txt [markdown]=md )
           for it in "${!outputs[@]}"; do
-            ext="${formats[$it]}"
+            ext="${outputs[$it]}"
             {
               echo "$it<<EOF"
               cat "summary.$ext"
