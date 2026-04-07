@@ -195,7 +195,6 @@ jobs:
           upload_translations: false
           download_translations: true
           skip_untranslated_strings: true
-          skip_untranslated_files: true
           create_pull_request: true
           pull_request_title: |
             i18n: new translations from Crowdin
