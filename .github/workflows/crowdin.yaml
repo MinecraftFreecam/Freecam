@@ -141,6 +141,8 @@ jobs:
           last_activity: ${{ inputs.last_activity }}
           project_url: https://crowdin.com/project/freecam
         run: |
+          cd "$(mktemp -d)"
+
           echo "{}" > summary.json
 
           {
@@ -158,12 +160,11 @@ jobs:
           if [ -n "$last_updated" ]; then
             echo "- Last updated $last_updated" >> summary.md
             echo "Last updated $last_updated" >> summary.txt
-            tmp=$(mktemp)
             jq --compact-output \
               --arg last_updated "$last_updated" \
               '.last_updated = $last_updated' \
               summary.json \
-              > "$tmp" && mv "$tmp" summary.json
+              > tmp.json && mv tmp.json summary.json
           fi
 
           if [ -n "$last_activity" ]; then
@@ -174,7 +175,7 @@ jobs:
               --arg last_activity "$last_activity" \
               '.last_activity = $last_activity' \
               summary.json \
-              > "$tmp" && mv "$tmp" summary.json
+              > tmp.json && mv tmp.json summary.json
           fi
 
           declare -A outputs=( [json]=json [text]=txt [markdown]=md )
