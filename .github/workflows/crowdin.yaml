@@ -61,6 +61,11 @@ jobs:
       contents: read
 
     steps:
+      - name: Configure git user
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
       - name: Install Crowdin CLI
         run: npm install -g @crowdin/cli
 
