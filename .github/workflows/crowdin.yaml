@@ -101,6 +101,57 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Generate summary
+        id: summary
+        env:
+          last_updated: ${{ inputs.last_updated }}
+          last_activity: ${{ inputs.last_activity }}
+          project_url: https://crowdin.com/project/freecam
+        run: |
+          echo "{}" > summary.json
+
+          {
+            echo "New pull request with translations from [Crowdin]($project_url)."
+            echo
+          } >> summary.md
+
+          {
+            echo "New pull request with translations from Crowdin."
+            echo
+            echo "$project_url" 
+            echo
+          } >> summary.txt
+
+          if [ -n "$last_updated" ]; then
+            echo "- Last updated $last_updated" >> summary.md
+            echo "Last updated $last_updated" >> summary.txt
+            tmp=$(mktemp)
+            jq --compact-output \
+              --arg last_updated "$last_updated" \
+              '.last_updated = $last_updated' \
+              summary.json \
+              > "$tmp" && mv "$tmp" summary.json
+          fi
+
+          if [ -n "$last_activity" ]; then
+            echo "- Last activity $last_activity" >> summary.md
+            echo "Last activity $last_activity" >> summary.txt
+            tmp=$(mktemp)
+            jq --compact-output \
+              --arg last_activity "$last_activity" \
+              '.last_activity = $last_activity' \
+              summary.json \
+              > "$tmp" && mv "$tmp" summary.json
+          fi
+
+          for fmt in json text md; do
+            {
+              echo "$fmt<<EOF"
+              cat "summary.$fmt"
+              echo "EOF"
+            } >> "$GITHUB_OUTPUT"
+          done
+
       - name: Crowdin pull
         uses: crowdin/github-action@v2
         with:
@@ -114,7 +165,11 @@ jobs:
           pull_request_title: |
             i18n: new translations from Crowdin
           pull_request_body: |
-            New pull request with translations from [Crowdin](https://crowdin.com/project/freecam).
+            <!-- metadata:
+              ${{ steps.summary.outputs.json }}
+            -->
+
+            ${{ steps.summary.outputs.md }}
 
             Powered by [Crowdin's GitHub Action](https://github.com/crowdin/github-action).
           pull_request_labels: enhancement, i18n
@@ -122,5 +177,7 @@ jobs:
           localization_branch_name: i18n/${{ github.ref_name }}
           commit_message: |
             chore(i18n): new translations from Crowdin
+
+            ${{ steps.summary.outputs.text }}
           project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
           token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
