@@ -46,6 +46,10 @@ defaults:
   run:
     shell: bash
 
+env:
+  CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+  CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+
 jobs:
   upload:
     name: Upload
@@ -58,8 +62,6 @@ jobs:
 
     steps:
       - name: Install Crowdin CLI
-        # Currently only used on push
-        if: github.event_name == 'push'
         run: npm install -g @crowdin/cli
 
       - uses: actions/checkout@v6
@@ -76,8 +78,6 @@ jobs:
         env:
           before: ${{ github.event.before }}
           i18n_branch: i18n/${{ github.ref_name }}
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
-          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
         run: |
           # Find the merge base with the i18n PR branch
           # Fallback to using the event's 'before' commit
@@ -104,16 +104,15 @@ jobs:
             exit 1
           fi
 
-      - name: Crowdin push
-        uses: crowdin/github-action@v2
-        with:
-          config: crowdin.yaml
-          upload_sources: ${{ github.event_name == 'push' || inputs.upload_sources }}
-          upload_sources_args: --cache
-          upload_translations: ${{ inputs.upload_translations }}
-          download_translations: false
-          project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
-          token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+      - name: Crowdin push sources
+        if: github.event_name == 'push' || inputs.upload_sources
+        run: |
+          crowdin upload sources --cache --no-progress
+
+      - name: Crowdin push translations
+        if: inputs.upload_translations
+        run: |
+          crowdin upload translations --no-progress
 
       - name: Save Crowdin cache
         uses: actions/cache/save@v5
@@ -124,7 +123,7 @@ jobs:
 
   download:
     name: Download
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     if: inputs.download_translations
 
@@ -213,5 +212,3 @@ jobs:
             chore(i18n): new translations from Crowdin
 
             ${{ steps.summary.outputs.text }}
-          project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
-          token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
