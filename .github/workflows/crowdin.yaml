@@ -49,7 +49,7 @@ defaults:
 jobs:
   upload:
     name: Upload
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     if: github.event_name == 'push' || inputs.upload_sources || inputs.upload_translations
 
@@ -124,7 +124,7 @@ jobs:
 
   download:
     name: Download
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     timeout-minutes: 10
     if: inputs.download_translations
 
