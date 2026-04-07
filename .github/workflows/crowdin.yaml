@@ -11,26 +11,26 @@ on:
   workflow_dispatch:
     inputs:
       upload_sources:
-        description: Whether to upload the en_US source files
+        description: Upload en_US source files
         type: boolean
         default: true
         required: true
       upload_translations:
-        description: Whether to upload the translated files
+        description: Upload translated files
         type: boolean
         default: false
         required: true
       download_translations:
-        description: Whether to download the translated files into a PR
+        description: Download translated files into a PR
         type: boolean
         default: false
         required: true
       last_activity:
-        description: Timestamp for the latest activity on the Crowdin project
+        description: Crowdin project activity timestamp
         type: string
         required: false
       last_updated:
-        description: Timestamp for the last update to the Crowdin project
+        description: Crowdin project update timestamp
         type: string
         required: false
 
