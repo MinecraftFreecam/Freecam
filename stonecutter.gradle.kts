@@ -10,12 +10,6 @@ plugins {
 stonecutter active "26.1"
 
 stonecutter parameters {
-    // Tags that stonecutter will associate with this project when parsing TOML properties
-    // See https://stonecutter.kikugie.dev/wiki/config/properties#property-tags
-    //
-    // branch id (common, fabric, …) metadata version (actual mc version), project name (approx mc version)
-    properties.tags(node.branch.id, node.metadata.version, node.project.name)
-
     val meta = node.project.meta
 
     // Register project dependencies with stonecutter
@@ -23,6 +17,9 @@ stonecutter parameters {
         .filter { (key, value) ->
             // Parchment has an incompatible version syntax
             key != "parchment" && value.isNotBlank()
+        }
+        .map { (key, value) ->
+            key.removeSuffix("_version") to value
         }
         .forEach { (key, value) ->
             dependencies[key] = value

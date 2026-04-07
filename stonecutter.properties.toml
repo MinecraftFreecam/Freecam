@@ -1,10 +1,11 @@
-# Stonecutter centralized properties
-# https://stonecutter.kikugie.dev/wiki/config/properties#centralized-properties
+# Stonecutter Structured Properties
+# https://stonecutter.kikugie.dev/wiki/config/properties#structured-properties
 #
-# Resolution order:
-# 1. Project path scopes (e.g., "forge:1.17.1")
-# 2. Tag scopes (branch id, version, project name)
-# 3. Flattened keys (tables become dotted properties)
+# Matching 'tags' are removed from property paths (prefix or suffix).
+# Default tags are `sc.branch.id` and `sc.current.project`.
+# Tags can be added via `sc.properties.tags()`.
+#
+# Resolved property paths are stringified as a dotted property keys.
 
 
 [relationship]
@@ -41,7 +42,7 @@ deps.fabric_api = "0.144.0+26.1"
 fabric_loader_req = ">=0.18.0"
 fabric_mc_req = ">=26.1-rc-1"
 
-deps.neoforge = "26.1.0.1-beta"
+deps.neoforge_version = "26.1.0.1-beta"
 neoforge_req = "[26.1.0.0-alpha,)"
 neoforge_loader_req = "[1,)"
 neoforge_mc_req = "[26.1-rc-1,)"
@@ -57,7 +58,7 @@ deps.modmenu = "17.0.0-beta.2"
 fabric_mc_req = ">=1.21.11"
 fabric_loader_req = ">=0.14.0"
 
-deps.neoforge = "21.11.6-beta"
+deps.neoforge_version = "21.11.6-beta"
 deps.neoforge_pr = ""
 neoforge_req = "[21.9.0-beta,)"
 neoforge_loader_req = "[1,)"
@@ -74,7 +75,7 @@ deps.modmenu = "10.0.0"
 fabric_mc_req = "~1.20.5"
 fabric_loader_req = ">=0.14.0"
 
-deps.neoforge = "20.6.139"
+deps.neoforge_version = "20.6.139"
 deps.neoforge_pr = ""
 neoforge_req = "[20.6.11-beta,)"
 neoforge_loader_req = "[1,)"
@@ -93,7 +94,7 @@ deps.modmenu = "6.3.1"
 fabric_mc_req = "~1.19.4"
 fabric_loader_req = ">=0.12.11"
 
-deps.forge = "45.2.6"
+deps.forge_version = "45.2.6"
 forge_req = "[45,)"
 forge_loader_req = "[45,)"
 forge_mc_req = "[1.19.4,1.20)"
@@ -109,7 +110,7 @@ deps.modmenu = "3.2.5"
 fabric_mc_req = "~1.18.2"
 fabric_loader_req = ">=0.12.11"
 
-deps.forge = "40.2.14"
+deps.forge_version = "40.2.14"
 forge_req = "[40,)"
 forge_loader_req = "[40,)"
 forge_mc_req = "[1.18.2,1.19)"
@@ -125,7 +126,7 @@ deps.modmenu = "2.0.17"
 fabric_mc_req = "~1.17"
 fabric_loader_req = ">=0.12.11"
 
-deps.forge = "37.1.1"
+deps.forge_version = "37.1.1"
 forge_req = "[37,)"
 forge_loader_req = "[37,)"
 forge_mc_req = "[1.17.1,1.18)"
@@ -146,7 +147,7 @@ deps.modmenu = "1.16.23"
 fabric_mc_req = "~1.16.2"
 fabric_loader_req = ">=0.12.11"
 
-deps.forge = "36.2.41"
+deps.forge_version = "36.2.41"
 forge_req = "[34,)"
 forge_loader_req = "[34,)"
 forge_mc_req = "[1.16.2,1.17)"

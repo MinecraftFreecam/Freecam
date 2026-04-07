@@ -15,7 +15,7 @@ fletchingTable {
 
 neoForge {
     enable {
-        version = meta.deps["neoforge"]
+        version = meta.deps["neoforge_version"]
     }
 }
 

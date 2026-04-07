@@ -8,7 +8,7 @@ plugins {
 }
 
 stonecutter replacements {
-    val forge = meta.deps["forge"]
+    val forge = meta.deps["forge_version"]
     string(sc.eval(forge, ">= 41")) {
         replace( "net.minecraftforge.client.ConfigGuiHandler", "net.minecraftforge.client.ConfigScreenHandler")
         replace( "ConfigGuiHandler.ConfigGuiFactory", "ConfigScreenHandler.ConfigScreenFactory")
@@ -33,7 +33,7 @@ fletchingTable {
 
 legacyForge {
     enable {
-        forgeVersion = "${meta.mc}-${meta.deps["forge"]}"
+        forgeVersion = "${meta.mc}-${meta.deps["forge_version"]}"
     }
 }
 
@@ -54,7 +54,7 @@ val bundle by configurations.creating {
  * Jar-in-jar added in [Forge 40.1.60](https://maven.minecraftforge.net/net/minecraftforge/forge/1.18.2-40.1.60/forge-1.18.2-40.1.60-changelog.txt)
  */
 fun DependencyHandler.include(dependency: Any) {
-    if (sc.eval(meta.deps["forge"], "<40.1.60")) return
+    if (sc.eval(meta.deps["forge_version"], "<40.1.60")) return
     jarJar(dependency)
 }
 
