@@ -1,15 +1,11 @@
 name: Crowdin
 
 on:
-  # Push events upload en_US source files
-  # TODO: run when translated files are pushed
-  #  - upload if no i18n PR is open?
-  #  - merge with i18n PR then upload?
-  #  - error on conflict?
+  # Merge pushed changes with Crowdin project state
   push:
     branches: [main]
     paths:
-      - 'i18n/src/main/en_US/*.toml'
+      - 'i18n/src/main/*/*.toml'
 
   # Dispatch events are triggered via UI, CLI, or webhook
   workflow_dispatch:
@@ -61,6 +57,11 @@ jobs:
       contents: read
 
     steps:
+      - name: Install Crowdin CLI
+        # Currently only used on push
+        if: github.event_name == 'push'
+        run: npm install -g @crowdin/cli
+
       - uses: actions/checkout@v6
 
       - name: Restore Crowdin cache
@@ -69,6 +70,39 @@ jobs:
           path: .crowdin
           key: crowdin-${{ hashFiles('i18n/src/main/en_US/*.toml') }}
           restore-keys: crowdin-
+
+      - name: Merge Crowdin state
+        if: github.event_name == 'push'
+        env:
+          before: ${{ github.event.before }}
+          i18n_branch: i18n/${{ github.ref_name }}
+          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+        run: |
+          # Find the merge base with the i18n PR branch
+          # Fallback to using the event's 'before' commit
+          if git ls-remote --exit-code origin "$i18n_branch" &>/dev/null; then
+            git fetch origin "$i18n_branch"
+            base=$(git merge-base HEAD "origin/$i18n_branch")
+          else
+            echo "i18n branch not found, falling back to github.event.before"
+            base="$before"
+          fi
+          # Ensure the base commit is reachable
+          git fetch origin "$base"
+
+          git branch actual HEAD
+          git switch -c tmp "$base"
+
+          # Pull Crowdin state
+          crowdin download --no-progress --config crowdin.yaml
+          git commit --all --allow-empty -m "crowdin snapshot"
+
+          # Merge pushed changes
+          if ! git merge --no-edit --no-ff actual; then
+            echo "::error::Merge conflict between Crowdin and pushed changes"
+            exit 1
+          fi
 
       - name: Crowdin push
         uses: crowdin/github-action@v2
