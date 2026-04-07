@@ -1,8 +1,12 @@
 [freecam.msg]
 enabled = "Caméra libre activé."
 disabled = "Caméra libre désactivé."
-tripod.open = "Ouverture de la caméra %s"
-tripod.close = "Fermeture de la caméra %s"
-tripod.reset = "Réinitialiser la caméra %s"
 invalidRegex = "Regex invalide : %s"
-restricted.server = "Caméra libre restreinte sur le serveur actuel (%s)."
+
+  [freecam.msg.tripod]
+  open = "Ouverture de la caméra %s"
+  close = "Fermeture de la caméra %s"
+  reset = "Réinitialiser la caméra %s"
+
+  [freecam.msg.restricted]
+  server = "Caméra libre restreinte sur le serveur actuel (%s)."

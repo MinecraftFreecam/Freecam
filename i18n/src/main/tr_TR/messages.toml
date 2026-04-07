@@ -1,8 +1,12 @@
 [freecam.msg]
 enabled = "Freecam açıldı."
 disabled = "Freecam kapatıldı."
-tripod.open = "%s kamerası açılıyor"
-tripod.close = "Kamera %s kapatıldı"
-tripod.reset = "Kamera %s sıfırlandı"
 invalidRegex = "Geçersiz düzenli ifade: %s"
-restricted.server = "Freecam şu anki sunucuda (%s) kısıtlı."
+
+  [freecam.msg.tripod]
+  open = "%s kamerası açılıyor"
+  close = "Kamera %s kapatıldı"
+  reset = "Kamera %s sıfırlandı"
+
+  [freecam.msg.restricted]
+  server = "Freecam şu anki sunucuda (%s) kısıtlı."

@@ -1,8 +1,14 @@
-[key.category]
-freecam.controls = "Freecam"
+[key.category.freecam]
+controls = "Freecam"
 
 [key.freecam]
 toggle = "Freecam Umschalten"
-controlPlayer.toggle = "Spieler Kontrollieren"
-tripod.reset = "Stativ zurücksetzen"
-config.open = "Konfigurationsmenü"
+
+  [key.freecam.controlPlayer]
+  toggle = "Spieler Kontrollieren"
+
+  [key.freecam.tripod]
+  reset = "Stativ zurücksetzen"
+
+  [key.freecam.config]
+  open = "Konfigurationsmenü"

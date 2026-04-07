@@ -1,8 +1,14 @@
-[key.category]
-freecam.controls = "Freecam"
+[key.category.freecam]
+controls = "Freecam"
 
 [key.freecam]
 toggle = "Перемкнути Freecam"
-controlPlayer.toggle = "Керувати гравцем"
-tripod.reset = "Скинути штатив"
-config.open = "Налаштувати інтерфейс"
+
+  [key.freecam.controlPlayer]
+  toggle = "Керувати гравцем"
+
+  [key.freecam.tripod]
+  reset = "Скинути штатив"
+
+  [key.freecam.config]
+  open = "Налаштувати інтерфейс"

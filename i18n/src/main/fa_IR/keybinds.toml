@@ -1,8 +1,14 @@
-[key.category]
-freecam.controls = "فری کم"
+[key.category.freecam]
+controls = "فری کم"
 
 [key.freecam]
 toggle = "استفاده از فری کم"
-controlPlayer.toggle = "هدایت بازیکن"
-tripod.reset = "بازگشت دوربین سه‌پایه به تنظیم اولیه"
-config.open = "تنظیم رابط کاربری"
+
+  [key.freecam.controlPlayer]
+  toggle = "هدایت بازیکن"
+
+  [key.freecam.tripod]
+  reset = "بازگشت دوربین سه‌پایه به تنظیم اولیه"
+
+  [key.freecam.config]
+  open = "تنظیم رابط کاربری"

@@ -1,6 +1,9 @@
 [freecam.config.gui]
 title = "Ajustes do Freecam"
 
+  [freecam.config.gui.fallback]
+  title = "Config GUI not available."
+
 [freecam.config.controls]
 label = "Atalhos"
 tooltip = "Atalhos do Freecam"
@@ -9,107 +12,137 @@ tooltip = "Atalhos do Freecam"
 label = "Opções de movimento"
 tooltip = "Como a câmera se movimenta."
 
-flightMode.label = "Modo de Voo"
-flightMode.tooltip = "O tipo de voo usado pela câmera livre."
-flightMode.DEFAULT = "Padrão"
-flightMode.CREATIVE = "Criativo"
+  [freecam.config.movement.flightMode]
+  label = "Modo de Voo"
+  tooltip = "O tipo de voo usado pela câmera livre."
+  DEFAULT = "Padrão"
+  CREATIVE = "Criativo"
 
-speed.horizontal.label = "Velocidade horizontal"
-speed.horizontal.tooltip = "A velocidade horizontal do freecam."
-speed.vertical.label = "Velocidade vertical"
-speed.vertical.tooltip = "A velocidade vertical da câmera."
+  [freecam.config.movement.speed]
+  value = "Value: %01.2f"
+
+    [freecam.config.movement.speed.horizontal]
+    label = "Velocidade horizontal"
+    tooltip = "A velocidade horizontal do freecam."
+
+    [freecam.config.movement.speed.vertical]
+    label = "Velocidade vertical"
+    tooltip = "A velocidade vertical da câmera."
 
 [freecam.config.collision]
 label = "Opções de colisão"
 tooltip = "Em quais blocos é possível atravessar no freecam"
 
-ignoreAll.label = "Ignorar colisões"
-ignoreAll."tooltip[0]" = "Permitir atravessar tudo no freecam."
-ignoreAll."tooltip[1]" = "§eSubstitui opções superiores."
+  [freecam.config.collision.ignoreAll]
+  label = "Ignorar colisões"
+  "tooltip[0]" = "Permitir atravessar tudo no freecam."
+  "tooltip[1]" = "§eSubstitui opções superiores."
 
-ignoreTransparent.label = "Ignorar blocos ausentes"
-ignoreTransparent.tooltip = "Permite atravessar blocos ausentes no freecam."
+  [freecam.config.collision.ignoreTransparent]
+  label = "Ignorar blocos ausentes"
+  tooltip = "Permite atravessar blocos ausentes no freecam."
 
-ignoreOpenable.label = "Ignorar blocos abríveis"
-ignoreOpenable.tooltip = "Permite atravessar portas, alçapões e portões no freecam"
+  [freecam.config.collision.ignoreOpenable]
+  label = "Ignorar blocos abríveis"
+  tooltip = "Permite atravessar portas, alçapões e portões no freecam"
 
-ignoreCustom.label = "Lista personalizada"
-ignoreCustom.tooltip = "Permite atravessar certos blocos no freecam."
+  [freecam.config.collision.ignoreCustom]
+  label = "Lista personalizada"
+  tooltip = "Permite atravessar certos blocos no freecam."
 
-whitelist.ids.label = "Ignorar IDs"
-whitelist.ids."tooltip[0]" = "Use o id, do bloco. (ex: \"grass_block\")."
-whitelist.ids."tooltip[1]" = "Se o espaço for omisso, utiliza-se \"minecraft:\"."
-whitelist.patterns.label = "Ignorar expressões regulares"
-whitelist.patterns."tooltip[0]" = "Usa a sintaxe de expressões regulares"
-whitelist.patterns."tooltip[1]" = "Correspondido ao id completo do bloco. (ex: \"minecraft:grass_block\")"
+[freecam.config.collision.whitelist.ids]
+label = "Ignorar IDs"
+"tooltip[0]" = 'Use o id, do bloco. (ex: "grass_block").'
+"tooltip[1]" = 'Se o espaço for omisso, utiliza-se "minecraft:".'
 
-alwaysCheck.label = "Sempre conferir a colisão inicial"
-alwaysCheck."tooltip[0]" = "Quando a §7Perspectiva inicial§r deve ser verificada"
-alwaysCheck."tooltip[1]" = "colisão, mesmo se §7Ignorar colisões§r for usado."
+[freecam.config.collision.whitelist.patterns]
+label = "Ignorar expressões regulares"
+"tooltip[0]" = "Usa a sintaxe de expressões regulares"
+"tooltip[1]" = 'Correspondido ao id completo do bloco. (ex: "minecraft:grass_block")'
+
+  [freecam.config.collision.alwaysCheck]
+  label = "Sempre conferir a colisão inicial"
+  "tooltip[0]" = "Quando a §7Perspectiva inicial§r deve ser verificada"
+  "tooltip[1]" = "colisão, mesmo se §7Ignorar colisões§r for usado."
 
 [freecam.config.visual]
 label = "Opções visuais"
 tooltip = "O estilo do Freecam"
 
-perspective.label = "Perspectiva inicial"
-perspective.tooltip = "A perspectiva inicial da câmera."
-perspective.FIRST_PERSON = "Primeira pessoa"
-perspective.THIRD_PERSON = "Terceira pessoa"
-perspective.THIRD_PERSON_MIRROR = "Espelhar"
-perspective.INSIDE = "Dentro"
+  [freecam.config.visual.perspective]
+  label = "Perspectiva inicial"
+  tooltip = "A perspectiva inicial da câmera."
+  FIRST_PERSON = "Primeira pessoa"
+  THIRD_PERSON = "Terceira pessoa"
+  THIRD_PERSON_MIRROR = "Espelhar"
+  INSIDE = "Dentro"
 
-showPlayer.label = "Exibir jogador"
-showPlayer.tooltip = "Exibe seu jogador na posição original."
+  [freecam.config.visual.showPlayer]
+  label = "Exibir jogador"
+  tooltip = "Exibe seu jogador na posição original."
 
-showHand.label = "Exibir mão"
-showHand.tooltip = "Se permite ver sua mão no freecam."
+  [freecam.config.visual.showHand]
+  label = "Exibir mão"
+  tooltip = "Se permite ver sua mão no freecam."
 
-fullBright.label = "Brilho total"
-fullBright.tooltip = "Intensifica o brilho no freecam."
+  [freecam.config.visual.fullBright]
+  label = "Brilho total"
+  tooltip = "Intensifica o brilho no freecam."
 
-showSubmersionFog.label = "Exibir névoa de fluidos"
-showSubmersionFog.tooltip = "Se é visível uma névoa debaixo d'água, lava ou neve fofa."
+  [freecam.config.visual.showSubmersionFog]
+  label = "Exibir névoa de fluidos"
+  tooltip = "Se é visível uma névoa debaixo d'água, lava ou neve fofa."
 
 [freecam.config.utility]
 label = "Utilitários"
 tooltip = "Ajustes no freecam"
 
-disableOnDamage.label = "Desativar ao levar dano"
-disableOnDamage.tooltip = "Sai do freecam ao receber dano."
+  [freecam.config.utility.disableOnDamage]
+  label = "Desativar ao levar dano"
+  tooltip = "Sai do freecam ao receber dano."
 
-freezePlayer.label = "Parar jogador"
-freezePlayer."tooltip[0]" = "Impede de mover-se quando o freecam é ativado."
-freezePlayer."tooltip[1]" = "§cAVISO: O uso em multijogador não é recomendado."
+  [freecam.config.utility.freezePlayer]
+  label = "Parar jogador"
+  "tooltip[0]" = "Impede de mover-se quando o freecam é ativado."
+  "tooltip[1]" = "§cAVISO: O uso em multijogador não é recomendado."
 
-interact.allow.label = "Permitir interações"
-interact.allow."tooltip[0]" = "Se você pode interagir com blocos ou entidades no freecam."
-interact.allow."tooltip[1]" = "§cAVISO: O uso em multijogador não é recomendado."
-interact.mode.label = "Modo de interação"
-interact.mode.tooltip = "A fonte das interações com blocos e entidades."
-interact.mode.CAMERA = "Câmera"
-interact.mode.PLAYER = "Jogador"
+[freecam.config.utility.interact.allow]
+label = "Permitir interações"
+"tooltip[0]" = "Se você pode interagir com blocos ou entidades no freecam."
+"tooltip[1]" = "§cAVISO: O uso em multijogador não é recomendado."
+
+[freecam.config.utility.interact.mode]
+label = "Modo de interação"
+tooltip = "A fonte das interações com blocos e entidades."
+CAMERA = "Câmera"
+PLAYER = "Jogador"
 
 [freecam.config.servers]
 label = "Ajustes de multijogador"
 tooltip = "Ajustes relacionados aos servidores multijogadores."
 
-mode.label = "Modo restrito"
-mode."tooltip[0]" = "Alterna o uso de freecam em servidores."
-mode."tooltip[1]" = "(usando ou a lista branca, ou a lista negra)"
-mode.NONE = "Sem restrições"
-mode.WHITELIST = "Lista branca"
-mode.BLACKLIST = "Lista negra"
+  [freecam.config.servers.mode]
+  label = "Modo restrito"
+  "tooltip[0]" = "Alterna o uso de freecam em servidores."
+  "tooltip[1]" = "(usando ou a lista branca, ou a lista negra)"
+  NONE = "Sem restrições"
+  WHITELIST = "Lista branca"
+  BLACKLIST = "Lista negra"
 
-whitelist.label = "Lista branca:"
+  [freecam.config.servers.whitelist]
+  label = "Lista branca:"
 
-blacklist.label = "Lista negra:"
+  [freecam.config.servers.blacklist]
+  label = "Lista negra:"
 
 [freecam.config.notification]
 label = "Ajustes de notificação"
 tooltip = "Exibe ou oculta as notificações."
 
-freecam.label = "Notificações do Freecam"
-freecam.tooltip = "Notifica-o ao entrar/sair do freecam."
+  [freecam.config.notification.freecam]
+  label = "Notificações do Freecam"
+  tooltip = "Notifica-o ao entrar/sair do freecam."
 
-tripod.label = "Notificações do tripé"
-tripod.tooltip = "Notifica-o ao entrar ou sair de um tripé de câmeras."
+  [freecam.config.notification.tripod]
+  label = "Notificações do tripé"
+  tooltip = "Notifica-o ao entrar ou sair de um tripé de câmeras."
