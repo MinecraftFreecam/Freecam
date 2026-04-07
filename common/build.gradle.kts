@@ -49,7 +49,6 @@ dependencies {
         })
     }
 
-    compileOnly(libs.sponge.mixin)
     modCompileOnly(libs.fabric.loader)
     i18nResources(project(":i18n"))
 }
