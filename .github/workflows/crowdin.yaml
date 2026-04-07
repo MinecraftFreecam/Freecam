@@ -177,10 +177,12 @@ jobs:
               > "$tmp" && mv "$tmp" summary.json
           fi
 
-          for fmt in json text md; do
+          declare -A outputs=( [json]=json [text]=txt [markdown]=md )
+          for it in "${!outputs[@]}"; do
+            ext="${formats[$it]}"
             {
-              echo "$fmt<<EOF"
-              cat "summary.$fmt"
+              echo "$it<<EOF"
+              cat "summary.$ext"
               echo "EOF"
             } >> "$GITHUB_OUTPUT"
           done
@@ -202,7 +204,7 @@ jobs:
               ${{ steps.summary.outputs.json }}
             -->
 
-            ${{ steps.summary.outputs.md }}
+            ${{ steps.summary.outputs.markdown }}
 
             Powered by [Crowdin's GitHub Action](https://github.com/crowdin/github-action).
           pull_request_labels: enhancement, i18n
