@@ -1,6 +1,6 @@
 [versions]
 kotlin = "2.3.0"
-stonecutter = "0.9.1-beta.2"
+stonecutter = "0.9.1-beta.4"
 fabric-loom = "1.15-SNAPSHOT"
 fabric-loader = "0.18.4"
 mapping-io = "0.8.0"

@@ -6,8 +6,6 @@ import dev.kikugie.stonecutter.StonecutterExperimentalAPI
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.decodeFromString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.decodeFromJsonElement
 import net.xolt.freecam.model.*
 import net.xolt.freecam.util.decodeTomlPath
 import org.gradle.api.Plugin
@@ -87,7 +85,8 @@ private class ProjectModMetadata(
         requireStonecutter("supportedMinecraftVersions")
             .properties
             .rawOrNull("supported_mc_versions")
-            ?.let { Json.decodeFromJsonElement(it) }
+            ?.asList()
+            ?.map { it.toString() }
             ?: emptyList()
     }
 
