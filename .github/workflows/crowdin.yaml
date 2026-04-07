@@ -46,6 +46,10 @@ defaults:
   run:
     shell: bash
 
+env:
+  CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
+  CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
+
 jobs:
   upload:
     name: Upload
@@ -74,8 +78,6 @@ jobs:
         env:
           before: ${{ github.event.before }}
           i18n_branch: i18n/${{ github.ref_name }}
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
-          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
         run: |
           # Find the merge base with the i18n PR branch
           # Fallback to using the event's 'before' commit
@@ -104,17 +106,11 @@ jobs:
 
       - name: Crowdin push sources
         if: github.event_name == 'push' || inputs.upload_sources
-        env:
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
-          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
         run: |
           crowdin upload sources --cache --no-progress
 
       - name: Crowdin push translations
         if: inputs.upload_translations
-        env:
-          CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
-          CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
         run: |
           crowdin upload translations --no-progress
 
@@ -216,5 +212,3 @@ jobs:
             chore(i18n): new translations from Crowdin
 
             ${{ steps.summary.outputs.text }}
-          project_id: ${{ secrets.CROWDIN_PROJECT_ID }}
-          token: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
