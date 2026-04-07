@@ -22,16 +22,12 @@ stonecutter parameters {
                 sc.parse(value)
                 true
             } catch (e: IllegalArgumentException) {
-                val level = when (key) {
-                    "parchment" -> LogLevel.DEBUG
-                    else -> LogLevel.ERROR
-                }
                 val message = sequenceOf(
                     node.project.path,
                     "Cannot register stonecutter dependency '$key'",
                     e.message,
                 ).filterNot { it.isNullOrBlank() }.joinToString(": ")
-                logger.log(level, message)
+                logger.error(message)
                 false
             }
         }
