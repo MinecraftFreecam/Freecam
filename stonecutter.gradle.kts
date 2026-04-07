@@ -15,8 +15,25 @@ stonecutter parameters {
     // Register project dependencies with stonecutter
     meta.deps.asSequence()
         .filter { (key, value) ->
-            // Parchment has an incompatible version syntax
-            key != "parchment" && value.isNotBlank()
+            value.isNotBlank()
+        }
+        .filter { (key, value) ->
+            try {
+                sc.parse(value)
+                true
+            } catch (e: IllegalArgumentException) {
+                val level = when (key) {
+                    "parchment" -> LogLevel.DEBUG
+                    else -> LogLevel.ERROR
+                }
+                val message = sequenceOf(
+                    node.project.path,
+                    "Cannot register stonecutter dependency '$key'",
+                    e.message,
+                ).filterNot { it.isNullOrBlank() }.joinToString(": ")
+                logger.log(level, message)
+                false
+            }
         }
         .map { (key, value) ->
             key.removeSuffix("_version") to value
