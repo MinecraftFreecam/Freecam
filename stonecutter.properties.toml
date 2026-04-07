@@ -30,12 +30,6 @@ modmenu.modrinth_id = "mOgUt4GM"
 # https://wiki.fabricmc.net/documentation:fabric_mod_json_spec
 # Forge and NeoForge uses Maven version ranges:
 # https://maven.apache.org/enforcer/enforcer-rules/versionRanges.html
-[deps]
-# Fabric loader: https://fabricmc.net/develop
-fabric_loader = "0.18.4"
-# Sponge Mixin: https://repo.spongepowered.org/repository/maven-public/org/spongepowered/mixin/
-# TODO: move to version catalog
-mixin = "0.8.5"
 
 
 ["26.1"]

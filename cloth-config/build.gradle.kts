@@ -14,7 +14,7 @@ dependencies {
             }
         })
     }
-    modCompileOnly("net.fabricmc:fabric-loader:${meta.deps["fabric_loader"]}")
+    modCompileOnly(libs.fabric.loader)
 
     // Loader project should provide their own :common and cloth-config dependencies
     compileOnly(project(path = commonNode.project.path, configuration = "namedElements"))

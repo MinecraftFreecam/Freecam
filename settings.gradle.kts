@@ -3,6 +3,14 @@ gradle.startParameter.isParallelProjectExecutionEnabled = !isCi
 gradle.startParameter.isBuildCacheEnabled = !isCi
 gradle.startParameter.isConfigureOnDemand = !isCi
 
+dependencyResolutionManagement {
+    versionCatalogs {
+        create("libs") {
+            from(files("libs.versions.toml"))
+        }
+    }
+}
+
 pluginManagement {
     repositories {
         exclusiveContent {
