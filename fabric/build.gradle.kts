@@ -26,7 +26,7 @@ dependencies {
         })
     }
 
-    modImplementation("net.fabricmc:fabric-loader:${meta.deps["fabric_loader"]}")
+    modImplementation(libs.fabric.loader)
 
     sequenceOf(
         "fabric-lifecycle-events-v1",

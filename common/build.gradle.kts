@@ -50,7 +50,7 @@ dependencies {
     }
 
     compileOnly("org.spongepowered:mixin:${meta.deps["mixin"]}")
-    modCompileOnly("net.fabricmc:fabric-loader:${meta.deps["fabric_loader"]}")
+    modCompileOnly(libs.fabric.loader)
     i18nResources(project(":i18n"))
 }
 
