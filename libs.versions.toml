@@ -1,7 +1,7 @@
 [versions]
 kotlin = "2.3.0"
 stonecutter = "0.9.1-beta.5"
-fabric-loom = "1.16-SNAPSHOT"
+loom-back-compat = "0.2"
 fabric-loader = "0.18.6"
 mapping-io = "0.8.0"
 mixin = "0.8.5"
@@ -42,8 +42,7 @@ mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
 stonecutter = { id = "dev.kikugie.stonecutter", version.ref = "stonecutter" }
-fabric-loom = { id = "net.fabricmc.fabric-loom", version.ref = "fabric-loom" }
-fabric-loom-remap = { id = "net.fabricmc.fabric-loom-remap", version.ref = "fabric-loom" }
+loomx = { id = "dev.kikugie.loom-back-compat", version.ref = "loom-back-compat" }
 moddev = { id = "net.neoforged.moddev", version.ref = "moddev" }
 moddev-legacy = {id = "net.neoforged.moddev.legacyforge", version.ref = "moddev"}
 fletchingtable = { id = "dev.kikugie.fletching-table", version.ref = "fletchingtable" }

@@ -3,7 +3,7 @@ import net.fabricmc.loom.task.FabricModJsonV1Task
 
 plugins {
     alias(libs.plugins.fletchingtable.fabric)
-    id("freecam.loom-adapter")
+    id("dev.kikugie.loom-back-compat")
     id("freecam.loaders")
 }
 
@@ -17,7 +17,7 @@ stonecutter replacements {
 
 dependencies {
     minecraft("com.mojang:minecraft:${meta.mc}")
-    loomAdapter.applyMojangMappings()
+    loomx.applyMojangMappings()
     modImplementation(libs.fabric.loader)
 
     sequenceOf(
@@ -82,7 +82,7 @@ loom {
 
 tasks.register<Copy>("buildAndCollect") {
     group = "build"
-    from(loomAdapter.modJar.map { it.archiveFile })
+    from(loomx.modJar.map { it.archiveFile })
     into(rootProject.layout.buildDirectory.file("libs/${meta.version}"))
     dependsOn(tasks.build)
 }
@@ -149,6 +149,6 @@ tasks {
     }
 
     generateReleaseMetadata {
-        artifactFileName = loomAdapter.modJar.flatMap { it.archiveFileName }
+        artifactFileName = loomx.modJar.flatMap { it.archiveFileName }
     }
 }
