@@ -146,7 +146,7 @@ jobs:
 
   download:
     name: Download
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     timeout-minutes: 10
     if: inputs.download_translations
 
@@ -155,6 +155,14 @@ jobs:
       pull-requests: write
 
     steps:
+      - name: Configure git user
+        run: |
+          git config --global user.name "$GIT_NAME"
+          git config --global user.email "$GIT_EMAIL"
+
+      - name: Install Crowdin CLI
+        run: npm install -g @crowdin/cli
+
       - uses: actions/checkout@v6
 
       - name: Generate summary
@@ -164,8 +172,6 @@ jobs:
           last_activity: ${{ inputs.last_activity }}
           project_url: https://crowdin.com/project/freecam
         run: |
-          cd "$(mktemp -d)"
-
           echo "{}" > summary.json
 
           updateJson() {
@@ -209,41 +215,110 @@ jobs:
             --arg run_url "$run_url" \
             '.run_id = $run_id | .run_url = $run_url'
 
-          declare -A outputs=( [json]=json [text]=txt [markdown]=md )
-          for it in "${!outputs[@]}"; do
-            ext="${outputs[$it]}"
-            {
-              echo "$it<<EOF"
-              cat "summary.$ext"
-              echo "EOF"
-            } >> "$GITHUB_OUTPUT"
-          done
-
       - name: Crowdin pull
-        uses: crowdin/github-action@v2
+        run: |
+          crowdin download --no-progress --skip-untranslated-strings
+
+      - name: Push changes
+        id: push
         env:
-          GH_TOKEN: ${{ github.token }}
+          pr_branch: i18n/${{ github.ref_name }}
+        run: |
+          git add i18n
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+            echo "no_changes=true" >> "$GITHUB_OUTPUT"
+
+            if git ls-remote --exit-code origin "$pr_branch" &>/dev/null; then
+              echo "Deleting PR branch '$pr_branch'"
+              git push --delete origin "$pr_branch"
+              echo "deleted=$pr_branch" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "Committing changes"
+            {
+              echo "chore(i18n): new translations from Crowdin"
+              echo
+              cat summary.txt
+            } > commit.txt
+            git commit --file commit.txt
+
+            echo "Pushing changes"
+            git push --force origin "HEAD:$pr_branch"
+
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create or update i18n PR
+        if: steps.push.outputs.has_changes
+        id: pr
+        uses: actions/github-script@v8
         with:
-          config: crowdin.yaml
-          upload_sources: false
-          upload_translations: false
-          download_translations: true
-          skip_untranslated_strings: true
-          create_pull_request: true
-          pull_request_title: |
-            i18n: new translations from Crowdin
-          pull_request_body: |
-            <!-- metadata:
-              ${{ steps.summary.outputs.json }}
-            -->
+          script: |
+            const { readFileSync } = require("fs")
+            const { owner, repo } = context.repo
+            const base = process.env.GITHUB_REF_NAME
+            const head = `i18n/${base}`
+            const title = "i18n: new translations from Crowdin"
+            const body = readFileSync("summary.md", "utf8")
 
-            ${{ steps.summary.outputs.markdown }}
+            // Find existing PR
+            const { data: prs } = await github.rest.pulls.list({
+              owner,
+              repo,
+              state: "open",
+              head: `${owner}:${head}`,
+              base,
+              per_page: 1,
+            })
 
-            Powered by [Crowdin's GitHub Action](https://github.com/crowdin/github-action).
-          pull_request_labels: enhancement, i18n
-          pull_request_base_branch_name: ${{ github.ref_name }}
-          localization_branch_name: i18n/${{ github.ref_name }}
-          commit_message: |
-            chore(i18n): new translations from Crowdin
+            // Create or update PR
+            const pr = await (async () => {
+              if (prs.length > 0) {
+                const pull_number = prs[0].number
+                core.info(`Updating existing PR #${pull_number}`)
+                return (
+                  await github.rest.pulls.update({
+                    owner,
+                    repo,
+                    pull_number,
+                    title,
+                    body,
+                  })
+                ).data
+              }
 
-            ${{ steps.summary.outputs.text }}
+              core.info("Creating a new PR")
+              return (
+                await github.rest.pulls.create({
+                  owner,
+                  repo,
+                  title,
+                  head,
+                  base,
+                  body,
+                })
+              ).data
+            })()
+
+            core.setOutput("number", pr.number)
+            core.setOutput("url", pr.html_url)
+
+      - name: Write summary
+        if: steps.push.outputs.has_changes || steps.push.outputs.deleted
+        env:
+          deleted: ${{ steps.push.outputs.deleted }}
+          number: ${{ steps.pr.outputs.number }}
+          url: ${{ steps.pr.outputs.url }}
+        run: |
+          {
+            echo "## Crowdin Sync"
+            echo
+            if [ -n "$deleted" ]; then
+              echo "- Removed \`$deleted\`"
+            elif [ -n "$number" ] && [ -n "$url" ]; then
+              echo "- PR: [#$number]($url)"
+            else
+              echo "- Nothing to do"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
