@@ -1,22 +1,18 @@
 name: Comment
 
 on:
-  workflow_run:
-    workflows:
-      - Build
+  pull_request_target:
+    branches: [main]
     types:
-      - completed
+      - opened
+      - reopened
+      - synchronize
 
 # Group workflow runs by event + PR.
 # New runs cancel any pending run.
 # In-progress runs are allowed to complete.
 concurrency:
-  group: >
-    pr-comment-${{ github.event.workflow_run.event }}-${{
-      github.event.workflow_run.pull_requests &&
-      github.event.workflow_run.pull_requests[0] &&
-      github.event.workflow_run.pull_requests[0].number
-    }}
+  group: pr-comment-${{ github.event.number }}
 
 permissions: {}
 
@@ -25,13 +21,84 @@ defaults:
     shell: bash
 
 jobs:
+  prepare:
+    name: Setup
+    uses: ./.github/workflows/prepare.yaml
+    permissions:
+      contents: read
+    with:
+      changelog: true
+
+
+  find_build:
+    name: Find build
+    runs-on: ubuntu-slim
+    timeout-minutes: 10
+
+    permissions:
+      actions: read # For listing workflow runs
+
+    outputs:
+      id: ${{ steps.find.outputs.id }}
+
+    steps:
+      - name: Find workflow run
+        id: find
+        timeout-minutes: 6 # deadline + 1
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const { owner, repo } = context.repo
+            const head_sha = context.payload.pull_request.head.sha
+            const deadline = Date.now() + 5 * 60_000 // 5 minutes
+
+            const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+            const backoff = (() => {
+              let delay = 5_000
+              return async () => {
+                await sleep(delay)
+                delay = Math.min(delay * 1.5, 15_000)
+              }
+            })()
+
+            core.info("Polling for 'build.yml' workflow run")
+            const workflow = await (async () => {
+              while (Date.now() < deadline) {
+                const iterator = github.paginate.iterator(
+                  github.rest.actions.listWorkflowRunsForRepo,
+                  {
+                    owner,
+                    repo,
+                    event: "pull_request",
+                    head_sha,
+                    exclude_pull_requests: true,
+                    per_page: 100, // Minimize requests
+                  }
+                )
+
+                for await (const page of iterator) {
+                  const match = page.data
+                    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+                    .find(run => run.path === ".github/workflows/build.yaml")
+                  if (match) return match
+                }
+
+                await backoff()
+              }
+            })()
+
+            if (!workflow) {
+              core.setFailed("Timed out looking for build workflow run")
+              return
+            }
+
+            core.setOutput("id", workflow.id)
+
   sync:
     name: Sync
     runs-on: ubuntu-slim
-    if: >
-      github.event.workflow_run.conclusion != 'cancelled' &&
-      github.event.workflow_run.event == 'pull_request'
-    timeout-minutes: 10
+    needs: [prepare, find_build]
+    timeout-minutes: 15
 
     permissions:
       actions: read # For downloading artifacts
@@ -39,14 +106,65 @@ jobs:
       pull-requests: write # For posting comments
 
     steps:
-      - name: Download artifacts
+      - name: Wait for changelog
+        id: find
+        if: needs.prepare.outputs.changelog_comment
+        timeout-minutes: 11 # deadline + 1
+        uses: actions/github-script@v8
+        env:
+          RUN_ID: ${{ needs.find_build.outputs.id }}
+        with:
+          script: |
+            const { owner, repo } = context.repo
+            const run_id = process.env.RUN_ID
+            const deadline = Date.now() + 10 * 60_000 // 10 minutes
+
+            const sleep = ms => new Promise(resolve => setTimeout(resolve, ms))
+            const backoff = (() => {
+              let delay = 3_000
+
+              return async () => {
+                await sleep(delay)
+                delay = Math.min(delay * 1.25, 20_000)
+              }
+            })()
+
+            // Due to Java & Gradle setup, the changelog usually takes ~1m to build.
+            // Wait 45s before polling, to reduce wasteful API calls.
+            core.info("Waiting 45s before starting...")
+            await sleep(45_000)
+
+            core.info("Polling for changelog.md")
+            const changelog = await (async () => {
+              while (Date.now() < deadline) {
+                const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
+                  owner,
+                  repo,
+                  run_id,
+                })
+
+                const match = artifacts.data.artifacts.find(a => a.name === "changelog.md")
+                if (match) return match
+
+                await backoff()
+              }
+            })()
+
+            if (!changelog) {
+              core.setFailed("Timed out waiting for changelog artifact")
+              return
+            }
+
+            core.setOutput("id", changelog.id)
+
+      - name: Download artifact
         id: download
+        if: steps.find.outputs.id
         uses: actions/download-artifact@v8
         with:
-          run-id: ${{ github.event.workflow_run.id }}
+          run-id: ${{ needs.find_build.outputs.id }}
+          artifact-ids: ${{ steps.find.outputs.id }}
           github-token: ${{ github.token }}
-          merge-multiple: true
-          pattern: '{pr_number,changelog.md}'
 
       - name: Sync PR comment
         uses: actions/github-script@v8
@@ -55,23 +173,9 @@ jobs:
             const { readFileSync } = require("fs")
 
             const { owner, repo } = context.repo
-            const runId = context.payload.workflow_run.id
-            const runConclusion = context.payload.workflow_run.conclusion
+            const issue_number = context.payload.number
             const botId = 41898282 // github-actions[bot]
             const marker = "<!-- changelog-preview -->"
-
-            // Read the PR number
-            const pr = (function() {
-              try {
-                 const str = readFileSync("pr_number", "utf8").trim()
-                 const result = parseInt(str)
-                 if (result > 0) return result
-                 throw new Error(`Invalid PR number '${str}'`)
-              } catch (err) {
-                core.error(`Error getting 'pr_number' artifact for workflow run ${runId}`)
-                throw err
-              }
-            })()
 
             // Read the optional changelog body
             const body = (function() {
@@ -88,7 +192,7 @@ jobs:
             const existing = await (async function() {
               const iterator = github.paginate.iterator(
                 github.rest.issues.listComments,
-                { owner, repo, issue_number: pr }
+                { owner, repo, issue_number }
               )
 
               for await (const page of iterator) {
@@ -103,11 +207,6 @@ jobs:
             })()
 
             if (!body) {
-              if (runConclusion !== "success") {
-                core.notice("Workflow run unsuccessful and no changelog; leaving comment untouched")
-                return
-              }
-
               if (!existing) {
                 core.notice("No changelog and no existing comment")
                 return
@@ -153,6 +252,6 @@ jobs:
             await github.rest.issues.createComment({
               owner,
               repo,
-              issue_number: pr,
+              issue_number,
               body,
             })

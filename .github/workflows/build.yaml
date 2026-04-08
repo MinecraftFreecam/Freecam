@@ -20,132 +20,13 @@ defaults:
 jobs:
   prepare:
     name: Setup
-    runs-on: ubuntu-slim
-    timeout-minutes: 5
+    uses: ./.github/workflows/prepare.yaml
     permissions:
-      # 'read' avoids accidental access to draft releases.
       contents: read
-    outputs:
-      version: ${{ steps.version.outputs.version }}
-      do_release: ${{ steps.check_release.outputs.do_release }}
-      matrix: ${{ steps.matrix.outputs.matrix }}
-
-    steps:
-      - name: Checkout required files
-        uses: actions/checkout@v6
-        with:
-          sparse-checkout: |
-            ci
-            metadata.toml
-            stonecutter.settings.toml
-            pyproject.toml
-            uv.lock
-          sparse-checkout-cone-mode: false
-
-      - name: Save PR number
-        if: github.event.pull_request
-        env:
-          pr: ${{ github.event.pull_request.number }}
-        run: |
-          echo "$pr" > pr_number
-
-      - name: Upload PR number
-        if: github.event.pull_request
-        uses: actions/upload-artifact@v7
-        with:
-          path: pr_number
-          archive: false
-          retention-days: 30
-          if-no-files-found: error
-
-      - uses: actions/setup-python@v6
-        with:
-          python-version-file: pyproject.toml
-
-      - name: Install uv
-        uses: astral-sh/setup-uv@v7
-
-      - name: Install CI dependencies
-        run: uv sync --locked --no-group dev
-
-      - name: Get changed files
-        id: changed_files
-        # Currently only used on PR events
-        if: github.event.pull_request
-        uses: actions/github-script@v8
-        with:
-          script: |
-            const result = await github.graphql(
-              `query($owner: String!, $repo: String!, $pr: Int!) {
-                repository(owner: $owner, name: $repo) {
-                  pullRequest(number: $pr) {
-                    files(first: 100) {
-                      nodes { path }
-                    }
-                  }
-                }
-              }`,
-              {
-                ...context.repo,
-                pr: context.payload.pull_request.number,
-              }
-            )
-            const files = result.repository.pullRequest.files.nodes
-            if (files.some(f => f.path === "CHANGELOG.md")) {
-              core.notice("This PR touches the changelog")
-              core.setOutput("changelog", "true")
-            } else if (files.length === 100) {
-              core.warning("PR has ≥100 files — file detection may be incomplete")
-            }
-
-      - name: Read project version
-        id: version
-        run: |
-          version=$(yq .mod.version metadata.toml)
-          echo "version=$version" >> "$GITHUB_OUTPUT"
-
-      - name: Check whether this version is released
-        id: check_release
-        if: github.event.pull_request || github.ref == 'refs/heads/main'
-        uses: actions/github-script@v8
-        env:
-          VERSION: ${{ steps.version.outputs.version }}
-        with:
-          script: |
-            const tag = `v${process.env.VERSION}`
-            const push = context.eventName === "push"
-            try {
-              const { data } = await github.rest.repos.getReleaseByTag({ ...context.repo, tag })
-              core.notice(`${tag} already published (${data.published_at})`)
-            } catch (err) {
-              if (err.status !== 404) throw err
-              core.notice(`${tag} not published — creating release`)
-              core.setOutput("unreleased", "true")
-              if (push) core.setOutput("do_release", "true")
-            }
-
-      - name: Generate build matrix
-        id: matrix
-        env:
-          touches_changelog: ${{ steps.changed_files.outputs.changelog }}
-          unreleased: ${{ steps.check_release.outputs.unreleased }}
-          version: ${{ steps.version.outputs.version }}
-        run: |
-          args=(
-            --version "$version"
-            --output matrix.json
-          )
-
-          # If 'unreleased' is set, that means the version has been bumped.
-          # Otherwise, we build the in-progress [Unreleased] changelog section.
-          if [ -n "$unreleased" ]; then
-            args+=( --release-changelog )
-          elif [ -n "$touches_changelog" ]; then
-            args+=( --unreleased-changelog )
-          fi
-
-          uv run build-matrix "${args[@]}"
-          echo "matrix=$(cat matrix.json)" >> "$GITHUB_OUTPUT"
+    with:
+      changelog: ${{ github.event_name != 'push' }}
+      release: ${{ github.event_name != 'push' || github.ref == 'refs/heads/main' }}
+      matrix: true
 
   build:
     name: ${{ matrix.name }}
