@@ -47,6 +47,8 @@ defaults:
     shell: bash
 
 env:
+  GIT_NAME: Crowdin Bot
+  GIT_EMAIL: support+bot@crowdin.com
   CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
   CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
@@ -63,13 +65,16 @@ jobs:
     steps:
       - name: Configure git user
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "$GIT_NAME"
+          git config --global user.email "$GIT_EMAIL"
 
       - name: Install Crowdin CLI
         run: npm install -g @crowdin/cli
 
       - uses: actions/checkout@v6
+        with:
+          # Full depth for merge logic
+          fetch-depth: 0
 
       - name: Restore Crowdin cache
         uses: actions/cache/restore@v5
@@ -79,28 +84,22 @@ jobs:
           restore-keys: crowdin-
 
       - name: Merge Crowdin state
+        id: merge
         if: github.event_name == 'push'
         env:
-          before: ${{ github.event.before }}
-          i18n_branch: i18n/${{ github.ref_name }}
+          # Use the commit before this push as the merge base
+          # Note: if previous runs failed (or were cancelled), conflicts may appear that should have been resolved.
+          base: ${{ github.event.before }}
         run: |
-          # Find the merge base with the i18n PR branch
-          # Fallback to using the event's 'before' commit
-          if git ls-remote --exit-code origin "$i18n_branch" &>/dev/null; then
-            git fetch origin "$i18n_branch"
-            base=$(git merge-base HEAD "origin/$i18n_branch")
-          else
-            echo "i18n branch not found, falling back to github.event.before"
-            base="$before"
-          fi
-          # Ensure the base commit is reachable
-          git fetch origin "$base"
-
+          # Save current HEAD in a branch for merging later
           git branch actual HEAD
+
+          # Create a temporary branch from the base
+          git fetch origin "$base"
           git switch -c tmp "$base"
 
-          # Pull Crowdin state
-          crowdin download --no-progress --config crowdin.yaml
+          # Pull Crowdin translations
+          crowdin download translations --no-progress
           git commit --all --allow-empty -m "crowdin snapshot"
 
           # Merge pushed changes
@@ -109,13 +108,32 @@ jobs:
             exit 1
           fi
 
+          # Count changes to source and translation files
+          declare -i source_changes=0
+          declare -i translations_changes=0
+          for file in $(git diff --name-only "$base" HEAD); do
+            if [[ "$file" == i18n/src/main/en_US/* ]]; then
+              (( ++source_changes ))
+            elif [[ "$file" == i18n/src/main/*/* ]]; then
+              (( ++translations_changes ))
+            fi
+          done
+          if (( source_changes > 0 )); then
+            echo "::notice::$source_changes source changes"
+            echo "upload_sources=true" >> $GITHUB_OUTPUT
+          fi
+          if (( translations_changes > 0 )); then
+            echo "::notice::$translations_changes translation changes"
+            echo "upload_translations=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Crowdin push sources
-        if: github.event_name == 'push' || inputs.upload_sources
+        if: inputs.upload_sources || steps.merge.outputs.upload_sources
         run: |
           crowdin upload sources --cache --no-progress
 
       - name: Crowdin push translations
-        if: inputs.upload_translations
+        if: inputs.upload_translations || steps.merge.outputs.upload_translations
         run: |
           crowdin upload translations --no-progress
 
@@ -128,7 +146,7 @@ jobs:
 
   download:
     name: Download
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-slim
     timeout-minutes: 10
     if: inputs.download_translations
 
@@ -137,6 +155,14 @@ jobs:
       pull-requests: write
 
     steps:
+      - name: Configure git user
+        run: |
+          git config --global user.name "$GIT_NAME"
+          git config --global user.email "$GIT_EMAIL"
+
+      - name: Install Crowdin CLI
+        run: npm install -g @crowdin/cli
+
       - uses: actions/checkout@v6
 
       - name: Generate summary
@@ -146,9 +172,13 @@ jobs:
           last_activity: ${{ inputs.last_activity }}
           project_url: https://crowdin.com/project/freecam
         run: |
-          cd "$(mktemp -d)"
-
           echo "{}" > summary.json
+
+          updateJson() {
+            local tmp=$(mktemp)
+            jq --compact-output "$@" summary.json \
+                >"$tmp" && mv --force "$tmp" summary.json
+          }
 
           {
             echo "New pull request with translations from [Crowdin]($project_url)."
@@ -165,59 +195,130 @@ jobs:
           if [ -n "$last_updated" ]; then
             echo "- Last updated $last_updated" >> summary.md
             echo "Last updated $last_updated" >> summary.txt
-            jq --compact-output \
+            updateJson \
               --arg last_updated "$last_updated" \
-              '.last_updated = $last_updated' \
-              summary.json \
-              > tmp.json && mv tmp.json summary.json
+              '.last_updated = $last_updated'
           fi
 
           if [ -n "$last_activity" ]; then
             echo "- Last activity $last_activity" >> summary.md
             echo "Last activity $last_activity" >> summary.txt
-            tmp=$(mktemp)
-            jq --compact-output \
+            updateJson \
               --arg last_activity "$last_activity" \
-              '.last_activity = $last_activity' \
-              summary.json \
-              > tmp.json && mv tmp.json summary.json
+              '.last_activity = $last_activity'
           fi
 
-          declare -A outputs=( [json]=json [text]=txt [markdown]=md )
-          for it in "${!outputs[@]}"; do
-            ext="${outputs[$it]}"
-            {
-              echo "$it<<EOF"
-              cat "summary.$ext"
-              echo "EOF"
-            } >> "$GITHUB_OUTPUT"
-          done
+          run_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          echo "- By run [\`$GITHUB_RUN_ID\`]($run_url)" >> summary.md
+          updateJson \
+            --arg run_id "$GITHUB_RUN_ID" \
+            --arg run_url "$run_url" \
+            '.run_id = $run_id | .run_url = $run_url'
 
       - name: Crowdin pull
-        uses: crowdin/github-action@v2
+        run: |
+          crowdin download --no-progress --skip-untranslated-strings
+
+      - name: Push changes
+        id: push
         env:
-          GH_TOKEN: ${{ github.token }}
+          pr_branch: i18n/${{ github.ref_name }}
+        run: |
+          git add i18n
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+            echo "no_changes=true" >> "$GITHUB_OUTPUT"
+
+            if git ls-remote --exit-code origin "$pr_branch" &>/dev/null; then
+              echo "Deleting PR branch '$pr_branch'"
+              git push --delete origin "$pr_branch"
+              echo "deleted=$pr_branch" >> "$GITHUB_OUTPUT"
+            fi
+          else
+            echo "Committing changes"
+            {
+              echo "chore(i18n): new translations from Crowdin"
+              echo
+              cat summary.txt
+            } > commit.txt
+            git commit --file commit.txt
+
+            echo "Pushing changes"
+            git push --force origin "HEAD:$pr_branch"
+
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Create or update i18n PR
+        if: steps.push.outputs.has_changes
+        id: pr
+        uses: actions/github-script@v8
         with:
-          config: crowdin.yaml
-          upload_sources: false
-          upload_translations: false
-          download_translations: true
-          skip_untranslated_strings: true
-          create_pull_request: true
-          pull_request_title: |
-            i18n: new translations from Crowdin
-          pull_request_body: |
-            <!-- metadata:
-              ${{ steps.summary.outputs.json }}
-            -->
+          script: |
+            const { readFileSync } = require("fs")
+            const { owner, repo } = context.repo
+            const base = process.env.GITHUB_REF_NAME
+            const head = `i18n/${base}`
+            const title = "i18n: new translations from Crowdin"
+            const body = readFileSync("summary.md", "utf8")
 
-            ${{ steps.summary.outputs.markdown }}
+            // Find existing PR
+            const { data: prs } = await github.rest.pulls.list({
+              owner,
+              repo,
+              state: "open",
+              head: `${owner}:${head}`,
+              base,
+              per_page: 1,
+            })
 
-            Powered by [Crowdin's GitHub Action](https://github.com/crowdin/github-action).
-          pull_request_labels: enhancement, i18n
-          pull_request_base_branch_name: ${{ github.ref_name }}
-          localization_branch_name: i18n/${{ github.ref_name }}
-          commit_message: |
-            chore(i18n): new translations from Crowdin
+            // Create or update PR
+            const pr = await (async () => {
+              if (prs.length > 0) {
+                const pull_number = prs[0].number
+                core.info(`Updating existing PR #${pull_number}`)
+                return (
+                  await github.rest.pulls.update({
+                    owner,
+                    repo,
+                    pull_number,
+                    title,
+                    body,
+                  })
+                ).data
+              }
 
-            ${{ steps.summary.outputs.text }}
+              core.info("Creating a new PR")
+              return (
+                await github.rest.pulls.create({
+                  owner,
+                  repo,
+                  title,
+                  head,
+                  base,
+                  body,
+                })
+              ).data
+            })()
+
+            core.setOutput("number", pr.number)
+            core.setOutput("url", pr.html_url)
+
+      - name: Write summary
+        if: steps.push.outputs.has_changes || steps.push.outputs.deleted
+        env:
+          deleted: ${{ steps.push.outputs.deleted }}
+          number: ${{ steps.pr.outputs.number }}
+          url: ${{ steps.pr.outputs.url }}
+        run: |
+          {
+            echo "## Crowdin Sync"
+            echo
+            if [ -n "$deleted" ]; then
+              echo "- Removed \`$deleted\`"
+            elif [ -n "$number" ] && [ -n "$url" ]; then
+              echo "- PR: [#$number]($url)"
+            else
+              echo "- Nothing to do"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
