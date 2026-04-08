@@ -168,6 +168,12 @@ jobs:
 
           echo "{}" > summary.json
 
+          updateJson() {
+            local tmp=$(mktemp)
+            jq --compact-output "$@" summary.json \
+                >"$tmp" && mv --force "$tmp" summary.json
+          }
+
           {
             echo "New pull request with translations from [Crowdin]($project_url)."
             echo
@@ -183,23 +189,25 @@ jobs:
           if [ -n "$last_updated" ]; then
             echo "- Last updated $last_updated" >> summary.md
             echo "Last updated $last_updated" >> summary.txt
-            jq --compact-output \
+            updateJson \
               --arg last_updated "$last_updated" \
-              '.last_updated = $last_updated' \
-              summary.json \
-              > tmp.json && mv tmp.json summary.json
+              '.last_updated = $last_updated'
           fi
 
           if [ -n "$last_activity" ]; then
             echo "- Last activity $last_activity" >> summary.md
             echo "Last activity $last_activity" >> summary.txt
-            tmp=$(mktemp)
-            jq --compact-output \
+            updateJson \
               --arg last_activity "$last_activity" \
-              '.last_activity = $last_activity' \
-              summary.json \
-              > tmp.json && mv tmp.json summary.json
+              '.last_activity = $last_activity'
           fi
+
+          run_url="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          echo "- By run [\`$GITHUB_RUN_ID\`]($run_url)" >> summary.md
+          updateJson \
+            --arg run_id "$GITHUB_RUN_ID" \
+            --arg run_url "$run_url" \
+            '.run_id = $run_id | .run_url = $run_url'
 
           declare -A outputs=( [json]=json [text]=txt [markdown]=md )
           for it in "${!outputs[@]}"; do
