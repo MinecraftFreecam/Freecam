@@ -84,6 +84,7 @@ jobs:
           restore-keys: crowdin-
 
       - name: Merge Crowdin state
+        id: merge
         if: github.event_name == 'push'
         env:
           # Use the commit before this push as the merge base
@@ -107,13 +108,32 @@ jobs:
             exit 1
           fi
 
+          # Count changes to source and translation files
+          declare -i source_changes=0
+          declare -i translations_changes=0
+          for file in $(git diff --name-only "$base" HEAD); do
+            if [[ "$file" == i18n/src/main/en_US/* ]]; then
+              (( ++source_changes ))
+            elif [[ "$file" == i18n/src/main/*/* ]]; then
+              (( ++translations_changes ))
+            fi
+          done
+          if (( source_changes > 0 )); then
+            echo "::notice::$source_changes source changes"
+            echo "upload_sources=true" >> $GITHUB_OUTPUT
+          fi
+          if (( translations_changes > 0 )); then
+            echo "::notice::$translations_changes translation changes"
+            echo "upload_translations=true" >> $GITHUB_OUTPUT
+          fi
+
       - name: Crowdin push sources
-        if: github.event_name == 'push' || inputs.upload_sources
+        if: inputs.upload_sources || steps.merge.outputs.upload_sources
         run: |
           crowdin upload sources --cache --no-progress
 
       - name: Crowdin push translations
-        if: inputs.upload_translations
+        if: inputs.upload_translations || steps.merge.outputs.upload_translations
         run: |
           crowdin upload translations --no-progress
 
