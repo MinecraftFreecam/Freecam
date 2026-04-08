@@ -47,6 +47,8 @@ defaults:
     shell: bash
 
 env:
+  GIT_NAME: Crowdin Bot
+  GIT_EMAIL: support+bot@crowdin.com
   CROWDIN_PROJECT_ID: ${{ secrets.CROWDIN_PROJECT_ID }}
   CROWDIN_PERSONAL_TOKEN: ${{ secrets.CROWDIN_PERSONAL_TOKEN }}
 
@@ -63,13 +65,16 @@ jobs:
     steps:
       - name: Configure git user
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "$GIT_NAME"
+          git config --global user.email "$GIT_EMAIL"
 
       - name: Install Crowdin CLI
         run: npm install -g @crowdin/cli
 
       - uses: actions/checkout@v6
+        with:
+          # Full depth for merge logic
+          fetch-depth: 0
 
       - name: Restore Crowdin cache
         uses: actions/cache/restore@v5
@@ -81,26 +86,19 @@ jobs:
       - name: Merge Crowdin state
         if: github.event_name == 'push'
         env:
-          before: ${{ github.event.before }}
-          i18n_branch: i18n/${{ github.ref_name }}
+          # Use the commit before this push as the merge base
+          # Note: if previous runs failed (or were cancelled), conflicts may appear that should have been resolved.
+          base: ${{ github.event.before }}
         run: |
-          # Find the merge base with the i18n PR branch
-          # Fallback to using the event's 'before' commit
-          if git ls-remote --exit-code origin "$i18n_branch" &>/dev/null; then
-            git fetch origin "$i18n_branch"
-            base=$(git merge-base HEAD "origin/$i18n_branch")
-          else
-            echo "i18n branch not found, falling back to github.event.before"
-            base="$before"
-          fi
-          # Ensure the base commit is reachable
-          git fetch origin "$base"
-
+          # Save current HEAD in a branch for merging later
           git branch actual HEAD
+
+          # Create a temporary branch from the base
+          git fetch origin "$base"
           git switch -c tmp "$base"
 
-          # Pull Crowdin state
-          crowdin download --no-progress --config crowdin.yaml
+          # Pull Crowdin translations
+          crowdin download translations --no-progress
           git commit --all --allow-empty -m "crowdin snapshot"
 
           # Merge pushed changes
