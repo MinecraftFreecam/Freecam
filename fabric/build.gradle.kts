@@ -17,10 +17,7 @@ stonecutter replacements {
 
 dependencies {
     minecraft("com.mojang:minecraft:${meta.mc}")
-    if (loomAdapter.hasMappings) {
-        mappings(loom.officialMojangMappings())
-    }
-
+    loomAdapter.applyMojangMappings()
     modImplementation(libs.fabric.loader)
 
     sequenceOf(

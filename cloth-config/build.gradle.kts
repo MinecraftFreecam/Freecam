@@ -6,9 +6,7 @@ plugins {
 
 dependencies {
     minecraft("com.mojang:minecraft:${meta.mc}")
-    if (loomAdapter.hasMappings) {
-        mappings(loom.officialMojangMappings())
-    }
+    loomAdapter.applyMojangMappings()
     modCompileOnly(libs.fabric.loader)
 
     // Loader project should provide their own :common and cloth-config dependencies
