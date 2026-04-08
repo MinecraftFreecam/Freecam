@@ -40,15 +40,7 @@ val i18nResources by configurations.registering {
 
 dependencies {
     minecraft("com.mojang:minecraft:${meta.mc}")
-    if (loomAdapter.hasMappings) {
-        mappings(loom.layered {
-            officialMojangMappings()
-            meta.parchment { mappings, mc ->
-                parchment("org.parchmentmc.data:parchment-${mc}:$mappings@zip")
-            }
-        })
-    }
-
+    loomAdapter.applyMojangMappings()
     modCompileOnly(libs.fabric.loader)
     i18nResources(project(":i18n"))
 }

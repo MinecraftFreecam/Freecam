@@ -92,13 +92,6 @@ legacyForge {
 //        }
     }
 
-    parchment {
-        meta.parchment { mappings, mc ->
-            minecraftVersion = mc
-            mappingsVersion = mappings
-        }
-    }
-
     mods {
         register(meta.id) {
             sourceSet(sourceSets.main.get())

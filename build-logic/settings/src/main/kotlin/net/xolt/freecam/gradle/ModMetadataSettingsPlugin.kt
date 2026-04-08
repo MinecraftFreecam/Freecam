@@ -98,12 +98,6 @@ private class ProjectModMetadata(
             .get()
     }
 
-    override fun parchment(block: (mappings: String, minecraft: String) -> Unit) {
-        deps.orNull("parchment")
-            ?.let(ParchmentVersion.Companion::parse)
-            ?.let { block(it.mappings, it.minecraft ?: mc) }
-    }
-
     override val properties = PrefixedPropertyProvider { project.properties }
     override val mod = PrefixedPropertyProvider("mod.") { project.properties }
     override val deps = PrefixedPropertyProvider("deps.") { project.properties }

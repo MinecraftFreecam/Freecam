@@ -29,14 +29,6 @@ tasks.named<Jar>("jar") {
 }
 
 repositories {
-    meta.parchment { _, _ ->
-        exclusiveContent {
-            forRepository {
-                maven("https://maven.parchmentmc.org") { name = "Parchment" }
-            }
-            filter { includeGroup("org.parchmentmc.data") }
-        }
-    }
     maven("https://maven.neoforged.net/releases") {
         name = "NeoForge"
         content { includeGroup("net.neoforged") }
