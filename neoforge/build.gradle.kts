@@ -8,8 +8,7 @@ fletchingTable {
     accessConverter.register(sourceSets.main) {
         // During processResources, Fletching Table will exclude this file
         // and generate a META-INF/accesstransformer.cfg from it
-        // FIXME: https://codeberg.org/stonecutter/fletching-table/issues/9
-        if (sc.current.parsed < "26.0") add("freecam.accesswidener")
+        add("freecam.accesswidener")
     }
 }
 
@@ -72,14 +71,6 @@ tasks.named("createMinecraftArtifacts") {
 }
 
 tasks.processResources {
-    // FIXME: https://codeberg.org/stonecutter/fletching-table/issues/9
-    if (sc.current.parsed >= "26.0") {
-        exclude("freecam.accesswidener")
-        from(project(":neoforge").file("accesstransformer.cfg")) {
-            rename { "META-INF/accesstransformer.cfg" }
-        }
-    }
-
     filesMatching(listOf("META-INF/mods.toml", "META-INF/neoforge.mods.toml")) {
         expand(commonExpansions)
     }
