@@ -100,11 +100,7 @@ tasks {
             description = meta.description
             licenses = listOf(meta.license)
             meta.authors.forEach(::author)
-
-            icon {
-                size = 128
-                path = "icon.png"
-            }
+            icon("icon.png")
 
             client()
             entrypoint("client", "net.xolt.freecam.fabric.FreecamFabric")
