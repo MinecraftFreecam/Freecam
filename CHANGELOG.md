@@ -17,6 +17,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Fixed
 
+- Iris rendering the player shadow when "Show Player" is enabled ([425](https://github.com/MinecraftFreecam/Freecam/issues/425), [426](https://github.com/MinecraftFreecam/Freecam/pull/426))
+
 ## [1.4.0-alpha.2] - 2026-04-04
 
 This version includes major underlying changes. Feedback and bug reports are greatly appreciated!
