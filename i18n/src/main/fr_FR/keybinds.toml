@@ -5,7 +5,7 @@ controls = "Freecam"
 toggle = "Basculer la caméra libre"
 
   [key.freecam.controlPlayer]
-  toggle = "Contrôla Player"
+  toggle = "Contrôler le joueur"
 
   [key.freecam.tripod]
   reset = "Réinitialiser le tripode"
