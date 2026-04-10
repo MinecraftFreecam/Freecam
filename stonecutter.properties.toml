@@ -33,6 +33,8 @@ modmenu.modrinth_id = "mOgUt4GM"
 
 
 ["26.1"]
+supported_mc_versions = ["26.1", "26.1.1", "26.1.2"]
+
 deps.cloth = "26.1.154"
 cloth_config_req = "[26.1,26.2)"
 deps.modmenu = "18.0.0-alpha.8"

@@ -6,7 +6,7 @@ vcs = "26.1"
 
 # Gradle projects to build for the corresponding Minecraft version.
 [versions]
-"26.1" = ["cloth-config", "common", "fabric", "neoforge"]
+"26.1:26.1.2" = ["cloth-config", "common", "fabric", "neoforge"]
 "1.21.11" = ["cloth-config", "common", "fabric", "neoforge"]
 "1.20.6" = ["cloth-config", "common", "fabric", "neoforge"]
 "1.19.4" = ["cloth-config", "common", "fabric", "forge"]
