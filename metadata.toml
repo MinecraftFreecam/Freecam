@@ -4,7 +4,7 @@ id = "freecam"
 group = "net.xolt.freecam"
 # Version can specify a semver pre-release, e.g. -alpha.1
 # Remember to run :changelog:patchChangelog when updating
-version = "1.4.0-alpha.2"
+version = "1.4.0-alpha.3"
 authors = ["hashalite", "Matt Sturgeon"]
 license = "MIT"
 homepage = "https://www.curseforge.com/minecraft/mc-mods/free-cam"

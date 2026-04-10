@@ -21,6 +21,7 @@ stonecutter replacements {
 
 fletchingTable {
     j52j.register("main") {
+        prettyPrint = true
         extension("json", "**/*.json5")
     }
 

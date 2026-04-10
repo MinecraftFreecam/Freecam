@@ -76,7 +76,7 @@ abstract class ProjectReleaseMetadataTask : DefaultTask() {
             loader = loader.get(),
             minecraft = mc,
             filename = artifactFileName.get(),
-            gameVersions = listOf(mc) + supportedMinecraftVersions.get(),
+            gameVersions = (supportedMinecraftVersions.get() + mc).sorted().distinct(),
             javaVersions = listOf(targetCompatibility.map(JavaVersion::toReleaseMetadataSlug).get()),
             relationships = relationships.get(),
         )

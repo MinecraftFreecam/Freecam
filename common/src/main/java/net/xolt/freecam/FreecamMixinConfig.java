@@ -5,13 +5,14 @@ import org.spongepowered.asm.mixin.extensibility.IMixinConfigPlugin;
 import org.spongepowered.asm.mixin.extensibility.IMixinInfo;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 public class FreecamMixinConfig implements IMixinConfigPlugin {
 
-    private static final List<String> DYNAMIC_MIXINS = List.of(
-            "net.xolt.freecam.mixins.IrisHandRendererMixin",
-            "net.xolt.freecam.mixins.IrisShadowRendererMixin"
+    private static final Map<String, String> MOD_MIXINS = Map.of(
+            "net.xolt.freecam.mixins.IrisHandRendererMixin", "iris",
+            "net.xolt.freecam.mixins.IrisShadowRendererMixin", "iris"
     );
 
     @Override
@@ -19,10 +20,8 @@ public class FreecamMixinConfig implements IMixinConfigPlugin {
 
     @Override
     public boolean shouldApplyMixin(String targetClassName, String mixinClassName) {
-        if (DYNAMIC_MIXINS.contains(mixinClassName)) {
-            return isClassLoaded(targetClassName);
-        }
-        return true;
+        String modId = MOD_MIXINS.get(mixinClassName);
+        return modId == null || ModPlatform.get().isModLoaded(modId);
     }
 
     @Override
@@ -43,13 +42,4 @@ public class FreecamMixinConfig implements IMixinConfigPlugin {
 
     @Override
     public void postApply(String targetClassName, ClassNode targetClass, String mixinClassName, IMixinInfo mixinInfo) {}
-
-    private static boolean isClassLoaded(String className) {
-        try {
-            Class.forName(className);
-            return true;
-        } catch (ClassNotFoundException ignored) {
-            return false;
-        }
-    }
 }

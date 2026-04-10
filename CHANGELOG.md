@@ -9,13 +9,25 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Added
 
-- The mod description is now translatable, but not yet translated ([172](https://github.com/MinecraftFreecam/Freecam/pull/172), [390](https://github.com/MinecraftFreecam/Freecam/pull/390))
-
 ### Changed
 
 ### Removed
 
 ### Fixed
+
+## [1.4.0-alpha.3] - 2026-04-10
+
+This version includes major underlying changes. Feedback and bug reports are greatly appreciated!
+**[Bug tracker](https://github.com/MinecraftFreecam/Freecam/issues).**
+
+### Added
+
+- The mod description is now translatable, but not yet translated ([172](https://github.com/MinecraftFreecam/Freecam/issues/172), [390](https://github.com/MinecraftFreecam/Freecam/pull/390))
+
+### Fixed
+
+- Iris rendering the player shadow when "Show Player" is enabled ([425](https://github.com/MinecraftFreecam/Freecam/issues/425), [426](https://github.com/MinecraftFreecam/Freecam/pull/426))
+- A NeoForge crash when Iris is installed, caused by loading Iris classes too early ([424](https://github.com/MinecraftFreecam/Freecam/issues/424), [426](https://github.com/MinecraftFreecam/Freecam/pull/426))
 
 ## [1.4.0-alpha.2] - 2026-04-04
 
@@ -24,7 +36,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 
 ### Fixed
 
-- Fixed a crash on NeoForge, caused by setup happening too early ([391](https://github.com/MinecraftFreecam/Freecam/issues/391), [397](https://github.com/MinecraftFreecam/Freecam/issues/397))
+- A NeoForge crash, caused by setup happening too early ([391](https://github.com/MinecraftFreecam/Freecam/issues/391), [397](https://github.com/MinecraftFreecam/Freecam/issues/397))
 
 ## [1.4.0-alpha.1] - 2026-03-31
 
@@ -642,9 +654,10 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Minecraft 1.18 support.
 - Minecraft 1.17 support.
 
-[Unreleased]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.0-alpha.2...HEAD
-[1.4.0-alpha.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.6...v1.4.0-alpha.1
+[Unreleased]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.0-alpha.3...HEAD
+[1.4.0-alpha.3]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.0-alpha.2...v1.4.0-alpha.3
 [1.4.0-alpha.2]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.0-alpha.1...v1.4.0-alpha.2
+[1.4.0-alpha.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.6...v1.4.0-alpha.1
 [1.3.6]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.5...v1.3.6
 [1.3.5]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.4...v1.3.5
 [1.3.4]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.3...v1.3.4
@@ -696,7 +709,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 [0.2.5]: https://github.com/MinecraftFreecam/Freecam/compare/v0.2.4...v0.2.5
 [0.2.4]: https://github.com/MinecraftFreecam/Freecam/compare/v0.2.3...v0.2.4
 [0.2.3]: https://github.com/MinecraftFreecam/Freecam/compare/v0.2.2...v0.2.3
-[0.2.2]: https://github.com/MinecraftFreecam/Freecam/releases/tag/v0.2.2
-[0.3]: https://github.com/MinecraftFreecam/Freecam/compare/v0.2.5...v0.3
-[0.4.4.1]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.4...v0.4.4.1
+[0.2.2]: https://github.com/MinecraftFreecam/Freecam/commits/v0.2.2
 [1.2.1.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.1...v1.2.1.1
+[0.4.4.1]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.4...v0.4.4.1
+[0.3]: https://github.com/MinecraftFreecam/Freecam/compare/v0.2.5...v0.3
