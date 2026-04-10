@@ -9,7 +9,7 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Added
 
-- The mod description is now translatable, but not yet translated ([172](https://github.com/MinecraftFreecam/Freecam/pull/172), [390](https://github.com/MinecraftFreecam/Freecam/pull/390))
+- The mod description is now translatable, but not yet translated ([172](https://github.com/MinecraftFreecam/Freecam/issues/172), [390](https://github.com/MinecraftFreecam/Freecam/pull/390))
 
 ### Changed
 
@@ -27,7 +27,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 
 ### Fixed
 
-- Fixed a crash on NeoForge, caused by setup happening too early ([391](https://github.com/MinecraftFreecam/Freecam/issues/391), [397](https://github.com/MinecraftFreecam/Freecam/issues/397))
+- A NeoForge crash, caused by setup happening too early ([391](https://github.com/MinecraftFreecam/Freecam/issues/391), [397](https://github.com/MinecraftFreecam/Freecam/issues/397))
 
 ## [1.4.0-alpha.1] - 2026-03-31
 
