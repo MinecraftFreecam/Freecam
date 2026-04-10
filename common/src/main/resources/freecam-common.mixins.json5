@@ -15,7 +15,8 @@
     "GameRendererMixin",
     "GuiMixin",
     "IrisHandRendererMixin",
-    "IrisShadowRendererMixin",
+    //? if <1.21.6
+    //"IrisShadowRendererMixin",
     "ItemInHandRendererMixin",
     "LivingEntityMixin",
     "LocalPlayerMixin",

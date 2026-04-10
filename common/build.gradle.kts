@@ -51,7 +51,7 @@ tasks.processResources {
         into("assets/${meta.id}/lang")
     }
 
-    filesMatching("freecam-common.mixins.json") {
+    filesMatching("freecam-common.mixins.json5") {
         expand(commonExpansions)
     }
 

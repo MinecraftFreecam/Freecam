@@ -1,4 +1,14 @@
-package net.xolt.freecam.mixins;
+/**
+ * {@code renderPlayerEntity} is unused since 1.21.9.
+ * <p>
+ * Iris now renders players as normal entities, so we hook into {@link net.minecraft.client.renderer.entity.EntityRenderDispatcher#shouldRender}
+ * in {@link net.xolt.freecam.mixins.EntityRenderDispatcherMixin} instead.
+ *
+ * @see <a href="https://github.com/IrisShaders/Iris/commit/e61bb8124f71b6f5d555053bcb798ed2e882b18e"><code>e61bb812</code></a>
+ */
+
+//? if <1.21.9 {
+/*package net.xolt.freecam.mixins;
 
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModConfig;
@@ -24,3 +34,4 @@ public class IrisShadowRendererMixin {
         }
     }
 }
+*///? }
