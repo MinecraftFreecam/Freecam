@@ -18,6 +18,7 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 ### Fixed
 
 - Iris rendering the player shadow when "Show Player" is enabled ([425](https://github.com/MinecraftFreecam/Freecam/issues/425), [426](https://github.com/MinecraftFreecam/Freecam/pull/426))
+- A NeoForge crash when Iris is installed, caused by loading Iris classes too early ([424](https://github.com/MinecraftFreecam/Freecam/issues/424), [426](https://github.com/MinecraftFreecam/Freecam/pull/426))
 
 ## [1.4.0-alpha.2] - 2026-04-04
 
