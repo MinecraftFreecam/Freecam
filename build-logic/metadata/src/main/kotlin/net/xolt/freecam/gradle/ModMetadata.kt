@@ -1,18 +1,27 @@
 package net.xolt.freecam.gradle
 
 import dev.eav.tomlkt.Toml
+import dev.eav.tomlkt.TomlNativeReader
+import dev.eav.tomlkt.decodeFromReader
 import dev.kikugie.stonecutter.AnyVersion
 import dev.kikugie.stonecutter.StonecutterExperimentalAPI
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.decodeFromString
 import net.xolt.freecam.model.*
 import net.xolt.freecam.util.decodeTomlPath
-import org.gradle.api.Plugin
 import org.gradle.api.Project
-import org.gradle.api.initialization.Settings
-import org.gradle.kotlin.dsl.add
 import org.gradle.kotlin.dsl.findByType
+import java.io.File
+
+internal fun File.loadStaticMetadata(): StaticModMetadata {
+    val metadata: MetadataToml = bufferedReader().use { reader ->
+        Toml.decodeFromReader(TomlNativeReader(reader))
+    }
+    return metadata.mod
+}
+
+internal infix fun StaticModMetadata.elaborate(project: Project): ModMetadata =
+    ProjectModMetadata(project = project, meta = this)
 
 @Serializable
 private data class MetadataToml(
@@ -112,20 +121,3 @@ private class PrefixedPropertyProvider(
         .map { it.key.removePrefix(prefix) to it.value.toString() }
 }
 
-class ModMetadataSettingsPlugin : Plugin<Settings> {
-    override fun apply(settings: Settings) {
-        val name = "meta"
-
-        // Load StaticModMetadata ourselves, rather than using stonecutter centralized properties
-        val file = settings.rootDir.resolve("metadata.toml")
-        val toml = file.readText()
-        val metadata = Toml.decodeFromString<MetadataToml>(toml).mod
-
-        settings.extensions.add<StaticModMetadata>(name, metadata)
-        settings.gradle.settingsEvaluated {
-            gradle.allprojects {
-                extensions.add<ModMetadata>(name, ProjectModMetadata(this, metadata))
-            }
-        }
-    }
-}

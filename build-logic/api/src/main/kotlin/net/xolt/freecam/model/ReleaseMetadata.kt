@@ -2,10 +2,8 @@ package net.xolt.freecam.model
 
 import io.github.z4kn4fein.semver.Version
 import io.github.z4kn4fein.semver.toVersion
-import kotlinx.serialization.KSerializer
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import net.xolt.freecam.serialization.lowerCaseEnumSerializer
 
 @Serializable
 data class ReleaseMetadata(
@@ -19,6 +17,7 @@ data class ReleaseMetadata(
 
 @Serializable
 data class ProjectReleaseMetadata(
+    @SerialName("display_name") val displayName: String,
     val loader: String,
     @SerialName("minecraft_version") val minecraft: String,
     val filename: String,
@@ -45,11 +44,11 @@ data class Relationship(
     @SerialName("modrinth_id") val modrinthId: String,
     val type: Type
 ) : java.io.Serializable {
-    @Serializable(with = Type.Serializer::class)
+    @Serializable
     enum class Type {
-        REQUIRED, OPTIONAL, BUNDLED;
-
-        object Serializer : KSerializer<Type> by lowerCaseEnumSerializer<Type>()
+        @SerialName("required") REQUIRED,
+        @SerialName("optional") OPTIONAL,
+        @SerialName("bundled") BUNDLED;
     }
 }
 
