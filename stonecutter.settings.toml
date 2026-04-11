@@ -1,5 +1,5 @@
 # See https://stonecutter.kikugie.dev/wiki/config/settings#data-driven-setup
-"$schema" = "https://codeberg.org/stonecutter/stonecutter/src/branch/0.8/tools/settings-schema.json"
+"$schema" = "https://stonecutter.kikugie.dev/settings-schema/latest.json"
 
 # The version used by "reset active project"
 vcs = "26.1"

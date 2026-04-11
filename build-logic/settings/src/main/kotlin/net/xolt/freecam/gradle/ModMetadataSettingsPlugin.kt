@@ -83,10 +83,7 @@ private class ProjectModMetadata(
     @OptIn(StonecutterExperimentalAPI::class)
     override val supportedMinecraftVersions: List<String> by lazy {
         requireStonecutter("supportedMinecraftVersions")
-            .properties
-            .rawOrNull("supported_mc_versions")
-            ?.asList()
-            ?.map { it.toString() }
+            .properties.rawOrNull("supported_mc_versions")?.to()
             ?: emptyList()
     }
 
