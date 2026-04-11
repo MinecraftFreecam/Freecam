@@ -7,6 +7,10 @@ on:
         description: Check whether a changelog comment should be posted
         type: boolean
         default: false
+      i18n:
+        description: Check whether i18n files were touched
+        type: boolean
+        default: false
       release:
         description: Check whether a release should be made
         type: boolean
@@ -25,6 +29,9 @@ on:
       changelog_comment:
         description: Whether to post a PR comment displaying the current changelog
         value: ${{ jobs.prepare.outputs.changelog_comment }}
+      i18n_files:
+        description: Whether the PR touches i18n files
+        value: ${{ jobs.prepare.outputs.i18n_files }}
       matrix:
         description: The build matrix
         value: ${{ jobs.prepare.outputs.matrix }}
@@ -41,6 +48,7 @@ env:
   scopes: >
     ${{ inputs.matrix && 'python ci' || '' }}
     ${{ inputs.changelog && 'files' || '' }}
+    ${{ inputs.i18n && 'files' || '' }}
 
 jobs:
   prepare:
@@ -60,6 +68,7 @@ jobs:
           steps.changed_files.outputs.changelog ||
           steps.check_release.outputs.unreleased
         }}
+      i18n_files: ${{ steps.changed_files.outputs.i18n }}
       matrix: ${{ steps.matrix.outputs.matrix }}
 
     steps:
@@ -126,7 +135,12 @@ jobs:
             if (files.some(f => f.path === "CHANGELOG.md")) {
               core.notice("This PR touches the changelog")
               core.setOutput("changelog", "true")
-            } else if (files.length === 100) {
+            }
+            if (files.some(f => f.path.startsWith("i18n/"))) {
+              core.notice("This PR touches i18n files")
+              core.setOutput("i18n", "true")
+            }
+            if (files.length === 100) {
               core.warning("PR has ≥100 files — file detection may be incomplete")
             }
 
