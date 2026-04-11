@@ -110,44 +110,13 @@ jobs:
           ) >> "$GITHUB_STEP_SUMMARY"
 
   publish:
-    if: needs.prepare.outputs.do_release || github.event.pull_request
-    name: Publish ${{ github.event.pull_request && '(dry run)' || '' }}
+    if: github.event_name != 'push' || needs.prepare.outputs.do_release
+    name: Publish
+    uses: ./.github/workflows/publish.yaml
     needs:
       - prepare
       - build
-    runs-on: ubuntu-slim
-    timeout-minutes: 30
     permissions:
-      # Grant 'write' to create releases.
       contents: write
-
-    steps:
-      - name: Download artifacts
-        uses: actions/download-artifact@v8
-        with:
-          path: artifacts
-          merge-multiple: true
-
-      - uses: actions/setup-java@v5
-        with:
-          java-version: '21'
-          distribution: temurin
-
-      - name: Install release publisher
-        env:
-          version: ${{ needs.prepare.outputs.version }}
-        run: |
-          tar --extract --file="artifacts/publish-$version.tar"
-          echo "$PWD/publish-$version/bin" >> "$GITHUB_PATH"
-
-      - name: Publish release
-        env:
-          do_release: ${{ needs.prepare.outputs.do_release }}
-          GITHUB_TOKEN: ${{ needs.prepare.outputs.do_release && github.token || 'dummy-token' }}
-        run: |
-          args=( artifacts )
-          [ -n "$do_release" ] || {
-            echo "::notice::Doing a dry run release"
-            args+=( --dry-run )
-          }
-          publish "${args[@]}"
+    with:
+      dry-run: ${{ github.event_name != 'push' }}
