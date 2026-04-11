@@ -2,7 +2,7 @@
 title = "Настройки Freecam"
 
   [freecam.config.gui.fallback]
-  title = "Config GUI not available."
+  title = "GUI конфигурации недоступен."
 
 [freecam.config.controls]
 label = "Настройка клавиш"
@@ -19,7 +19,7 @@ tooltip = "Как двигается камера."
   CREATIVE = "Творческий режим"
 
   [freecam.config.movement.speed]
-  value = "Value: %01.2f"
+  value = "Значение: %01.2f"
 
     [freecam.config.movement.speed.horizontal]
     label = "Горизонтальная скорость"
