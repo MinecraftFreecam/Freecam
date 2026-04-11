@@ -1,0 +1,63 @@
+name: Publish
+
+on:
+  workflow_call:
+    inputs:
+      dry-run:
+        description: Dry run
+        type: boolean
+        default: false
+    outputs: {}
+    secrets: {}
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  release:
+    name: ${{ inputs.dry-run && 'dry run' || 'Release' }}
+    runs-on: ubuntu-slim
+    timeout-minutes: 30
+
+    permissions:
+      # Grant 'write' to create releases.
+      contents: write
+
+    steps:
+      - name: Download artifacts
+        uses: actions/download-artifact@v8
+        with:
+          path: artifacts
+          merge-multiple: true
+
+      - uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: temurin
+
+      - name: Install release publisher
+        run: |
+          files=( artifacts/publish-*.tar )
+          [ ${#files[@]} = 1 ] || {
+            echo "::error::Found ${#files[@]} publish artifacts, expected 1"
+            exit 1
+          }
+          file="${files[0]}"
+          name=$(basename --suffix .tar "$file")
+          tar --extract --file="$file"
+          echo "$PWD/$name/bin" >> "$GITHUB_PATH"
+
+      - name: GitHub Release
+        env:
+          dry_run: ${{ inputs.dry-run || '' }}
+          GITHUB_TOKEN: ${{ inputs.dry-run && 'dummy-token' || github.token }}
+        run: |
+          args=( artifacts )
+          if [ -n "$dry_run" ]; then
+            echo "::notice::Doing a dry run release"
+            args+=( --dry-run )
+          fi
+          publish "${args[@]}"
