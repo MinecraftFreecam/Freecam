@@ -19,7 +19,7 @@ tooltip = "Wie sich die Kamera bewegt."
   CREATIVE = "Kreativ"
 
   [freecam.config.movement.speed]
-  value = "Value: %01.2f"
+  value = "Wert: %01.2f"
 
     [freecam.config.movement.speed.horizontal]
     label = "Horizontale Geschwindigkeit"
