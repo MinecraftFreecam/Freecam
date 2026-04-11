@@ -28,6 +28,7 @@ jobs:
       contents: read
     with:
       changelog: true
+      i18n: true
 
 
   find_build:
@@ -254,4 +255,129 @@ jobs:
               repo,
               issue_number,
               body,
+            })
+
+  label:
+    name: Label
+    runs-on: ubuntu-slim
+    needs: [prepare]
+    timeout-minutes: 5
+
+    permissions:
+      issues: write # For managing labels
+      pull-requests: write # For managing PR labels
+
+    steps:
+      - name: Compute managed labels
+        shell: python
+        env:
+          i18n: ${{ needs.prepare.outputs.i18n_files }}
+        run: |
+          import json
+          import os
+
+          managed = ["i18n"]
+
+          labels = {
+            label: os.environ.get(label) == "true"
+            for label in managed
+          }
+
+          with open("labels.json", "w") as file:
+            json.dump(labels, file)
+
+      - name: Sync managed labels
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const { readFileSync } = require("fs")
+            const { owner, repo } = context.repo
+            const issue_number = context.payload.pull_request.number
+            const botId = 41898282 // github-actions[bot]
+
+            const managed = JSON.parse(readFileSync("labels.json", "utf8"))
+
+            // Event history is only needed when un-setting labels
+            const needsHistory = Object.values(managed).some(present => !present)
+
+            // Get current labels
+            const current = (await github.rest.issues.listLabelsOnIssue({
+              owner,
+              repo,
+              issue_number,
+            })).data.map(label => label.name).sort()
+
+            // Build label history from timeline events
+            // label → latest add event
+            const lastAdded = await (async () => {
+              const result = new Map()
+
+              // Avoid API calls when we don't need history
+              if (!needsHistory) return result
+
+              const iterator = github.paginate.iterator(
+                github.rest.issues.listEventsForTimeline,
+                { owner, repo, issue_number, per_page: 100 }
+              )
+
+              for await (const { data } of iterator) {
+                for (const event of data) {
+                  if (event.event === "labeled" && event.actor) {
+                    const prev = result.get(event.label.name)
+                    const timestamp = Date.parse(event.created_at)
+                    if (!prev || timestamp > prev.timestamp) {
+                      result.set(event.label.name, {
+                        id: event.actor.id,
+                        login: event.actor.login,
+                        timestamp,
+                      })
+                    }
+                  }
+                }
+              }
+
+              return result
+            })()
+
+            // Compute next label set
+            const next = (() => {
+              const result = new Set(current)
+
+              for (const [label, shouldHaveLabel] of Object.entries(managed)) {
+                if (shouldHaveLabel) {
+                  result.add(label)
+                } else if (result.has(label)) {
+                  const event = lastAdded.get(label)
+
+                  // Only remove if last added by github-actions bot
+                  if (event?.id !== botId) {
+                    const ctx = event?.login
+                        ? `last added by ${event?.login}`
+                        : "unknown event"
+                    core.info(`Skipping removal of '${label}' (${ctx})`)
+                    continue
+                  }
+
+                  result.delete(label)
+                }
+              }
+
+              return [...result].sort()
+            })()
+
+            const unchanged =
+              next.length === current.length &&
+              next.every((label, i) => label === current[i])
+
+            if (unchanged) {
+              core.info("No label changes required")
+              return
+            }
+
+            core.info(`Updating labels: ${JSON.stringify(next)}`)
+            await github.rest.issues.setLabels({
+              owner,
+              repo,
+              issue_number,
+              labels: next,
             })
