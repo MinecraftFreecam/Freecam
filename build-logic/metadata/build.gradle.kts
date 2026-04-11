@@ -14,7 +14,7 @@ gradlePlugin {
     plugins {
         create("modMetadata") {
             id = "freecam.modmetadata"
-            implementationClass = "net.xolt.freecam.gradle.ModMetadataSettingsPlugin"
+            implementationClass = "net.xolt.freecam.gradle.ModMetadataPlugin"
         }
     }
 }
