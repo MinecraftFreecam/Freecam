@@ -1,4 +1,4 @@
-name: Comment
+name: PR
 
 on:
   pull_request_target:
@@ -94,8 +94,8 @@ jobs:
 
             core.setOutput("id", workflow.id)
 
-  sync:
-    name: Sync
+  comment:
+    name: Comment
     runs-on: ubuntu-slim
     needs: [prepare, find_build]
     timeout-minutes: 15
