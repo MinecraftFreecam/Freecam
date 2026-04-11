@@ -18,7 +18,7 @@ class ModMetadataPlugin : Plugin<Settings> {
         extensions.add<StaticModMetadata>(EXTENSION_NAME, metadata)
         gradle.settingsEvaluated {
             gradle.allprojects {
-                extensions.add<ModMetadata>(EXTENSION_NAME, ProjectModMetadata(this, metadata))
+                extensions.add<ModMetadata>(EXTENSION_NAME, metadata elaborate project)
             }
         }
     }

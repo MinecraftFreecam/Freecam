@@ -20,12 +20,15 @@ internal fun File.loadStaticMetadata(): StaticModMetadata {
     return metadata.mod
 }
 
+internal infix fun StaticModMetadata.elaborate(project: Project): ModMetadata =
+    ProjectModMetadata(project = project, meta = this)
+
 @Serializable
 private data class MetadataToml(
     val mod: ModMetadataToml,
 )
 
-internal class ProjectModMetadata(
+private class ProjectModMetadata(
     private val project: Project,
     private val meta: StaticModMetadata,
 )
@@ -101,9 +104,9 @@ internal class ProjectModMetadata(
             .get()
     }
 
-    override val properties: PropertyProvider = PrefixedPropertyProvider { project.properties }
-    override val mod: PropertyProvider = PrefixedPropertyProvider("mod.") { project.properties }
-    override val deps: PropertyProvider = PrefixedPropertyProvider("deps.") { project.properties }
+    override val properties = PrefixedPropertyProvider { project.properties }
+    override val mod = PrefixedPropertyProvider("mod.") { project.properties }
+    override val deps = PrefixedPropertyProvider("deps.") { project.properties }
 }
 
 private class PrefixedPropertyProvider(
