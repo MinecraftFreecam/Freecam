@@ -1,5 +1,8 @@
 package net.xolt.freecam.gradle
 
+import dev.eav.tomlkt.Toml
+import dev.eav.tomlkt.TomlNativeReader
+import dev.eav.tomlkt.decodeFromReader
 import dev.kikugie.stonecutter.AnyVersion
 import dev.kikugie.stonecutter.StonecutterExperimentalAPI
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
@@ -8,9 +11,17 @@ import net.xolt.freecam.model.*
 import net.xolt.freecam.util.decodeTomlPath
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
+import java.io.File
+
+internal fun File.loadStaticMetadata(): StaticModMetadata {
+    val metadata: MetadataToml = bufferedReader().use { reader ->
+        Toml.decodeFromReader(TomlNativeReader(reader))
+    }
+    return metadata.mod
+}
 
 @Serializable
-internal data class MetadataToml(
+private data class MetadataToml(
     val mod: ModMetadataToml,
 )
 
