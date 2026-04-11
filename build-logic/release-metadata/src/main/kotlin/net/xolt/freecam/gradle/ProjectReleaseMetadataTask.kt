@@ -24,6 +24,9 @@ abstract class ProjectReleaseMetadataTask : DefaultTask() {
     private val json = Json { ignoreUnknownKeys = true }
 
     @get:Input
+    abstract val displayName: Property<String>
+
+    @get:Input
     abstract val loader: Property<String>
 
     @get:Input
@@ -51,6 +54,13 @@ abstract class ProjectReleaseMetadataTask : DefaultTask() {
         val meta = project.provider {
             project.extensions.getByType<ModMetadata>()
         }
+        displayName.convention(minecraft.flatMap { mc ->
+            loader.flatMap { loader ->
+                meta.map { meta ->
+                    "${meta.version} for MC $mc ($loader)"
+                }
+            }
+        })
         loader.convention(meta.map { it.loader })
         minecraft.convention(meta.map { it.mc })
         supportedMinecraftVersions.convention(meta.map { it.supportedMinecraftVersions })
@@ -73,6 +83,7 @@ abstract class ProjectReleaseMetadataTask : DefaultTask() {
         val mc = minecraft.get()
 
         val metadata = ProjectReleaseMetadata(
+            displayName = displayName.get(),
             loader = loader.get(),
             minecraft = mc,
             filename = artifactFileName.get(),

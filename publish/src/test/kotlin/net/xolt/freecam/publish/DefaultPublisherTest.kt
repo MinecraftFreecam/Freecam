@@ -68,6 +68,7 @@ class DefaultPublisherTest {
 }
 
 private fun testProjectReleaseMetadata(
+    displayName: String = "test-release",
     loader: String = "fabric",
     minecraft: String = "26.1",
     filename: String = "file.jar",
@@ -75,6 +76,7 @@ private fun testProjectReleaseMetadata(
     javaVersions: List<String> = emptyList(),
     relationships: List<Relationship> = emptyList(),
 ) = ProjectReleaseMetadata(
+    displayName = displayName,
     loader = loader,
     minecraft = minecraft,
     filename = filename,

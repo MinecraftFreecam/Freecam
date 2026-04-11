@@ -17,6 +17,7 @@ data class ReleaseMetadata(
 
 @Serializable
 data class ProjectReleaseMetadata(
+    @SerialName("display_name") val displayName: String,
     val loader: String,
     @SerialName("minecraft_version") val minecraft: String,
     val filename: String,
