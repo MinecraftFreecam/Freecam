@@ -301,6 +301,17 @@ jobs:
               ).data
             })()
 
+            // Add the i18n label...
+            //
+            // This would be done automatically by the PR labeling workflow, but
+            // creating the PR as github-actions[bot] means we don't trigger CI.
+            await github.rest.issues.addLabels({
+              owner,
+              repo,
+              issue_number: pr.number,
+              labels: ["i18n"],
+            })
+
             core.setOutput("number", pr.number)
             core.setOutput("url", pr.html_url)
 
