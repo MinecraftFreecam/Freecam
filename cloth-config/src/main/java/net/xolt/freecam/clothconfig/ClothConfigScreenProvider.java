@@ -3,6 +3,7 @@ package net.xolt.freecam.clothconfig;
 import net.minecraft.client.gui.screens.Screen;
 import net.xolt.freecam.config.controller.ConfigControllerRegistry;
 import net.xolt.freecam.config.gui.ConfigScreenProvider;
+import net.xolt.freecam.config.gui.DependencyDescription;
 import net.xolt.freecam.config.gui.OptionalProvider;
 import net.xolt.freecam.config.model.ModConfigDTO;
 import org.jetbrains.annotations.Nullable;
@@ -10,6 +11,8 @@ import org.jetbrains.annotations.Nullable;
 import static java.lang.Thread.currentThread;
 
 public class ClothConfigScreenProvider implements ConfigScreenProvider, OptionalProvider {
+
+    public static final DependencyDescription REQUIREMENTS = new DependencyDescription.Literal("Cloth Config");
 
     private @Nullable ModConfigScreenFactory factory;
 
@@ -44,5 +47,10 @@ public class ClothConfigScreenProvider implements ConfigScreenProvider, Optional
         } catch (ClassNotFoundException | LinkageError e) {
             return false;
         }
+    }
+
+    @Override
+    public DependencyDescription getRequirement() {
+        return REQUIREMENTS;
     }
 }

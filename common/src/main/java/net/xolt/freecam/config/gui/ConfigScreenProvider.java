@@ -52,7 +52,14 @@ public interface ConfigScreenProvider {
                     .filter(Objects::nonNull)
                     .filter(provider -> !(provider instanceof OptionalProvider optional) || optional.isAvailable())
                     .findFirst()
-                    .orElseGet(FallbackConfigScreenProvider::new);
+                    .orElseGet(() -> new FallbackConfigScreenProvider(
+                            providers.stream()
+                                    .filter(provider -> OptionalProvider.class.isAssignableFrom(provider.type()))
+                                    .map(Holder::attemptLoad)
+                                    .filter(Objects::nonNull)
+                                    .map(OptionalProvider.class::cast)
+                                    .toList()
+                    ));
 
             LOGGER.info("Using {}", INSTANCE.getName());
         }
