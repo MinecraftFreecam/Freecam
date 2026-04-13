@@ -72,7 +72,7 @@ abstract class ProjectReleaseMetadataTask : DefaultTask() {
         outputFile.convention(
             artifactFileName.flatMap { name ->
                 val base = name.removeSuffix(".jar")
-                project.layout.buildDirectory.file("release-metadata/$base.json")
+                project.layout.buildDirectory.file("metadata/$base.json")
             }
         )
     }

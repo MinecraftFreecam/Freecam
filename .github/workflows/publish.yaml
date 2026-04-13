@@ -3,6 +3,10 @@ name: Publish
 on:
   workflow_call:
     inputs:
+      ref:
+        description: Ref to publish
+        type: string
+        default: ${{ github.sha }}
       dry-run:
         description: Dry run
         type: boolean
@@ -33,31 +37,45 @@ jobs:
           path: artifacts
           merge-multiple: true
 
-      - uses: actions/setup-java@v5
-        with:
-          java-version: '21'
-          distribution: temurin
-
-      - name: Install release publisher
-        run: |
-          files=( artifacts/publish-*.tar )
-          [ ${#files[@]} = 1 ] || {
-            echo "::error::Found ${#files[@]} publish artifacts, expected 1"
-            exit 1
-          }
-          file="${files[0]}"
-          name=$(basename --suffix .tar "$file")
-          tar --extract --file="$file"
-          echo "$PWD/$name/bin" >> "$GITHUB_PATH"
-
-      - name: GitHub Release
+      - name: Publish release
         env:
           dry_run: ${{ inputs.dry-run || '' }}
-          GITHUB_TOKEN: ${{ inputs.dry-run && 'dummy-token' || github.token }}
+          ref: ${{ inputs.ref }}
+          GH_TOKEN: ${{ github.token }}
         run: |
-          args=( artifacts )
+          set -o pipefail
+          shopt -s nullglob
+
+          meta=artifacts/release-metadata.json
+          files=( artifacts/release-*.json )
+          [ ${#files[@]} = 1 ] || {
+            echo "::error::Found ${#files[@]} release json artifacts, expected 1"
+            exit 1
+          }
+          mv "${files[0]}" "$meta"
+
+          version=$(jq .mod_version "$meta" --raw-output)
+          title=$(jq .display_name "$meta" --raw-output)
+          jq .changelog "$meta" --raw-output > changelog.md
+
+          args=(
+            --repo "$GITHUB_REPOSITORY"
+            release create "v$version"
+            --target "$ref"
+            --title "$title"
+            --notes-file changelog.md
+          )
+
+          jq '.release_type == "release"' "$meta" --exit-status >/dev/null || {
+            args+=( --prerelease )
+          }
+
+          args+=( "$meta" artifacts/*.jar )
+
           if [ -n "$dry_run" ]; then
-            echo "::notice::Doing a dry run release"
-            args+=( --dry-run )
+            echo "Dry run:"
+            printf ' %q' gh "${args[@]}"
+            echo
+          else
+            gh "${args[@]}"
           fi
-          publish "${args[@]}"

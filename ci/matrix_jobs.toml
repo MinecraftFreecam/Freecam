@@ -3,8 +3,8 @@ name = "Tooling"
 gradle_args = ["--project-dir", "build-logic", ":check"]
 
 [[build]]
-name = "Release publisher"
-gradle_args = [":publish:check", ":publish:distTar"]
-upload.path = "publish/build/distributions/*.tar"
+name = "Release metadata"
+gradle_args = [":generateReleaseMetadata"]
+upload.path = "build/metadata/release-*.json"
 upload.archive = false
 upload.days = 5

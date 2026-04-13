@@ -47,13 +47,7 @@ stonecutter {
     create(rootProject, file("stonecutter.settings.toml"))
 }
 
-include(
-    "i18n",
-    "publish",
-    "publish:api",
-    "publish:cli",
-    "publish:platforms",
-)
+include("i18n")
 
 includeBuild("changelog")
 

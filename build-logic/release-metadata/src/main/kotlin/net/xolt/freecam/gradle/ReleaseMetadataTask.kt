@@ -70,7 +70,7 @@ abstract class ReleaseMetadataTask : DefaultTask() {
         changelog.convention("")
         projectMetadataFiles.convention(emptyList())
         outputFile.convention(version.flatMap {
-            project.layout.buildDirectory.file("release-metadata/$it.json")
+            project.layout.buildDirectory.file("metadata/release-$it.json")
         })
     }
 
