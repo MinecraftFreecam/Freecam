@@ -46,7 +46,7 @@ jobs:
       - name: Find workflow run
         id: find
         timeout-minutes: 6 # deadline + 1
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const { owner, repo } = context.repo
@@ -111,7 +111,7 @@ jobs:
         id: find
         if: needs.prepare.outputs.changelog_comment
         timeout-minutes: 11 # deadline + 1
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           RUN_ID: ${{ needs.find_build.outputs.id }}
         with:
@@ -168,7 +168,7 @@ jobs:
           github-token: ${{ github.token }}
 
       - name: Sync PR comment
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const { readFileSync } = require("fs")
@@ -287,7 +287,7 @@ jobs:
             json.dump(labels, file)
 
       - name: Sync managed labels
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const { readFileSync } = require("fs")

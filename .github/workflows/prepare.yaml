@@ -113,7 +113,7 @@ jobs:
       - name: Get changed files
         id: changed_files
         if: contains(env.scopes, 'files')
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         with:
           script: |
             const result = await github.graphql(
@@ -153,7 +153,7 @@ jobs:
       - name: Check whether this version is released
         id: check_release
         if: inputs.release || inputs.changelog
-        uses: actions/github-script@v8
+        uses: actions/github-script@v9
         env:
           VERSION: ${{ steps.version.outputs.version }}
         with:
