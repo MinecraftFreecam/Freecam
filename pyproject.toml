@@ -7,7 +7,7 @@ requires-python = ">=3.12"
 dev = [
     "mypy>=1.19.0",
     "pytest>=9.0.0",
-    "ruff>=0.15.6",
+    "ruff>=0.15.10",
 ]
 ci = ["freecam-ci"]
 
