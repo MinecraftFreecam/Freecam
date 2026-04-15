@@ -1,0 +1,16 @@
+{
+  "name": "freecam-ci",
+  "description": "Scripts for Freecam CI",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "format": "biome format --write",
+    "lint": "biome ci",
+    "typecheck": "tsc",
+    "test": "npm run lint && npm run typecheck && node --test"
+  },
+  "dependencies": {
+    "smol-toml": "^1.6.1"
+  }
+}
