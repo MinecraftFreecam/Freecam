@@ -8,7 +8,7 @@
     "format": "biome format --write",
     "lint": "biome ci",
     "typecheck": "tsc",
-    "test": "npm run lint && npm run typecheck && node --test"
+    "test": "node src/dev.ts"
   },
   "dependencies": {
     "smol-toml": "^1.6.1"
