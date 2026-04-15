@@ -188,7 +188,7 @@ jobs:
           {
             echo "New pull request with translations from Crowdin."
             echo
-            echo "$project_url" 
+            echo "$project_url"
             echo
           } >> summary.txt
 

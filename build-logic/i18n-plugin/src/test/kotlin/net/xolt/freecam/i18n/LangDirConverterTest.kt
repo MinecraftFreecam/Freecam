@@ -102,7 +102,7 @@ class LangDirConverterTest {
             writeText("""
             [a]
             b = "value"
-            
+
             [a.c]
             d = "nested"
         """.trimIndent())
