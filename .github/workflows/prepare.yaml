@@ -46,7 +46,7 @@ defaults:
 env:
   # Scopes that can be queried using `contains(env.scopes, 'scope')`
   scopes: >
-    ${{ inputs.matrix && 'python ci' || '' }}
+    ${{ inputs.matrix && 'node' || '' }}
     ${{ inputs.changelog && 'files' || '' }}
     ${{ inputs.i18n && 'files' || '' }}
 
@@ -73,13 +73,13 @@ jobs:
 
     steps:
       - name: Checkout required files
-        if: contains(env.scopes, 'ci') || contains(env.scopes, 'python')
+        if: contains(env.scopes, 'node')
         uses: actions/checkout@v6
         with:
           sparse-checkout: |
             ci
-            pyproject.toml
-            uv.lock
+            package.json
+            package-lock.json
           sparse-checkout-cone-mode: false
 
       # Checkout metadata separately, as we want the untrusted files on pr_target runs
@@ -97,18 +97,9 @@ jobs:
             stonecutter.settings.toml
           sparse-checkout-cone-mode: false
 
-      - uses: actions/setup-python@v6
-        if: contains(env.scopes, 'python')
-        with:
-          python-version-file: pyproject.toml
-
-      - name: Install uv
-        if: contains(env.scopes, 'python')
-        uses: astral-sh/setup-uv@v7
-
       - name: Install CI dependencies
-        if: contains(env.scopes, 'python')
-        run: uv sync --locked --group ci --no-group dev
+        if: contains(env.scopes, 'node')
+        run: npm ci --workspace ci --omit dev
 
       - name: Get changed files
         id: changed_files
@@ -191,5 +182,5 @@ jobs:
             args+=( --unreleased-changelog )
           fi
 
-          uv run build-matrix "${args[@]}"
+          node ci/src/build_matrix.ts "${args[@]}"
           echo "matrix=$(cat matrix.json)" >> "$GITHUB_OUTPUT"
