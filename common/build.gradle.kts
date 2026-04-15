@@ -2,7 +2,7 @@ import dev.kikugie.stonecutter.StonecutterExperimentalAPI
 
 plugins {
     alias(libs.plugins.fletchingtable.fabric)
-    id("freecam.loom-adapter")
+    id("dev.kikugie.loom-back-compat")
     id("freecam.common")
 }
 
@@ -41,7 +41,7 @@ val i18nResources by configurations.registering {
 
 dependencies {
     minecraft("com.mojang:minecraft:${meta.mc}")
-    loomAdapter.applyMojangMappings()
+    loomx.applyMojangMappings()
     modCompileOnly(libs.fabric.loader)
     i18nResources(project(":i18n"))
 }

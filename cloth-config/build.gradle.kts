@@ -1,12 +1,12 @@
 plugins {
     alias(libs.plugins.fletchingtable.fabric)
-    id("freecam.loom-adapter")
+    id("dev.kikugie.loom-back-compat")
     id("freecam.common")
 }
 
 dependencies {
     minecraft("com.mojang:minecraft:${meta.mc}")
-    loomAdapter.applyMojangMappings()
+    loomx.applyMojangMappings()
     modCompileOnly(libs.fabric.loader)
 
     // Loader project should provide their own :common and cloth-config dependencies
