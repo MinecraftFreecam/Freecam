@@ -5,6 +5,7 @@
   "type": "module",
   "private": true,
   "scripts": {
+    "lint_changelog": "node src/lint_changelog.ts",
     "format": "biome format --write",
     "lint": "biome ci",
     "typecheck": "tsc",
