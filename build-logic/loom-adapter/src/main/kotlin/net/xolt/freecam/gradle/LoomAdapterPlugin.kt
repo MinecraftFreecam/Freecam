@@ -67,7 +67,7 @@ abstract class LoomAdapterPlugin : Plugin<Project> {
 
         // Create `namedElements` passthrough configuration
         configurations.register(LoomConfigurations.NAMED_ELEMENTS) {
-            extendsFrom(configurations.named(JavaPlugin.API_ELEMENTS_CONFIGURATION_NAME));
+            extendsFrom(configurations.named(JavaPlugin.API_ELEMENTS_CONFIGURATION_NAME))
             isCanBeResolved = false
             isCanBeConsumed = true
         }

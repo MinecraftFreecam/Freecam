@@ -50,7 +50,7 @@ public class FreecamPosition {
         horizontalPlane.set(0.0f, 0.0f, 1.0f);
         verticalPlane.set(0.0f, 1.0f, 0.0f);
         diagonalPlane.set(1.0f, 0.0f, 0.0f);
-        
+
         //? if > 1.18.2 {
         horizontalPlane.rotate(rotation);
         verticalPlane.rotate(rotation);
@@ -79,11 +79,11 @@ public class FreecamPosition {
         x += (double) horizontalPlane.x() * fwd
            + (double) verticalPlane.x()   * up
            + (double) diagonalPlane.x()   * right;
-        
+
         y += (double) horizontalPlane.y() * fwd
            + (double) verticalPlane.y()   * up
            + (double) diagonalPlane.y()   * right;
-        
+
         z += (double) horizontalPlane.z() * fwd
            + (double) verticalPlane.z()   * up
            + (double) diagonalPlane.z()   * right;

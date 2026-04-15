@@ -38,4 +38,4 @@ body:
       description: What version of Freecam are you currently using?
     validations:
       required: true
-  
+

@@ -37,7 +37,7 @@ changelog {
     title = "Changelog"
     introduction = """
     All notable changes to this project will be documented in this file.
-    
+
     This file is formatted as per [Keep a Changelog](https://keepachangelog.com/en/1.0.0),
     and Freecam's versioning is based on [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
     """.trimIndent()
