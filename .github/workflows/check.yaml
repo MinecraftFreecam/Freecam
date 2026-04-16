@@ -30,22 +30,19 @@ jobs:
             ci
             CHANGELOG.md
             metadata.toml
-            pyproject.toml
-            uv.lock
+            .editorconfig
+            .gitignore
+            biome.jsonc
+            tsconfig.json
+            package.json
+            package-lock.json
           sparse-checkout-cone-mode: false
 
-      - uses: actions/setup-python@v6
-        with:
-          python-version-file: pyproject.toml
+      - name: Install CI dependencies
+        run: npm ci
 
-      - name: Install uv
-        uses: astral-sh/setup-uv@v7
-
-      - name: Install CI dev dependencies
-        run: uv sync --locked --group ci --group dev
-
-      - name: Check Python
-        run: uv run check
+      - name: Check CI
+        run: npm test
 
       - name: Lint changelog
-        run: uv run lint-changelog
+        run: node ci/src/lint_changelog.ts

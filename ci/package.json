@@ -1,0 +1,20 @@
+{
+  "name": "freecam-ci",
+  "description": "Scripts for Freecam CI",
+  "license": "MIT",
+  "type": "module",
+  "private": true,
+  "scripts": {
+    "build_matrix": "node src/build_matrix.ts",
+    "lint_changelog": "node src/lint_changelog.ts",
+    "format": "biome format --write",
+    "lint": "biome ci",
+    "typecheck": "tsc",
+    "test": "node src/dev.ts"
+  },
+  "dependencies": {
+    "@stricli/core": "^1.2.6",
+    "smol-toml": "^1.6.1",
+    "zod": "^4.3.6"
+  }
+}

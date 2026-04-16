@@ -1,0 +1,30 @@
+{
+  // See https://aka.ms/tsconfig
+  "compilerOptions": {
+    // Environment Settings
+    "module": "nodenext",
+    "target": "esnext",
+    "lib": ["esnext"],
+    "types": ["node"],
+
+    // Don't transpile JS
+    "noEmit": true,
+
+    // Ensure node-compatible TS
+    "erasableSyntaxOnly": true,
+
+    // Stricter Typechecking Options
+    "strict": true,
+    "noUncheckedIndexedAccess": true,
+    "exactOptionalPropertyTypes": true,
+    "noImplicitReturns": true,
+    "noImplicitOverride": true,
+
+    "verbatimModuleSyntax": true,
+    "rewriteRelativeImportExtensions": true,
+    "isolatedModules": true,
+    "noUncheckedSideEffectImports": true,
+    "moduleDetection": "force",
+    "skipLibCheck": true
+  }
+}

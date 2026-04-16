@@ -8,7 +8,7 @@ updates:
       interval: weekly
     commit-message:
       prefix: ci
-  - package-ecosystem: uv
+  - package-ecosystem: npm
     directory: /
     schedule:
       interval: weekly
