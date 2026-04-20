@@ -15,6 +15,14 @@ pluginManagement {
     repositories {
         exclusiveContent {
             forRepository {
+                maven("https://jitpack.io") { name = "JitPack" }
+            }
+            filter {
+                includeModule("com.github.MinecraftFreecam.Publisher", "schema")
+            }
+        }
+        exclusiveContent {
+            forRepository {
                 maven("https://maven.fabricmc.net") { name = "Fabric" }
             }
             filter { includeGroupAndSubgroups("net.fabricmc") }

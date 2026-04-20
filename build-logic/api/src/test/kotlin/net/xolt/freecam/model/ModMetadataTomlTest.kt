@@ -42,7 +42,7 @@ class ModMetadataTomlTest {
         issuesUrl = url(),
         githubReleasesUrl = url(),
         curseforgeUrl = url(),
-        curseforgeId = "",
+        curseforgeId = 0UL,
         modrinthUrl = url(),
         modrinthId = "",
         crowdinUrl = url(),
