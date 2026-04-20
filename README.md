@@ -91,8 +91,8 @@ If you'd like to translate a language we don't currently target, please [open an
 ## Requirements
 
 ### Fabric
-- [Fabric API](https://www.curseforge.com/minecraft/mc-mods/fabric-api)
-- [Mod Menu](https://www.curseforge.com/minecraft/mc-mods/modmenu) (Optional)
+- [Fabric API](https://modrinth.com/mod/fabric-api)
+- [Mod Menu](https://modrinth.com/mod/modmenu) (Optional)
 
 ### Forge
 - None
