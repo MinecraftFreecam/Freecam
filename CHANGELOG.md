@@ -9,6 +9,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Added
 
+- A central landing page at <https://minecraftfreecam.github.io> ([460](https://github.com/MinecraftFreecam/Freecam/pull/460))
+
 ### Changed
 
 - Re-rendered the project icon ([439](https://github.com/MinecraftFreecam/Freecam/pull/439))
