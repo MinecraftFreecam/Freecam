@@ -1,6 +1,5 @@
 package net.xolt.freecam.model
 
-import io.github.z4kn4fein.semver.Version
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
@@ -37,7 +36,7 @@ interface StaticModMetadata {
     val issuesUrl: UrlString
     val githubReleasesUrl: UrlString
     val curseforgeUrl: UrlString
-    val curseforgeId: String
+    val curseforgeId: ULong
     val modrinthUrl: UrlString
     val modrinthId: String
     val crowdinUrl: UrlString
@@ -62,7 +61,7 @@ data class ModMetadataToml(
     @SerialName("curseforge")
     override val curseforgeUrl: UrlString,
     @SerialName("curseforge_id")
-    override val curseforgeId: String,
+    override val curseforgeId: ULong,
     @SerialName("modrinth")
     override val modrinthUrl: UrlString,
     @SerialName("modrinth_id")
@@ -71,11 +70,7 @@ data class ModMetadataToml(
     override val crowdinUrl: UrlString,
 ) : StaticModMetadata {
 
-    private val semver: Version by lazy {
-        Version.parse(version, strict = false)
-    }
-
     override val releaseType: ReleaseType by lazy {
-        semver.toReleaseType()
+        ReleaseType.fromVersion(version)
     }
 }

@@ -14,6 +14,7 @@ import org.gradle.api.file.RegularFile
 import org.gradle.api.file.RegularFileProperty
 import org.gradle.api.provider.ListProperty
 import org.gradle.api.provider.Property
+import org.gradle.api.tasks.CacheableTask
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.InputFiles
 import org.gradle.api.tasks.OutputFile
@@ -43,7 +44,7 @@ abstract class ReleaseMetadataTask : DefaultTask() {
     abstract val displayName: Property<String>
 
     @get:Input
-    abstract val curseforgeId: Property<String>
+    abstract val curseforgeId: Property<Long>
 
     @get:Input
     abstract val modrinthId: Property<String>
@@ -64,7 +65,7 @@ abstract class ReleaseMetadataTask : DefaultTask() {
         version.convention(meta.map { it.version })
         releaseType.convention(meta.map { it.releaseType })
         displayName.convention(meta.map { "${it.name} ${it.version}" })
-        curseforgeId.convention(meta.map { it.curseforgeId })
+        curseforgeId.convention(meta.map { it.curseforgeId.toLong() })
         modrinthId.convention(meta.map { it.modrinthId })
         githubTag.convention(meta.map { "v${it.version}" })
         changelog.convention("")
@@ -83,7 +84,7 @@ abstract class ReleaseMetadataTask : DefaultTask() {
             changelog = changelog.get(),
             versions = aggregateVersionFiles(),
             platforms = Platforms(
-                curseforge = Platforms.Curseforge(curseforgeId.get()),
+                curseforge = Platforms.Curseforge(curseforgeId.get().toULong()),
                 modrinth = Platforms.Modrinth(modrinthId.get()),
                 github = Platforms.Github(githubTag.get()),
             )

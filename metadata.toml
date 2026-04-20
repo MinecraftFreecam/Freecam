@@ -14,5 +14,5 @@ github_releases = "https://github.com/MinecraftFreecam/Freecam/releases"
 curseforge = "https://www.curseforge.com/minecraft/mc-mods/free-cam"
 modrinth = "https://modrinth.com/mod/freecam"
 crowdin = "https://crowdin.com/project/freecam"
-curseforge_id = "557076"
+curseforge_id = 557076
 modrinth_id = "XeEZ3fK2"
