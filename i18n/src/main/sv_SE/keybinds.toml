@@ -2,13 +2,13 @@
 controls = "Freecam"
 
 [key.freecam]
-toggle = "Toggle Freecam"
+toggle = "Växla till Freecam"
 
   [key.freecam.controlPlayer]
   toggle = "Kontrollera Spelare"
 
   [key.freecam.tripod]
-  reset = "Reset Tripod"
+  reset = "Återställ stativet"
 
   [key.freecam.config]
-  open = "Config GUI"
+  open = "Konfigurationsgränssnitt"

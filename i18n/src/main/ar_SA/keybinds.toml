@@ -1,0 +1,14 @@
+[key.category.freecam]
+controls = "فري كام"
+
+[key.freecam]
+toggle = "تبديل فري كام"
+
+  [key.freecam.controlPlayer]
+  toggle = "تحكم اللاعب"
+
+  [key.freecam.tripod]
+  reset = "ضبت الترايبود"
+
+  [key.freecam.config]
+  open = "كونفق منيو"

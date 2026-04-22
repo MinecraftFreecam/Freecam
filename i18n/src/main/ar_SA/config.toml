@@ -13,13 +13,13 @@ label = "Movement Options"
 tooltip = "How the camera moves."
 
   [freecam.config.movement.flightMode]
-  label = "Flygläge"
+  label = "Flight Mode"
   tooltip = "The type of flight used by freecam."
-  DEFAULT = "Standard"
-  CREATIVE = "Kreativt"
+  DEFAULT = "Default"
+  CREATIVE = "Creative"
 
   [freecam.config.movement.speed]
-  value = "Värde: %01.2f"
+  value = "Value: %01.2f"
 
     [freecam.config.movement.speed.horizontal]
     label = "Horizontal Speed"
@@ -66,23 +66,23 @@ label = "Ignore Regular Expressions"
   "tooltip[1]" = "collision, even when using §7Ignore All Collision§r."
 
 [freecam.config.visual]
-label = "Visuella Alternativ"
+label = "Visual Options"
 tooltip = "The look of freecam."
 
   [freecam.config.visual.perspective]
   label = "Initial Perspective"
   tooltip = "The initial perspective of the camera."
-  FIRST_PERSON = "Första person"
-  THIRD_PERSON = "Tredje person"
-  THIRD_PERSON_MIRROR = "Spegel"
+  FIRST_PERSON = "First Person"
+  THIRD_PERSON = "Third Person"
+  THIRD_PERSON_MIRROR = "Mirror"
   INSIDE = "Inside"
 
   [freecam.config.visual.showPlayer]
-  label = "Visa spelare"
+  label = "Show Player"
   tooltip = "Shows your player in its original position."
 
   [freecam.config.visual.showHand]
-  label = "Visa hand"
+  label = "Show Hand"
   tooltip = "Whether you can see your hand in freecam."
 
   [freecam.config.visual.fullBright]
@@ -114,8 +114,8 @@ label = "Allow Interaction"
 [freecam.config.utility.interact.mode]
 label = "Interaction Mode"
 tooltip = "The source of block/entity interactions."
-CAMERA = "Kamera"
-PLAYER = "Spelare"
+CAMERA = "Camera"
+PLAYER = "Player"
 
 [freecam.config.servers]
 label = "Multiplayer Options"
@@ -126,8 +126,8 @@ tooltip = "Options relating to multiplayer servers."
   "tooltip[0]" = "Allow or disallow use of freecam on certain servers."
   "tooltip[1]" = "(using either a whitelist or blacklist)."
   NONE = "No restriction"
-  WHITELIST = "Vitlista"
-  BLACKLIST = "Svartlista"
+  WHITELIST = "Whitelist"
+  BLACKLIST = "Blacklist"
 
   [freecam.config.servers.whitelist]
   label = "Whitelist:"
