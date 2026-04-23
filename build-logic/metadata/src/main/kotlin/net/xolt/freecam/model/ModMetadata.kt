@@ -1,32 +1,14 @@
-package net.xolt.freecam.gradle
+package net.xolt.freecam.model
 
-import dev.eav.tomlkt.Toml
-import dev.eav.tomlkt.TomlNativeReader
-import dev.eav.tomlkt.decodeFromReader
 import dev.kikugie.stonecutter.AnyVersion
 import dev.kikugie.stonecutter.StonecutterExperimentalAPI
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
-import kotlinx.serialization.Serializable
-import net.xolt.freecam.model.*
 import net.xolt.freecam.util.decodeTomlPath
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
-import java.io.File
-
-internal fun File.loadStaticMetadata(): StaticModMetadata {
-    val metadata: MetadataToml = bufferedReader().use { reader ->
-        Toml.decodeFromReader(TomlNativeReader(reader))
-    }
-    return metadata.mod
-}
 
 internal infix fun StaticModMetadata.elaborate(project: Project): ModMetadata =
     ProjectModMetadata(project = project, meta = this)
-
-@Serializable
-private data class MetadataToml(
-    val mod: ModMetadataToml,
-)
 
 private class ProjectModMetadata(
     private val project: Project,
@@ -120,4 +102,3 @@ private class PrefixedPropertyProvider(
         .filter { it.key.startsWith(prefix) && it.value != null }
         .map { it.key.removePrefix(prefix) to it.value.toString() }
 }
-
