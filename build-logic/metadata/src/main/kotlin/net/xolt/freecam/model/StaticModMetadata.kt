@@ -9,7 +9,7 @@ import java.io.File
 
 internal fun File.loadStaticMetadata(): StaticModMetadata {
     val metadata: MetadataToml = bufferedReader().use { reader ->
-        Toml.Default.decodeFromReader(TomlNativeReader(reader))
+        Toml.decodeFromReader(TomlNativeReader(reader))
     }
     return metadata.mod
 }
