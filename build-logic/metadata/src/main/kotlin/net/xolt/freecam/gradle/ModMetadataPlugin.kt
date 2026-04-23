@@ -2,6 +2,8 @@ package net.xolt.freecam.gradle
 
 import net.xolt.freecam.model.ModMetadata
 import net.xolt.freecam.model.StaticModMetadata
+import net.xolt.freecam.model.elaborate
+import net.xolt.freecam.model.loadStaticMetadata
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.gradle.kotlin.dsl.add
