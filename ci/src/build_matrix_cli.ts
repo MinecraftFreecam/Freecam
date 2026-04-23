@@ -18,8 +18,6 @@ const ExistingFile = z.string().refine(existsSync, {
 
 const JobsFileInput = z.union([z.literal("none"), ExistingFile]);
 
-const ChangelogFileInput = z.enum(["release", "unreleased", "none"]);
-
 function toRelative(p: string): string {
   return path.relative(process.cwd(), p);
 }
@@ -28,40 +26,16 @@ const VersionInput = Version.optional().transform(
   (v?: string | undefined) => v ?? readVersion(METADATA_FILE),
 );
 
-const CliOptionsSchema = z
-  .object({
-    versionsFile: ExistingFile,
-    jobsFile: JobsFileInput.transform((file: string) =>
-      file === "none" ? undefined : file,
-    ),
-    releaseChangelog: z.boolean().optional(),
-    unreleasedChangelog: z.boolean().optional(),
-    changelogMode: ChangelogFileInput,
-    version: VersionInput,
-    output: z.string().optional(),
-  })
-  .superRefine((v, ctx) => {
-    const modes = new Set(
-      [
-        v.releaseChangelog && "release",
-        v.unreleasedChangelog && "unreleased",
-        v.changelogMode !== "none" && v.changelogMode,
-      ].filter(Boolean),
-    );
-
-    if (modes.size > 1) {
-      ctx.addIssue({
-        code: "custom",
-        message: `Conflicting changelog options: ${[...modes].join(", ")}`,
-      });
-    }
-  })
-  .transform((v) => {
-    let { changelogMode, releaseChangelog, unreleasedChangelog, ...rest } = v;
-    if (releaseChangelog) changelogMode = "release";
-    if (unreleasedChangelog) changelogMode = "unreleased";
-    return { ...rest, changelogMode };
-  });
+const CliOptionsSchema = z.object({
+  versionsFile: ExistingFile,
+  jobsFile: JobsFileInput.transform((file: string) =>
+    file === "none" ? undefined : file,
+  ),
+  release: z.boolean(),
+  changelog: z.boolean(),
+  version: VersionInput,
+  output: z.string().optional(),
+});
 
 export type CliOptions = z.infer<typeof CliOptionsSchema>;
 
@@ -90,24 +64,15 @@ export const command = buildCommand({
         default: toRelative(MATRIX_JOBS_FILE),
       },
 
-      releaseChangelog: {
-        brief: "Build changelog for --version (sets --changelog-mode=release)",
+      changelog: {
+        brief:
+          "Build changelog (current version if --release, otherwise unreleased)",
         kind: "boolean",
-        withNegated: false,
       },
 
-      unreleasedChangelog: {
-        brief: "Build unreleased changelog (sets --changelog-mode=unreleased)",
+      release: {
+        brief: "Build in release mode",
         kind: "boolean",
-        withNegated: false,
-      },
-
-      changelogMode: {
-        brief: "Changelog to build ('none', 'unreleased', 'release')",
-        placeholder: "mode",
-        kind: "parsed",
-        parse: ChangelogFileInput.parse,
-        default: "none",
       },
 
       version: {

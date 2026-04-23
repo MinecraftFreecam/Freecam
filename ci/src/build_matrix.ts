@@ -23,10 +23,9 @@ export function main(args: CliOptions) {
     loadVersions("versions", args.versionsFile),
   );
 
-  const changelogJobs =
-    args.changelogMode === "none"
-      ? []
-      : [buildChangelogJob(args.changelogMode === "release", version)];
+  const changelogJobs = args.changelog
+    ? [buildChangelogJob(args.release, version)]
+    : [];
 
   const staticJobs = args.jobsFile
     ? loadMatrixJobs("build", args.jobsFile)
@@ -35,6 +34,12 @@ export function main(args: CliOptions) {
   const matrix = [...changelogJobs, ...staticJobs, ...versionJobs].sort(
     (a, b) => a.name.localeCompare(b.name),
   );
+
+  if (args.release) {
+    matrix.forEach(({ gradle_args }) => {
+      gradle_args.push("-DisReleaseBuild=true");
+    });
+  }
 
   const output = JSON.stringify(matrix, null, 4);
 
