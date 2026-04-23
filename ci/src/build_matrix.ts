@@ -19,7 +19,7 @@ export function main(args: CliOptions) {
   const version = args.version ?? readVersion();
 
   const versionJobs = buildVersionMatrix(
-    version,
+    version + (args.release ? "" : "-SNAPSHOT"),
     loadVersions("versions", args.versionsFile),
   );
 

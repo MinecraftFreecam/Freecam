@@ -7,7 +7,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import java.io.File
 
-internal fun File.loadStaticMetadata(): StaticModMetadata {
+internal fun File.loadStaticMetadata(): ModMetadataToml {
     val metadata: MetadataToml = bufferedReader().use { reader ->
         Toml.decodeFromReader(TomlNativeReader(reader))
     }
@@ -48,6 +48,6 @@ internal data class ModMetadataToml(
 ) : StaticModMetadata {
 
     override val releaseType: ReleaseType by lazy {
-        ReleaseType.fromVersion(version)
+        ReleaseType.fromVersion(version.removeSuffix("-SNAPSHOT"))
     }
 }
