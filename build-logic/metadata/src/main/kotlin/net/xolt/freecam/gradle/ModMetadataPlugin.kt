@@ -4,6 +4,7 @@ import net.xolt.freecam.model.ModMetadata
 import net.xolt.freecam.model.StaticModMetadata
 import net.xolt.freecam.model.elaborate
 import net.xolt.freecam.model.loadStaticMetadata
+import net.xolt.freecam.util.withSuffix
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
 import org.gradle.api.logging.Logging
@@ -23,7 +24,7 @@ class ModMetadataPlugin : Plugin<Settings> {
             .getOrElse(false)
 
         val metadata = rootDir.resolve("metadata.toml").loadStaticMetadata().let {
-            if (isRelease) it else it.copy(version = "${it.version}-SNAPSHOT")
+            if (isRelease) it else it.copy(version = it.version.withSuffix("-SNAPSHOT"))
         }
 
         logger.lifecycle("${metadata.name} version: ${metadata.version}")
