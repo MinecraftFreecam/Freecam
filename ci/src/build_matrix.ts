@@ -71,8 +71,8 @@ export function buildVersionMatrix(
         name: `MC ${entry.project}`,
         gradle_args: gradleArgs,
         upload: {
+          name: `mc-${entry.project}`,
           path: `build/libs/${version}/*.jar`,
-          name: `freecam-${version}-${entry.project}`,
         },
       }),
     );

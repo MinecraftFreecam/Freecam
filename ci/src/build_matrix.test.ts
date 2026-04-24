@@ -60,7 +60,7 @@ describe("buildVersionMatrix", () => {
       ":fabric:1.20:buildAndCollect",
       ":forge:1.20:buildAndCollect",
     ]);
-    assert.equal(job120.upload?.name, "freecam-1.2.3-1.20");
+    assert.equal(job120.upload?.name, "mc-1.20");
   });
 });
 
