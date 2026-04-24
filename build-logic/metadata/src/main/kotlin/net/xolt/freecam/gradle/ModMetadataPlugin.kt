@@ -6,6 +6,7 @@ import net.xolt.freecam.model.elaborate
 import net.xolt.freecam.model.loadStaticMetadata
 import org.gradle.api.Plugin
 import org.gradle.api.initialization.Settings
+import org.gradle.api.logging.Logging
 import org.gradle.kotlin.dsl.add
 
 class ModMetadataPlugin : Plugin<Settings> {
@@ -14,8 +15,18 @@ class ModMetadataPlugin : Plugin<Settings> {
         const val EXTENSION_NAME = "meta"
     }
 
+    private val logger = Logging.getLogger(ModMetadataPlugin::class.java)
+
     override fun apply(settings: Settings) = with(settings) {
-        val metadata = rootDir.resolve("metadata.toml").loadStaticMetadata()
+        val isRelease = providers.gradleProperty("isReleaseBuild")
+            .map { it.equals("true", ignoreCase = true) }
+            .getOrElse(false)
+
+        val metadata = rootDir.resolve("metadata.toml").loadStaticMetadata().let {
+            if (isRelease) it else it.copy(version = "${it.version}-SNAPSHOT")
+        }
+
+        logger.lifecycle("${metadata.name} version: ${metadata.version}")
 
         extensions.add<StaticModMetadata>(EXTENSION_NAME, metadata)
         gradle.settingsEvaluated {

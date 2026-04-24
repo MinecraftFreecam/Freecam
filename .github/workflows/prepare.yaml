@@ -76,6 +76,12 @@ jobs:
         if: contains(env.scopes, 'node')
         uses: actions/checkout@v6
         with:
+          ref: >
+            ${{
+              github.event_name == 'pull_request' &&
+              github.event.pull_request.head.sha ||
+              github.sha
+            }}
           sparse-checkout: |
             ci
             package.json
@@ -88,7 +94,6 @@ jobs:
         with:
           ref: >
             ${{
-              github.event.pull_request.merge_commit_sha ||
               github.event.pull_request.head.sha ||
               github.sha
             }}
@@ -174,12 +179,14 @@ jobs:
             --output matrix.json
           )
 
-          # If 'unreleased' is set, that means the version has been bumped.
-          # Otherwise, we build the in-progress [Unreleased] changelog section.
+          # If 'unreleased' is set, that means the version has been bumped, so do a release build.
           if [ -n "$unreleased" ]; then
-            args+=( --release-changelog )
-          elif [ -n "$touches_changelog" ]; then
-            args+=( --unreleased-changelog )
+            args+=( --release )
+          fi
+
+          # For PRs that touch the changelog or trigger a release, we build the changelog preview comment.
+          if [ "$GITHUB_EVENT_NAME" = "pull_request" ] && [ -n "$touches_changelog$unreleased" ]; then
+              args+=( --changelog )
           fi
 
           node ci/src/build_matrix.ts "${args[@]}"
