@@ -118,5 +118,8 @@ jobs:
       - build
     permissions:
       contents: write
+    secrets:
+      MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+      CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
     with:
       dry-run: ${{ github.event_name != 'push' }}

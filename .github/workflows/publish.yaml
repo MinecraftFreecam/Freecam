@@ -11,8 +11,14 @@ on:
         description: Dry run
         type: boolean
         default: false
+    secrets:
+       MODRINTH_TOKEN:
+         description: Modrinth API token (required unless dry-run)
+         required: false
+       CURSEFORGE_TOKEN:
+         description: CurseForge API token (required unless dry-run)
+         required: false
     outputs: {}
-    secrets: {}
 
 permissions: {}
 
@@ -23,7 +29,7 @@ defaults:
 jobs:
   release:
     name: ${{ inputs.dry-run && 'dry run' || 'Release' }}
-    runs-on: ubuntu-slim
+    runs-on: ubuntu-latest
     timeout-minutes: 30
 
     permissions:
@@ -37,7 +43,7 @@ jobs:
           path: artifacts
           merge-multiple: true
 
-      - name: Publish release
+      - name: Publish GitHub Release
         env:
           dry_run: ${{ inputs.dry-run || '' }}
           ref: ${{ inputs.ref }}
@@ -79,3 +85,29 @@ jobs:
           else
             gh "${args[@]}"
           fi
+
+      - name: Setup Java
+        uses: actions/setup-java@v5
+        with:
+          java-version: '21'
+          distribution: temurin
+
+      - name: Setup Freecam Publisher
+        uses: MinecraftFreecam/Publisher@c5fc4cecf816f5621a58cf54d45ded30dea2f164  # v0.0.4
+
+      - name: Publish to CurseForge & Modrinth
+        env:
+          dry_run: ${{ inputs.dry-run || '' }}
+          MODRINTH_TOKEN: ${{ inputs.dry-run && 'token' || secrets.MODRINTH_TOKEN }}
+          CURSEFORGE_TOKEN: ${{ inputs.dry-run && 'token' || secrets.CURSEFORGE_TOKEN }}
+        run: |
+          echo "::notice::Using $(freecam-publish --version)"
+          args=(
+            --metadata artifacts/release-metadata.json
+            artifacts
+          )
+          if [ -n "$dry_run" ]; then
+            echo "Dry run:"
+            args+=( --dry-run )
+          fi
+          freecam-publish "${args[@]}"
