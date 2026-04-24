@@ -76,6 +76,12 @@ jobs:
         if: contains(env.scopes, 'node')
         uses: actions/checkout@v6
         with:
+          ref: >
+            ${{
+              github.event_name == 'pull_request' &&
+              github.event.pull_request.head.sha ||
+              github.sha
+            }}
           sparse-checkout: |
             ci
             package.json
@@ -88,7 +94,6 @@ jobs:
         with:
           ref: >
             ${{
-              github.event.pull_request.merge_commit_sha ||
               github.event.pull_request.head.sha ||
               github.sha
             }}
