@@ -2,7 +2,7 @@
 title = "Freecam Ayarları"
 
   [freecam.config.gui.fallback]
-  title = "Config GUI not available."
+  title = "Config GUI müsait değil."
 
 [freecam.config.controls]
 label = "Tuş Atamaları"
@@ -19,7 +19,7 @@ tooltip = "Kameranın hareketi."
   CREATIVE = "Yaratıcı"
 
   [freecam.config.movement.speed]
-  value = "Value: %01.2f"
+  value = "Değer: %01.2f"
 
     [freecam.config.movement.speed.horizontal]
     label = "Yatay Hız"
