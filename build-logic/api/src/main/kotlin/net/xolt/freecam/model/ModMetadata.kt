@@ -4,7 +4,6 @@ interface ModMetadata : StaticModMetadata {
     val mc: String
     val loader: String
     val description: String
-    val properties: Map<String, String>
     val mod: Map<String, String>
     val deps: Map<String, String>
     val relationships: List<Relationship>

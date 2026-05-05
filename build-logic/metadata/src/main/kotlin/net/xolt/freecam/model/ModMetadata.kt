@@ -84,7 +84,6 @@ private class ProjectModMetadata(
             .get()
     }
 
-    override val properties = PrefixedPropertyMap { project.properties }
     override val mod = PrefixedPropertyMap("mod.") { project.properties }
     override val deps = PrefixedPropertyMap("deps.") { project.properties }
 }
