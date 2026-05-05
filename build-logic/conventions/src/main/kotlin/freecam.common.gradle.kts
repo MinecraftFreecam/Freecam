@@ -33,7 +33,7 @@ repositories {
         name = "NeoForge"
         content { includeGroup("net.neoforged") }
     }
-    meta.deps.orNull("neoforge_pr").takeUnless { it.isNullOrBlank() }?.let {
+    meta.deps["neoforge_pr"].takeUnless { it.isNullOrBlank() }?.let {
         exclusiveContent {
             forRepository {
                 maven("https://prmaven.neoforged.net/NeoForge/pr$it") {

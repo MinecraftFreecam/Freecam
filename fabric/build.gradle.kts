@@ -19,12 +19,16 @@ dependencies {
     loomAdapter.applyMojangMappings()
     modImplementation(libs.fabric.loader)
 
+    val fabricApiVersion = requireNotNull(meta.deps["fabric_api"]) {
+        "Missing deps.fabric_api for ${project.path}"
+    }
+
     sequenceOf(
         "fabric-lifecycle-events-v1",
         if (sc.current.parsed >= "26.1") "fabric-key-mapping-api-v1"
         else "fabric-key-binding-api-v1",
     ).map { name ->
-        fabricApi.module(name, meta.deps["fabric_api"])
+        fabricApi.module(name, fabricApiVersion)
     }.forEach { module ->
         // TODO: include via jar-in-jar and drop `requires: fabric-api` from fabric.mod.json.
         // include(module)
@@ -33,7 +37,7 @@ dependencies {
 
     // Note: cloth-config and our fabric.mod.json require the entire fabric-api at runtime
     modRuntimeOnly("net.fabricmc.fabric-api:fabric-api") {
-        version { prefer(meta.deps["fabric_api"]) }
+        version { prefer(fabricApiVersion) }
         exclude(module = "fabric-loader")
     }
 
