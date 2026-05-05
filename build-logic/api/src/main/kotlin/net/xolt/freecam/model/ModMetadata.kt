@@ -1,20 +1,11 @@
 package net.xolt.freecam.model
 
-interface PropertyProvider : Iterable<Pair<String, String>> {
-    operator fun get(prop: String): String
-    fun orNull(prop: String): String?
-    fun asSequence(): Sequence<Pair<String, String>>
-    override fun iterator(): Iterator<Pair<String, String>> =
-        asSequence().iterator()
-}
-
 interface ModMetadata : StaticModMetadata {
     val mc: String
     val loader: String
     val description: String
-    val properties: PropertyProvider
-    val mod: PropertyProvider
-    val deps: PropertyProvider
+    val mod: Map<String, String>
+    val deps: Map<String, String>
     val relationships: List<Relationship>
     val supportedMinecraftVersions: List<String>
     val javaVersion: Int

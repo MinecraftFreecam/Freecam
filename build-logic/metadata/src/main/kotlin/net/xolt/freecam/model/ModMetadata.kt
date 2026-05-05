@@ -84,19 +84,35 @@ private class ProjectModMetadata(
             .get()
     }
 
-    override val properties = PrefixedPropertyProvider { project.properties }
-    override val mod = PrefixedPropertyProvider("mod.") { project.properties }
-    override val deps = PrefixedPropertyProvider("deps.") { project.properties }
+    override val mod = PrefixedPropertyMap("mod.") { project.properties }
+    override val deps = PrefixedPropertyMap("deps.") { project.properties }
 }
 
-private class PrefixedPropertyProvider(
+private class PrefixedPropertyMap(
     private val prefix: String = "",
     private val properties: () -> Map<String, Any?>,
-) : PropertyProvider {
-    override fun get(prop: String) = requireNotNull(orNull(prop)) { "Missing ${prefix + prop}" }
-    override fun orNull(prop: String) = properties()[prefix + prop]?.toString()
-    override fun asSequence() = properties()
-        .asSequence()
-        .filter { it.key.startsWith(prefix) && it.value != null }
-        .map { it.key.removePrefix(prefix) to it.value.toString() }
+) : Map<String, String> {
+
+    private val map by lazy {
+        properties()
+            .asSequence()
+            .filter { (key, _) ->
+                key.startsWith(prefix)
+            }
+            .mapNotNull { (key, value) ->
+                (value as? String)?.let { key to it }
+            }
+            .associate { (key, value) ->
+                key.removePrefix(prefix) to value
+            }
+    }
+
+    override val size get() = map.size
+    override val keys get() = map.keys
+    override val values get() = map.values
+    override val entries get() = map.entries
+    override fun isEmpty() = map.isEmpty()
+    override fun containsKey(key: String) = map.containsKey(key)
+    override fun containsValue(value: String) = map.containsValue(value)
+    override fun get(key: String) = map[key]
 }

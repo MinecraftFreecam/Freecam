@@ -20,10 +20,13 @@ neoForge {
 
 dependencies {
     sc.node.sibling("cloth-config")?.let {
+        val clothVersion = requireNotNull(meta.deps["cloth"]) {
+            "Missing deps.cloth for ${project.path}"
+        }
         jarJar(implementation(project(path = it.project.path, configuration = "namedElements")) as Any)
         jarJar(implementation("me.shedaniel.cloth:cloth-config-neoforge") {
             version {
-                prefer(meta.deps["cloth"])
+                prefer(clothVersion)
                 strictly(sc.properties["cloth_config_req"])
             }
         })
@@ -67,7 +70,7 @@ tasks.register<Copy>("buildAndCollect") {
 }
 
 tasks.named("createMinecraftArtifacts") {
-    dependsOn(":neoforge:${project.name}:processResources")
+    dependsOn(tasks.processResources)
 }
 
 tasks.processResources {

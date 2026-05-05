@@ -7,13 +7,16 @@ plugins {
     id("freecam.atremapper")
 }
 
+val forgeVersion = requireNotNull(meta.deps["forge_version"]) {
+    "Missing deps.forge_version for ${project.path}"
+}
+
 stonecutter replacements {
-    val forge = meta.deps["forge_version"]
-    string(sc.eval(forge, ">= 41")) {
+    string(sc.eval(forgeVersion, ">= 41")) {
         replace( "net.minecraftforge.client.ConfigGuiHandler", "net.minecraftforge.client.ConfigScreenHandler")
         replace( "ConfigGuiHandler.ConfigGuiFactory", "ConfigScreenHandler.ConfigScreenFactory")
     }
-    string(sc.eval(forge, "> 37.1.1")) {
+    string(sc.eval(forgeVersion, "> 37.1.1")) {
         replace("net.minecraftforge.fmlclient.ConfigGuiHandler", "net.minecraftforge.client.ConfigGuiHandler")
         replace("net.minecraftforge.fmlclient.registry.ClientRegistry", "net.minecraftforge.client.ClientRegistry")
     }
@@ -55,7 +58,7 @@ val bundle by configurations.creating {
  * Jar-in-jar added in [Forge 40.1.60](https://maven.minecraftforge.net/net/minecraftforge/forge/1.18.2-40.1.60/forge-1.18.2-40.1.60-changelog.txt)
  */
 fun DependencyHandler.include(dependency: Any) {
-    if (sc.eval(meta.deps["forge_version"], "<40.1.60")) return
+    if (sc.eval(forgeVersion, "<40.1.60")) return
     jarJar(dependency)
 }
 
@@ -65,12 +68,15 @@ dependencies {
         artifact { classifier = "processor" }
     }
     sc.node.sibling("cloth-config")?.let {
+        val clothVersion = requireNotNull(meta.deps["cloth"]) {
+            "Missing deps.cloth for ${project.path}"
+        }
         // `jarJar` requires a SRG dependency, which we don't have for `:cloth-config`.
         // Instead, we can include named-classes in jar and reobfJar will remap them.
         bundle(implementation(project(path = it.project.path, configuration = "namedElements"))!!)
         include(modImplementation("me.shedaniel.cloth:cloth-config-forge") {
             version {
-                prefer(meta.deps["cloth"])
+                prefer(clothVersion)
                 strictly(sc.properties["cloth_config_req"])
             }
         })

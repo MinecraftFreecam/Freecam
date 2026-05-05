@@ -59,7 +59,9 @@ stonecutter parameters {
 
     // Experimental cloth-config dependencies API added in v8.4
     // Forward-ported to newer versions but not backported to older versions.
-    constants["cloth_dependencies"] = sc.eval(meta.deps["cloth"], ">=8.4")
+    meta.deps["cloth"]?.let { version ->
+        constants["cloth_dependencies"] = sc.eval(version, ">=8.4")
+    }
 
     replacements {
         string(current.parsed >= "26.0") {
