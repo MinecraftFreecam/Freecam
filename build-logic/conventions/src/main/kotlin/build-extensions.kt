@@ -46,7 +46,6 @@ val Project.commonExpansions: Map<String, String>
         "modCurseforge" to meta.curseforgeUrl.toString(),
         "modModrinth" to meta.modrinthUrl.toString(),
         "modCrowdin" to meta.crowdinUrl.toString(),
-        "minecraftVersion" to meta.properties.orNull("minecraft_version"),
         "neoForgeVersion" to meta.deps.orNull("neoforge_version"),
         "neoforgeLoaderReq" to meta.properties.orNull("neoforge_loader_req"),
         "neoforgeReq" to meta.properties.orNull("neoforge_req"),
