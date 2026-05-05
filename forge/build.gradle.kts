@@ -1,3 +1,4 @@
+import io.github.z4kn4fein.semver.constraints.toMavenFormat
 import net.neoforged.moddevgradle.legacyforge.internal.MinecraftMappings
 
 plugins {
@@ -71,13 +72,16 @@ dependencies {
         val clothVersion = requireNotNull(meta.deps["cloth"]) {
             "Missing deps.cloth for ${project.path}"
         }
+        val clothConstraint = requireNotNull(meta.reqs["cloth"]) {
+            "Missing reqs.cloth for ${project.path}"
+        }
         // `jarJar` requires a SRG dependency, which we don't have for `:cloth-config`.
         // Instead, we can include named-classes in jar and reobfJar will remap them.
         bundle(implementation(project(path = it.project.path, configuration = "namedElements"))!!)
         include(modImplementation("me.shedaniel.cloth:cloth-config-forge") {
             version {
                 prefer(clothVersion)
-                strictly(sc.properties["cloth_config_req"])
+                strictly(clothConstraint.toMavenFormat())
             }
         })
     } ?: logger.warn("No :cloth-config project for ${project.path}")

@@ -1,6 +1,7 @@
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import dev.kikugie.stonecutter.controller.StonecutterControllerExtension
 import dev.kikugie.stonecutter.data.tree.ProjectNode
+import io.github.z4kn4fein.semver.constraints.toMavenFormat
 import net.xolt.freecam.model.ModMetadata
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
@@ -47,12 +48,12 @@ val Project.commonExpansions: Map<String, String>
         "modModrinth" to meta.modrinthUrl.toString(),
         "modCrowdin" to meta.crowdinUrl.toString(),
         "neoForgeVersion" to meta.deps["neoforge_version"],
-        "neoforgeLoaderReq" to properties["neoforge_loader_req"] as? String,
-        "neoforgeReq" to properties["neoforge_req"] as? String,
-        "neoforgeMcReq" to properties["neoforge_mc_req"] as? String,
+        "neoforgeLoaderReq" to meta.reqs["neoforge_loader"]?.toMavenFormat(),
+        "neoforgeReq" to meta.reqs["neoforge_version"]?.toMavenFormat(),
+        "neoforgeMcReq" to meta.reqs["mc"]?.toMavenFormat(),
         "forgeVersion" to meta.deps["forge_version"],
-        "forgeLoaderReq" to properties["forge_loader_req"] as? String,
-        "forgeReq" to properties["forge_req"] as? String,
-        "forgeMcReq" to properties["forge_mc_req"] as? String,
-        "clothConfigReq" to properties["cloth_config_req"] as? String,
+        "forgeLoaderReq" to meta.reqs["forge_loader"]?.toMavenFormat(),
+        "forgeReq" to meta.reqs["forge_version"]?.toMavenFormat(),
+        "forgeMcReq" to meta.reqs["mc"]?.toMavenFormat(),
+        "clothConfigReq" to meta.reqs["cloth"]?.toMavenFormat(),
     ).filterValues { it?.isNotEmpty() == true }.mapValues { it.value!! }
