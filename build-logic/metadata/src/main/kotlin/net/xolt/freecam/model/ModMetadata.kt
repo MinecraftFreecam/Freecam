@@ -2,6 +2,8 @@ package net.xolt.freecam.model
 
 import dev.kikugie.stonecutter.AnyVersion
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
+import io.github.z4kn4fein.semver.constraints.ConstraintFormatException
+import io.github.z4kn4fein.semver.constraints.toConstraint
 import net.xolt.freecam.util.decodeTomlPath
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
@@ -86,6 +88,15 @@ private class ProjectModMetadata(
 
     override val mod by lazy { project.properties.toPrefixMap("mod.") }
     override val deps by lazy { project.properties.toPrefixMap("deps.") }
+    override val reqs by lazy {
+        project.properties.toPrefixMap("reqs.").mapValues { (key, value) ->
+            try {
+                value.toConstraint()
+            } catch (e: ConstraintFormatException) {
+                error("${project.path} reqs.$key='$value': ${e.message}")
+            }
+        }
+    }
 }
 
 private fun Map<String, Any?>.toPrefixMap(prefix: String) =
