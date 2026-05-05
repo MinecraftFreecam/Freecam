@@ -1,7 +1,6 @@
 package net.xolt.freecam.model
 
 import dev.kikugie.stonecutter.AnyVersion
-import dev.kikugie.stonecutter.StonecutterExperimentalAPI
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import net.xolt.freecam.util.decodeTomlPath
 import org.gradle.api.Project
@@ -71,7 +70,6 @@ private class ProjectModMetadata(
             .toList()
     }
 
-    @OptIn(StonecutterExperimentalAPI::class)
     override val supportedMinecraftVersions: List<String> by lazy {
         requireStonecutter("supportedMinecraftVersions")
             .properties.rawOrNull("supported_mc_versions")?.to()
