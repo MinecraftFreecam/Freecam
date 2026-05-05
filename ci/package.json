@@ -15,6 +15,6 @@
   "dependencies": {
     "@stricli/core": "^1.2.6",
     "smol-toml": "^1.6.1",
-    "zod": "^4.3.6"
+    "zod": "^4.4.3"
   }
 }
