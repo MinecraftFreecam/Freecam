@@ -2,7 +2,7 @@
 title = "Opcje Freecam"
 
   [freecam.config.gui.fallback]
-  title = "Config GUI not available."
+  title = "Konfiguracja GUI jest niedostępna."
 
 [freecam.config.controls]
 label = "Przypisania Klawiszy"
@@ -19,7 +19,7 @@ tooltip = "Jak porusza się kamera."
   CREATIVE = "Kreatywny"
 
   [freecam.config.movement.speed]
-  value = "Value: %01.2f"
+  value = "Wartość: %01.2f"
 
     [freecam.config.movement.speed.horizontal]
     label = "Prędkość pozioma"
