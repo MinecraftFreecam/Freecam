@@ -2,7 +2,7 @@
 title = "Freecam Optionen"
 
   [freecam.config.gui.fallback]
-  title = "Config GUI not available."
+  title = "Konfigurations-GUI nicht verfügbar."
 
 [freecam.config.controls]
 label = "Tastenbelegung"
@@ -126,11 +126,11 @@ tooltip = "Optionen in Bezug auf Mehrspieler Servers."
   "tooltip[0]" = "Freecam auf bestimmten Servers erlauben oder verbieten."
   "tooltip[1]" = "(entweder eine Whitelist oder Blacklist verwenden)."
   NONE = "Keine Einschränkungen"
-  WHITELIST = "Whitelist"
-  BLACKLIST = "Blacklist"
+  WHITELIST = "Ausnahmeliste"
+  BLACKLIST = "Nutzer blocken"
 
   [freecam.config.servers.whitelist]
-  label = "Whitelist:"
+  label = "Ausnahmeliste:"
 
   [freecam.config.servers.blacklist]
   label = "Blacklist:"
