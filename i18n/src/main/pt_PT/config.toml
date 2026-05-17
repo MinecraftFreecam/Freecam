@@ -2,7 +2,7 @@
 title = "Definições do Freecam"
 
   [freecam.config.gui.fallback]
-  title = "Config GUI not available."
+  title = "A interface de definições está indisponível."
 
 [freecam.config.controls]
 label = "Atalhos"
@@ -19,7 +19,7 @@ tooltip = "Como a câmara desloca-se."
   CREATIVE = "Criativo"
 
   [freecam.config.movement.speed]
-  value = "Value: %01.2f"
+  value = "Valor: %01.2f"
 
     [freecam.config.movement.speed.horizontal]
     label = "Velocidade Horizontal"
@@ -108,39 +108,39 @@ tooltip = "Reajustes no Freecam."
 
 [freecam.config.utility.interact.allow]
 label = "Permitir Interação"
-"tooltip[0]" = "Whether you can interact with blocks/entities in freecam."
+"tooltip[0]" = "Se tu podes interagir com blocos/entidades no freecam."
 "tooltip[1]" = "§cALERTA: Uso em Multijogador não recomendado."
 
 [freecam.config.utility.interact.mode]
-label = "Interaction Mode"
-tooltip = "The source of block/entity interactions."
+label = "Modo de Interação"
+tooltip = "A fonte das interações com blocos/entidades."
 CAMERA = "Câmara"
 PLAYER = "Jogador"
 
 [freecam.config.servers]
-label = "Multiplayer Options"
-tooltip = "Options relating to multiplayer servers."
+label = "Multijogador"
+tooltip = "Definições relacionadas aos servidores multijogador."
 
   [freecam.config.servers.mode]
-  label = "Restriction mode"
-  "tooltip[0]" = "Allow or disallow use of freecam on certain servers."
-  "tooltip[1]" = "(using either a whitelist or blacklist)."
+  label = "Modo restringido"
+  "tooltip[0]" = "Permite ou proíbe a utilização do freecam em determinados servidores."
+  "tooltip[1]" = "(ou a utilizar uma lista branca, ou uma lista negra)."
   NONE = "Sem restrição"
-  WHITELIST = "Whitelist"
-  BLACKLIST = "Blacklist"
+  WHITELIST = "Lista branca"
+  BLACKLIST = "Lista negra"
 
   [freecam.config.servers.whitelist]
-  label = "Whitelist:"
+  label = "Lista branca:"
 
   [freecam.config.servers.blacklist]
-  label = "Blacklist:"
+  label = "Lista negra:"
 
 [freecam.config.notification]
-label = "Notification Options"
-tooltip = "Show or hide notifications."
+label = "Notificações"
+tooltip = "Exibe ou oculta as notificações."
 
   [freecam.config.notification.freecam]
-  label = "Freecam Notifications"
+  label = "Notificações do Freecam"
   tooltip = "Notifies you when entering/exiting freecam."
 
   [freecam.config.notification.tripod]
