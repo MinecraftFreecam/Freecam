@@ -116,8 +116,8 @@ tasks {
                 }
             }
 
-            depends("minecraft", sc.properties.get<String>("fabric_mc_req"))
-            depends("fabricloader", sc.properties.get<String>("fabric_loader_req"))
+            depends("minecraft", meta.reqs["mc"]?.toString() ?: error("${project.path} missing reqs.mc"))
+            depends("fabricloader", meta.reqs["fabric_loader"]?.toString() ?: error("${project.path} missing reqs.fabric_loader"))
             depends(if (sc.current.parsed < "1.19.2") "fabric" else "fabric-api", "*")
             recommends("modmenu", "*")
 

@@ -2,6 +2,8 @@ package net.xolt.freecam.model
 
 import dev.kikugie.stonecutter.AnyVersion
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
+import io.github.z4kn4fein.semver.constraints.ConstraintFormatException
+import io.github.z4kn4fein.semver.constraints.toConstraint
 import net.xolt.freecam.util.decodeTomlPath
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
@@ -84,35 +86,27 @@ private class ProjectModMetadata(
             .get()
     }
 
-    override val mod = PrefixedPropertyMap("mod.") { project.properties }
-    override val deps = PrefixedPropertyMap("deps.") { project.properties }
-}
-
-private class PrefixedPropertyMap(
-    private val prefix: String = "",
-    private val properties: () -> Map<String, Any?>,
-) : Map<String, String> {
-
-    private val map by lazy {
-        properties()
-            .asSequence()
-            .filter { (key, _) ->
-                key.startsWith(prefix)
+    override val mod by lazy { project.properties.toPrefixMap("mod.") }
+    override val deps by lazy { project.properties.toPrefixMap("deps.") }
+    override val reqs by lazy {
+        project.properties.toPrefixMap("reqs.").mapValues { (key, value) ->
+            try {
+                value.toConstraint()
+            } catch (e: ConstraintFormatException) {
+                error("${project.path} reqs.$key='$value': ${e.message}")
             }
-            .mapNotNull { (key, value) ->
-                (value as? String)?.let { key to it }
-            }
-            .associate { (key, value) ->
-                key.removePrefix(prefix) to value
-            }
+        }
     }
-
-    override val size get() = map.size
-    override val keys get() = map.keys
-    override val values get() = map.values
-    override val entries get() = map.entries
-    override fun isEmpty() = map.isEmpty()
-    override fun containsKey(key: String) = map.containsKey(key)
-    override fun containsValue(value: String) = map.containsValue(value)
-    override fun get(key: String) = map[key]
 }
+
+private fun Map<String, Any?>.toPrefixMap(prefix: String) =
+    asSequence()
+        .filter { (key, _) ->
+            key.startsWith(prefix)
+        }
+        .mapNotNull { (key, value) ->
+            (value as? String)?.let { key to it }
+        }
+        .associate { (key, value) ->
+            key.removePrefix(prefix) to value
+        }
