@@ -41,6 +41,9 @@ final class SingletonModConfigController implements ConfigController<ModConfigDT
             LOGGER.error("Failed to load config, using defaults", e);
             config = new ModConfigDTO();
         }
+        // ModConfigDTO calls onConfigChange when constructed,
+        // but GSON sets fields after constructing the object.
+        config.onConfigChange();
     }
 
     @Override
