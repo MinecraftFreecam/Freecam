@@ -22,6 +22,7 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 ### Fixed
 
 - Marked 1.20.5 as supported by the 1.20.6 build ([436](https://github.com/MinecraftFreecam/Freecam/issues/436), [452](https://github.com/MinecraftFreecam/Freecam/pull/452))
+- Collision settings not being initialized correctly ([496](https://github.com/MinecraftFreecam/Freecam/issues/496), [497](https://github.com/MinecraftFreecam/Freecam/issues/497))
 
 ## [1.4.0-alpha.3] - 2026-04-10
 
