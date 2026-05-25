@@ -1,11 +1,14 @@
 package net.xolt.freecam.model
 
+import io.github.z4kn4fein.semver.constraints.Constraint
+
 interface ModMetadata : StaticModMetadata {
     val mc: String
     val loader: String
     val description: String
     val mod: Map<String, String>
     val deps: Map<String, String>
+    val reqs: Map<String, Constraint>
     val relationships: List<Relationship>
     val supportedMinecraftVersions: List<String>
     val javaVersion: Int

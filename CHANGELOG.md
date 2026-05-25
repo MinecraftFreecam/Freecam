@@ -17,6 +17,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Removed
 
+- Support for Minecraft 1.21.10 ([482](https://github.com/MinecraftFreecam/Freecam/pull/482))
+
 ### Fixed
 
 - Marked 1.20.5 as supported by the 1.20.6 build ([436](https://github.com/MinecraftFreecam/Freecam/issues/436), [452](https://github.com/MinecraftFreecam/Freecam/pull/452))

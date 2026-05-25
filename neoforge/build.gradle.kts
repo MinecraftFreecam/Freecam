@@ -1,3 +1,5 @@
+import io.github.z4kn4fein.semver.constraints.toMavenFormat
+
 plugins {
     alias(libs.plugins.moddev)
     alias(libs.plugins.fletchingtable.neoforge)
@@ -23,11 +25,14 @@ dependencies {
         val clothVersion = requireNotNull(meta.deps["cloth"]) {
             "Missing deps.cloth for ${project.path}"
         }
+        val clothConstraint = requireNotNull(meta.reqs["cloth"]) {
+            "Missing reqs.cloth for ${project.path}"
+        }
         jarJar(implementation(project(path = it.project.path, configuration = "namedElements")) as Any)
         jarJar(implementation("me.shedaniel.cloth:cloth-config-neoforge") {
             version {
                 prefer(clothVersion)
-                strictly(sc.properties["cloth_config_req"])
+                strictly(clothConstraint.toMavenFormat())
             }
         })
     } ?: logger.warn("No :cloth-config project for ${project.path}")
