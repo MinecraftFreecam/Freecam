@@ -48,11 +48,10 @@ reqs.neoforge_loader = ">=1"
 
 
 ["1.21.11"]
-reqs.mc = "~1.21.10"
+reqs.mc = "1.21.11"
 
 deps.cloth = "21.11.153"
 reqs.cloth = "~21.11"
-supported_mc_versions = ["1.21.10"]
 
 deps.fabric_api = "0.139.4+1.21.11"
 deps.modmenu = "17.0.0-beta.2"
