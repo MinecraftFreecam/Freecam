@@ -19,9 +19,20 @@ class ModMetadataPlugin : Plugin<Settings> {
     private val logger = Logging.getLogger(ModMetadataPlugin::class.java)
 
     override fun apply(settings: Settings) = with(settings) {
-        val isRelease = providers.gradleProperty("isReleaseBuild")
-            .map { it.equals("true", ignoreCase = true) }
-            .getOrElse(false)
+        val isRelease = providers.gradleProperty("isReleaseBuild").orNull
+            ?.trim()
+            ?.takeUnless { it.isEmpty() }
+            ?.lowercase()
+            ?.let {
+                when (it) {
+                    "true" -> true
+                    "false" -> false
+                    else -> error {
+                        "Invalid `isReleaseBuild` value '$it' (expected 'true' or 'false')"
+                    }
+                }
+            }
+            ?: false
 
         val metadata = rootDir.resolve("metadata.toml").loadStaticMetadata().let {
             if (isRelease) it else it.copy(version = it.version.withSuffix("-SNAPSHOT"))
