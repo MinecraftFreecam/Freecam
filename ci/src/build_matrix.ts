@@ -37,7 +37,7 @@ export function main(args: CliOptions) {
 
   if (args.release) {
     matrix.forEach(({ gradle_args }) => {
-      gradle_args.push("-DisReleaseBuild=true");
+      gradle_args.push("-PisReleaseBuild=true");
     });
   }
 
