@@ -21,6 +21,7 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Fixed
 
+- Player-targeted block incorrectly using the camera's rotation ([438](https://github.com/MinecraftFreecam/Freecam/issues/438), [498](https://github.com/MinecraftFreecam/Freecam/pull/498))
 - Marked 1.20.5 as supported by the 1.20.6 build ([436](https://github.com/MinecraftFreecam/Freecam/issues/436), [452](https://github.com/MinecraftFreecam/Freecam/pull/452))
 - Collision settings not being initialized correctly ([496](https://github.com/MinecraftFreecam/Freecam/issues/496), [497](https://github.com/MinecraftFreecam/Freecam/issues/497))
 
