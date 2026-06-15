@@ -28,6 +28,10 @@ public class CameraMixin {
     //? if >=26.1 {
     @Inject(method = "setEntity", at = @At("HEAD"))
     private void onSetEntity(Entity entity, CallbackInfo ci) {
+        if (entity == null || this.entity == null) {
+            return;
+        }
+
         if (entity instanceof FreeCamera || this.entity instanceof FreeCamera) {
             this.eyeHeightOld = this.eyeHeight = entity.getEyeHeight();
         }
@@ -35,13 +39,13 @@ public class CameraMixin {
     //? } else {
     /*@Inject(method = "setup", at = @At("HEAD"))
     //~ if >=1.21.11 'BlockGetter area' -> 'Level level'
-    public void onUpdate(Level level, Entity newFocusedEntity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
-        if (newFocusedEntity == null || this.entity == null || newFocusedEntity.equals(this.entity)) {
+    public void onUpdate(Level level, Entity entity, boolean thirdPerson, boolean inverseView, float tickDelta, CallbackInfo ci) {
+        if (entity == null || this.entity == null || entity.equals(this.entity)) {
             return;
         }
 
-        if (newFocusedEntity instanceof FreeCamera || this.entity instanceof FreeCamera) {
-            this.eyeHeightOld = this.eyeHeight = newFocusedEntity.getEyeHeight();
+        if (entity instanceof FreeCamera || this.entity instanceof FreeCamera) {
+            this.eyeHeightOld = this.eyeHeight = entity.getEyeHeight();
         }
     }
     *///? }
