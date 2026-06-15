@@ -28,6 +28,10 @@ public class CameraMixin {
     //? if >=26.1 {
     @Inject(method = "setEntity", at = @At("HEAD"))
     private void onSetEntity(Entity entity, CallbackInfo ci) {
+        if (entity == null || this.entity == null) {
+            return;
+        }
+
         if (entity instanceof FreeCamera || this.entity instanceof FreeCamera) {
             this.eyeHeightOld = this.eyeHeight = entity.getEyeHeight();
         }

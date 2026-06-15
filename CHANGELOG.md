@@ -15,6 +15,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Fixed
 
+- A crash when changing dimensions while Freecam is enabled ([505](https://github.com/MinecraftFreecam/Freecam/pull/505), [500](https://github.com/MinecraftFreecam/Freecam/issues/500))
+
 ## [1.4.0-rc.1] - 2026-05-26
 
 This version includes major underlying changes. Feedback and bug reports are greatly appreciated!
