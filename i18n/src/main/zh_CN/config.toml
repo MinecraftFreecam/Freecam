@@ -1,12 +1,12 @@
 [freecam.config.gui]
-title = "Freecam 选项"
+title = "Freecam（自由视角）选项"
 
   [freecam.config.gui.fallback]
-  title = "Config GUI not available."
+  title = "配置界面不可用。"
 
 [freecam.config.controls]
 label = "按键绑定"
-tooltip = "Freecam 按键绑定。"
+tooltip = "Freecam（自由视角）按键绑定。"
 
 [freecam.config.movement]
 label = "移动选项"
@@ -14,16 +14,16 @@ tooltip = "视角如何移动。"
 
   [freecam.config.movement.flightMode]
   label = "飞行模式"
-  tooltip = "Freecam 角使用的飞行方式。"
+  tooltip = "Freecam（自由视角）使用的飞行方式。"
   DEFAULT = "默认"
   CREATIVE = "创造"
 
   [freecam.config.movement.speed]
-  value = "Value: %01.2f"
+  value = "值: %01.2f"
 
     [freecam.config.movement.speed.horizontal]
     label = "水平速度"
-    tooltip = "Freecam 角的水平速度。"
+    tooltip = "Freecam（自由视角）的水平速度。"
 
     [freecam.config.movement.speed.vertical]
     label = "垂直速度"
