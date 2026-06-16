@@ -9,7 +9,7 @@ label = "Atalhos"
 tooltip = "Atalhos do Freecam."
 
 [freecam.config.movement]
-label = "Opções de movimento"
+label = "Opções de Movimento"
 tooltip = "Como a câmera se move."
 
   [freecam.config.movement.flightMode]
@@ -47,7 +47,7 @@ tooltip = "Quais blocos é possível atravessar no freecam."
   tooltip = "Permite atravessar portas/alçapões/portões no freecam."
 
   [freecam.config.collision.ignoreCustom]
-  label = "Lista de blocos ignorados"
+  label = "Lista de Blocos Ignorados"
   tooltip = "Permite atravessar certos blocos no freecam."
 
 [freecam.config.collision.whitelist.ids]

@@ -5,10 +5,10 @@ controls = "Freecam"
 toggle = "Alternar Freecam"
 
   [key.freecam.controlPlayer]
-  toggle = "Controlo do jogador"
+  toggle = "Controlar Jogador"
 
   [key.freecam.tripod]
-  reset = "Redefinir tripé"
+  reset = "Redefinir Tripé"
 
   [key.freecam.config]
   open = "Interface de definições"
