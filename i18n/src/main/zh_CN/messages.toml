@@ -1,5 +1,5 @@
 [freecam.msg]
-enabled = "Freecam 已启用。"
+enabled = "FreecamFreecamFreecam 已启用。FreecamFreecam。"
 disabled = "Freecam 已禁用。"
 invalidRegex = "无效的正则表达式：%s"
 
