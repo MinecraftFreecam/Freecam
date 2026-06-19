@@ -7,7 +7,7 @@ plugins {
     id("dev.kikugie.stonecutter")
 }
 
-stonecutter active "26.1"
+stonecutter active "26.2"
 
 stonecutter parameters {
     val meta = node.project.meta
@@ -64,6 +64,9 @@ stonecutter parameters {
     }
 
     replacements {
+        string(current.parsed >= "26.2") {
+            replace("renderHandsWithItems", "submitHandsWithItems")
+        }
         string(current.parsed >= "26.0") {
             replace("accessWidener v2 named", "accessWidener v2 official")
             replace("GuiGraphics", "GuiGraphicsExtractor")

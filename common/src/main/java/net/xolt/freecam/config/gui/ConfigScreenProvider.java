@@ -20,11 +20,13 @@ public interface ConfigScreenProvider {
     Screen getConfigScreen(Screen parent);
 
     default void openConfigScreen() {
-        openConfigScreen(MC.screen);
+        //~ if >=26.2 screen -> 'gui.screen()'
+        openConfigScreen(MC.gui.screen());
     }
 
     default void openConfigScreen(Screen parent) {
-        MC.setScreen(getConfigScreen(parent));
+        //~ if >=26.2 setScreen -> 'gui.setScreen'
+        MC.gui.setScreen(getConfigScreen(parent));
     }
 
     static ConfigScreenProvider provider() {

@@ -12,13 +12,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static net.xolt.freecam.Freecam.MC;
 
 @Mixin(Entity.class)
-@SuppressWarnings("EqualsBetweenInconvertibleTypes")
 public class EntityMixin {
 
     // Makes mouse input rotate the FreeCamera.
     @Inject(method = "turn", at = @At("HEAD"), cancellable = true)
     private void onChangeLookDirection(double rotation, double pitch, CallbackInfo ci) {
-        if (Freecam.isEnabled() && this.equals(MC.player) && !Freecam.isPlayerControlEnabled()) {
+        if (Freecam.isEnabled() && freecam$this() == MC.player && !Freecam.isPlayerControlEnabled()) {
             Freecam.getFreeCamera().turn(rotation, pitch);
             ci.cancel();
         }
@@ -27,7 +26,7 @@ public class EntityMixin {
     // Prevents FreeCamera from pushing/getting pushed by entities.
     @Inject(method = "push(Lnet/minecraft/world/entity/Entity;)V", at = @At("HEAD"), cancellable = true)
     private void onPushAwayFrom(Entity entity, CallbackInfo ci) {
-        if (Freecam.isEnabled() && (entity.equals(Freecam.getFreeCamera()) || this.equals(Freecam.getFreeCamera()))) {
+        if (Freecam.isEnabled() && (entity == Freecam.getFreeCamera() || freecam$this() == Freecam.getFreeCamera())) {
             ci.cancel();
         }
     }
@@ -65,8 +64,13 @@ public class EntityMixin {
     }
 
     @Unique
+    private Entity freecam$this() {
+        return (Entity) (Object) this;
+    }
+
+    @Unique
     private boolean freecam$shouldFreeze() {
-        return Freecam.isEnabled() && this.equals(MC.player) && freecam$allowFreeze();
+        return Freecam.isEnabled() && freecam$this() == MC.player && freecam$allowFreeze();
     }
 
     @Unique

@@ -26,7 +26,7 @@ public class ItemInHandRendererMixin {
     @Unique private float freecam$tickDelta;
 
     @Redirect(
-            method = "renderHandsWithItems",
+            method = "submitHandsWithItems",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/player/LocalPlayer;getViewXRot(F)F"
@@ -37,7 +37,7 @@ public class ItemInHandRendererMixin {
     }
 
     @Redirect(
-            method = "renderHandsWithItems",
+            method = "submitHandsWithItems",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/client/player/LocalPlayer;getViewYRot(F)F"
@@ -49,7 +49,7 @@ public class ItemInHandRendererMixin {
 
     // Makes arm movement depend upon FreeCamera movement rather than player movement.
     @Redirect(
-            method = "renderHandsWithItems",
+            method = "submitHandsWithItems",
             at = @At(
                     value = "FIELD",
                     target = "Lnet/minecraft/client/player/LocalPlayer;xBob:F",
@@ -61,7 +61,7 @@ public class ItemInHandRendererMixin {
 
     // Makes arm movement depend upon FreeCamera movement rather than player movement.
     @Redirect(
-            method = "renderHandsWithItems",
+            method = "submitHandsWithItems",
             at = @At(
                     value = "FIELD",
                     target = "Lnet/minecraft/client/player/LocalPlayer;xBobO:F",
@@ -73,7 +73,7 @@ public class ItemInHandRendererMixin {
 
     // Makes arm movement depend upon FreeCamera movement rather than player movement.
     @Redirect(
-            method = "renderHandsWithItems",
+            method = "submitHandsWithItems",
             at = @At(
                     value = "FIELD",
                     target = "Lnet/minecraft/client/player/LocalPlayer;yBob:F",
@@ -85,7 +85,7 @@ public class ItemInHandRendererMixin {
 
     // Makes arm movement depend upon FreeCamera movement rather than player movement.
     @Redirect(
-            method = "renderHandsWithItems",
+            method = "submitHandsWithItems",
             at = @At(
                     value = "FIELD",
                     target = "Lnet/minecraft/client/player/LocalPlayer;yBobO:F",
@@ -95,7 +95,7 @@ public class ItemInHandRendererMixin {
         return Freecam.isEnabled() ? Freecam.getFreeCamera().yBobO : player.yBobO;
     }
 
-    @Inject(method = "renderHandsWithItems", at = @At("HEAD"))
+    @Inject(method = "submitHandsWithItems", at = @At("HEAD"))
     private void storeTickDelta(float partialTick, PoseStack poseStack,
                                 //? if >=1.21.11 {
                                 SubmitNodeCollector nodeCollector,
@@ -108,7 +108,7 @@ public class ItemInHandRendererMixin {
     }
 
     // Makes arm shading depend upon FreeCamera position rather than player position.
-    @ModifyVariable(method = "renderHandsWithItems", at = @At("HEAD"), argsOnly = true)
+    @ModifyVariable(method = "submitHandsWithItems", at = @At("HEAD"), argsOnly = true)
     private int onRenderItemSetLight(int lightCoords) {
         if (Freecam.isEnabled()) {
             return MC.getEntityRenderDispatcher().getPackedLightCoords(Freecam.getFreeCamera(), freecam$tickDelta);

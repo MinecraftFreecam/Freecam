@@ -47,7 +47,7 @@ public class MultiPlayerGameModeMixin {
             EntityHitResult hitResult,
             InteractionHand hand,
             CallbackInfoReturnable<InteractionResult> cir) {
-        if (entity.equals(MC.player) || freecam$disableInteract()) {
+        if (entity == MC.player || freecam$disableInteract()) {
             cir.setReturnValue(InteractionResult.PASS);
         }
     }
@@ -56,7 +56,7 @@ public class MultiPlayerGameModeMixin {
     //? if <26.1 {
     /*@Inject(method = "interactAt", at = @At("HEAD"), cancellable = true)
     private void onInteractEntityAtLocation(Player player, Entity entity, EntityHitResult hitResult, InteractionHand hand, CallbackInfoReturnable<InteractionResult> cir) {
-        if (entity.equals(MC.player) || freecam$disableInteract()) {
+        if (entity == MC.player || freecam$disableInteract()) {
             cir.setReturnValue(InteractionResult.PASS);
         }
     }
@@ -65,7 +65,7 @@ public class MultiPlayerGameModeMixin {
     // Prevents attacking self.
     @Inject(method = "attack", at = @At("HEAD"), cancellable = true)
     private void onAttackEntity(Player player, Entity target, CallbackInfo ci) {
-        if (target.equals(MC.player)) {
+        if (target == MC.player) {
             ci.cancel();
         }
     }
