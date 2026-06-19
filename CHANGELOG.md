@@ -9,13 +9,20 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Added
 
-- 26.2 support ([511](https://github.com/MinecraftFreecam/Freecam/issues/511), [513](https://github.com/MinecraftFreecam/Freecam/pull/513))
-
 ### Changed
 
 ### Removed
 
 ### Fixed
+
+## [1.4.1-alpha.1] - 2026-06-19
+
+Initial support for Minecraft 26.2, which has only had light testing. Feedback and bug reports are greatly appreciated!
+**[Bug tracker](https://github.com/MinecraftFreecam/Freecam/issues).**
+
+### Added
+
+- 26.2 support ([511](https://github.com/MinecraftFreecam/Freecam/issues/511), [513](https://github.com/MinecraftFreecam/Freecam/pull/513))
 
 ## [1.4.0] - 2026-06-16
 
@@ -730,8 +737,9 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Minecraft 1.18 support.
 - Minecraft 1.17 support.
 
-[Unreleased]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.0...HEAD
-[1.4.0]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.6...v1.4.0
+[Unreleased]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.1-alpha.1...HEAD
+[1.4.1-alpha.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.0...v1.4.1-alpha.1
+[1.4.0]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.0-rc.2...v1.4.0
 [1.4.0-rc.2]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.0-rc.1...v1.4.0-rc.2
 [1.4.0-rc.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.0-alpha.3...v1.4.0-rc.1
 [1.4.0-alpha.3]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.0-alpha.2...v1.4.0-alpha.3
