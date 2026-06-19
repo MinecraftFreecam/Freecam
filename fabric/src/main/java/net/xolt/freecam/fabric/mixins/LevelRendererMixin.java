@@ -1,7 +1,7 @@
 package net.xolt.freecam.fabric.mixins;
 
-
-import net.minecraft.client.Camera;
+//? if <26.2 {
+/*import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.*;
 import net.minecraft.world.entity.Entity;
 import net.xolt.freecam.Freecam;
@@ -16,27 +16,27 @@ import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.renderer.entity.state.EntityRenderState;
 import net.minecraft.client.renderer.state.level.LevelRenderState;
 //? } else {
-/*import com.mojang.blaze3d.vertex.PoseStack;
+/^import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.world.phys.Vec3;
 
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
-*///? }
+^///? }
 //? if <1.21.11 && >=1.20.6 {
-/*import net.minecraft.util.profiling.ProfilerFiller;
+/^import net.minecraft.util.profiling.ProfilerFiller;
 import org.joml.Matrix4fStack;
-*///? }
+^///? }
 //? if >=1.20.6 {
 import net.minecraft.world.TickRateManager;
 import net.minecraft.client.renderer.culling.Frustum;
 //? }
 //? if >1.18.2 && <1.21.11 {
-/*import org.joml.Matrix4f;
-*///? }
+/^import org.joml.Matrix4f;
+^///? }
 //? if <= 1.18.2 {
-/*import com.mojang.math.Matrix4f;
-*///? }
+/^import com.mojang.math.Matrix4f;
+^///? }
 
 import static net.xolt.freecam.Freecam.MC;
 
@@ -58,7 +58,7 @@ public abstract class LevelRendererMixin {
         }
     }
     //? } else {
-    /*@Shadow @Final
+    /^@Shadow @Final
     private RenderBuffers renderBuffers;
 
     @Shadow protected abstract void renderEntity(Entity entity, double camX, double camY, double camZ, float partialTick, PoseStack poseStack, MultiBufferSource bufferSource);
@@ -93,7 +93,7 @@ public abstract class LevelRendererMixin {
         onRender(new Vec3(x, y, z), partialTick, poseStack, renderBuffers);
     }
     //? } else {
-    /^private void onRender(PoseStack matrices,
+    /^¹private void onRender(PoseStack matrices,
                           float tickDelta,
                           long limitTime,
                           boolean renderBlockOutline,
@@ -104,7 +104,7 @@ public abstract class LevelRendererMixin {
                           CallbackInfo ci) {
         onRender(camera.getPosition(), tickDelta, matrices, renderBuffers);
     }
-    ^///? }
+    ¹^///? }
 
     @Unique
     private void onRender(Vec3 cameraPos, float partialTick, PoseStack poseStack, RenderBuffers renderBuffers) {
@@ -112,5 +112,6 @@ public abstract class LevelRendererMixin {
             renderEntity(MC.player, cameraPos.x, cameraPos.y, cameraPos.z, partialTick, poseStack, renderBuffers.bufferSource());
         }
     }
-    *///? }
+    ^///? }
 }
+*///? }

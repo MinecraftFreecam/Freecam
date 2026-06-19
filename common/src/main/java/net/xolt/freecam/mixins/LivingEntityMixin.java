@@ -5,6 +5,7 @@ import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -14,7 +15,6 @@ import static net.xolt.freecam.Freecam.MC;
 import static net.xolt.freecam.config.model.FlightMode.CREATIVE;
 
 @Mixin(LivingEntity.class)
-@SuppressWarnings("EqualsBetweenInconvertibleTypes")
 public abstract class LivingEntityMixin {
 
     @Shadow public abstract float getHealth();
@@ -22,7 +22,7 @@ public abstract class LivingEntityMixin {
     // Allows for the horizontal speed of creative flight to be configured separately from vertical speed.
     @Inject(method = "getFrictionInfluencedSpeed", at = @At("HEAD"), cancellable = true)
     private void onGetMovementSpeed(CallbackInfoReturnable<Float> cir) {
-        if (Freecam.isEnabled() && ModConfig.get().getFlightMode().equals(CREATIVE) && this.equals(Freecam.getFreeCamera())) {
+        if (Freecam.isEnabled() && ModConfig.get().getFlightMode().equals(CREATIVE) && freecam$this() == Freecam.getFreeCamera()) {
             cir.setReturnValue((float) (ModConfig.get().getHorizontalSpeed() / 10) * (Freecam.getFreeCamera().isSprinting() ? 2 : 1));
         }
     }
@@ -30,10 +30,15 @@ public abstract class LivingEntityMixin {
     // Disables freecam upon receiving damage if disableOnDamage is enabled.
     @Inject(method = "setHealth", at = @At("HEAD"))
     private void onSetHealth(float health, CallbackInfo ci) {
-        if (Freecam.isEnabled() && ModConfig.get().shouldDisableOnDamage() && this.equals(MC.player)) {
+        if (Freecam.isEnabled() && ModConfig.get().shouldDisableOnDamage() && freecam$this() == MC.player) {
             if (!MC.player.isCreative() && getHealth() > health) {
                 Freecam.disableNextTick();
             }
         }
+    }
+
+    @Unique
+    private LivingEntity freecam$this() {
+        return (LivingEntity) (Object) this;
     }
 }

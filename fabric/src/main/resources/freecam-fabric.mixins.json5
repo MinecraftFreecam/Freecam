@@ -5,7 +5,11 @@
   "compatibilityLevel": "${mixinCompatLevel}",
   "minVersion": "0.8",
   "client": [
-    "LevelRendererMixin"
+    //? if >=26.2 {
+    "LevelExtractorMixin"
+    //? } else {
+    /*"LevelRendererMixin"
+    *///? }
   ],
   "injectors": {
     "defaultRequire": 1

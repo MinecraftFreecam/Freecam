@@ -22,6 +22,7 @@ final class FallbackConfigScreen extends GenericMessageScreen {
 
     @Override
     public void onClose() {
-        minecraft.setScreen(parent);
+        //~ if >=26.2 setScreen -> 'gui.setScreen'
+        minecraft.gui.setScreen(parent);
     }
 }

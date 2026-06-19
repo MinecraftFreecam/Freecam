@@ -14,6 +14,8 @@
     "FullBrightMixin",
     "GameRendererMixin",
     "GuiMixin",
+    //? if >=26.2
+    "HudMixin",
     "IrisHandRendererMixin",
     //? if <1.21.6
     //"IrisShadowRendererMixin",

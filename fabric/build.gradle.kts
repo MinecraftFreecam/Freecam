@@ -6,6 +6,13 @@ plugins {
     id("freecam.loaders")
 }
 
+fletchingTable {
+    j52j.register("main") {
+        prettyPrint = true
+        extension("json", "**/*.json5")
+    }
+}
+
 stonecutter replacements {
     string(sc.current.parsed >= "26.0") {
         replace("net.fabricmc.fabric.api.client.keybinding", "net.fabricmc.fabric.api.client.keymapping")
@@ -143,7 +150,7 @@ tasks {
     processResources {
         from(generateModJson)
 
-        filesMatching("freecam-fabric.mixins.json") {
+        filesMatching("freecam-fabric.mixins.json5") {
             expand(commonExpansions)
         }
 

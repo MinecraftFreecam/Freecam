@@ -9,6 +9,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Added
 
+- 26.2 support ([511](https://github.com/MinecraftFreecam/Freecam/issues/511), [513](https://github.com/MinecraftFreecam/Freecam/pull/513))
+
 ### Changed
 
 ### Removed

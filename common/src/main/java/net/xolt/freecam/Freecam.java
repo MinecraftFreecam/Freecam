@@ -254,7 +254,8 @@ public class Freecam {
         MC.smartCull = false;
 
         rememberedF5 = MC.options.getCameraType();
-        if (MC.gameRenderer.getMainCamera().isDetached()) {
+        //~ if >=26.2 getMainCamera -> mainCamera
+        if (MC.gameRenderer.mainCamera().isDetached()) {
             MC.options.setCameraType(CameraType.FIRST_PERSON);
         }
     }
