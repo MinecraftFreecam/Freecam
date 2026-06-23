@@ -15,6 +15,9 @@ updates:
     commit-message:
       prefix: build
       prefix-development: ci
+    groups:
+      npm:
+        patterns: ["*"]
   - package-ecosystem: gradle
     directory: /
     schedule:
