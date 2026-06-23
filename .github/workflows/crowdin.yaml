@@ -71,7 +71,7 @@ jobs:
       - name: Install Crowdin CLI
         run: npm install -g @crowdin/cli
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
         with:
           # Full depth for merge logic
           fetch-depth: 0
@@ -163,7 +163,7 @@ jobs:
       - name: Install Crowdin CLI
         run: npm install -g @crowdin/cli
 
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Generate summary
         id: summary

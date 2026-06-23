@@ -42,7 +42,7 @@ jobs:
     timeout-minutes: 120
 
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       # Install Java used by the Gradle wrapper.
       # The JVM used to build is installed separately by the foojay resolver.

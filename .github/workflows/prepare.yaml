@@ -74,7 +74,7 @@ jobs:
     steps:
       - name: Checkout required files
         if: contains(env.scopes, 'node')
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: >
             ${{
@@ -90,7 +90,7 @@ jobs:
 
       # Checkout metadata separately, as we want the untrusted files on pr_target runs
       - name: Checkout PR metadata
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           ref: >
             ${{
