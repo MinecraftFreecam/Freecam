@@ -2,7 +2,7 @@
 title = "Opzioni Camera libera"
 
   [freecam.config.gui.fallback]
-  title = "Config GUI not available."
+  title = "Interfaccia di configurazione non disponibile."
 
 [freecam.config.controls]
 label = "Associazione dei Tasti"
@@ -19,7 +19,7 @@ tooltip = "Come si muove la telecamera."
   CREATIVE = "Creativa"
 
   [freecam.config.movement.speed]
-  value = "Value: %01.2f"
+  value = "Valore: %01.2f"
 
     [freecam.config.movement.speed.horizontal]
     label = "Velocità orizzontale"
