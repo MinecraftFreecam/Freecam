@@ -1,4 +1,5 @@
 import io.github.z4kn4fein.semver.constraints.toMavenFormat
+import kotlinx.serialization.json.*
 import net.neoforged.moddevgradle.legacyforge.internal.MinecraftMappings
 
 plugins {
@@ -8,9 +9,17 @@ plugins {
     id("freecam.atremapper")
 }
 
+val json = Json { prettyPrint = true }
+
 val forgeVersion = requireNotNull(meta.deps["forge_version"]) {
     "Missing deps.forge_version for ${project.path}"
 }
+
+val refmapName = "mixins.freecam.refmap.json"
+val mixinConfigNames = listOf(
+    "freecam-common.mixins.json",
+    "freecam-forge.mixins.json",
+)
 
 stonecutter replacements {
     string(sc.eval(forgeVersion, ">= 41")) {
@@ -111,9 +120,8 @@ legacyForge {
 }
 
 mixin {
-    add(sourceSets.main.get(), "mixins.freecam.refmap.json")
-    config("freecam-common.mixins.json")
-    config("freecam-forge.mixins.json")
+    add(sourceSets.main.get(), refmapName)
+    mixinConfigNames.forEach(::config)
 }
 
 sourceSets.main {
@@ -141,6 +149,20 @@ tasks.processResources {
     }
 
     inputs.properties(commonExpansions)
+    inputs.property("mixinConfigs", mixinConfigNames)
+    inputs.property("mixinRefmap", refmapName)
+
+    doLast {
+        // Add the refmap to mixin config files
+        destinationDir.listFiles { file -> file.isFile && mixinConfigNames.contains(file.name) }.forEach { file ->
+            file.inputStream()
+                .use { stream -> json.decodeFromStream<MutableMap<String, JsonElement>>(stream) }
+                .let { config ->
+                    config["refmap"] = JsonPrimitive(refmapName)
+                    file.outputStream().use { stream -> json.encodeToStream(config, stream) }
+                }
+        }
+    }
 }
 
 tasks.jar {
@@ -154,6 +176,11 @@ tasks.jar {
             "META-INF/*.RSA",
         )
     }
+
+    manifest.attributes(
+        "MixinConfigs" to mixinConfigNames.joinToString(","),
+    )
+
     duplicatesStrategy = DuplicatesStrategy.FAIL
     finalizedBy("reobfJar")
 }
