@@ -15,6 +15,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Fixed
 
+- Fixed compatibility with legacy Forge, broken in 1.4.0 ([516](https://github.com/MinecraftFreecam/Freecam/issues/516), [526](https://github.com/MinecraftFreecam/Freecam/pull/526))
+
 ## [1.4.1-alpha.1] - 2026-06-19
 
 Initial support for Minecraft 26.2, which has only had light testing. Feedback and bug reports are greatly appreciated!
