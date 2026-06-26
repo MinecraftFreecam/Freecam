@@ -8,7 +8,7 @@ plugins {
     id("freecam.shadow") apply false
 }
 
-stonecutter active "26.2"
+stonecutter active "26.3"
 
 stonecutter parameters {
     val meta = node.project.meta
