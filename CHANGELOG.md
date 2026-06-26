@@ -9,6 +9,10 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Added
 
+- Experimental support for Minecraft 26.3 snapshots ([528](https://github.com/MinecraftFreecam/Freecam/pull/528))
+  - Note: This is an experimental build and has only had light testing. Feedback and bug reports are greatly appreciated!
+  - The Config GUI is not yet available in this build, it will be added once Cloth Config is available.
+
 ### Changed
 
 ### Removed
