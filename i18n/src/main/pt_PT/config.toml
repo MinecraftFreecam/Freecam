@@ -98,7 +98,7 @@ label = "Utilitários"
 tooltip = "Reajustes no freecam."
 
   [freecam.config.utility.disableOnDamage]
-  label = "Desativar ao receber dano"
+  label = "Desabilitar ao Ferir-se"
   tooltip = "Desabilita o freecam ao aleijar-se."
 
   [freecam.config.utility.freezePlayer]

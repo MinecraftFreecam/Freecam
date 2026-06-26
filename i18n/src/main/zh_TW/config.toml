@@ -1,5 +1,5 @@
 [freecam.config.gui]
-title = "靈魂出竅選項"
+title = "Freecam 選項"
 
   [freecam.config.gui.fallback]
   title = "Config GUI not available."

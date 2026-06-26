@@ -2,7 +2,7 @@
 title = "Freecamのオプション"
 
   [freecam.config.gui.fallback]
-  title = "Config GUI not available."
+  title = "コンフィグGUIが利用できません。"
 
 [freecam.config.controls]
 label = "キー割り当て"
@@ -19,7 +19,7 @@ tooltip = "カメラの動き方。"
   CREATIVE = "クリエイティブ"
 
   [freecam.config.movement.speed]
-  value = "Value: %01.2f"
+  value = "値: %01.2f"
 
     [freecam.config.movement.speed.horizontal]
     label = "水平速度"
