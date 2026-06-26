@@ -12,3 +12,6 @@ toggle = "Перемкнути Freecam"
 
   [key.freecam.config]
   open = "Налаштувати інтерфейс"
+
+  [key.freecam.outlinePlayer]
+  toggle = "Перемкнути Окреслення Гравця"

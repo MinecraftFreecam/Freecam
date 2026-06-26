@@ -67,4 +67,6 @@ public interface ModConfig {
     boolean shouldNotifyFreecam();
 
     boolean shouldNotifyTripod();
+
+    boolean shouldOutlinePlayer();
 }

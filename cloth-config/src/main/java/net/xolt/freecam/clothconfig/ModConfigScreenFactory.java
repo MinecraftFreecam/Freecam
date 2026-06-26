@@ -276,6 +276,24 @@ public class ModConfigScreenFactory {
                 .setSaveConsumer(value -> config().visual.showPlayer = value)
                 .build();
 
+        // Outline Player is only implemented for 1.21.11+
+        // TODO: backport to older versions
+        // See https://github.com/MinecraftFreecam/Freecam/pull/340
+        //? if >=1.21.11 {
+        BooleanListEntry outlinePlayer = entryBuilder.startBooleanToggle(
+                Component.translatable("freecam.config.visual.outlinePlayer.label"),
+                config().visual.outlinePlayer)
+            .setTooltip(
+                Component.translatable("freecam.config.visual.outlinePlayer.tooltip[0]"),
+                Component.translatable("freecam.config.visual.outlinePlayer.tooltip[1]")
+            )
+            .setDefaultValue(defaults().visual.outlinePlayer)
+            .setSaveConsumer(value -> config().visual.outlinePlayer = value)
+            //? if cloth_dependencies
+            .setRequirement(showPlayer::getValue)
+            .build();
+        //?}
+
         BooleanListEntry showHand = entryBuilder.startBooleanToggle(
                         Component.translatable("freecam.config.visual.showHand.label"),
                         config().visual.showHand)
@@ -304,6 +322,8 @@ public class ModConfigScreenFactory {
         Stream.of(
                 perspective,
                 showPlayer,
+                //? if >=1.21.11
+                outlinePlayer,
                 showHand,
                 fullBright,
                 showSubmersion

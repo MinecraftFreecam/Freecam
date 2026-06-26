@@ -20,6 +20,10 @@
     //? if <1.21.6
     //"IrisShadowRendererMixin",
     "ItemInHandRendererMixin",
+    //? if >=26.2 {
+    "LevelExtractorMixin",
+    //? } else if >=1.21.11
+    //"LevelRendererMixin",
     "LivingEntityMixin",
     "LocalPlayerMixin",
     "MinecraftMixin",

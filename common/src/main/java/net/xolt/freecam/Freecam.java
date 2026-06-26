@@ -36,6 +36,7 @@ public class Freecam {
     private static boolean tripodEnabled = false;
     private static boolean playerControlEnabled = false;
     private static boolean disableNextTick = false;
+    private static boolean outlineEnabled = false;
     private static final TripodRegistry tripods = new TripodRegistry();
     private static TripodSlot activeTripod = TripodSlot.NONE;
     private static FreeCamera freeCamera;
@@ -252,6 +253,7 @@ public class Freecam {
 
     private static void onEnable() {
         MC.smartCull = false;
+        outlineEnabled = ModConfig.get().shouldOutlinePlayer();
 
         rememberedF5 = MC.options.getCameraType();
         //~ if >=26.2 getMainCamera -> mainCamera
@@ -350,6 +352,17 @@ public class Freecam {
     @ApiStatus.AvailableSince("0.2.2")
     public static boolean isEnabled() {
         return freecamEnabled || tripodEnabled;
+    }
+
+    public static void toggleOutline() {
+        if (!isEnabled()) {
+            return;
+        }
+        outlineEnabled = !outlineEnabled;
+    }
+
+    public static boolean isOutlineEnabled() {
+        return outlineEnabled;
     }
 
     @ApiStatus.Experimental
