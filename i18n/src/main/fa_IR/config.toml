@@ -93,6 +93,11 @@ tooltip = "ظاهر فری کم."
   label = "نمایش مه غوطه وری"
   tooltip = "اینکه شما یک پوششی از مه در زیر آب، گدازه یا برف پودر شده ببینید."
 
+  [freecam.config.visual.outlinePlayer]
+  label = "Outline Player"
+  "tooltip[0]" = "Apply an outline to your player when activating Freecam."
+  "tooltip[1]" = 'The outline can also be controlled using the "Toggle Player Outline" keybind.'
+
 [freecam.config.utility]
 label = "تنظیمات کاربردی"
 tooltip = "بهبود های فری کم."

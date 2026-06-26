@@ -12,3 +12,6 @@ toggle = "Włącz/Wyłącz Freecam"
 
   [key.freecam.config]
   open = "GUI Konfiguracji"
+
+  [key.freecam.outlinePlayer]
+  toggle = "Przełącz gracza obrysowego"

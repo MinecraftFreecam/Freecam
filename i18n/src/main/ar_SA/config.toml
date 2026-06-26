@@ -93,6 +93,11 @@ tooltip = "The look of freecam."
   label = "Show Submersion Fog"
   tooltip = "Whether you see a fog overlay underwater, in lava, or powdered snow."
 
+  [freecam.config.visual.outlinePlayer]
+  label = "Outline Player"
+  "tooltip[0]" = "Apply an outline to your player when activating Freecam."
+  "tooltip[1]" = 'The outline can also be controlled using the "Toggle Player Outline" keybind.'
+
 [freecam.config.utility]
 label = "Utility Options"
 tooltip = "Freecam enhancements."

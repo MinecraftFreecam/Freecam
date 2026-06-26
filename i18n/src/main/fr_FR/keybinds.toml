@@ -12,3 +12,6 @@ toggle = "Basculer la caméra libre"
 
   [key.freecam.config]
   open = "Interface de configuration"
+
+  [key.freecam.outlinePlayer]
+  toggle = "Activer/désactiver le lecteur de contour"

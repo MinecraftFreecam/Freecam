@@ -12,3 +12,6 @@ toggle = "Alternar Freecam"
 
   [key.freecam.config]
   open = "Interface de definições"
+
+  [key.freecam.outlinePlayer]
+  toggle = "Ativar/desativar jogador de contorno"

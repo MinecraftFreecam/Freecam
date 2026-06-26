@@ -12,3 +12,6 @@ toggle = "Attiva/Disattiva la freecam"
 
   [key.freecam.config]
   open = "GUI di Configurazione"
+
+  [key.freecam.outlinePlayer]
+  toggle = "Attiva/Disattiva Riproduttore Contorno"

@@ -93,6 +93,11 @@ tooltip = "Das Aussehen von Freecam."
   label = "Unterwassernebel anzeige"
   tooltip = "Ob du Nebel Unterwasser, in Lava oder in Pulverschnee siehst."
 
+  [freecam.config.visual.outlinePlayer]
+  label = "Kontur-Spieler"
+  "tooltip[0]" = "Wenden Sie beim Aktivieren von Freecam eine Umrisslinie auf Ihren Spieler zu."
+  "tooltip[1]" = 'Die Umrisslinie kann auch mit der Tastatur "Spieler Outline umschalten" gesteuert werden.'
+
 [freecam.config.utility]
 label = "Utility Optionen"
 tooltip = "Freecam Verbesserungen."

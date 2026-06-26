@@ -93,6 +93,11 @@ tooltip = "Freecamの外観。"
   label = "水没霧を表示"
   tooltip = "水中、溶岩、または粉雪の中で霧がかかっているのが見えるかどうか。"
 
+  [freecam.config.visual.outlinePlayer]
+  label = "アウトラインプレイヤー"
+  "tooltip[0]" = "フリーカムを有効にすると、プレイヤーにアウトラインを適用します。"
+  "tooltip[1]" = "アウトラインは、「トグルプレーヤーアウトライン」キーバインドを使用して制御することもできます。"
+
 [freecam.config.utility]
 label = "ユーティリティオプション"
 tooltip = "Freecamの機能強化。"

@@ -93,6 +93,11 @@ tooltip = "L'apparence de la caméra libre."
   label = "Afficher le brouillard de submersion"
   tooltip = "Si vous pouvez voir le brouillard sous la lave, l'eau, etc. en caméra libre."
 
+  [freecam.config.visual.outlinePlayer]
+  label = "Lecteur de contour"
+  "tooltip[0]" = "Appliquez un contour à votre joueur en activant Freecam."
+  "tooltip[1]" = 'Le contour peut également être contrôlé en utilisant la touche "Toggle Player Outline".'
+
 [freecam.config.utility]
 label = "Utilitaires"
 tooltip = "Utilitaires pour la caméra libre."

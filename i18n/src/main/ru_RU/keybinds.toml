@@ -12,3 +12,6 @@ toggle = "Переключить Freecam"
 
   [key.freecam.config]
   open = "Настроить интерфейс"
+
+  [key.freecam.outlinePlayer]
+  toggle = "Вкл/Выкл Игрока"
