@@ -28,6 +28,25 @@ modmenu.curseforge_slug = "modmenu"
 modmenu.modrinth_id = "mOgUt4GM"
 
 
+["26.3"]
+reqs.mc = "26.3.x-0"
+
+deps.cloth = "26.2.155"
+reqs.cloth = "~26.3"
+deps.modmenu = "20.0.1"
+
+deps.fabric_api = "0.153.1+26.3"
+reqs.fabric_loader = ">=0.18.0"
+
+deps.neoforge_pr = ""
+deps.neoforge_version = "26.3.0.0-alpha"
+reqs.neoforge_version = ">=26.3.0-0"
+reqs.neoforge_loader = ">=1"
+
+# We're not building against cloth-config yet
+relationship.cloth-config.type = "none"
+
+
 ["26.2"]
 reqs.mc = "~26.2"
 

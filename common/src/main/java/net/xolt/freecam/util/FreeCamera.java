@@ -18,8 +18,6 @@ import net.xolt.freecam.config.model.Perspective;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
-//? if >=26.3-0
-//import net.minecraft.world.entity.MoveSimulationType;
 //~ if >=1.21.11 Input -> ClientInput
 import net.minecraft.client.player.ClientInput;
 //? if >=1.20.6
