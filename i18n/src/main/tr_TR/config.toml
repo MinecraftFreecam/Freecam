@@ -93,6 +93,11 @@ tooltip = "Freecam görünümü."
   label = "Batık Sisi Göster"
   tooltip = "Su altında, lav altında ve ya tozlazmış kar içinde sis görmenizi sağlar."
 
+  [freecam.config.visual.outlinePlayer]
+  label = "Outline Player"
+  "tooltip[0]" = "Apply an outline to your player when activating Freecam."
+  "tooltip[1]" = 'The outline can also be controlled using the "Toggle Player Outline" keybind.'
+
 [freecam.config.utility]
 label = "İşe Yarar Ayarlar"
 tooltip = "Freecam geliştirmeleri."

@@ -12,3 +12,6 @@ toggle = "Freecam Umschalten"
 
   [key.freecam.config]
   open = "Konfigurationsmenü"
+
+  [key.freecam.outlinePlayer]
+  toggle = "Kontur-Player umschalten"

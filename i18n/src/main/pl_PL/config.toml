@@ -93,6 +93,11 @@ tooltip = "Wygląd wolnej kamery."
   label = "Pokaż mgłę przy zanurzeniu"
   tooltip = "Czy widzisz nakładkę mgły pod wodą, w lawie czy na śniegu."
 
+  [freecam.config.visual.outlinePlayer]
+  label = "Gracz obrysu"
+  "tooltip[0]" = "Zastosuj obrys do swojego gracza podczas aktywacji Freecam."
+  "tooltip[1]" = 'Obrys może być również kontrolowany za pomocą klawisza "Przełącz obrys gracza".'
+
 [freecam.config.utility]
 label = "Opcje użytkowe"
 tooltip = "Rozszerzenia wolnej kamery."

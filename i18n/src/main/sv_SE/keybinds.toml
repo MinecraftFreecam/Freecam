@@ -12,3 +12,6 @@ toggle = "Växla till Freecam"
 
   [key.freecam.config]
   open = "Konfigurationsgränssnitt"
+
+  [key.freecam.outlinePlayer]
+  toggle = "Växla konturspelare"

@@ -12,3 +12,6 @@ toggle = "Freecamの切り替え"
 
   [key.freecam.config]
   open = "コンフィグ GUI"
+
+  [key.freecam.outlinePlayer]
+  toggle = "アウトラインプレイヤーの切り替え"

@@ -93,6 +93,11 @@ tooltip = "Lo sguardo della Camera libera."
   label = "Mostra Nebbia da Immersione"
   tooltip = "Se vedi una copertura di nebbia sott'acqua, nella lava e nella neve farinosa."
 
+  [freecam.config.visual.outlinePlayer]
+  label = "Contorno Giocatore"
+  "tooltip[0]" = "Applica un profilo al tuo giocatore quando attivi Freecam."
+  "tooltip[1]" = 'Il contorno può essere controllato anche usando il tastierino "Toggle Player Outline".'
+
 [freecam.config.utility]
 label = "Opzioni di Utilità"
 tooltip = "Miglioramenti della Camera libera."

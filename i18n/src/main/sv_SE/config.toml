@@ -93,6 +93,11 @@ tooltip = "Utseendet på freecam."
   label = "Visa nedsänkt Dimma"
   tooltip = "Oavsett om du ser en dimma ligga under vattnet, i lava eller pulveriserad snö."
 
+  [freecam.config.visual.outlinePlayer]
+  label = "Konturera spelare"
+  "tooltip[0]" = "Applicera en kontur till din spelare när du aktiverar Freecam."
+  "tooltip[1]" = 'Konturen kan också styras med knappsatsen "Toggle Player Outline".'
+
 [freecam.config.utility]
 label = "Alternativ för verktyg"
 tooltip = "Freecam förbättringar."

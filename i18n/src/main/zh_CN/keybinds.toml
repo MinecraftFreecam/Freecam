@@ -12,3 +12,6 @@ toggle = "切换自由视角(Freecam)"
 
   [key.freecam.config]
   open = "打开GUI"
+
+  [key.freecam.outlinePlayer]
+  toggle = "切换大纲播放器"

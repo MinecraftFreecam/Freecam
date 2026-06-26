@@ -12,3 +12,6 @@ toggle = "استفاده از فری کم"
 
   [key.freecam.config]
   open = "تنظیم رابط کاربری"
+
+  [key.freecam.outlinePlayer]
+  toggle = "Toggle Outline Player"

@@ -12,3 +12,6 @@ toggle = "切換 Freecam"
 
   [key.freecam.config]
   open = "設定 GUI"
+
+  [key.freecam.outlinePlayer]
+  toggle = "Toggle Outline Player"

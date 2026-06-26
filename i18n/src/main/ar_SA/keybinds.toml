@@ -12,3 +12,6 @@ toggle = "تبديل فري كام"
 
   [key.freecam.config]
   open = "قائمة الضبط"
+
+  [key.freecam.outlinePlayer]
+  toggle = "Toggle Outline Player"

@@ -93,6 +93,11 @@ tooltip = "自由视角的样子。"
   label = "显示淹没雾"
   tooltip = "您是否看到雾覆盖在水下、熔岩和粉状雪中。"
 
+  [freecam.config.visual.outlinePlayer]
+  label = "轮廓玩家"
+  "tooltip[0]" = "在激活Freecam时应用轮廓。"
+  "tooltip[1]" = '还可以使用"切换玩家轮廓"键盘来控制轮廓。'
+
 [freecam.config.utility]
 label = "实用工具选项"
 tooltip = "自由视角增强功能。"

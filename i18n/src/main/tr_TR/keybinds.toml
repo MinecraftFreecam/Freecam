@@ -12,3 +12,6 @@ toggle = "Freecam Aç/Kapa"
 
   [key.freecam.config]
   open = "Ayar Arayüzü"
+
+  [key.freecam.outlinePlayer]
+  toggle = "Toggle Outline Player"
