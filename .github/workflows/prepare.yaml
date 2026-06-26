@@ -88,10 +88,13 @@ jobs:
             package-lock.json
           sparse-checkout-cone-mode: false
 
-      # Checkout metadata separately, as we want the untrusted files on pr_target runs
+      # Checkout PR metadata separately to support pull_request_target.
+      # Trusted CI tooling will deserialize these files as arbitrary user input.
       - name: Checkout PR metadata
         uses: actions/checkout@v7
         with:
+          # We intentionally fetch untrusted user input here.
+          allow-unsafe-pr-checkout: true
           ref: >
             ${{
               github.event.pull_request.head.sha ||
