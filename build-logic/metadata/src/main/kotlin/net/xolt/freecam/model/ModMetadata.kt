@@ -55,18 +55,23 @@ private class ProjectModMetadata(
             // Group by relationship name
             .groupBy({ it.first }, { it.second })
             // Construct a Relationship object
-            .map { (name, fields) ->
+            .mapNotNull { (name, fields) ->
                 val props = fields.toMap()
+                val type = props["type"]
+                    ?.uppercase()
+                    ?.also { if (it == "NONE") return@mapNotNull null }
+                    ?.let(Relationship.Type::valueOf)
+                    ?: Relationship.Type.OPTIONAL
+
                 val unknown = props.keys - setOf("curseforge_slug", "modrinth_id", "type")
                 require(unknown.isEmpty()) {
                     "${project.path} unknown relationship fields: " + unknown.joinToString(" ") { "relationship.$name.$it" }
                 }
+
                 Relationship(
+                    type = type,
                     curseforgeSlug = props["curseforge_slug"]!!,
                     modrinthId = props["modrinth_id"]!!,
-                    type = props["type"]
-                        ?.let { Relationship.Type.valueOf(it.uppercase()) }
-                        ?: Relationship.Type.OPTIONAL
                 )
             }
             .toList()
