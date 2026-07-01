@@ -1,3 +1,5 @@
+import net.fabricmc.loom.task.FabricModJsonV1Task
+
 plugins {
     alias(libs.plugins.fletchingtable.fabric)
     id("freecam.loom-adapter")
@@ -14,11 +16,45 @@ dependencies {
     modCompileOnly("me.shedaniel.cloth:cloth-config-fabric:${meta.deps["cloth"]}")
 }
 
-tasks.jar {
-    // `GAMELIBRARY` is required to access Minecraft classes from ModLauncher 9 (1.17)
-    val modType = if (sc.current.parsed >= "1.17") "GAMELIBRARY" else "LIBRARY"
-    manifest.attributes(
-        "FMLModType" to modType,
-        "Automatic-Module-Name" to "freecam.clothconfig",
-    )
+tasks {
+    // A fabric.mod.json file is required for fabricloader to know the library's `version`
+    val modJsonTask = register<FabricModJsonV1Task>("generateModJson") {
+        description = "Generate fabric.mod.json"
+
+        outputFile = layout.buildDirectory.dir("generated-mod-json").map {
+            it.file("fabric.mod.json")
+        }
+
+        json {
+            modId = "${meta.id}-cloth-config"
+            name = "${meta.name} Cloth Config GUI"
+            version = meta.version
+            description = "Provides a ${meta.name} Config GUI when Cloth Config is installed."
+            licenses = listOf(meta.license)
+
+            client()
+            // Currently bundled with Freecam, no need to specify a dependency
+            // recommends("cloth-config", meta.reqs["cloth"].toString())
+
+            customData = mapOf(
+                "modmenu" to mapOf(
+                    "parent" to meta.id,
+                    "badges" to listOf("library"),
+                ),
+            )
+        }
+    }
+
+    processResources {
+        from(modJsonTask)
+    }
+
+    jar {
+        // `GAMELIBRARY` is required to access Minecraft classes from ModLauncher 9 (1.17)
+        val modType = if (sc.current.parsed >= "1.17") "GAMELIBRARY" else "LIBRARY"
+        manifest.attributes(
+            "FMLModType" to modType,
+            "Automatic-Module-Name" to "${meta.id}.clothconfig",
+        )
+    }
 }
