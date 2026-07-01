@@ -21,6 +21,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Fixed
 
+- Resolved Fabric Loader "invalid version" warnings related to our Cloth Config implementation ([486](https://github.com/MinecraftFreecam/Freecam/issues/486), [534](https://github.com/MinecraftFreecam/Freecam/pull/534))
+
 ## [1.4.1-beta.1] - 2026-06-26
 
 1.4.1 adds initial support for Minecraft 26.2. Feedback and bug reports are greatly appreciated!
