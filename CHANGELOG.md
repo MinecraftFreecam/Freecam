@@ -19,6 +19,9 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Removed
 
+- Dropped dependency on Fabric API ([537](https://github.com/MinecraftFreecam/Freecam/pull/537))
+  - The required modules are now distributed with Freecam.
+
 ### Fixed
 
 - Resolved Fabric Loader "invalid version" warnings related to our Cloth Config implementation ([486](https://github.com/MinecraftFreecam/Freecam/issues/486), [534](https://github.com/MinecraftFreecam/Freecam/pull/534))

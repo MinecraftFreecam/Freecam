@@ -23,9 +23,6 @@ cloth-config.modrinth_id = "9s6osm5g"
 
 
 [fabric.relationship]
-fabric-api.type = "required"
-fabric-api.curseforge_slug = "fabric-api"
-fabric-api.modrinth_id = "P7dR8mSH"
 modmenu.type = "optional"
 modmenu.curseforge_slug = "modmenu"
 modmenu.modrinth_id = "mOgUt4GM"
