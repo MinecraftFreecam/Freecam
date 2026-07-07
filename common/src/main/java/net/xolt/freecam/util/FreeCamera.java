@@ -16,6 +16,10 @@ import net.minecraft.world.phys.Vec2;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.config.model.Perspective;
 import org.jetbrains.annotations.ApiStatus;
+import org.jetbrains.annotations.NotNull;
+
+//? if >=26.3-0
+//import net.minecraft.world.entity.MoveSimulationType;
 //~ if >=1.21.11 Input -> ClientInput
 import net.minecraft.client.player.ClientInput;
 //? if >=1.20.6
@@ -57,7 +61,7 @@ public class FreeCamera extends AbstractClientPlayer {
     }
 
     @Override
-    public void copyPosition(Entity entity) {
+    public void copyPosition(@NotNull Entity entity) {
         applyPosition(new FreecamPosition(entity));
     }
 
@@ -144,7 +148,7 @@ public class FreeCamera extends AbstractClientPlayer {
 
     // Prevents fall damage sound when FreeCamera touches ground with noClip disabled.
     @Override
-    protected void checkFallDamage(double heightDifference, boolean onGround, BlockState landedState, BlockPos landedPosition) {
+    protected void checkFallDamage(double heightDifference, boolean onGround, @NotNull BlockState landedState, @NotNull BlockPos landedPosition) {
     }
 
     // Needed for hand swings to be shown in freecam since the player is replaced by FreeCamera in HeldItemRenderer.renderItem()
@@ -180,25 +184,25 @@ public class FreeCamera extends AbstractClientPlayer {
     // Makes night vision apply to FreeCamera when Iris is enabled.
     @Override
     //~ if >=1.20.6 'MobEffect effect' -> 'Holder<MobEffect> effect'
-    public MobEffectInstance getEffect(Holder<MobEffect> effect) {
+    public MobEffectInstance getEffect(@NotNull Holder<MobEffect> effect) {
         return MC.player.getEffect(effect);
     }
 
     // Prevents pistons from moving FreeCamera when collision.ignoreAll is enabled.
     @Override
-    public PushReaction getPistonPushReaction() {
+    public @NotNull PushReaction getPistonPushReaction() {
         return ModConfig.get().ignoreAllCollision() ? PushReaction.IGNORE : PushReaction.NORMAL;
     }
 
     // Prevents collision with solid entities (shulkers, boats)
     @Override
-    public boolean canCollideWith(Entity other) {
+    public boolean canCollideWith(@NotNull Entity other) {
         return false;
     }
 
     // Ensures that the FreeCamera is always in the swimming pose.
     @Override
-    public void setPose(Pose pose) {
+    public void setPose(@NotNull Pose pose) {
         super.setPose(Pose.SWIMMING);
     }
 
