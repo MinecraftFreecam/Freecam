@@ -35,7 +35,7 @@ deps.cloth = "26.2.155"
 reqs.cloth = "~26.3"
 deps.modmenu = "20.0.1"
 
-deps.fabric_api = "0.153.1+26.3"
+deps.fabric_api = "0.154.2+26.3"
 reqs.fabric_loader = ">=0.18.0"
 
 deps.neoforge_pr = ""
