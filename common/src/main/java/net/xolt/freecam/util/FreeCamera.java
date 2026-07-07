@@ -18,6 +18,8 @@ import net.xolt.freecam.config.model.Perspective;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 
+//? if >=26.3-0
+import net.minecraft.world.entity.MoveSimulationType;
 //~ if >=1.21.11 Input -> ClientInput
 import net.minecraft.client.player.ClientInput;
 //? if >=1.20.6
@@ -250,9 +252,14 @@ public class FreeCamera extends AbstractClientPlayer {
         return true;
     }
 
-    //? if >=1.21.11 {
-    //In LivingEntity's aiStep(), this method decides whether to call travel(), enabling movement ticking
+    // Enabling movement ticking
+    //? if >=26.3-0 {
     @Override
+    public @NotNull MoveSimulationType getMoveSimulationType() {
+        return MoveSimulationType.SERVER_AND_CLIENT;
+    }
+    //? } else if >=1.21.11 {
+    /*@Override
     public boolean canSimulateMovement() {
         return true;
     }
@@ -264,7 +271,7 @@ public class FreeCamera extends AbstractClientPlayer {
             vec2 = vec2.scale(0.98F);
         applyInputHelper(vec2, this.input.keyPresses.jump());
     }
-    //? } else {
+    *///? } else {
     /*@Override
     protected void serverAiStep() {
         Vec2 moveVector = new Vec2(this.input.keyPresses.left()Impulse, this.input.forwardImpulse);
