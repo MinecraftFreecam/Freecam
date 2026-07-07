@@ -14,4 +14,4 @@ toggle = "استفاده از فری کم"
   open = "تنظیم رابط کاربری"
 
   [key.freecam.outlinePlayer]
-  toggle = "Toggle Outline Player"
+  toggle = "پخش‌کننده طرح کلی را تغییر دهید"

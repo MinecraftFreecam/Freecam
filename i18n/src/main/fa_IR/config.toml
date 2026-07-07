@@ -2,7 +2,7 @@
 title = "تنظیمات فری کم"
 
   [freecam.config.gui.fallback]
-  title = "Config GUI not available."
+  title = "رابط کاربری گرافیکی پیکربندی در دسترس نیست."
 
 [freecam.config.controls]
 label = "کلید های میانبر"
@@ -19,7 +19,7 @@ tooltip = "طوری که دوربین حرکت میکند."
   CREATIVE = "حالت خلاق"
 
   [freecam.config.movement.speed]
-  value = "Value: %01.2f"
+  value = "مقدار: %01.2f"
 
     [freecam.config.movement.speed.horizontal]
     label = "سرعت افقی"
@@ -94,9 +94,9 @@ tooltip = "ظاهر فری کم."
   tooltip = "اینکه شما یک پوششی از مه در زیر آب، گدازه یا برف پودر شده ببینید."
 
   [freecam.config.visual.outlinePlayer]
-  label = "Outline Player"
-  "tooltip[0]" = "Apply an outline to your player when activating Freecam."
-  "tooltip[1]" = 'The outline can also be controlled using the "Toggle Player Outline" keybind.'
+  label = "پخش کننده طرح کلی"
+  "tooltip[0]" = "هنگام فعال کردن فری کم، یک طرح کلی به پخش‌کننده خود اعمال کنید."
+  "tooltip[1]" = 'همچنین می‌توان طرح کلی را با استفاده از کلید ترکیبی "Toggle Player Outline" کنترل کرد.'
 
 [freecam.config.utility]
 label = "تنظیمات کاربردی"
