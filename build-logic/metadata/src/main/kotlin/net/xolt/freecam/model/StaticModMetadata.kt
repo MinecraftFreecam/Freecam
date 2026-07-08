@@ -3,8 +3,10 @@ package net.xolt.freecam.model
 import dev.eav.tomlkt.Toml
 import dev.eav.tomlkt.TomlNativeReader
 import dev.eav.tomlkt.decodeFromReader
+import io.github.z4kn4fein.semver.Version
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
+import kotlinx.serialization.Transient
 import java.io.File
 
 internal fun File.loadStaticMetadata(): ModMetadataToml {
@@ -24,7 +26,12 @@ internal data class ModMetadataToml(
     override val id: String,
     override val name: String,
     override val group: String,
-    override val version: String,
+    @SerialName("version")
+    override val releaseVersion: Version,
+    @Transient
+    override val version: Version = releaseVersion,
+    @Transient
+    override val buildDir: String = releaseVersion.toString(),
     override val authors: List<String>,
     override val license: String,
     @SerialName("homepage")
@@ -48,6 +55,6 @@ internal data class ModMetadataToml(
 ) : StaticModMetadata {
 
     override val releaseType: ReleaseType by lazy {
-        ReleaseType.fromVersion(version.removeSuffix("-SNAPSHOT"))
+        ReleaseType.fromVersion(releaseVersion.toString())
     }
 }

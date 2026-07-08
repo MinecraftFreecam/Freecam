@@ -1,5 +1,6 @@
 package net.xolt.freecam.model
 
+import io.github.z4kn4fein.semver.Version
 import io.github.z4kn4fein.semver.constraints.Constraint
 
 interface ModMetadata : StaticModMetadata {
@@ -18,7 +19,9 @@ interface StaticModMetadata {
     val id: String
     val name: String
     val group: String
-    val version: String
+    val releaseVersion: Version
+    val version: Version
+    val buildDir: String
     val releaseType: ReleaseType
     val authors: List<String>
     val license: String

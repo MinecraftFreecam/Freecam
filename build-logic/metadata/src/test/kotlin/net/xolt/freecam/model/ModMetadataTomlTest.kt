@@ -1,5 +1,6 @@
 package net.xolt.freecam.model
 
+import io.github.z4kn4fein.semver.Version
 import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
@@ -30,11 +31,28 @@ class ModMetadataTomlTest {
         }
     }
 
+    @Test
+    fun `version defaults to releaseVersion upon instantiation`() {
+        val rawVersion = "1.0.0-beta.1"
+        val meta = metadata(rawVersion)
+
+        meta.version shouldBe Version.parse(rawVersion)
+    }
+
+    @Test
+    fun `buildDir defaults to stringified releaseVersion`() {
+        val rawVersion = "1.4.0-rc.2+build.123"
+        val meta = metadata(rawVersion)
+
+        // Ensures buildDir matches the normalized semver string representation
+        meta.buildDir shouldBe Version.parse(rawVersion).toString()
+    }
+
     private fun metadata(version: String) = ModMetadataToml(
         id = "",
         name = "",
         group = "",
-        version = version,
+        releaseVersion = Version.parse(version, strict = false),
         authors = emptyList(),
         license = "",
         homepageUrl = url(),
