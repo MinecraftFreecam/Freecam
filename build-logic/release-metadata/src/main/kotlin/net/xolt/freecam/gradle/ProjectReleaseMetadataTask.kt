@@ -57,7 +57,7 @@ abstract class ProjectReleaseMetadataTask : DefaultTask() {
         displayName.convention(minecraft.flatMap { mc ->
             loader.flatMap { loader ->
                 meta.map { meta ->
-                    "${meta.version} for MC $mc ($loader)"
+                    "${meta.releaseVersion} for MC $mc ($loader)"
                 }
             }
         })

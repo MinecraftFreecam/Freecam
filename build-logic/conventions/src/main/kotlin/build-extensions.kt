@@ -35,7 +35,7 @@ val Project.commonExpansions: Map<String, String>
         "mixinCompatLevel" to "JAVA_${meta.javaVersion}",
         "modId" to meta.id,
         "modName" to meta.name,
-        "modVersion" to meta.version,
+        "modVersion" to meta.version.toString(),
         "modGroup" to meta.group,
         "modAuthors" to meta.authors.joinToString(", "),
         "modDescription" to meta.description,

@@ -92,7 +92,7 @@ loom {
 tasks.register<Copy>("buildAndCollect") {
     group = "build"
     from(loomAdapter.modJar.map { it.archiveFile })
-    into(rootProject.layout.buildDirectory.file("libs/${meta.version}"))
+    into(rootProject.layout.buildDirectory.file("libs/${meta.buildDir}"))
     dependsOn(tasks.build)
 }
 
@@ -105,7 +105,7 @@ tasks {
         json {
             modId = meta.id
             name = meta.name
-            version = meta.version
+            version = meta.version.toString()
             description = meta.description
             licenses = listOf(meta.license)
             meta.authors.forEach(::author)

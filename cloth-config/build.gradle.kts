@@ -28,7 +28,7 @@ tasks {
         json {
             modId = "${meta.id}-cloth-config"
             name = "${meta.name} Cloth Config GUI"
-            version = meta.version
+            version = meta.version.toString()
             description = "Provides a ${meta.name} Config GUI when Cloth Config is installed."
             licenses = listOf(meta.license)
 
