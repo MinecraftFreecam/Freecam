@@ -1,5 +1,6 @@
 [versions]
 kotlin = "2.3.0"
+shadow = "9.5.1"
 freecam-publisher = "v0.0.2"
 stonecutter = "0.9.3"
 fabric-loom = "1.17-SNAPSHOT"
@@ -33,6 +34,7 @@ mockk = { group = "io.mockk", name = "mockk", version.ref = "mockk" }
 
 [plugins]
 kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 stonecutter = { id = "dev.kikugie.stonecutter", version.ref = "stonecutter" }
 fabric-loom = { id = "net.fabricmc.fabric-loom", version.ref = "fabric-loom" }
 fabric-loom-remap = { id = "net.fabricmc.fabric-loom-remap", version.ref = "fabric-loom" }

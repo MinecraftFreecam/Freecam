@@ -6,6 +6,7 @@ import net.xolt.freecam.gradle.ForgeModsTomlTask
 plugins {
     alias(libs.plugins.moddev.legacy)
     alias(libs.plugins.fletchingtable)
+    alias(libs.plugins.shadow)
     id("freecam.loaders")
     id("freecam.atremapper")
     id("freecam.fml")
@@ -53,8 +54,12 @@ legacyForge {
     }
 }
 
-// Include bundled dependencies in `jar`.
-// Not suitable for third-party libs — consider using the gradleup shadow plugin.
+/**
+ * Include a dependency in the `shadowJar` task.
+ * For third-party libraries, use [include] instead to take advantage of Forge's JarJar system.
+ *
+ * We avoid using the default `shadow` configuration, because it is pre-configured to inherit from other configurations.
+ */
 val bundle by configurations.creating {
     isCanBeResolved = true
     isCanBeConsumed = false
@@ -121,10 +126,8 @@ legacyForge {
     }
 }
 
-mixin {
-    add(sourceSets.main.get(), refmapName)
-    mixinConfigNames.forEach(::config)
-}
+val mixinRefmap: Provider<RegularFile> = mixin.add(sourceSets.main.get(), refmapName)
+mixinConfigNames.forEach(mixin::config)
 
 sourceSets.main {
     resources.srcDir("src/generated/resources")
@@ -132,9 +135,13 @@ sourceSets.main {
 
 tasks.register<Copy>("buildAndCollect") {
     group = "build"
-    from(tasks.named<Jar>("reobfJar").map { it.archiveFile })
+    from(tasks.named<Jar>("reobfShadowJar").map { it.archiveFile })
     into(rootProject.layout.buildDirectory.file("libs/${meta.buildDir}"))
     dependsOn("build")
+}
+
+tasks.generateReleaseMetadata {
+    artifactFileName = tasks.named<Jar>("reobfShadowJar").flatMap { it.archiveFileName }
 }
 
 val generateModsTomlTask = tasks.register<ForgeModsTomlTask>("generateModsToml") {
@@ -203,21 +210,40 @@ tasks.processResources {
 }
 
 tasks.jar {
-    from(provider { bundle.map(::zipTree) }) {
-        exclude(
-            "${meta.id}.LICENSE",
-            "META-INF/mods.toml",
-            "META-INF/*.MF",
-            "META-INF/*.SF",
-            "META-INF/*.DSA",
-            "META-INF/*.RSA",
-        )
-    }
+    archiveClassifier = "minimal"
 
     manifest.attributes(
         "MixinConfigs" to mixinConfigNames.joinToString(","),
     )
 
-    duplicatesStrategy = DuplicatesStrategy.FAIL
     finalizedBy("reobfJar")
+}
+
+tasks.shadowJar {
+    duplicatesStrategy = DuplicatesStrategy.FAIL
+    failOnDuplicateEntries = true
+    archiveClassifier = null
+
+    configurations = setOf(bundle)
+    from(mixinRefmap)
+    from(tasks.jarJar)
+
+    exclude("fabric.mod.json")
+
+    finalizedBy("reobfShadowJar")
+}
+
+obfuscation {
+    reobfuscate(tasks.shadowJar, sourceSets.main.get())
+}
+
+configurations {
+    apiElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(tasks.shadowJar)
+    }
+    runtimeElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(tasks.shadowJar)
+    }
 }
