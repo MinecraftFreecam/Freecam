@@ -40,6 +40,7 @@ include(
     "loom-adapter",
     "fml-support",
     "metadata",
+    "shadow",
     "release-metadata",
     "settings",
 )
