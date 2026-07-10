@@ -108,7 +108,7 @@ tasks.register<Copy>("buildAndCollect") {
 
 tasks {
     val generateModJson by registering(FabricModJsonV1Task::class) {
-        outputFile = layout.buildDirectory.dir("generated-mod-json").map {
+        outputFile = layout.buildDirectory.dir("generated/mod-json").map {
             it.file("fabric.mod.json")
         }
 
