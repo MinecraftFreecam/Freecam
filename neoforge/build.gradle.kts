@@ -1,10 +1,18 @@
 import io.github.z4kn4fein.semver.constraints.toMavenFormat
+import net.xolt.freecam.gradle.NeoForgeModsTomlTask
+import net.xolt.freecam.model.FmlDependencyType
 
 plugins {
     alias(libs.plugins.moddev)
     alias(libs.plugins.fletchingtable.neoforge)
     id("freecam.loaders")
+    id("freecam.fml")
 }
+
+val mixinConfigNames = listOf(
+    "freecam-common.mixins.json",
+    "freecam-neoforge.mixins.json",
+)
 
 fletchingTable {
     accessConverter.register(sourceSets.main) {
@@ -78,18 +86,53 @@ tasks.named("createMinecraftArtifacts") {
     dependsOn(tasks.processResources)
 }
 
+val generateModsTomlTask = tasks.register<NeoForgeModsTomlTask>("generateModsToml") {
+    description = "Generate the neoforge.mods.toml file"
+
+    toml {
+        loaderVersion = meta.reqs["neoforge_loader"]?.toMavenFormat()
+        issueTrackerURL = meta.issuesUrl.toString()
+        license = meta.license
+
+        mod(meta.id) {
+            displayName = meta.name
+            version = meta.version.toString()
+            description = meta.description
+            authors = meta.authors.joinToString(", ")
+            displayURL = meta.homepageUrl.toString()
+            logoFile = "icon.png"
+            logoBlur = true
+        }
+
+        dependency(meta.id, "minecraft") {
+            versionRange = meta.reqs["mc"]?.toMavenFormat()
+            ordering = "NONE"
+            side = "CLIENT"
+        }
+        dependency(meta.id, "neoforge") {
+            versionRange = meta.reqs["neoforge_version"]?.toMavenFormat()
+            ordering = "NONE"
+            side = "CLIENT"
+        }
+        dependency(meta.id, "cloth_config") {
+            versionRange = meta.reqs["cloth"]?.toMavenFormat()
+            type = FmlDependencyType.OPTIONAL
+            ordering = "NONE"
+            side = "CLIENT"
+        }
+
+        mixinConfigNames.forEach(::mixin)
+    }
+}
+
 tasks.processResources {
-    filesMatching(listOf("META-INF/mods.toml", "META-INF/neoforge.mods.toml")) {
-        expand(commonExpansions)
+    from(generateModsTomlTask) {
+        into("META-INF")
     }
 
     filesMatching("freecam-neoforge.mixins.json") {
-        expand(commonExpansions)
+        expand("mixinCompatLevel" to "JAVA_${meta.javaVersion}")
     }
 
-    filesMatching("pack.mcmeta") {
-        expand(commonExpansions)
-    }
-
-    inputs.properties(commonExpansions)
+    inputs.properties("java_version" to meta.javaVersion)
 }

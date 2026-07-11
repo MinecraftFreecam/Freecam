@@ -1,12 +1,14 @@
 import io.github.z4kn4fein.semver.constraints.toMavenFormat
 import kotlinx.serialization.json.*
 import net.neoforged.moddevgradle.legacyforge.internal.MinecraftMappings
+import net.xolt.freecam.gradle.ForgeModsTomlTask
 
 plugins {
     alias(libs.plugins.moddev.legacy)
     alias(libs.plugins.fletchingtable)
     id("freecam.loaders")
     id("freecam.atremapper")
+    id("freecam.fml")
 }
 
 val json = Json { prettyPrint = true }
@@ -135,22 +137,57 @@ tasks.register<Copy>("buildAndCollect") {
     dependsOn("build")
 }
 
+val generateModsTomlTask = tasks.register<ForgeModsTomlTask>("generateModsToml") {
+    description = "Generate the mods.toml file"
+
+    toml {
+        loaderVersion = meta.reqs["forge_loader"]?.toMavenFormat()
+        issueTrackerURL = meta.issuesUrl.toString()
+        license = meta.license
+
+        mod(meta.id) {
+            displayName = meta.name
+            version = meta.version.toString()
+            description = meta.description
+            authors = meta.authors.joinToString(", ")
+            displayURL = meta.homepageUrl.toString()
+            logoFile = "icon.png"
+            logoBlur = true
+        }
+
+        dependency(meta.id, "minecraft") {
+            versionRange = meta.reqs["mc"]?.toMavenFormat()
+            ordering = "NONE"
+            side = "CLIENT"
+        }
+        dependency(meta.id, "forge") {
+            versionRange = meta.reqs["forge_version"]?.toMavenFormat()
+            ordering = "NONE"
+            side = "CLIENT"
+        }
+        dependency(meta.id, "cloth_config") {
+            versionRange = meta.reqs["cloth"]?.toMavenFormat()
+            mandatory = false
+            ordering = "NONE"
+            side = "CLIENT"
+        }
+    }
+}
+
 tasks.processResources {
-    filesMatching(listOf("META-INF/mods.toml", "META-INF/forge.mods.toml")) {
-        expand(commonExpansions)
+    from(generateModsTomlTask) {
+        into("META-INF")
     }
 
     filesMatching("freecam-forge.mixins.json") {
-        expand(commonExpansions)
+        expand("mixinCompatLevel" to "JAVA_${meta.javaVersion}")
     }
 
-    filesMatching("pack.mcmeta") {
-        expand(commonExpansions)
-    }
-
-    inputs.properties(commonExpansions)
-    inputs.property("mixinConfigs", mixinConfigNames)
-    inputs.property("mixinRefmap", refmapName)
+    inputs.properties(
+        "java_version" to meta.javaVersion,
+        "mixinConfigs" to mixinConfigNames,
+        "mixinRefmap" to refmapName,
+    )
 
     doLast {
         // Add the refmap to mixin config files

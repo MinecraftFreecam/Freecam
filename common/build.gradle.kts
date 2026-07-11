@@ -49,8 +49,10 @@ tasks.processResources {
     }
 
     filesMatching("freecam-common.mixins.json5") {
-        expand(commonExpansions)
+        expand("mixinCompatLevel" to "JAVA_${meta.javaVersion}")
     }
+
+    inputs.properties("java_version" to meta.javaVersion)
 
     duplicatesStrategy = DuplicatesStrategy.FAIL
 }

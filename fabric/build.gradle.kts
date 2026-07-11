@@ -161,10 +161,10 @@ tasks {
         from(generateModJson)
 
         filesMatching("freecam-fabric.mixins.json5") {
-            expand(commonExpansions)
+            expand("mixinCompatLevel" to "JAVA_${meta.javaVersion}")
         }
 
-        inputs.properties(commonExpansions)
+        inputs.properties("java_version" to meta.javaVersion)
     }
 
     generateReleaseMetadata {
