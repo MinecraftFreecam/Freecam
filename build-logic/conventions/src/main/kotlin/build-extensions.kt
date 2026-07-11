@@ -1,7 +1,6 @@
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
 import dev.kikugie.stonecutter.controller.StonecutterControllerExtension
 import dev.kikugie.stonecutter.data.tree.ProjectNode
-import io.github.z4kn4fein.semver.constraints.toMavenFormat
 import net.xolt.freecam.model.ModMetadata
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.getByType
@@ -29,31 +28,3 @@ internal val Project.stonecutterController get() = extensions.getByType<Stonecut
 val Project.commonNode: ProjectNode get() = requireNotNull(stonecutter.node.sibling("common")) {
     "No common project for $project"
 }
-
-val Project.commonExpansions: Map<String, String>
-    get() = mapOf(
-        "mixinCompatLevel" to "JAVA_${meta.javaVersion}",
-        "modId" to meta.id,
-        "modName" to meta.name,
-        "modVersion" to meta.version.toString(),
-        "modGroup" to meta.group,
-        "modAuthors" to meta.authors.joinToString(", "),
-        "modDescription" to meta.description,
-        "modLicense" to meta.license,
-        "modHomepage" to meta.homepageUrl.toString(),
-        "modSource" to meta.sourceUrl.toString(),
-        "modIssues" to meta.issuesUrl.toString(),
-        "modGhReleases" to meta.githubReleasesUrl.toString(),
-        "modCurseforge" to meta.curseforgeUrl.toString(),
-        "modModrinth" to meta.modrinthUrl.toString(),
-        "modCrowdin" to meta.crowdinUrl.toString(),
-        "neoForgeVersion" to meta.deps["neoforge_version"],
-        "neoforgeLoaderReq" to meta.reqs["neoforge_loader"]?.toMavenFormat(),
-        "neoforgeReq" to meta.reqs["neoforge_version"]?.toMavenFormat(),
-        "neoforgeMcReq" to meta.reqs["mc"]?.toMavenFormat(),
-        "forgeVersion" to meta.deps["forge_version"],
-        "forgeLoaderReq" to meta.reqs["forge_loader"]?.toMavenFormat(),
-        "forgeReq" to meta.reqs["forge_version"]?.toMavenFormat(),
-        "forgeMcReq" to meta.reqs["mc"]?.toMavenFormat(),
-        "clothConfigReq" to meta.reqs["cloth"]?.toMavenFormat(),
-    ).filterValues { it?.isNotEmpty() == true }.mapValues { it.value!! }
