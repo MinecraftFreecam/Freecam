@@ -5,7 +5,7 @@ plugins {
     id("freecam.api")
     id("freecam.release-metadata")
     id("dev.kikugie.stonecutter")
-    alias(libs.plugins.shadow) apply false
+    id("freecam.shadow") apply false
 }
 
 stonecutter active "26.2"

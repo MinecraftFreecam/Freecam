@@ -17,6 +17,9 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Changed
 
+- Cloth Config is now bundled on all builds ([539](https://github.com/MinecraftFreecam/Freecam/pull/539))
+  - Previously, Cloth Config needed to be installed separately on MC 1.17.1 Forge builds
+
 ### Removed
 
 - Dropped dependency on Fabric API ([537](https://github.com/MinecraftFreecam/Freecam/pull/537))
