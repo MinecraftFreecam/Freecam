@@ -15,6 +15,11 @@ data class FmlModsToml(
     val license: String,
     val issueTrackerURL: String? = null,
 
+    /** Default for [FmlModEntry.logoFile] */
+    val logoFile: String? = null,
+    /** Default for [FmlModEntry.logoBlur] */
+    val logoBlur: Boolean? = null,
+
     val mods: List<FmlModEntry> = emptyList(),
     val dependencies: Map<String, List<FmlDependencyEntry>>? = null,
 
@@ -87,3 +92,24 @@ data class FmlMixinEntry(
  */
 @Serializable
 data class FmlAccessTransformerEntry(val file: String)
+
+
+/**
+ * Push top-level defaults down to individual [mods].
+ */
+fun FmlModsToml.pushDownDefaults(): FmlModsToml {
+    val defaultLogoFile = logoFile
+    val defaultLogoBlur = logoBlur
+    if (defaultLogoFile == null && defaultLogoBlur == null) return this
+
+    return copy(
+        logoFile = null,
+        logoBlur = null,
+        mods = mods.map { mod ->
+            mod.copy(
+                logoFile = mod.logoFile ?: defaultLogoFile,
+                logoBlur = mod.logoBlur ?: defaultLogoBlur,
+            )
+        },
+    )
+}

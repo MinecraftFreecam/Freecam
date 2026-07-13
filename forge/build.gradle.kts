@@ -1,7 +1,12 @@
+import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import com.github.jengelman.gradle.plugins.shadow.transformers.AppendingTransformer
+import com.github.jengelman.gradle.plugins.shadow.transformers.PreserveFirstFoundResourceTransformer
 import io.github.z4kn4fein.semver.constraints.toMavenFormat
 import kotlinx.serialization.json.*
 import net.neoforged.moddevgradle.legacyforge.internal.MinecraftMappings
 import net.xolt.freecam.gradle.ForgeModsTomlTask
+import net.xolt.freecam.shadow.tasks.NormalizeShadowBundleTask
+import net.xolt.freecam.shadow.transformers.ModsTomlTransformer
 
 plugins {
     alias(libs.plugins.moddev.legacy)
@@ -9,6 +14,7 @@ plugins {
     id("freecam.loaders")
     id("freecam.atremapper")
     id("freecam.fml")
+    id("freecam.shadow")
 }
 
 val json = Json { prettyPrint = true }
@@ -53,11 +59,16 @@ legacyForge {
     }
 }
 
-// Include bundled dependencies in `jar`.
-// Not suitable for third-party libs — consider using the gradleup shadow plugin.
+/**
+ * Include a dependency in the `shadowJar` task.
+ * For third-party libraries, use [include] instead to take advantage of Forge's JarJar system.
+ *
+ * We avoid using the default `shadow` configuration, because it is pre-configured to inherit from other configurations.
+ */
 val bundle by configurations.creating {
     isCanBeResolved = true
     isCanBeConsumed = false
+    isTransitive = false
 
     attributes {
         attribute(MinecraftMappings.ATTRIBUTE, objects.named(MinecraftMappings.NAMED))
@@ -65,13 +76,23 @@ val bundle by configurations.creating {
 }
 
 /**
- * Wrapper for [jarJar], only applied on Forge versions that support jar-in-jar.
+ * Wrapper for [jarJar] and [bundle].
  *
- * Jar-in-jar added in [Forge 40.1.60](https://maven.minecraftforge.net/net/minecraftforge/forge/1.18.2-40.1.60/forge-1.18.2-40.1.60-changelog.txt)
+ * You **must** also [`relocate`](https://gradleup.com/shadow/configuration/relocation) third-party packages in `tasks.shadowJar`,
+ * to avoid namespace conflicts on Forge versions without Jar-in-Jar support.
+ *
+ * Jar-in-jar was added in [Forge 40.1.60](https://maven.minecraftforge.net/net/minecraftforge/forge/1.18.2-40.1.60/forge-1.18.2-40.1.60-changelog.txt)
+ *
+ * @param dependencyNotation the dependency to bundle
+ * @param shadowJarConfig configuration for the `shadowJar` task, applied when Jar-in-Jar is not available
  */
-fun DependencyHandler.include(dependency: Any) {
-    if (sc.eval(forgeVersion, "<40.1.60")) return
-    jarJar(dependency)
+fun DependencyHandler.include(dependencyNotation: Any, shadowJarConfig: ShadowJar.() -> Unit) {
+    if (sc.eval(forgeVersion, ">=40.1.60")) {
+        jarJar(dependencyNotation)
+    } else {
+        add(bundle.name, dependencyNotation)
+        tasks.shadowJar { shadowJarConfig() }
+    }
 }
 
 dependencies {
@@ -89,12 +110,22 @@ dependencies {
         // `jarJar` requires a SRG dependency, which we don't have for `:cloth-config`.
         // Instead, we can include named-classes in jar and reobfJar will remap them.
         bundle(implementation(project(path = it.project.path, configuration = "namedElements"))!!)
-        include(modImplementation("me.shedaniel.cloth:cloth-config-forge") {
+        val clothConfigForge = modImplementation("me.shedaniel.cloth:cloth-config-forge") {
             version {
                 prefer(clothVersion)
                 strictly(clothConstraint.toMavenFormat())
             }
-        })
+        }
+        include(clothConfigForge) {
+            sequenceOf(
+                "me.shedaniel.cloth",
+                "me.shedaniel.autoconfig",
+                "me.shedaniel.clothconfig2",
+                "me.shedaniel.math",
+            ).forEach { pattern ->
+                relocate(pattern, "${meta.group}.shadowed.$pattern")
+            }
+        }
     } ?: logger.warn("No :cloth-config project for ${project.path}")
 }
 
@@ -121,10 +152,8 @@ legacyForge {
     }
 }
 
-mixin {
-    add(sourceSets.main.get(), refmapName)
-    mixinConfigNames.forEach(::config)
-}
+val mixinRefmap: Provider<RegularFile> = mixin.add(sourceSets.main.get(), refmapName)
+mixinConfigNames.forEach(mixin::config)
 
 sourceSets.main {
     resources.srcDir("src/generated/resources")
@@ -132,9 +161,13 @@ sourceSets.main {
 
 tasks.register<Copy>("buildAndCollect") {
     group = "build"
-    from(tasks.named<Jar>("reobfJar").map { it.archiveFile })
+    from(tasks.named<Jar>("reobfShadowJar").map { it.archiveFile })
     into(rootProject.layout.buildDirectory.file("libs/${meta.buildDir}"))
     dependsOn("build")
+}
+
+tasks.generateReleaseMetadata {
+    artifactFileName = tasks.named<Jar>("reobfShadowJar").flatMap { it.archiveFileName }
 }
 
 val generateModsTomlTask = tasks.register<ForgeModsTomlTask>("generateModsToml") {
@@ -203,21 +236,69 @@ tasks.processResources {
 }
 
 tasks.jar {
-    from(provider { bundle.map(::zipTree) }) {
-        exclude(
-            "${meta.id}.LICENSE",
-            "META-INF/mods.toml",
-            "META-INF/*.MF",
-            "META-INF/*.SF",
-            "META-INF/*.DSA",
-            "META-INF/*.RSA",
-        )
-    }
+    archiveClassifier = "minimal"
 
     manifest.attributes(
         "MixinConfigs" to mixinConfigNames.joinToString(","),
     )
 
-    duplicatesStrategy = DuplicatesStrategy.FAIL
     finalizedBy("reobfJar")
+}
+
+val normalizeShadowBundleTask = tasks.register<NormalizeShadowBundleTask>("normalizeShadowBundle") {
+    description = "Normalize dependencies before bundling with Shadow"
+    inputFiles.from(bundle)
+}
+
+tasks.shadowJar {
+    duplicatesStrategy = DuplicatesStrategy.FAIL
+    failOnDuplicateEntries = true
+    archiveClassifier = null
+
+    // Don't use the `shadow` configuration
+    configurations = emptySet()
+    from(normalizeShadowBundleTask.map { it.outputFiles })
+    from(mixinRefmap)
+    from(tasks.jarJar)
+
+    exclude("fabric.mod.json")
+
+    filesMatching("META-INF/mods.toml") {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+    transform<ModsTomlTransformer> {
+        path = "META-INF/mods.toml"
+    }
+
+    filesMatching("META-INF/accesstransformer.cfg") {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+    transform<AppendingTransformer> {
+        resource = "META-INF/accesstransformer.cfg"
+        separator = "\n\n"
+    }
+
+    filesMatching("pack.mcmeta") {
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+    }
+    transform<PreserveFirstFoundResourceTransformer> {
+        include("pack.mcmeta")
+    }
+
+    finalizedBy("reobfShadowJar")
+}
+
+obfuscation {
+    reobfuscate(tasks.shadowJar, sourceSets.main.get())
+}
+
+configurations {
+    apiElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(tasks.shadowJar)
+    }
+    runtimeElements {
+        outgoing.artifacts.clear()
+        outgoing.artifact(tasks.shadowJar)
+    }
 }
