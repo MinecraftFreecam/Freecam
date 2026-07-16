@@ -40,6 +40,7 @@ dependencies {
     minecraft("com.mojang:minecraft:${meta.mc}")
     loomAdapter.applyMojangMappings()
     modCompileOnly(libs.fabric.loader)
+    compileOnly(project(":config"))
     i18nResources(project(":i18n"))
 }
 
