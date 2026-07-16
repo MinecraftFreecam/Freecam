@@ -3,7 +3,6 @@ import com.github.jengelman.gradle.plugins.shadow.transformers.AppendingTransfor
 import com.github.jengelman.gradle.plugins.shadow.transformers.PreserveFirstFoundResourceTransformer
 import io.github.z4kn4fein.semver.constraints.toMavenFormat
 import kotlinx.serialization.json.*
-import net.neoforged.moddevgradle.legacyforge.internal.MinecraftMappings
 import net.xolt.freecam.gradle.ForgeModsTomlTask
 import net.xolt.freecam.shadow.tasks.NormalizeShadowBundleTask
 import net.xolt.freecam.shadow.transformers.ModsTomlTransformer
@@ -69,10 +68,6 @@ val bundle by configurations.creating {
     isCanBeResolved = true
     isCanBeConsumed = false
     isTransitive = false
-
-    attributes {
-        attribute(MinecraftMappings.ATTRIBUTE, objects.named(MinecraftMappings.NAMED))
-    }
 }
 
 /**
@@ -86,11 +81,17 @@ val bundle by configurations.creating {
  * @param dependencyNotation the dependency to bundle
  * @param shadowJarConfig configuration for the `shadowJar` task, applied when Jar-in-Jar is not available
  */
-fun DependencyHandler.include(dependencyNotation: Any, shadowJarConfig: ShadowJar.() -> Unit) {
+fun DependencyHandler.include(dependencyNotation: Any, shadowJarConfig: ShadowJar.() -> Unit = {}) {
+    // If we re-use a mutable dependency, ModDevGradle may mutate it in another configuration, leading to premature resolution:
+    //     Cannot mutate the dependency attributes of configuration '' after the configuration's child configuration '' was resolved.
+    val dependency = when (dependencyNotation) {
+        is Dependency -> dependencyNotation.copy()
+        else -> dependencyNotation
+    }
     if (sc.eval(forgeVersion, ">=40.1.60")) {
-        jarJar(dependencyNotation)
+        jarJar(dependency)
     } else {
-        add(bundle.name, dependencyNotation)
+        add(bundle.name, dependency)
         tasks.shadowJar { shadowJarConfig() }
     }
 }
@@ -99,6 +100,11 @@ dependencies {
     compileOnlyApi("org.jetbrains:annotations:26.0.2")
     annotationProcessor(libs.sponge.mixin) {
         artifact { classifier = "processor" }
+    }
+
+    project(":config").let { config ->
+        api(config)
+        include(config)
     }
     sc.node.sibling("cloth-config")?.let {
         val clothVersion = requireNotNull(meta.deps["cloth"]) {

@@ -1,5 +1,4 @@
 import net.fabricmc.loom.task.FabricModJsonV1Task
-import org.gradle.kotlin.dsl.sc
 
 plugins {
     alias(libs.plugins.fletchingtable.fabric)
@@ -61,6 +60,8 @@ dependencies {
     modImplementation("com.terraformersmc:modmenu:${meta.deps["modmenu"]}") {
         exclude(module = "fabric-loader")
     }
+
+    include(api(project(":config")) { })
 
     sc.node.sibling("cloth-config")?.let {
         include(it.project)

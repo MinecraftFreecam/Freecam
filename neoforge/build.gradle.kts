@@ -29,6 +29,7 @@ neoForge {
 }
 
 dependencies {
+    jarJar(api(project(":config")) as Any)
     sc.node.sibling("cloth-config")?.let {
         val clothVersion = requireNotNull(meta.deps["cloth"]) {
             "Missing deps.cloth for ${project.path}"
