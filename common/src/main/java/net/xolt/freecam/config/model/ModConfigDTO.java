@@ -1,27 +1,14 @@
 package net.xolt.freecam.config.model;
 
 import com.google.gson.JsonObject;
-import net.minecraft.world.level.block.Block;
-import net.xolt.freecam.config.MCAwareModConfig;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-// TODO: separate DTO from domain model
-// move CollisionBehavior and ModConfig-impl to domain model adapter
-public class ModConfigDTO implements MCAwareModConfig, RawJsonHolder {
+public class ModConfigDTO implements RawJsonHolder {
 
     private transient @Nullable JsonObject rawJson;
-    private transient CollisionPredicate collisionPredicate;
-
-    public ModConfigDTO() {
-        onConfigChange();
-    }
-
-    public void onConfigChange() {
-        collisionPredicate = CollisionPredicate.create(collision);
-    }
 
     @Override
     public void setRawJson(@Nullable JsonObject rawJson) {
@@ -31,126 +18,6 @@ public class ModConfigDTO implements MCAwareModConfig, RawJsonHolder {
     @Override
     public @Nullable JsonObject getRawJson() {
         return rawJson;
-    }
-
-    @Override
-    public FlightMode getFlightMode() {
-        return movement.flightMode;
-    }
-
-    @Override
-    public double getHorizontalSpeed() {
-        return movement.horizontalSpeed;
-    }
-
-    @Override
-    public double getVerticalSpeed() {
-        return movement.verticalSpeed;
-    }
-
-    @Override
-    public boolean ignoreAllCollision() {
-        return collision.ignoreAll;
-    }
-
-    @Override
-    public boolean shouldCheckInitialCollision() {
-        return collision.alwaysCheck || !collision.ignoreAll;
-    }
-
-    @Override
-    public boolean ignoreCollisionWith(Block block) {
-        return collision.ignoreAll || collisionPredicate.shouldIgnore(block);
-    }
-
-    @Override
-    public Perspective getInitialPerspective() {
-        return visual.perspective;
-    }
-
-    @Override
-    public boolean shouldShowPlayer() {
-        return visual.showPlayer;
-    }
-
-    @Override
-    public boolean shouldShowHand() {
-        return visual.showHand;
-    }
-
-    @Override
-    public boolean isFullBrightEnabled() {
-        return visual.fullBright;
-    }
-
-    @Override
-    public boolean shouldShowSubmersionFog() {
-        return visual.showSubmersion;
-    }
-
-    @Override
-    public boolean shouldDisableOnDamage() {
-        return utility.disableOnDamage;
-    }
-
-    @Override
-    public boolean shouldFreezePlayer() {
-        return utility.freezePlayer;
-    }
-
-    @Override
-    public boolean shouldPreventInteractions() {
-        return !utility.allowInteract;
-    }
-
-    public boolean allowInteractionsFrom(InteractionMode mode) {
-        return utility.allowInteract && utility.interactionMode == mode;
-    }
-
-    @Override
-    public boolean allowInteractionsFromCamera() {
-        return allowInteractionsFrom(InteractionMode.CAMERA);
-    }
-
-    @Override
-    public boolean allowInteractionsFromPlayer() {
-        return allowInteractionsFrom(InteractionMode.PLAYER);
-    }
-
-    @Override
-    public boolean isRestrictedOnServer(String serverIp) {
-        return switch (servers.mode) {
-            case NONE -> false;
-            case WHITELIST -> {
-                String ip = serverIp.trim().toLowerCase();
-                yield servers.whitelist.stream()
-                        .map(String::trim)
-                        .map(String::toLowerCase)
-                        .noneMatch(ip::equals);
-            }
-            case BLACKLIST -> {
-                String ip = serverIp.trim().toLowerCase();
-                yield servers.blacklist.stream()
-                        .map(String::trim)
-                        .map(String::toLowerCase)
-                        .anyMatch(ip::equals);
-            }
-        };
-    }
-
-    @Override
-    public boolean shouldNotifyFreecam() {
-        return notification.notifyFreecam;
-    }
-
-    @Override
-    public boolean shouldNotifyTripod() {
-        return notification.notifyTripod;
-    }
-
-    @Override
-    public boolean shouldOutlinePlayer() {
-        return visual.outlinePlayer;
     }
 
     public MovementConfig movement = new MovementConfig();
