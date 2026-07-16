@@ -12,7 +12,6 @@ import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.controller.ConfigController;
 import net.xolt.freecam.config.model.FlightMode;
 import net.xolt.freecam.config.model.ModConfigDTO;
-import net.xolt.freecam.config.model.ModConfigImpl;
 import net.xolt.freecam.config.model.Perspective;
 
 import java.util.stream.Stream;
@@ -27,9 +26,9 @@ public class ModConfigScreenFactory {
     private static final double MIN_SPEED = 0.0;
     private static final double MAX_SPEED = 10.0;
 
-    private final ConfigController<ModConfigImpl> controller;
+    private final ConfigController<ModConfigDTO> controller;
 
-    public ModConfigScreenFactory(ConfigController<ModConfigImpl> controller) {
+    public ModConfigScreenFactory(ConfigController<ModConfigDTO> controller) {
         this.controller = controller;
     }
 
@@ -38,11 +37,11 @@ public class ModConfigScreenFactory {
     }
 
     private ModConfigDTO config() {
-        return controller.getConfig().getData();
+        return controller.getConfig();
     }
 
     private ModConfigDTO defaults() {
-        return controller.getDefaults().getData();
+        return controller.getDefaults();
     }
 
     /**

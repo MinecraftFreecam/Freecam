@@ -1,10 +1,11 @@
 package net.xolt.freecam.config;
 
 import net.minecraft.world.level.block.Block;
+import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.controller.ConfigControllerRegistry;
-import net.xolt.freecam.config.model.FlightMode;
-import net.xolt.freecam.config.model.ModConfigImpl;
-import net.xolt.freecam.config.model.Perspective;
+import net.xolt.freecam.config.controller.CoreConfigController;
+import net.xolt.freecam.config.controller.ModConfigController;
+import net.xolt.freecam.config.model.*;
 
 public interface ModConfig {
 
@@ -13,8 +14,18 @@ public interface ModConfig {
      * Will load config from disk and perform internal setup.
      */
     static void setup() {
-        ConfigControllerRegistry.init();
-        ConfigControllerRegistry.get(ModConfigImpl.class).load();
+        GsonConfigLoader<ModConfigDTO> loader = new GsonConfigLoader<>(ModConfigDTO.class, Freecam.MOD_ID);
+
+        // Create a pure-data controller
+        CoreConfigController<ModConfigDTO> dtoController = new CoreConfigController<>(loader, ModConfigDTO::new);
+        ConfigControllerRegistry.register(ModConfigDTO.class, dtoController);
+
+        // And an MC-aware wrapper
+        ModConfigController adapterController = new ModConfigController(dtoController);
+        ConfigControllerRegistry.register(ModConfigImpl.class, adapterController);
+
+        // Load the config
+        adapterController.load();
     }
 
     static ModConfig get() {
