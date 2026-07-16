@@ -1,5 +1,6 @@
 plugins {
     `java-library`
+    alias(libs.plugins.kotlin.jvm)
 }
 
 // Minecraft 1.17 is compatible with Java 16, so target that version
@@ -11,6 +12,10 @@ java {
         sourceCompatibility = it
         targetCompatibility = it
     }
+}
+
+kotlin {
+    jvmToolchain(jvmVersion)
 }
 
 repositories {
@@ -26,4 +31,11 @@ dependencies {
             strictly("[2.0.0,2.1.0)")
         }
     }
+    testImplementation(libs.kotlin.test)
+    testImplementation(libs.kotest.assertions)
+    testImplementation(libs.mockk)
+}
+
+tasks.test {
+    useJUnitPlatform()
 }
