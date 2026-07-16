@@ -2,6 +2,8 @@ import io.github.z4kn4fein.semver.Version
 
 plugins {
     `java-library`
+    `jvm-test-suite`
+    alias(libs.plugins.kotlin.jvm)
 }
 
 // Minecraft 1.17 is compatible with Java 16, so target that version
@@ -34,6 +36,10 @@ java {
     }
 }
 
+kotlin {
+    jvmToolchain(jvmVersion)
+}
+
 repositories {
     mavenCentral()
 }
@@ -53,4 +59,62 @@ dependencies {
             strictly("[$oldestGson,$newestGson]")
         }
     }
+}
+
+testing {
+    suites {
+        withType<JvmTestSuite> {
+            useKotlinTest()
+            dependencies {
+                implementation(project())
+                implementation(libs.kotlin.test)
+                implementation(libs.kotest.assertions)
+                implementation(libs.mockk)
+            }
+            targets.all {
+                testTask {
+                    outputs.upToDateWhen { false }
+                }
+            }
+        }
+
+        val test = named<JvmTestSuite>("test")
+
+        gsonVersions.forEach { (mc, gson) ->
+            val name = when (gson) {
+                newestGson -> return@forEach
+                oldestGson -> "testWithOldestGson"
+                else -> "testWithGson$gson"
+            }
+
+            register<JvmTestSuite>(name) {
+                dependencies {
+                    implementation(project())
+                    runtimeOnly("com.google.code.gson:gson") {
+                        version { strictly(gson) }
+                    }
+                }
+
+                targets.all {
+                    testTask {
+                        shouldRunAfter(test)
+
+                        val defaultTestOutput = sourceSets.test.get().output
+                        testClassesDirs = defaultTestOutput.classesDirs
+                        classpath = defaultTestOutput + sourceSets.main.get().output + classpath
+
+                        systemProperties(
+                            "gson.version" to gson,
+                            "junit.jupiter.displayname.generator.default"
+                                to "net.xolt.freecam.util.GsonVariantNameGenerator",
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+tasks.check {
+    dependsOn(testing.suites.withType<JvmTestSuite>())
 }
