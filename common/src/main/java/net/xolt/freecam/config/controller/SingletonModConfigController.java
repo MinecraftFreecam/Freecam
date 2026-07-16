@@ -1,26 +1,27 @@
 package net.xolt.freecam.config.controller;
 
 import net.xolt.freecam.Freecam;
+import net.xolt.freecam.config.model.ConfigLoader;
 import net.xolt.freecam.config.model.GsonConfigLoader;
 import net.xolt.freecam.config.model.ModConfigDTO;
-import net.xolt.freecam.config.model.ConfigLoader;
+import net.xolt.freecam.config.model.ModConfigDTOAdapter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-final class SingletonModConfigController implements ConfigController<ModConfigDTO> {
+final class SingletonModConfigController implements ConfigController<ModConfigDTOAdapter> {
 
     static final SingletonModConfigController INSTANCE = new SingletonModConfigController();
 
     private static final Logger LOGGER = LoggerFactory.getLogger(SingletonModConfigController.class);
 
     private final ConfigLoader<ModConfigDTO> loader = new GsonConfigLoader<>(ModConfigDTO.class, Freecam.MOD_ID);
-    private final ModConfigDTO defaults = new ModConfigDTO();
-    private ModConfigDTO config;
+    private final ModConfigDTOAdapter defaults = new ModConfigDTOAdapter(new ModConfigDTO());
+    private ModConfigDTOAdapter config;
 
     private SingletonModConfigController() {}
 
     @Override
-    public ModConfigDTO getConfig() {
+    public ModConfigDTOAdapter getConfig() {
         if (config == null) {
             LOGGER.warn("Config used before load");
             return getDefaults();
@@ -29,33 +30,30 @@ final class SingletonModConfigController implements ConfigController<ModConfigDT
     }
 
     @Override
-    public ModConfigDTO getDefaults() {
+    public ModConfigDTOAdapter getDefaults() {
         return defaults;
     }
 
     @Override
     public void load() {
         try {
-            config = loader.read();
+            config = new ModConfigDTOAdapter(loader.read());
         } catch (Exception e) {
             LOGGER.error("Failed to load config, using defaults", e);
-            config = new ModConfigDTO();
+            config = new ModConfigDTOAdapter(new ModConfigDTO());
         }
-        // ModConfigDTO calls onConfigChange when constructed,
-        // but GSON sets fields after constructing the object.
-        config.onConfigChange();
     }
 
     @Override
     public void save() {
-        ModConfigDTO config = getConfig();
+        ModConfigDTO data = getConfig().getData();
         try {
-            loader.write(config);
+            loader.write(data);
         } catch (Exception e) {
             LOGGER.error("Failed to save config", e);
             // TODO: Consider propagating an error to the GUI
             return;
         }
-        config.onConfigChange();
+        config =  new ModConfigDTOAdapter(data);
     }
 }

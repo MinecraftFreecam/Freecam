@@ -4,7 +4,7 @@ import net.minecraft.client.gui.screens.Screen;
 import net.xolt.freecam.config.controller.ConfigControllerRegistry;
 import net.xolt.freecam.config.gui.ConfigScreenProvider;
 import net.xolt.freecam.config.gui.OptionalProvider;
-import net.xolt.freecam.config.model.ModConfigDTO;
+import net.xolt.freecam.config.model.ModConfigDTOAdapter;
 import org.jetbrains.annotations.Nullable;
 
 import static java.lang.Thread.currentThread;
@@ -21,7 +21,7 @@ public class ClothConfigScreenProvider implements ConfigScreenProvider, Optional
      */
     private ModConfigScreenFactory factory() {
         if (factory == null) {
-            factory = new ModConfigScreenFactory(ConfigControllerRegistry.get(ModConfigDTO.class));
+            factory = new ModConfigScreenFactory(ConfigControllerRegistry.get(ModConfigDTOAdapter.class));
         }
         return factory;
     }

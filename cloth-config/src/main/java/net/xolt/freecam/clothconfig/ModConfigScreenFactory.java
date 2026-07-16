@@ -8,10 +8,11 @@ import me.shedaniel.clothconfig2.impl.builders.KeyCodeBuilder;
 import me.shedaniel.clothconfig2.impl.builders.SubCategoryBuilder;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.controller.ConfigController;
 import net.xolt.freecam.config.model.FlightMode;
-import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.model.ModConfigDTO;
+import net.xolt.freecam.config.model.ModConfigDTOAdapter;
 import net.xolt.freecam.config.model.Perspective;
 
 import java.util.stream.Stream;
@@ -26,9 +27,9 @@ public class ModConfigScreenFactory {
     private static final double MIN_SPEED = 0.0;
     private static final double MAX_SPEED = 10.0;
 
-    private final ConfigController<ModConfigDTO> controller;
+    private final ConfigController<ModConfigDTOAdapter> controller;
 
-    public ModConfigScreenFactory(ConfigController<ModConfigDTO> controller) {
+    public ModConfigScreenFactory(ConfigController<ModConfigDTOAdapter> controller) {
         this.controller = controller;
     }
 
@@ -37,11 +38,11 @@ public class ModConfigScreenFactory {
     }
 
     private ModConfigDTO config() {
-        return controller.getConfig();
+        return controller.getConfig().getData();
     }
 
     private ModConfigDTO defaults() {
-        return controller.getDefaults();
+        return controller.getDefaults().getData();
     }
 
     /**

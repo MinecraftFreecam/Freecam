@@ -1,6 +1,6 @@
 package net.xolt.freecam.config.controller;
 
-import net.xolt.freecam.config.model.ModConfigDTO;
+import net.xolt.freecam.config.model.ModConfigDTOAdapter;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -11,7 +11,7 @@ public final class ConfigControllerRegistry {
     private static final Map<Class<?>, ConfigController<?>> CONTROLLERS = new ConcurrentHashMap<>();
 
     public static void init() {
-        register(ModConfigDTO.class, SingletonModConfigController.INSTANCE);
+        register(ModConfigDTOAdapter.class, SingletonModConfigController.INSTANCE);
     }
 
     public static <T> ConfigController<T> get(Class<T> configClass) {
