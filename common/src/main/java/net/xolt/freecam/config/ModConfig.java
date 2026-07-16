@@ -6,6 +6,8 @@ import net.xolt.freecam.config.controller.CoreConfigController;
 import net.xolt.freecam.config.controller.ModConfigController;
 import net.xolt.freecam.config.model.*;
 
+import static net.xolt.freecam.Freecam.MC;
+
 public interface ModConfig {
 
     /**
@@ -13,7 +15,12 @@ public interface ModConfig {
      * Will load config from disk and perform internal setup.
      */
     static void setup() {
-        GsonConfigLoader<ModConfigDTO> loader = new GsonConfigLoader<>(ModConfigDTO.class, Freecam.MOD_ID);
+        CoreConfigLoader<ModConfigDTO> loader = new CoreConfigLoader<>(
+            new GsonSerializer(),
+            ModConfigDTO.class,
+            MC.gameDirectory.toPath().resolve("config"),
+            Freecam.MOD_ID
+        );
 
         // Create a pure-data controller
         CoreConfigController<ModConfigDTO> dtoController = new CoreConfigController<>(loader, ModConfigDTO::new);
