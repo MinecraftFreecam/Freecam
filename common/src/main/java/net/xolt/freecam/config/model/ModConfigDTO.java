@@ -1,23 +1,22 @@
 package net.xolt.freecam.config.model;
 
-import com.google.gson.JsonObject;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ModConfigDTO implements RawJsonHolder {
+public class ModConfigDTO implements RawConfigHolder {
 
-    private transient @Nullable JsonObject rawJson;
+    private transient @Nullable RawConfigNode rawConfig;
 
     @Override
-    public void setRawJson(@Nullable JsonObject rawJson) {
-        this.rawJson = rawJson;
+    public void setRawConfig(@Nullable RawConfigNode rawConfig) {
+        this.rawConfig = rawConfig;
     }
 
     @Override
-    public @Nullable JsonObject getRawJson() {
-        return rawJson;
+    public @Nullable RawConfigNode getRawConfig() {
+        return rawConfig;
     }
 
     public MovementConfig movement = new MovementConfig();
