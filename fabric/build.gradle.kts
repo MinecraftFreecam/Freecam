@@ -64,6 +64,8 @@ dependencies {
         exclude(module = "fabric-loader")
     }
 
+    bundle(api(project(":config"))!!)
+
     sc.node.sibling("cloth-config")?.let {
         bundle(api(project(path = it.project.path, configuration = "namedElements"))!!)
 
