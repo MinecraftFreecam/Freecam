@@ -3,6 +3,7 @@ package net.xolt.freecam.config.model;
 import com.google.gson.JsonObject;
 import net.minecraft.world.level.block.Block;
 import net.xolt.freecam.config.MCAwareModConfig;
+import net.xolt.freecam.network.ServerPolicies;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
@@ -50,17 +51,17 @@ public class ModConfigDTO implements MCAwareModConfig, RawJsonHolder {
 
     @Override
     public boolean ignoreAllCollision() {
-        return collision.ignoreAll;
+       return ServerPolicies.allowClipping() && collision.ignoreAll;
     }
 
     @Override
     public boolean shouldCheckInitialCollision() {
-        return collision.alwaysCheck || !collision.ignoreAll;
+        return !ServerPolicies.allowClipping() || collision.alwaysCheck || !collision.ignoreAll;
     }
 
     @Override
     public boolean ignoreCollisionWith(Block block) {
-        return collision.ignoreAll || collisionPredicate.shouldIgnore(block);
+        return ServerPolicies.allowClipping() && (collision.ignoreAll || collisionPredicate.shouldIgnore(block));
     }
 
     @Override
@@ -80,7 +81,7 @@ public class ModConfigDTO implements MCAwareModConfig, RawJsonHolder {
 
     @Override
     public boolean isFullBrightEnabled() {
-        return visual.fullBright;
+        return ServerPolicies.allowFullbright() && visual.fullBright;
     }
 
     @Override
@@ -100,11 +101,11 @@ public class ModConfigDTO implements MCAwareModConfig, RawJsonHolder {
 
     @Override
     public boolean shouldPreventInteractions() {
-        return !utility.allowInteract;
+        return !ServerPolicies.allowInteract() || !utility.allowInteract;
     }
 
     public boolean allowInteractionsFrom(InteractionMode mode) {
-        return utility.allowInteract && utility.interactionMode == mode;
+        return ServerPolicies.allowInteract() && utility.allowInteract && utility.interactionMode == mode;
     }
 
     @Override
