@@ -5,6 +5,7 @@ import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.EncoderException;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
+//~ if >=1.21.11 ResourceLocation -> Identifier
 import net.minecraft.resources.Identifier;
 import net.xolt.freecam.Freecam;
 
