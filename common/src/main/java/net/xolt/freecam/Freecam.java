@@ -31,11 +31,13 @@ public class Freecam {
 
     public static final Minecraft MC = Minecraft.getInstance();
     public static final String MOD_ID = "freecam";
+    public static final String SERVER_DISABLE_CHANNEL = "freecam:disable";
 
     private static boolean freecamEnabled = false;
     private static boolean tripodEnabled = false;
     private static boolean playerControlEnabled = false;
     private static boolean disableNextTick = false;
+    private static boolean serverDisabled = false;
     private static boolean outlineEnabled = false;
     private static final TripodRegistry tripods = new TripodRegistry();
     private static TripodSlot activeTripod = TripodSlot.NONE;
@@ -47,7 +49,7 @@ public class Freecam {
         // Disable if the previous tick asked us to,
         // or Freecam is restricted on the current server
         if ((disableNextTick || isRestrictedOnServer()) && isEnabled()) {
-            toggle();
+            disable();
         }
         disableNextTick = false;
 
@@ -83,9 +85,18 @@ public class Freecam {
     @ApiStatus.Internal
     public static void onDisconnect() {
         if (isEnabled()) {
-            toggle();
+            disable();
         }
+        serverDisabled = false;
         tripods.clear();
+    }
+
+    @ApiStatus.Internal
+    public static void disableOnServer() {
+        serverDisabled = true;
+        if (isEnabled()) {
+            disable();
+        }
     }
 
     @ApiStatus.Internal
@@ -167,6 +178,17 @@ public class Freecam {
         if (!tripodEnabled) {
             onDisabled();
         }
+    }
+
+    private static void disable() {
+        if (tripodEnabled) {
+            onDisableTripod();
+            tripodEnabled = false;
+        } else if (freecamEnabled) {
+            onDisableFreecam();
+            freecamEnabled = false;
+        }
+        onDisabled();
     }
 
     @ApiStatus.AvailableSince("1.1.8")
@@ -374,6 +396,9 @@ public class Freecam {
     @ApiStatus.Experimental
     @ApiStatus.AvailableSince("1.2.4")
     public static boolean isRestrictedOnServer() {
+        if (serverDisabled) {
+            return true;
+        }
         ServerData server = MC.getCurrentServer();
         return server != null && !MC.hasSingleplayerServer()
                 && ModConfig.get().isRestrictedOnServer(server.ip);
