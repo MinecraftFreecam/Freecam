@@ -11,6 +11,7 @@ public class FreecamFabric implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         ModConfig.setup();
+        //? if >=1.20.5
         FabricServerPolicyNetworking.register();
         ModBindings.forEach(KeyMappingHelper::registerKeyMapping);
         ClientTickEvents.START_CLIENT_TICK.register(Freecam::preTick);
