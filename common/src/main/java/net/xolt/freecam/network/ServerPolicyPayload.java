@@ -23,11 +23,6 @@ public record ServerPolicyPayload(String json) implements CustomPacketPayload {
         @Override
         public void encode(ByteBuf buffer, ServerPolicyPayload payload) {
             byte[] bytes = payload.json().getBytes(StandardCharsets.UTF_8);
-            if (bytes.length > ServerPolicies.MAX_PAYLOAD_BYTES) {
-                throw new EncoderException(
-                        "Freecam server_config payload exceeds " + ServerPolicies.MAX_PAYLOAD_BYTES + " bytes"
-                );
-            }
             buffer.writeBytes(bytes);
         }
     };
