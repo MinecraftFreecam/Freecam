@@ -5,7 +5,8 @@
   "compatibilityLevel": "${mixinCompatLevel}",
   "minVersion": "0.8",
   "client": [
-    "EntityRenderDispatcherMixin"
+    "EntityRenderDispatcherMixin",
+    "ModListScreenMixin"
   ],
   "injectors": {
     "defaultRequire": 1

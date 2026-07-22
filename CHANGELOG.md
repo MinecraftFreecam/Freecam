@@ -15,6 +15,8 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Fixed
 
+- Show the correct Cloth Config license in the Forge 1.17.1 build ([549](https://github.com/MinecraftFreecam/Freecam/pull/549))
+
 ## [1.4.1-beta.2] - 2026-07-13
 
 1.4.1 adds initial support for Minecraft 26.2 and a new 'Outline Player' feature.
