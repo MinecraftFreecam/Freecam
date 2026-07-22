@@ -24,9 +24,6 @@ public class ClientPacketListenerMixin {
         }
     }
 
-    // Older Minecraft versions expose custom payloads as an identifier plus
-    // a raw FriendlyByteBuf. Modern versions register a typed payload in the
-    // loader-specific entrypoint instead.
     //? if <1.20.5 {
     /*@Inject(method = "handleCustomPayload", at = @At("HEAD"))
     private void onCustomPayload(ClientboundCustomPayloadPacket packet, CallbackInfo ci) {
