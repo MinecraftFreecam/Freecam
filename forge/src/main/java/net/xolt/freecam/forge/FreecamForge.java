@@ -23,6 +23,10 @@ import net.minecraftforge.client.event.RegisterKeyMappingsEvent;
 @Mod.EventBusSubscriber(bus = Bus.MOD, value = Dist.CLIENT)
 @SuppressWarnings("unused")
 public class FreecamForge {
+    public FreecamForge() {
+        //? if >=1.20.5
+        ForgeServerPolicyNetworking.register();
+    }
 
     @SubscribeEvent
     public static void clientSetup(FMLClientSetupEvent event) {
