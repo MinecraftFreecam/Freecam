@@ -13,7 +13,7 @@
 # Fabric: https://fabricmc.net/develop
 # NeoForge: https://projects.neoforged.net/neoforged/neoforge
 # Cloth Config: https://maven.shedaniel.me/me/shedaniel/cloth/cloth-config-fabric
-# ModMenu: https://maven.terraformersmc.com/releases/com/terraformersmc/modmenu
+# ModMenu: https://maven.terraformersmc.com/#browse/browse:maven-terraformers:com%2Fterraformersmc%2Fmodmenu
 
 
 [relationship]
@@ -33,9 +33,10 @@ reqs.mc = "26.3.x-0"
 
 deps.cloth = "26.2.155"
 reqs.cloth = "~26.3"
+# TODO: https://github.com/TerraformersMC/ModMenu/pull/1054
 deps.modmenu = "20.0.1"
 
-deps.fabric_api = "0.154.3+26.3"
+deps.fabric_api = "0.155.1+26.3"
 reqs.fabric_loader = ">=0.18.0"
 
 deps.neoforge_pr = ""

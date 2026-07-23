@@ -2,12 +2,12 @@ package net.xolt.freecam.config.keys;
 
 import com.mojang.blaze3d.platform.InputConstants;
 
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_UNKNOWN;
+import static org.lwjgl.sdl.SDLScancode.SDL_SCANCODE_UNKNOWN;
 
 public class FreecamKeyMappingBuilder {
     private final String translationKey;
-    private InputConstants.Type type = InputConstants.Type.KEYSYM;
-    private int keyCode = GLFW_KEY_UNKNOWN;
+    private InputConstants.Type type = InputConstants.Type.KEYBOARD;
+    private int keyCode = SDL_SCANCODE_UNKNOWN;
     private Runnable action;
     private HoldAction holdAction;
     private long maxTicks = 10;
