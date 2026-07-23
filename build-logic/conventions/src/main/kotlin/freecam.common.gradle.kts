@@ -62,9 +62,10 @@ repositories {
         filter { includeGroup("me.shedaniel.cloth") }
     }
     exclusiveContent {
-        forRepository {
-            maven("https://maven.terraformersmc.com") { name = "TerraformersMC" }
-        }
+        forRepositories(
+            maven("https://maven.gnomecraft.net/releases") { name = "GnomeCraft" },
+            maven("https://maven.terraformersmc.com") { name = "TerraformersMC" },
+        )
         filter { includeGroup("com.terraformersmc") }
     }
     mavenCentral()
