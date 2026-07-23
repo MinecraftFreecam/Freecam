@@ -36,7 +36,7 @@ reqs.cloth = "~26.3"
 # TODO: https://github.com/TerraformersMC/ModMenu/pull/1054
 deps.modmenu = "20.0.1"
 
-deps.fabric_api = "0.155.1+26.3"
+deps.fabric_api = "0.155.3+26.3"
 reqs.fabric_loader = ">=0.18.0"
 
 deps.neoforge_pr = ""
