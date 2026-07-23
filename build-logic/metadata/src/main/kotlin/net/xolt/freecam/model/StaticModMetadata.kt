@@ -55,6 +55,6 @@ internal data class ModMetadataToml(
 ) : StaticModMetadata {
 
     override val releaseType: ReleaseType by lazy {
-        ReleaseType.fromVersion(releaseVersion.toString())
+        releaseVersion.toReleaseType()
     }
 }

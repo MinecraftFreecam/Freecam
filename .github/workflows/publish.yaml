@@ -93,7 +93,7 @@ jobs:
           distribution: temurin
 
       - name: Setup Freecam Publisher
-        uses: MinecraftFreecam/Publisher@c5fc4cecf816f5621a58cf54d45ded30dea2f164  # v0.0.4
+        uses: MinecraftFreecam/Publisher@v0.0.5
 
       - name: Publish to CurseForge & Modrinth
         env:
