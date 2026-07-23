@@ -62,8 +62,13 @@ dependencies {
         exclude(module = "fabric-loader")
     }
 
-    modImplementation("com.terraformersmc:modmenu:${meta.deps["modmenu"]}") {
+    create("com.terraformersmc:modmenu:${meta.deps["modmenu"]}") {
         exclude(module = "fabric-loader")
+    }.let {
+        // FIXME: compile only until a 26.3 build is available
+        // Consider fetching via JitPack
+        if (sc.current.parsed >= "26.3-0") modCompileOnly(it)
+        else modImplementation(it)
     }
 
     bundle(api(project(":config"))!!)

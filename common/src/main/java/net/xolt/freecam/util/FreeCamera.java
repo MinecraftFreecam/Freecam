@@ -191,7 +191,11 @@ public class FreeCamera extends AbstractClientPlayer {
     // Prevents pistons from moving FreeCamera when collision.ignoreAll is enabled.
     @Override
     public @NotNull PushReaction getPistonPushReaction() {
-        return ModConfig.get().ignoreAllCollision() ? PushReaction.IGNORE : PushReaction.NORMAL;
+        if (ModConfig.get().ignoreAllCollision()) {
+            //~ if >=26.3-0 IGNORE -> IGNORE_ENTITY
+            return PushReaction.IGNORE_ENTITY;
+        }
+        return super.getPistonPushReaction();
     }
 
     // Prevents collision with solid entities (shulkers, boats)
