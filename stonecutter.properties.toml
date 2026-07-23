@@ -13,7 +13,7 @@
 # Fabric: https://fabricmc.net/develop
 # NeoForge: https://projects.neoforged.net/neoforged/neoforge
 # Cloth Config: https://maven.shedaniel.me/me/shedaniel/cloth/cloth-config-fabric
-# ModMenu: https://maven.terraformersmc.com/releases/com/terraformersmc/modmenu
+# ModMenu: https://maven.terraformersmc.com/#browse/browse:maven-terraformers:com%2Fterraformersmc%2Fmodmenu
 
 
 [relationship]
@@ -26,6 +26,26 @@ cloth-config.modrinth_id = "9s6osm5g"
 modmenu.type = "optional"
 modmenu.curseforge_slug = "modmenu"
 modmenu.modrinth_id = "mOgUt4GM"
+
+
+["26.3"]
+reqs.mc = "26.3.x-0"
+
+deps.cloth = "26.2.155"
+reqs.cloth = "~26.3"
+# TODO: https://github.com/TerraformersMC/ModMenu/pull/1054
+deps.modmenu = "20.0.1"
+
+deps.fabric_api = "0.155.3+26.3"
+reqs.fabric_loader = ">=0.18.0"
+
+deps.neoforge_pr = ""
+deps.neoforge_version = "26.3.0.0-alpha"
+reqs.neoforge_version = ">=26.3.0-0"
+reqs.neoforge_loader = ">=1"
+
+# We're not building against cloth-config yet
+relationship.cloth-config.type = "none"
 
 
 ["26.2"]

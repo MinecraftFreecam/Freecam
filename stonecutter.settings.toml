@@ -2,10 +2,11 @@
 "$schema" = "https://stonecutter.kikugie.dev/settings-schema/latest.json"
 
 # The version used by "reset active project"
-vcs = "26.2"
+vcs = "26.3"
 
 # Gradle projects to build for the corresponding Minecraft version.
 [versions]
+"26.3:26.3-snapshot-5" = ["common", "fabric"]
 "26.2" = ["cloth-config", "common", "fabric", "neoforge"]
 "26.1:26.1.2" = ["cloth-config", "common", "fabric", "neoforge"]
 "1.21.11" = ["cloth-config", "common", "fabric", "neoforge"]
