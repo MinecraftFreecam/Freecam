@@ -13,7 +13,7 @@
     "test": "node src/dev.ts"
   },
   "dependencies": {
-    "@stricli/core": "^1.2.9",
+    "@stricli/core": "^1.3.0",
     "smol-toml": "^1.7.0",
     "zod": "^4.4.3"
   }
