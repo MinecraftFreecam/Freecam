@@ -2,7 +2,7 @@ package net.xolt.freecam.config;
 
 import net.minecraft.world.level.block.Block;
 import net.xolt.freecam.config.controller.ConfigControllerRegistry;
-import net.xolt.freecam.config.model.ModConfigDTO;
+import net.xolt.freecam.config.model.ModConfigDTOAdapter;
 
 /**
  * Extends {@link ModConfig} with Minecraft-aware features.
@@ -10,7 +10,7 @@ import net.xolt.freecam.config.model.ModConfigDTO;
 public interface MCAwareModConfig extends ModConfig {
 
     static MCAwareModConfig get() {
-        return ConfigControllerRegistry.get(ModConfigDTO.class).getConfig();
+        return ConfigControllerRegistry.get(ModConfigDTOAdapter.class).getConfig();
     }
 
     // FIXME: interface should not use MC classes

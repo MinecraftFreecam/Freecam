@@ -8,9 +8,9 @@ import me.shedaniel.clothconfig2.impl.builders.KeyCodeBuilder;
 import me.shedaniel.clothconfig2.impl.builders.SubCategoryBuilder;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
+import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.controller.ConfigController;
 import net.xolt.freecam.config.model.FlightMode;
-import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.model.ModConfigDTO;
 import net.xolt.freecam.config.model.Perspective;
 

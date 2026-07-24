@@ -1,7 +1,5 @@
 package net.xolt.freecam.config.controller;
 
-import net.xolt.freecam.config.model.ModConfigDTO;
-
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -9,10 +7,6 @@ public final class ConfigControllerRegistry {
     private ConfigControllerRegistry() {}
 
     private static final Map<Class<?>, ConfigController<?>> CONTROLLERS = new ConcurrentHashMap<>();
-
-    public static void init() {
-        register(ModConfigDTO.class, SingletonModConfigController.INSTANCE);
-    }
 
     public static <T> ConfigController<T> get(Class<T> configClass) {
         @SuppressWarnings("unchecked")

@@ -1,9 +1,12 @@
 package net.xolt.freecam.config;
 
+import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.controller.ConfigControllerRegistry;
-import net.xolt.freecam.config.model.FlightMode;
-import net.xolt.freecam.config.model.ModConfigDTO;
-import net.xolt.freecam.config.model.Perspective;
+import net.xolt.freecam.config.controller.CoreConfigController;
+import net.xolt.freecam.config.controller.ModConfigController;
+import net.xolt.freecam.config.model.*;
+
+import static net.xolt.freecam.Freecam.MC;
 
 public interface ModConfig {
 
@@ -12,12 +15,27 @@ public interface ModConfig {
      * Will load config from disk and perform internal setup.
      */
     static void setup() {
-        ConfigControllerRegistry.init();
-        ConfigControllerRegistry.get(ModConfigDTO.class).load();
+        CoreConfigLoader<ModConfigDTO> loader = new CoreConfigLoader<>(
+            new GsonSerializer(),
+            ModConfigDTO.class,
+            MC.gameDirectory.toPath().resolve("config"),
+            Freecam.MOD_ID
+        );
+
+        // Create a pure-data controller
+        CoreConfigController<ModConfigDTO> dtoController = new CoreConfigController<>(loader, ModConfigDTO::new);
+        ConfigControllerRegistry.register(ModConfigDTO.class, dtoController);
+
+        // And an MC-aware wrapper
+        ModConfigController adapterController = new ModConfigController(dtoController);
+        ConfigControllerRegistry.register(ModConfigDTOAdapter.class, adapterController);
+
+        // Load the config
+        adapterController.load();
     }
 
     static ModConfig get() {
-        return ConfigControllerRegistry.get(ModConfigDTO.class).getConfig();
+        return ConfigControllerRegistry.get(ModConfigDTOAdapter.class).getConfig();
     }
 
     FlightMode getFlightMode();
