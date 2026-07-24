@@ -1,9 +1,9 @@
 package net.xolt.freecam.config.model;
 
 import net.minecraft.world.level.block.Block;
-import net.xolt.freecam.config.MCAwareModConfig;
+import net.xolt.freecam.config.ModConfig;
 
-public class ModConfigImpl implements MCAwareModConfig {
+public class ModConfigImpl implements ModConfig {
 
     private final ModConfigDTO data;
     private final CollisionPredicate collisionPredicate;
