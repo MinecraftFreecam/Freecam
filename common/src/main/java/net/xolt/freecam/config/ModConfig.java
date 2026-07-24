@@ -1,5 +1,6 @@
 package net.xolt.freecam.config;
 
+import net.minecraft.world.level.block.Block;
 import net.xolt.freecam.config.controller.ConfigControllerRegistry;
 import net.xolt.freecam.config.model.FlightMode;
 import net.xolt.freecam.config.model.ModConfigImpl;
@@ -29,6 +30,8 @@ public interface ModConfig {
     boolean ignoreAllCollision();
 
     boolean shouldCheckInitialCollision();
+
+    boolean ignoreCollisionWith(Block block);
 
     Perspective getInitialPerspective();
 
