@@ -1,8 +1,3 @@
-val isCi = System.getenv("CI") == "true"
-gradle.startParameter.isParallelProjectExecutionEnabled = !isCi
-gradle.startParameter.isBuildCacheEnabled = !isCi
-gradle.startParameter.isConfigureOnDemand = !isCi
-
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
