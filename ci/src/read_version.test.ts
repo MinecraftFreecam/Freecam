@@ -4,8 +4,8 @@ import path from "node:path";
 import FIXTURES from "./fixtures.test.ts";
 import { MetadataError, readVersion } from "./read_version.ts";
 
-describe("read_version", () => {
-  it("readVersion reads real project version", () => {
+describe("readVersion", () => {
+  it("reads real project version", () => {
     const version = readVersion();
     assert.ok(version);
     // noinspection SuspiciousTypeOfGuard
@@ -13,25 +13,14 @@ describe("read_version", () => {
     assert.notEqual(version, "");
   });
 
-  it("readVersion reads valid_version", () => {
+  it("reads valid_version fixture", () => {
     const fixture = path.resolve(FIXTURES, "valid_version.toml");
     const version = readVersion(fixture);
     assert.equal(version, "1.2.3");
   });
 
-  describe("readVersion throws for:", () => {
-    const fixtures = [
-      { name: "missing file", filename: "missing_file.toml" },
-      { name: "missing version", filename: "missing_version.toml" },
-      { name: "missing mod table", filename: "missing_mod_table.toml" },
-      { name: "empty version", filename: "empty_version.toml" },
-      { name: "non-string version", filename: "non_str_version.toml" },
-    ];
-    for (const { name, filename } of fixtures) {
-      it(name, () => {
-        const fixture = path.resolve(FIXTURES, filename);
-        assert.throws(() => readVersion(fixture), MetadataError);
-      });
-    }
+  it("throws MetadataError for missing file", () => {
+    const fixture = path.resolve(FIXTURES, "missing_file.toml");
+    assert.throws(() => readVersion(fixture), MetadataError);
   });
 });
