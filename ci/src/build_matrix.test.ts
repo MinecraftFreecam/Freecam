@@ -3,37 +3,7 @@ import assert from "node:assert/strict";
 import path from "node:path";
 
 import FIXTURES from "./fixtures.test.ts";
-import {
-  buildVersionMatrix,
-  loadMatrixJobs,
-  loadVersions,
-} from "./build_matrix.ts";
-
-describe("loadVersions", () => {
-  it("valid", () => {
-    const versions = loadVersions(
-      "versions",
-      path.resolve(FIXTURES, "valid_versions.toml"),
-    );
-
-    assert.equal(typeof versions, "object");
-
-    for (const [key, value] of Object.entries(versions)) {
-      assert.equal(typeof key, "string");
-      assert.ok(
-        value === null ||
-          (Array.isArray(value) &&
-            value.every((v) => typeof v === "string" || typeof v === "object")),
-      );
-    }
-  });
-
-  it("invalid", () => {
-    assert.throws(() =>
-      loadVersions("versions", path.resolve(FIXTURES, "invalid_versions.toml")),
-    );
-  });
-});
+import { buildVersionMatrix, loadMatrixJobs } from "./build_matrix.ts";
 
 describe("buildVersionMatrix", () => {
   it("basic", () => {

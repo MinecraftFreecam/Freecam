@@ -1,26 +1,26 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import TOML from "smol-toml";
 import {
+  type MatrixJob,
   MatrixJobSchema,
   MatrixJobsFileSchema,
-  type MatrixJob,
 } from "./matrix_model.ts";
 import {
   SCProjectsByVersionSchema,
   SCProjectSlugSchema,
-  type SCProjectsByVersion,
 } from "./stonecutter_model.ts";
-import { MATRIX_JOBS_FILE, STONECUTTER_FILE } from "./project_files.ts";
+import { MATRIX_JOBS_FILE } from "./project_files.ts";
 import { readVersion } from "./read_version.ts";
 import app, { type CliOptions } from "./build_matrix_cli.ts";
 import { run, type StricliProcess } from "@stricli/core";
 
 export function main(args: CliOptions) {
   const version = args.version ?? readVersion();
+  const versionsToml = TOML.parse(readFileSync(args.versionsFile, "utf8"));
 
   const versionJobs = buildVersionMatrix(
     version + (args.release ? "" : "-SNAPSHOT"),
-    loadVersions("versions", args.versionsFile),
+    SCProjectsByVersionSchema.parse(versionsToml.versions),
   );
 
   const changelogJobs = args.changelog
@@ -100,15 +100,6 @@ export function buildChangelogJob(
     ],
     upload: { path: `changelog/build/${file}`, days: 90, archive: false },
   };
-}
-
-export function loadVersions(
-  key = "versions",
-  file = STONECUTTER_FILE,
-): SCProjectsByVersion {
-  const toml = readFileSync(file, "utf8");
-  const versions = TOML.parse(toml)[key];
-  return SCProjectsByVersionSchema.parse(versions);
 }
 
 export function loadMatrixJobs(
