@@ -28,6 +28,7 @@ export const MatrixUploadSchema = z
 export const MatrixJobSchema = z.object({
   name: z.string(),
   gradle_args: z.array(z.string()),
+  stonecutter_config: z.string().optional(),
   upload: MatrixUploadSchema.optional(),
 });
 

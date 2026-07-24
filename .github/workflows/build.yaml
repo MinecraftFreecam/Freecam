@@ -55,6 +55,7 @@ jobs:
       - name: Run gradle
         env:
           args: ${{ toJSON(matrix.gradle_args) }}
+          STONECUTTER_CONFIG_JSON: ${{ matrix.stonecutter_config }}
         run: |
           # Build each task
           mapfile -t args < <( echo "$args" | jq --raw-output .[] )

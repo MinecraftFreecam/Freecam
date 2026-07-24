@@ -1,16 +1,15 @@
 import { readFileSync, writeFileSync } from "node:fs";
 import TOML from "smol-toml";
 import {
+  type MatrixJob,
   MatrixJobSchema,
   MatrixJobsFileSchema,
-  type MatrixJob,
 } from "./matrix_model.ts";
 import {
   SCProjectsByVersionSchema,
   SCProjectSlugSchema,
-  type SCProjectsByVersion,
 } from "./stonecutter_model.ts";
-import { MATRIX_JOBS_FILE, STONECUTTER_FILE } from "./project_files.ts";
+import { MATRIX_JOBS_FILE } from "./project_files.ts";
 import { readVersion } from "./read_version.ts";
 import app, { type CliOptions } from "./build_matrix_cli.ts";
 import { run, type StricliProcess } from "@stricli/core";
@@ -18,9 +17,10 @@ import { run, type StricliProcess } from "@stricli/core";
 export function main(args: CliOptions) {
   const version = args.version ?? readVersion();
 
+  const config = TOML.parse(readFileSync(args.versionsFile, "utf8"));
   const versionJobs = buildVersionMatrix(
     version + (args.release ? "" : "-SNAPSHOT"),
-    loadVersions("versions", args.versionsFile),
+    config,
   );
 
   const changelogJobs = args.changelog
@@ -52,10 +52,14 @@ export function main(args: CliOptions) {
 
 export function buildVersionMatrix(
   version: string,
-  versions: Record<string, unknown>,
+  config: Record<string, unknown>,
+  versionsKey = "versions",
 ): MatrixJob[] {
   const loaders = ["fabric", "forge", "neoforge"];
   const matrix: MatrixJob[] = [];
+
+  // Extract and validate directly where the context is used
+  const versions = SCProjectsByVersionSchema.parse(config[versionsKey]);
 
   for (const [key, branches] of Object.entries(versions)) {
     if (!Array.isArray(branches)) continue;
@@ -66,10 +70,17 @@ export function buildVersionMatrix(
       .filter((loader) => branches.includes(loader))
       .map((loader) => `:${loader}:${entry.project}:buildAndCollect`);
 
+    // Create a filtered copy of the stonecutter configuration
+    const jobConfig = {
+      ...config,
+      [versionsKey]: { [key]: branches },
+    };
+
     matrix.push(
       MatrixJobSchema.parse({
         name: `MC ${entry.project}`,
         gradle_args: gradleArgs,
+        stonecutter_config: JSON.stringify(jobConfig),
         upload: {
           name: `mc-${entry.project}`,
           path: `build/libs/${version}/*.jar`,
@@ -100,15 +111,6 @@ export function buildChangelogJob(
     ],
     upload: { path: `changelog/build/${file}`, days: 90, archive: false },
   };
-}
-
-export function loadVersions(
-  key = "versions",
-  file = STONECUTTER_FILE,
-): SCProjectsByVersion {
-  const toml = readFileSync(file, "utf8");
-  const versions = TOML.parse(toml)[key];
-  return SCProjectsByVersionSchema.parse(versions);
 }
 
 export function loadMatrixJobs(

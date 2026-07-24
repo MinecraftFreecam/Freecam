@@ -1,3 +1,5 @@
+import kotlin.io.path.createTempFile
+
 val isCi = System.getenv("CI") == "true"
 gradle.startParameter.isParallelProjectExecutionEnabled = !isCi
 gradle.startParameter.isBuildCacheEnabled = !isCi
@@ -52,7 +54,16 @@ plugins {
 }
 
 stonecutter {
-    create(rootProject, file("stonecutter.settings.toml"))
+    val configFile = System.getenv("STONECUTTER_CONFIG_JSON")
+        ?.takeUnless { it.isEmpty() }
+        ?.let { json ->
+            createTempFile(prefix = "stonecutter.settings", suffix = ".json").toFile().apply {
+                deleteOnExit()
+                writeText(json)
+            }
+        }
+        ?: file("stonecutter.settings.toml")
+    create(rootProject, configFile)
 }
 
 include("i18n")
