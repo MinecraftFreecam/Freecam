@@ -1,7 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 
-import { MatrixJobSchema } from "./matrix_model.ts";
+import { MatrixJobSchema, MatrixJobsFileSchema } from "./matrix_model.ts";
 
 describe("MatrixJob / MatrixUpload", () => {
   it("valid with upload", () => {
@@ -58,6 +58,35 @@ describe("MatrixJob / MatrixUpload", () => {
         name: "Build test",
         gradle_args: [":common:test"],
         upload: {},
+      }),
+    );
+  });
+});
+
+describe("MatrixJobsFileSchema", () => {
+  it("defaults to empty array when undefined", () => {
+    const matrix = MatrixJobsFileSchema.parse({});
+    assert.deepEqual(matrix, { builds: [] });
+  });
+
+  it("valid array of jobs", () => {
+    const matrix = MatrixJobsFileSchema.parse({
+      build: [
+        {
+          name: "test job 1",
+          gradle_args: [":test"],
+        },
+      ],
+    });
+
+    assert.equal(matrix.builds.length, 1);
+    assert.equal(matrix.builds[0]?.name, "test job 1");
+  });
+
+  it("invalid structure", () => {
+    assert.throws(() =>
+      MatrixJobsFileSchema.parse({
+        build: [{ invalid: "data" }],
       }),
     );
   });

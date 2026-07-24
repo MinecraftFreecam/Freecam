@@ -6,10 +6,10 @@ import {
   MatrixJobsFileSchema,
 } from "./matrix_model.ts";
 import {
+  type SCProjectsByVersion,
   SCProjectsByVersionSchema,
   SCProjectSlugSchema,
 } from "./stonecutter_model.ts";
-import { MATRIX_JOBS_FILE } from "./project_files.ts";
 import { readVersion } from "./read_version.ts";
 import app, { type CliOptions } from "./build_matrix_cli.ts";
 import { run, type StricliProcess } from "@stricli/core";
@@ -17,6 +17,9 @@ import { run, type StricliProcess } from "@stricli/core";
 export function main(args: CliOptions) {
   const version = args.version ?? readVersion();
   const versionsToml = TOML.parse(readFileSync(args.versionsFile, "utf8"));
+  const matrixJobsToml = args.jobsFile
+    ? TOML.parse(readFileSync(args.jobsFile, "utf8"))
+    : null;
 
   const versionJobs = buildVersionMatrix(
     version + (args.release ? "" : "-SNAPSHOT"),
@@ -27,8 +30,8 @@ export function main(args: CliOptions) {
     ? [buildChangelogJob(args.release, version)]
     : [];
 
-  const staticJobs = args.jobsFile
-    ? loadMatrixJobs("build", args.jobsFile)
+  const staticJobs = matrixJobsToml
+    ? MatrixJobsFileSchema.parse(matrixJobsToml).builds
     : [];
 
   const matrix = [...changelogJobs, ...staticJobs, ...versionJobs].sort(
@@ -52,7 +55,7 @@ export function main(args: CliOptions) {
 
 export function buildVersionMatrix(
   version: string,
-  versions: Record<string, unknown>,
+  versions: SCProjectsByVersion,
 ): MatrixJob[] {
   const loaders = ["fabric", "forge", "neoforge"];
   const matrix: MatrixJob[] = [];
@@ -101,16 +104,6 @@ export function buildChangelogJob(
     upload: { path: `changelog/build/${file}`, days: 90, archive: false },
   };
 }
-
-export function loadMatrixJobs(
-  key = "build",
-  file = MATRIX_JOBS_FILE,
-): MatrixJob[] {
-  const toml = readFileSync(file, "utf8");
-  const jobs = TOML.parse(toml)[key] ?? [];
-  return MatrixJobsFileSchema.parse(jobs);
-}
-
 if (import.meta.main) {
   await run(app, process.argv.slice(2), { process: process as StricliProcess });
 }

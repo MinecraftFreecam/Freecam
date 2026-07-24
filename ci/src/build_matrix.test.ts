@@ -1,9 +1,7 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
-import path from "node:path";
 
-import FIXTURES from "./fixtures.test.ts";
-import { buildVersionMatrix, loadMatrixJobs } from "./build_matrix.ts";
+import { buildVersionMatrix } from "./build_matrix.ts";
 
 describe("buildVersionMatrix", () => {
   it("basic", () => {
@@ -31,31 +29,5 @@ describe("buildVersionMatrix", () => {
       ":forge:1.20:buildAndCollect",
     ]);
     assert.equal(job120.upload?.name, "mc-1.20");
-  });
-});
-
-describe("loadMatrixJobs", () => {
-  it("empty", () => {
-    const matrix = loadMatrixJobs(
-      "build",
-      path.resolve(FIXTURES, "empty_matrix_jobs.toml"),
-    );
-    assert.deepEqual(matrix, []);
-  });
-
-  it("valid", () => {
-    const matrix = loadMatrixJobs(
-      "build",
-      path.resolve(FIXTURES, "matrix_jobs.toml"),
-    );
-
-    assert.equal(matrix.length, 1);
-    assert.equal(matrix[0]?.name, "test job 1");
-  });
-
-  it("invalid", () => {
-    assert.throws(() =>
-      loadMatrixJobs("build", path.resolve(FIXTURES, "bad_matrix_jobs.toml")),
-    );
   });
 });

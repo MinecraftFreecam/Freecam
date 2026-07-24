@@ -31,7 +31,13 @@ export const MatrixJobSchema = z.object({
   upload: MatrixUploadSchema.optional(),
 });
 
-export const MatrixJobsFileSchema = z.array(MatrixJobSchema);
+export const MatrixJobsFileSchema = z
+  .object({
+    build: z.array(MatrixJobSchema).default([]),
+  })
+  .transform(({ build }) => ({
+    builds: build,
+  }));
 
 export type MatrixUpload = z.infer<typeof MatrixUploadSchema>;
 export type MatrixJob = z.infer<typeof MatrixJobSchema>;
