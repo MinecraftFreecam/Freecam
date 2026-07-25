@@ -19,8 +19,7 @@ public class GsonSerializer implements ConfigSerializer<JsonElement> {
 
     @Override
     public JsonElement parse(Reader reader) throws JsonIOException, JsonSyntaxException {
-        //~ if gson: >=2.8.6 'new JsonParser().parse' -> 'JsonParser.parseReader'
-        return JsonParser.parseReader(reader);
+        return GsonCompat.parse(reader);
     }
 
     @Override
