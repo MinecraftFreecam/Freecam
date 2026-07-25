@@ -1,6 +1,6 @@
 package net.xolt.freecam.config.controller;
 
-import net.xolt.freecam.config.model.ConfigLoader;
+import net.xolt.freecam.config.load.ConfigLoader;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

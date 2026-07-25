@@ -6,7 +6,18 @@ import net.xolt.freecam.config.controller.BasicConfigController;
 import net.xolt.freecam.config.controller.ConfigController;
 import net.xolt.freecam.config.controller.ConfigControllerRegistry;
 import net.xolt.freecam.config.controller.ModConfigController;
-import net.xolt.freecam.config.model.*;
+import net.xolt.freecam.config.load.ConfigLoader;
+import net.xolt.freecam.config.load.ConfigSerializer;
+import net.xolt.freecam.config.load.ModConfigLoader;
+import net.xolt.freecam.config.load.RawJsonPreservingSerializer;
+import net.xolt.freecam.config.model.FlightMode;
+import net.xolt.freecam.config.model.ModConfigDTO;
+import net.xolt.freecam.config.model.ModConfigImpl;
+import net.xolt.freecam.config.model.Perspective;
+
+import java.nio.file.Path;
+
+import static net.xolt.freecam.Freecam.MC;
 
 public interface ModConfig {
 
@@ -15,7 +26,9 @@ public interface ModConfig {
      * Will load config from disk and perform internal setup.
      */
     static void setup() {
-        GsonConfigLoader<ModConfigDTO> loader = new GsonConfigLoader<>(ModConfigDTO.class, Freecam.MOD_ID);
+        Path configDir = MC.gameDirectory.toPath().resolve("config");
+        ConfigSerializer<?> serializer = new RawJsonPreservingSerializer();
+        ConfigLoader<ModConfigDTO> loader = new ModConfigLoader(serializer, Freecam.MOD_ID, configDir);
 
         ConfigController<ModConfigDTO> dtoController = new BasicConfigController<>(loader, ModConfigDTO::new);
         ConfigControllerRegistry.register(ModConfigDTO.class, dtoController);

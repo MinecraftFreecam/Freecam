@@ -1,6 +1,7 @@
 package net.xolt.freecam.config.model;
 
 import com.google.gson.JsonObject;
+import net.xolt.freecam.config.load.RawJsonHolder;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
