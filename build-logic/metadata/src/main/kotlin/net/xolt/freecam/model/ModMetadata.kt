@@ -2,8 +2,7 @@ package net.xolt.freecam.model
 
 import dev.kikugie.stonecutter.AnyVersion
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
-import io.github.z4kn4fein.semver.constraints.ConstraintFormatException
-import io.github.z4kn4fein.semver.constraints.toConstraint
+import io.github.z4kn4fein.semver.constraints.Constraint
 import net.xolt.freecam.util.decodeTomlPath
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
@@ -95,27 +94,19 @@ private class ProjectModMetadata(
             .get()
     }
 
-    override val mod by lazy { project.properties.toPrefixMap("mod.") }
-    override val deps by lazy { project.properties.toPrefixMap("deps.") }
-    override val reqs by lazy {
-        project.properties.toPrefixMap("reqs.").mapValues { (key, value) ->
-            try {
-                value.toConstraint()
-            } catch (e: ConstraintFormatException) {
-                error("${project.path} reqs.$key='$value': ${e.message}")
-            }
-        }
+    override val mod: Map<String, String> by lazy {
+        requireStonecutter("mod")
+            .properties.rawOrNull("mod")?.to()
+            ?: emptyMap()
+    }
+    override val deps: Map<String, String> by lazy {
+        requireStonecutter("deps")
+            .properties.rawOrNull("deps")?.to()
+            ?: emptyMap()
+    }
+    override val reqs: Map<String, Constraint> by lazy {
+        requireStonecutter("reqs")
+            .properties.rawOrNull("reqs")?.to()
+            ?: emptyMap()
     }
 }
-
-private fun Map<String, Any?>.toPrefixMap(prefix: String) =
-    asSequence()
-        .filter { (key, _) ->
-            key.startsWith(prefix)
-        }
-        .mapNotNull { (key, value) ->
-            (value as? String)?.let { key to it }
-        }
-        .associate { (key, value) ->
-            key.removePrefix(prefix) to value
-        }
