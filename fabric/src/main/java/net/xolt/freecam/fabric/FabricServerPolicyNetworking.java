@@ -9,11 +9,18 @@ import net.xolt.freecam.network.ServerPolicyPayload;
 public final class FabricServerPolicyNetworking {
 
     public static void register() {
-        //~ if >=26.1 playS2C -> clientboundPlay
+        /*? if >=26.1 {*/
         PayloadTypeRegistry.clientboundPlay().register(
                 ServerPolicyPayload.TYPE,
                 ServerPolicyPayload.STREAM_CODEC
         );
+        /*?} else {*/
+        /*PayloadTypeRegistry.playS2C().register(
+                ServerPolicyPayload.TYPE,
+                ServerPolicyPayload.STREAM_CODEC
+        );*/
+        /*?}*/
+
         ClientPlayNetworking.registerGlobalReceiver(
                 ServerPolicyPayload.TYPE,
                 (payload, context) -> ServerPolicies.applyJson(payload.json())
