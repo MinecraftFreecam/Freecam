@@ -8,9 +8,6 @@ import java.util.Map.Entry;
 
 public class RawJsonPreservingSerializer implements ConfigSerializer<JsonElement> {
 
-    //? if gson: <2.8.2
-    //private final com.google.gson.Gson gson = new com.google.gson.Gson();
-
     private final ConfigSerializer<JsonElement> delegate;
 
     public RawJsonPreservingSerializer() {
@@ -66,7 +63,7 @@ public class RawJsonPreservingSerializer implements ConfigSerializer<JsonElement
         if (previous == null) return current;
 
         if (current.isJsonObject() && previous.isJsonObject()) {
-            JsonObject result = deepCopy(current).getAsJsonObject();
+            JsonObject result = GsonCompat.deepCopy(current).getAsJsonObject();
             for (Entry<String, JsonElement> entry : previous.getAsJsonObject().entrySet()) {
                 String key = entry.getKey();
                 JsonElement previousValue = entry.getValue();
@@ -82,12 +79,5 @@ public class RawJsonPreservingSerializer implements ConfigSerializer<JsonElement
 
         // Otherwise: current overwrites previous value
         return current;
-    }
-
-    JsonElement deepCopy(JsonElement json) {
-        //? if gson: >=2.8.2 {
-        return json.deepCopy();
-        //? } else
-        //return gson.fromJson(gson.toJson(json), JsonElement.class);
     }
 }
