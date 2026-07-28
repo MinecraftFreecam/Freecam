@@ -3,9 +3,7 @@ import com.github.jengelman.gradle.plugins.shadow.transformers.AppendingTransfor
 import com.github.jengelman.gradle.plugins.shadow.transformers.PreserveFirstFoundResourceTransformer
 import io.github.z4kn4fein.semver.constraints.toMavenFormat
 import kotlinx.serialization.json.*
-import net.neoforged.moddevgradle.legacyforge.internal.MinecraftMappings
 import net.xolt.freecam.gradle.ForgeModsTomlTask
-import net.xolt.freecam.shadow.tasks.NormalizeShadowBundleTask
 import net.xolt.freecam.shadow.transformers.ModsTomlTransformer
 
 plugins {
@@ -60,22 +58,6 @@ legacyForge {
 }
 
 /**
- * Include a dependency in the `shadowJar` task.
- * For third-party libraries, use [include] instead to take advantage of Forge's JarJar system.
- *
- * We avoid using the default `shadow` configuration, because it is pre-configured to inherit from other configurations.
- */
-val bundle by configurations.creating {
-    isCanBeResolved = true
-    isCanBeConsumed = false
-    isTransitive = false
-
-    attributes {
-        attribute(MinecraftMappings.ATTRIBUTE, objects.named(MinecraftMappings.NAMED))
-    }
-}
-
-/**
  * Wrapper for [jarJar] and [bundle].
  *
  * You **must** also [`relocate`](https://gradleup.com/shadow/configuration/relocation) third-party packages in `tasks.shadowJar`,
@@ -90,7 +72,7 @@ fun DependencyHandler.include(dependencyNotation: Any, shadowJarConfig: ShadowJa
     if (sc.eval(forgeVersion, ">=40.1.60")) {
         jarJar(dependencyNotation)
     } else {
-        add(bundle.name, dependencyNotation)
+        bundle(dependencyNotation)
         tasks.shadowJar { shadowJarConfig() }
     }
 }
@@ -236,8 +218,6 @@ tasks.processResources {
 }
 
 tasks.jar {
-    archiveClassifier = "minimal"
-
     manifest.attributes(
         "MixinConfigs" to mixinConfigNames.joinToString(","),
     )
@@ -245,19 +225,7 @@ tasks.jar {
     finalizedBy("reobfJar")
 }
 
-val normalizeShadowBundleTask = tasks.register<NormalizeShadowBundleTask>("normalizeShadowBundle") {
-    description = "Normalize dependencies before bundling with Shadow"
-    inputFiles.from(bundle)
-}
-
 tasks.shadowJar {
-    duplicatesStrategy = DuplicatesStrategy.FAIL
-    failOnDuplicateEntries = true
-    archiveClassifier = null
-
-    // Don't use the `shadow` configuration
-    configurations = emptySet()
-    from(normalizeShadowBundleTask.map { it.outputFiles })
     from(mixinRefmap)
     from(tasks.jarJar)
 
@@ -290,15 +258,4 @@ tasks.shadowJar {
 
 obfuscation {
     reobfuscate(tasks.shadowJar, sourceSets.main.get())
-}
-
-configurations {
-    apiElements {
-        outgoing.artifacts.clear()
-        outgoing.artifact(tasks.shadowJar)
-    }
-    runtimeElements {
-        outgoing.artifacts.clear()
-        outgoing.artifact(tasks.shadowJar)
-    }
 }
