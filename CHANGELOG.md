@@ -5,11 +5,15 @@ All notable changes to this project will be documented in this file.
 This file is formatted as per [Keep a Changelog](https://keepachangelog.com/en/1.0.0),
 and Freecam's versioning is based on [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+<!-- Squash "Cloth Config impl is now bundled" with "resolved Fabric Loader 'invalid version'" in full release -->
+
 ## [Unreleased]
 
 ### Added
 
 ### Changed
+
+- Our Cloth Config implementation is now bundled as part of the main mod, rather than as nested child mods ([561](https://github.com/MinecraftFreecam/Freecam/pull/561))
 
 ### Removed
 

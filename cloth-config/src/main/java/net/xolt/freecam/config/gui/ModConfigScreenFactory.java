@@ -1,4 +1,4 @@
-package net.xolt.freecam.clothconfig;
+package net.xolt.freecam.config.gui;
 
 import me.shedaniel.clothconfig2.api.ConfigBuilder;
 import me.shedaniel.clothconfig2.api.ConfigCategory;

@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.fletchingtable.neoforge)
     id("freecam.loaders")
     id("freecam.fml")
+    id("freecam.shadow")
 }
 
 val mixinConfigNames = listOf(
@@ -36,7 +37,7 @@ dependencies {
         val clothConstraint = requireNotNull(meta.reqs["cloth"]) {
             "Missing reqs.cloth for ${project.path}"
         }
-        jarJar(implementation(project(path = it.project.path, configuration = "namedElements")) as Any)
+        bundle(implementation(project(path = it.project.path, configuration = "namedElements"))!!)
         jarJar(implementation("me.shedaniel.cloth:cloth-config-neoforge") {
             version {
                 prefer(clothVersion)
@@ -77,9 +78,13 @@ sourceSets.main {
 
 tasks.register<Copy>("buildAndCollect") {
     group = "build"
-    from(tasks.jar.map { it.archiveFile })
+    from(tasks.shadowJar.flatMap { it.archiveFile })
     into(rootProject.layout.buildDirectory.file("libs/${meta.buildDir}"))
     dependsOn(tasks.build)
+}
+
+tasks.generateReleaseMetadata {
+    artifactFileName = tasks.shadowJar.flatMap { it.archiveFileName }
 }
 
 tasks.named("createMinecraftArtifacts") {
@@ -135,4 +140,8 @@ tasks.processResources {
     }
 
     inputs.properties("java_version" to meta.javaVersion)
+}
+
+tasks.shadowJar {
+    from(tasks.jarJar)
 }
