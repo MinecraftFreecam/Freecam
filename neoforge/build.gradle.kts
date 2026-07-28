@@ -37,7 +37,7 @@ dependencies {
         val clothConstraint = requireNotNull(meta.reqs["cloth"]) {
             "Missing reqs.cloth for ${project.path}"
         }
-        jarJar(implementation(project(path = it.project.path, configuration = "namedElements")) as Any)
+        bundle(implementation(project(path = it.project.path, configuration = "namedElements"))!!)
         jarJar(implementation("me.shedaniel.cloth:cloth-config-neoforge") {
             version {
                 prefer(clothVersion)

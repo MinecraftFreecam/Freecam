@@ -65,8 +65,7 @@ dependencies {
     }
 
     sc.node.sibling("cloth-config")?.let {
-        include(it.project)
-        api(project(path = it.project.path, configuration = "namedElements"))
+        bundle(api(project(path = it.project.path, configuration = "namedElements"))!!)
 
         include(modApi("me.shedaniel.cloth:cloth-config-fabric") {
             version { prefer(meta.deps["cloth"]!!) }

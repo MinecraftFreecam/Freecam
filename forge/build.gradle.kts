@@ -229,8 +229,6 @@ tasks.shadowJar {
     from(mixinRefmap)
     from(tasks.jarJar)
 
-    exclude("fabric.mod.json")
-
     filesMatching("META-INF/mods.toml") {
         duplicatesStrategy = DuplicatesStrategy.INCLUDE
     }
