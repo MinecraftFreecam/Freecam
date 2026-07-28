@@ -15,10 +15,17 @@ sourceSets {
     }
 }
 
-tasks {
-    register<ProjectReleaseMetadataTask>("generateReleaseMetadata") {
-        group = "publishing"
-        description = "Generates release metadata for publishing"
+val releaseMetadataTask = tasks.register<ProjectReleaseMetadataTask>("generateReleaseMetadata") {
+    group = "publishing"
+    description = "Generates release metadata for publishing"
+}
+
+configurations.create("releaseMetadataElements") {
+    isCanBeConsumed = true
+    isCanBeResolved = false
+
+    artifacts {
+        add(name, releaseMetadataTask.flatMap { it.outputFile })
     }
 }
 
