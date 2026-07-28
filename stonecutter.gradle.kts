@@ -103,6 +103,13 @@ val releaseNotes by configurations.registering {
 
 dependencies {
     releaseNotes(project(":changelog", configuration = "releaseNotes"))
+
+    sequenceOf("fabric", "forge", "neoforge")
+        .mapNotNull { sc.tree[it] }
+        .flatMap { it.nodes }
+        .forEach {
+            releaseMetadata(project(it.project.path, configuration = "releaseMetadataElements"))
+        }
 }
 
 tasks.generateReleaseMetadata {
