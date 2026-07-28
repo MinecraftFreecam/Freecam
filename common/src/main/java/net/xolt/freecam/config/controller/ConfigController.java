@@ -12,4 +12,7 @@ public interface ConfigController<T> {
 
     /** Save current config to disk. */
     void save();
+
+    /** Subscribe to config changes. */
+    void registerListener(Runnable listener);
 }

@@ -1,4 +1,4 @@
-package net.xolt.freecam.config.model;
+package net.xolt.freecam.config.load;
 
 import com.google.gson.JsonObject;
 import org.jetbrains.annotations.Nullable;
