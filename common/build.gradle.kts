@@ -57,3 +57,27 @@ tasks.processResources {
 
     duplicatesStrategy = DuplicatesStrategy.FAIL
 }
+
+configurations.create("generatedSourcesElements") {
+    description = "Generated sources from the common project."
+    isCanBeConsumed = true
+    isCanBeResolved = false
+
+    artifacts {
+        add(name, tasks.stonecutterGenerate.map { it.destinationDir }) {
+            builtBy(tasks.stonecutterGenerate)
+        }
+    }
+}
+
+configurations.create("processedResourcesElements") {
+    description = "Processed resources from the common project."
+    isCanBeConsumed = true
+    isCanBeResolved = false
+
+    artifacts {
+        add(name, tasks.processResources.map { it.destinationDir }) {
+            builtBy(tasks.processResources)
+        }
+    }
+}
