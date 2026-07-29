@@ -1,6 +1,8 @@
 import net.fabricmc.loom.configuration.IncludeConfigurations.nestJars
 import net.fabricmc.loom.task.FabricModJsonV1Task
+import net.fabricmc.loom.task.MigrateClassTweakerMappingsTask
 import net.fabricmc.loom.task.RemapJarTask
+import net.fabricmc.loom.task.ValidateAccessWidenerTask
 
 plugins {
     alias(libs.plugins.fletchingtable.fabric)
@@ -78,12 +80,18 @@ dependencies {
 }
 
 loom {
-    // Loom reads the AW during configuration, so the :stonecutterGenerate one is too late
-    // We still use the task-generated AW during the actual build
+    // Loom unfortunately uses accessWidenerPath for two different purposes:
+    // - AccessWidenerJarProcessor eagerly reads it while constructing parts of Loom's decompilation pipeline.
+    // - Other tasks use it as their default input.
+    //
+    // The first requires an eagerly-written file, while the second should consume the task-generated access widener.
+    //
+    // We cannot easily override AccessWidenerJarProcessor, so we set the global property to an eagerly-written file
+    // and explicitly configure loom's tasks below.
     accessWidenerPath = provider {
         stonecutter.process(
             file = rootDir.resolve("common/src/main/resources/freecam.accesswidener"),
-            destination = "build/generated-eval/freecam.accesswidener"
+            destination = "generated-eval/freecam.accesswidener"
         )
     }
 
@@ -100,6 +108,13 @@ loom {
             ideConfigGenerated(false)
         }
     }
+}
+
+// Since we set `loom.accessWidenerPath` to an eval-time written AW file above,
+// explicitly configure loom's tasks to use the task-generated AW file.
+tasks.processResources.map { it.destinationDir.resolve("freecam.accesswidener") }.let { awFile ->
+    tasks.withType<ValidateAccessWidenerTask> { accessWidener = awFile }
+    tasks.withType<MigrateClassTweakerMappingsTask> { inputFile = awFile }
 }
 
 val finalJarTask = if (loomAdapter.hasMappings) tasks.named<RemapJarTask>("remapJar") else tasks.shadowJar
