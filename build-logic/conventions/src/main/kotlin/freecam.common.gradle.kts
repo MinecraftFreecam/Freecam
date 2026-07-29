@@ -68,6 +68,17 @@ repositories {
         )
         filter { includeGroup("com.terraformersmc") }
     }
+
+    // Manually register the LWJGL repository. Otherwise, Loom tries to inject it
+    // dynamically, causing premature repository resolution errors.
+    findByName("MavenCentralLWJGL") ?: exclusiveContent {
+        forRepositories(mavenCentral {
+            name = "MavenCentralLWJGL"
+            content { includeGroup("org.lwjgl") }
+        })
+        filter { includeGroup("org.lwjgl") }
+    }
+
     mavenCentral()
 }
 

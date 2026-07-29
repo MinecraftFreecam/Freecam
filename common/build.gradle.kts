@@ -1,3 +1,6 @@
+import net.fabricmc.loom.task.MigrateClassTweakerMappingsTask
+import net.fabricmc.loom.task.ValidateAccessWidenerTask
+
 plugins {
     alias(libs.plugins.fletchingtable.fabric)
     id("freecam.loom-adapter")
@@ -12,12 +15,18 @@ fletchingTable {
 }
 
 loom {
-    // Loom reads the AW during configuration, so the :stonecutterGenerate one is too late
-    // We still use the task-generated AW during the actual build
+    // Loom unfortunately uses accessWidenerPath for two different purposes:
+    // - AccessWidenerJarProcessor eagerly reads it while constructing parts of Loom's decompilation pipeline.
+    // - Other tasks use it as their default input.
+    //
+    // The first requires an eagerly-written file, while the second should consume the task-generated access widener.
+    //
+    // We cannot easily override AccessWidenerJarProcessor, so we set the global property to an eagerly-written file
+    // and explicitly configure loom's tasks below.
     accessWidenerPath = provider {
         stonecutter.process(
             file = rootDir.resolve("common/src/main/resources/freecam.accesswidener"),
-            destination = "build/generated-eval/freecam.accesswidener"
+            destination = "generated-eval/freecam.accesswidener"
         )
     }
 
@@ -44,6 +53,13 @@ dependencies {
     i18nResources(project(":i18n"))
 }
 
+// Since we set `loom.accessWidenerPath` to an eval-time written AW file above,
+// explicitly configure loom's tasks to use the task-generated AW file.
+tasks.processResources.map { it.destinationDir.resolve("freecam.accesswidener") }.let { awFile ->
+    tasks.withType<ValidateAccessWidenerTask> { accessWidener = awFile }
+    tasks.withType<MigrateClassTweakerMappingsTask> { inputFile = awFile }
+}
+
 tasks.processResources {
     from(i18nResources) {
         into("assets/${meta.id}/lang")
@@ -56,4 +72,28 @@ tasks.processResources {
     inputs.properties("java_version" to meta.javaVersion)
 
     duplicatesStrategy = DuplicatesStrategy.FAIL
+}
+
+configurations.create("generatedSourcesElements") {
+    description = "Generated sources from the common project."
+    isCanBeConsumed = true
+    isCanBeResolved = false
+
+    artifacts {
+        add(name, tasks.stonecutterGenerate.map { it.destinationDir }) {
+            builtBy(tasks.stonecutterGenerate)
+        }
+    }
+}
+
+configurations.create("processedResourcesElements") {
+    description = "Processed resources from the common project."
+    isCanBeConsumed = true
+    isCanBeResolved = false
+
+    artifacts {
+        add(name, tasks.processResources.map { it.destinationDir }) {
+            builtBy(tasks.processResources)
+        }
+    }
 }

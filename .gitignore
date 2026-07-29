@@ -111,6 +111,7 @@ $RECYCLE.BIN/
 .gradle
 .kotlin/
 build/
+generated-eval/
 
 # Ignore Gradle GUI config
 gradle-app.setting
