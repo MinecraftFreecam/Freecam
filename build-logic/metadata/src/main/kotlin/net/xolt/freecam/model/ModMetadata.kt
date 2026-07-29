@@ -2,8 +2,7 @@ package net.xolt.freecam.model
 
 import dev.kikugie.stonecutter.AnyVersion
 import dev.kikugie.stonecutter.build.StonecutterBuildExtension
-import io.github.z4kn4fein.semver.constraints.ConstraintFormatException
-import io.github.z4kn4fein.semver.constraints.toConstraint
+import io.github.z4kn4fein.semver.constraints.Constraint
 import net.xolt.freecam.util.decodeTomlPath
 import org.gradle.api.Project
 import org.gradle.kotlin.dsl.findByType
@@ -41,35 +40,44 @@ private class ProjectModMetadata(
     }
 
     override val relationships: List<Relationship> by lazy {
-        project.properties
-            .asSequence()
-            .mapNotNull { (key, value) ->
-                if (value is String) key to value else null
-            }
-            // Collect relationship properties
-            .mapNotNull { (key, value) ->
-                val path = key.split('.')
-                if (path.size == 3 && path[0] == "relationship") path[1] to (path[2] to value)
-                else null
-            }
-            // Group by relationship name
-            .groupBy({ it.first }, { it.second })
-            // Construct a Relationship object
-            .map { (name, fields) ->
-                val props = fields.toMap()
-                val unknown = props.keys - setOf("curseforge_slug", "modrinth_id", "type")
-                require(unknown.isEmpty()) {
-                    "${project.path} unknown relationship fields: " + unknown.joinToString(" ") { "relationship.$name.$it" }
+        val knownFields = setOf("curseforge_slug", "modrinth_id", "type")
+        val errors = mutableListOf<String>()
+
+        requireStonecutter("relationships")
+            .properties.rawOrNull("relationships")
+            ?.to<Map<String, Map<String, String>>>()
+            ?.mapNotNull { (name, fields) ->
+                (fields.keys - knownFields).takeUnless { it.isEmpty() }?.let { unknownFields ->
+                    errors += "'relationship.$name' has unknown fields: " + unknownFields.joinToString(" ") { "'$it'" }
                 }
+                val curseforgeSlug = fields["curseforge_slug"].also {
+                    if (it == null) errors += "'relationship.$name' is missing required field 'curseforge_slug'"
+                }
+                val modrinthId = fields["modrinth_id"].also {
+                    if (it == null) errors += "'relationship.$name' is missing required field 'modrinth_id'"
+                }
+                val type = fields["type"]?.let { str ->
+                    try {
+                        Relationship.Type.valueOf(str.uppercase())
+                    } catch (_: IllegalArgumentException) {
+                        errors += "'relationship.$name' defines an invalid 'type' ('$str'), expected: " +
+                            Relationship.Type.entries.joinToString(" ") { "'$it'"}
+                        return@mapNotNull null
+                    }
+                }
+
                 Relationship(
-                    curseforgeSlug = props["curseforge_slug"]!!,
-                    modrinthId = props["modrinth_id"]!!,
-                    type = props["type"]
-                        ?.let { Relationship.Type.valueOf(it.uppercase()) }
-                        ?: Relationship.Type.OPTIONAL
+                    curseforgeSlug = curseforgeSlug ?: return@mapNotNull null,
+                    modrinthId = modrinthId ?: return@mapNotNull null,
+                    type = type ?: Relationship.Type.OPTIONAL,
                 )
             }
-            .toList()
+            ?.also {
+                require(errors.isEmpty()) {
+                    "${project.path} has invalid relationship definitions:\n" + errors.joinToString("\n") { "- $it" }
+                }
+            }
+            ?: emptyList()
     }
 
     override val supportedMinecraftVersions: List<String> by lazy {
@@ -86,27 +94,19 @@ private class ProjectModMetadata(
             .get()
     }
 
-    override val mod by lazy { project.properties.toPrefixMap("mod.") }
-    override val deps by lazy { project.properties.toPrefixMap("deps.") }
-    override val reqs by lazy {
-        project.properties.toPrefixMap("reqs.").mapValues { (key, value) ->
-            try {
-                value.toConstraint()
-            } catch (e: ConstraintFormatException) {
-                error("${project.path} reqs.$key='$value': ${e.message}")
-            }
-        }
+    override val mod: Map<String, String> by lazy {
+        requireStonecutter("mod")
+            .properties.rawOrNull("mod")?.to()
+            ?: emptyMap()
+    }
+    override val deps: Map<String, String> by lazy {
+        requireStonecutter("deps")
+            .properties.rawOrNull("deps")?.to()
+            ?: emptyMap()
+    }
+    override val reqs: Map<String, Constraint> by lazy {
+        requireStonecutter("reqs")
+            .properties.rawOrNull("reqs")?.to()
+            ?: emptyMap()
     }
 }
-
-private fun Map<String, Any?>.toPrefixMap(prefix: String) =
-    asSequence()
-        .filter { (key, _) ->
-            key.startsWith(prefix)
-        }
-        .mapNotNull { (key, value) ->
-            (value as? String)?.let { key to it }
-        }
-        .associate { (key, value) ->
-            key.removePrefix(prefix) to value
-        }
