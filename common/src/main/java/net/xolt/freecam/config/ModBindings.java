@@ -14,14 +14,14 @@ import java.util.function.Consumer;
 import java.util.stream.Stream;
 
 import static net.xolt.freecam.config.keys.FreecamKeyMappingBuilder.builder;
-import static org.lwjgl.glfw.GLFW.GLFW_KEY_F4;
+import static org.lwjgl.sdl.SDLScancode.SDL_SCANCODE_F4;
 
 public enum ModBindings {
 
     KEY_TOGGLE(() -> builder("toggle")
             .action(Freecam::toggle)
             .holdAction(Freecam::activateTripodHandler)
-            .defaultKey(GLFW_KEY_F4)
+            .defaultKey(SDL_SCANCODE_F4)
             .build()),
     KEY_CONTROL_PLAYER(() -> builder("controlPlayer.toggle")
             .action(Freecam::switchControls)
