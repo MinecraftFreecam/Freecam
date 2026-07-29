@@ -33,8 +33,7 @@ reqs.mc = "26.3.x-0"
 
 deps.cloth = "26.2.155"
 reqs.cloth = "~26.3"
-# TODO: https://github.com/TerraformersMC/ModMenu/pull/1054
-deps.modmenu = "20.0.1"
+deps.modmenu = "21.0.0-alpha.1"
 
 deps.fabric_api = "0.156.1+26.3"
 reqs.fabric_loader = ">=0.18.0"
