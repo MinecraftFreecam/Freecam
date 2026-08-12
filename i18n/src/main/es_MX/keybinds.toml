@@ -14,4 +14,4 @@ toggle = "Alternar Freecam"
   open = "GUI de configuración"
 
   [key.freecam.outlinePlayer]
-  toggle = "Toggle Outline Player"
+  toggle = "Activar Outline en el Jugador"
