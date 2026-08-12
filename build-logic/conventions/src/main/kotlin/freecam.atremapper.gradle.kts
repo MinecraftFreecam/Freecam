@@ -21,9 +21,10 @@ val mojMapFile = layout.buildDirectory.file("mappings/mojMap.txt")
 val namedToSrgFile = layout.buildDirectory.file("mappings/namedToSrg.tsrg")
 val processResources = tasks.named<ProcessResources>("processResources")
 
-val generateNamedToSrg by tasks.registering {
+val generateNamedToSrgTask = tasks.register("generateNamedToSrg") {
     group = "mappings"
-    dependsOn(downloadSrgMappings, downloadMojMappings)
+    description = "Generate a Named→SRG mapping file"
+    dependsOn(downloadSrgMappingsTask, downloadMojMappingsTask)
     outputs.file(namedToSrgFile)
 
     doLast {
@@ -51,8 +52,9 @@ val generateNamedToSrg by tasks.registering {
 }
 
 @OptIn(ExperimentalSerializationApi::class)
-val downloadMojMappings by tasks.registering {
+val downloadMojMappingsTask = tasks.register("downloadMojMappings") {
     group = "mappings"
+    description = "Download official Mojang mappings"
     outputs.file(mojMapFile)
 
     // Out of date when MC version changes
@@ -78,8 +80,9 @@ val downloadMojMappings by tasks.registering {
     }
 }
 
-val downloadSrgMappings by tasks.registering {
+val downloadSrgMappingsTask = tasks.register("downloadSrgMappings") {
     group = "mappings"
+    description = "Download SRG mappings"
     outputs.file(srgFile)
 
     // Out of date when MC version changes
@@ -102,11 +105,11 @@ val downloadSrgMappings by tasks.registering {
     }
 }
 
-val remapAtToSrg by tasks.registering {
+val remapAtToSrgTask = tasks.register("remapAtToSrg") {
     group = "mappings"
     description = "Remap AccessTransformer from named to SRG"
 
-    dependsOn(generateNamedToSrg)
+    dependsOn(generateNamedToSrgTask)
     mustRunAfter(processResources)
 
     // the unmapped file comes from fletching table, via processResources
@@ -148,7 +151,7 @@ val remapAtToSrg by tasks.registering {
 
 // Ensure we remap before MDG uses the accesstransformer
 tasks.matching { it.name == "createMinecraftArtifacts" }.configureEach {
-    dependsOn(remapAtToSrg)
+    dependsOn(remapAtToSrgTask)
 }
 
 fun remapAtLine(line: String, remapper: MappingTree): String {
