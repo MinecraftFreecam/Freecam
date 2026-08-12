@@ -56,9 +56,10 @@ repositories {
         filter { includeGroupAndSubgroups("org.spongepowered") }
     }
     exclusiveContent {
-        forRepository {
-            maven("https://maven.shedaniel.me") { name = "Shedaniel" }
-        }
+        forRepositories(
+            maven("https://maven.shedaniel.me") { name = "Shedaniel" },
+            maven("https://maven.architectury.dev" ) { name = "Architectury" },
+        )
         filter { includeGroup("me.shedaniel.cloth") }
     }
     exclusiveContent {
