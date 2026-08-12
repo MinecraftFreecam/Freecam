@@ -31,7 +31,7 @@ tooltip = "Cómo la cámara se mueve."
 
 [freecam.config.collision]
 label = "Opciones de Colisión"
-tooltip = "Cuales bloques puedes atravesar en freecam."
+tooltip = "Que bloques puedes atravesar en freecam."
 
   [freecam.config.collision.ignoreAll]
   label = "Ignorar Toda Colisión"
