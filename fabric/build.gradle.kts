@@ -131,7 +131,10 @@ tasks.generateReleaseMetadata {
 }
 
 tasks {
-    val generateModJson by registering(FabricModJsonV1Task::class) {
+    val modJsonTask = register<FabricModJsonV1Task>("generateModJson") {
+        group = "fabric"
+        description = "Generate fabric.mod.json"
+
         outputFile = layout.buildDirectory.dir("generated/mod-json").map {
             it.file("fabric.mod.json")
         }
@@ -182,7 +185,7 @@ tasks {
     }
 
     processResources {
-        from(generateModJson)
+        from(modJsonTask)
 
         filesMatching("freecam-fabric.mixins.json5") {
             expand("mixinCompatLevel" to "JAVA_${meta.javaVersion}")
