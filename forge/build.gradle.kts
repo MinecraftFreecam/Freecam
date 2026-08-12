@@ -57,6 +57,18 @@ legacyForge {
     }
 }
 
+// `bundle` contains internal subprojects whose classes are part of Freecam itself (e.g. `:config`).
+// `finalBundle` extends `bundle` with external dependencies, when Jar-in-Jar is not available (e.g. `cloth-config`).
+configurations.create("finalBundle") {
+    isCanBeConsumed = false
+    isCanBeResolved = true
+    isTransitive = false
+    extendsFrom(configurations.bundle)
+}.also { cfg ->
+    // Override the `normalizeShadowBundle` task's input
+    tasks.normalizeShadowBundle { inputFiles = cfg }
+}
+
 /**
  * Wrapper for [jarJar] and [bundle].
  *
@@ -72,7 +84,7 @@ fun DependencyHandler.include(dependencyNotation: Any, shadowJarConfig: ShadowJa
     if (sc.eval(forgeVersion, ">=40.1.60")) {
         jarJar(dependencyNotation)
     } else {
-        bundle(dependencyNotation)
+        add("finalBundle", dependencyNotation)
         tasks.shadowJar { shadowJarConfig() }
     }
 }
@@ -133,6 +145,11 @@ legacyForge {
     mods {
         register(meta.id) {
             sourceSet(sourceSets.main.get())
+
+            // Mark internal dependencies as part of the mod, so their classes are loaded in dev runs.
+            sourceSet(sourceSets.create("bundled") {
+                output.dir(configurations.bundle)
+            })
         }
     }
 }

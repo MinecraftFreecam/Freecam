@@ -69,6 +69,11 @@ neoForge {
     mods {
         register(meta.id) {
             sourceSet(sourceSets.main.get())
+
+            // Mark internal dependencies as part of the mod, so their classes are loaded in dev runs.
+            sourceSet(sourceSets.create("bundled") {
+                output.dir(configurations.bundle)
+            })
         }
     }
 }
