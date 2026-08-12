@@ -98,14 +98,14 @@ loom {
     runs {
         getByName("client") {
             client()
-            configName = "Fabric Client"
-            ideConfigGenerated(true)
+            displayName = "Fabric Client"
+            generateRunConfig = true
         }
         getByName("server") {
 //            server()
-//            configName = "Fabric Server"
-//            ideConfigGenerated(true)
-            ideConfigGenerated(false)
+//            displayName = "Fabric Server"
+//            generateRunConfig = true
+            generateRunConfig = false
         }
     }
 }
