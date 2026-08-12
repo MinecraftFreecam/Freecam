@@ -35,7 +35,7 @@ loom {
     }
 }
 
-val i18nResources by configurations.registering {
+val i18nResources = configurations.register("i18nResources") {
     description = "The i18n project language files"
     isCanBeResolved = true
     isCanBeConsumed = false

@@ -56,7 +56,7 @@ changelog {
     headerParserRegex = "(\\d+(?:\\.\\d+)+(?:-[-a-z]+(?:\\.\\d+)?)?)".toRegex()
 }
 
-val getReleaseNotes by tasks.registering(GetChangelogTask::class) {
+val releaseNotesTask = tasks.register<GetChangelogTask>("getReleaseNotes") {
     group = "changelog"
     description = "Builds the current release notes"
     changelog = project.changelog.instance
@@ -72,11 +72,11 @@ val getReleaseNotes by tasks.registering(GetChangelogTask::class) {
     }
 }
 
-val releaseNotes by configurations.registering {
+configurations.register("releaseNotes") {
     isCanBeConsumed = true
     isCanBeResolved = false
 
-    outgoing.artifacts(getReleaseNotes.map { it.outputs.files }) {
-        builtBy(getReleaseNotes)
+    outgoing.artifacts(releaseNotesTask.map { it.outputs.files }) {
+        builtBy(releaseNotesTask)
     }
 }

@@ -85,7 +85,7 @@ stonecutter parameters {
     }
 }
 
-val releaseNotes by configurations.registering {
+val releaseNotes = configurations.register("releaseNotes") {
     isCanBeConsumed = false
     isCanBeResolved = true
 }

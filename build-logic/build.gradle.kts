@@ -2,11 +2,13 @@ plugins {
     `kotlin-dsl` apply false
 }
 
-val check by tasks.registering {
+tasks.register("check") {
+    description = "Runs all checks in subprojects"
     aggregateByName()
 }
 
-val test by tasks.registering {
+tasks.register("test") {
+    description = "Runs the test suite in subprojects"
     aggregateByName()
 }
 
