@@ -40,6 +40,9 @@ data class FmlModEntry(
     val displayName: String,
     @TomlMultilineString
     val description: String? = null,
+    val bannerFile: String? = null,
+    val iconFile: String? = null,
+    val iconBlur: Boolean? = null,
     val logoFile: String? = null,
     val logoBlur: Boolean? = null,
     val authors: String? = null,

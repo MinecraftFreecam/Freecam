@@ -15,6 +15,8 @@ Feedback and bug reports are greatly appreciated!
 
 ### Added
 
+- Added support for NeoForge's new 26.2+ mods list screen, meaning our icon is shown in the list ([576](https://github.com/MinecraftFreecam/Freecam/pull/576))
+
 ### Changed
 
 ### Removed

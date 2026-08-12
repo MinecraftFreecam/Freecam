@@ -30,6 +30,11 @@ neoForge {
 }
 
 dependencies {
+    if (sc.current.parsed >= "26.2") {
+        // In 26.2 NeoForge introduced a new ModListScreen, which shows a 24px icon.
+        // We use a 96px icon because it is a multiple of 24.
+        extraResources(project(":branding", configuration = "icon_96"))
+    }
     bundle(api(project(":config"))!!)
     sc.node.sibling("cloth-config")?.let {
         val clothVersion = requireNotNull(meta.deps["cloth"]) {
@@ -110,8 +115,15 @@ val generateModsTomlTask = tasks.register<NeoForgeModsTomlTask>("generateModsTom
             description = meta.description
             authors = meta.authors.joinToString(", ")
             displayURL = meta.homepageUrl.toString()
-            logoFile = "icon.png"
-            logoBlur = true
+            if (sc.current.parsed >= "26.2") {
+                bannerFile = "icon.png"
+                iconFile = "icon-96.png"
+                iconBlur = true
+            }
+            if (sc.current.parsed <= "26.2") {
+                logoFile = "icon.png"
+                logoBlur = true
+            }
         }
 
         dependency(meta.id, "minecraft") {
