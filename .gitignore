@@ -1,6 +1,5 @@
 # User-specific stuff
 .idea/*
-!/.idea/icon.svg
 !.idea/runConfigurations
 # Loom generated
 /.idea/runConfigurations/*_fabric_*
