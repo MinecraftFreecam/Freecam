@@ -1,6 +1,12 @@
 # User-specific stuff
 .idea/*
 !/.idea/icon.svg
+!.idea/runConfigurations
+# Loom generated
+/.idea/runConfigurations/*_fabric_*
+# Stonecutter generated
+/.idea/runConfigurations/Stonecutter_switchTo*.xml
+/.idea/runConfigurations/Reset_stonecutter_project.xml
 
 *.iml
 *.ipr
