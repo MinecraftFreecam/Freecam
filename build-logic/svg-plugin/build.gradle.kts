@@ -6,6 +6,7 @@ plugins {
 dependencies {
     implementation(libs.batik.codec)
     implementation(libs.batik.transcoder)
+    implementation(libs.pngtastic)
     testImplementation(libs.kotlin.test)
     testImplementation(libs.kotest.assertions)
     testImplementation(gradleTestKit())

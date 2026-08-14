@@ -1,5 +1,6 @@
 package net.xolt.freecam.gradle
 
+import net.xolt.freecam.png.optimizePng
 import net.xolt.freecam.transcoder.HighQualityPngTranscoder
 import net.xolt.freecam.transcoder.transcodeTo
 import org.apache.batik.transcoder.image.ImageTranscoder
@@ -63,6 +64,13 @@ abstract class SvgToPngTask : DefaultTask() {
     @get:Optional
     abstract val areaOfInterest: Property<Rectangle>
 
+    /**
+     * Optional PNG compression level.
+     */
+    @get:Input
+    @get:Optional
+    abstract val compressionLevel: Property<Int>
+
     internal fun transcoder(): ImageTranscoder = HighQualityPngTranscoder().also { transcoder ->
         width.orNull?.let {
             transcoder.addTranscodingHint(PNGTranscoder.KEY_WIDTH, it)
@@ -84,9 +92,14 @@ abstract class SvgToPngTask : DefaultTask() {
 
     @TaskAction
     fun execute() {
-        source.asFile.get().transcodeTo(
-            destination = destination.asFile.get(),
+        val source = source.asFile.get()
+        val destination = destination.asFile.get()
+        source.transcodeTo(
+            destination = destination,
             transcoder = transcoder(),
+        )
+        destination.optimizePng(
+            compressionLevel = compressionLevel.orNull,
         )
     }
 }
