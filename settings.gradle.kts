@@ -55,7 +55,7 @@ stonecutter {
     create(rootProject, file("stonecutter.settings.toml"))
 }
 
-include("config", "i18n")
+include("branding", "config", "i18n")
 
 includeBuild("changelog")
 
