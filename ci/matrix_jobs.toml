@@ -5,7 +5,7 @@ gradle_args = [":config:check"]
 
 [[build]]
 name = "Tooling"
-gradle_args = ["--project-dir", "build-logic", ":check"]
+gradle_args = ["--project-dir", "build-logic", "check"]
 
 [[build]]
 name = "Release metadata"
