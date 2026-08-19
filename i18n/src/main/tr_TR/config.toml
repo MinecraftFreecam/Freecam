@@ -94,9 +94,9 @@ tooltip = "Freecam görünümü."
   tooltip = "Su altında, lav altında ve ya tozlazmış kar içinde sis görmenizi sağlar."
 
   [freecam.config.visual.outlinePlayer]
-  label = "Outline Player"
-  "tooltip[0]" = "Apply an outline to your player when activating Freecam."
-  "tooltip[1]" = 'The outline can also be controlled using the "Toggle Player Outline" keybind.'
+  label = "Oyuncuyu Vurgula"
+  "tooltip[0]" = "Freecam etkinleştirildiğinde oyuncunuzun etrafını vurgular."
+  "tooltip[1]" = 'Vurgu, "Oyuncu Vurgusunu Aç/Kapat" tuş ataması kullanılarak da kontrol edilebilir.'
 
 [freecam.config.utility]
 label = "İşe Yarar Ayarlar"
