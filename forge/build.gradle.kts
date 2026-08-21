@@ -148,6 +148,9 @@ legacyForge {
 
             // Mark internal dependencies as part of the mod, so their classes are loaded in dev runs.
             sourceSet(sourceSets.create("bundled") {
+                sequenceOf(java, resources).forEach {
+                    it.setSrcDirs(emptySet<String>())
+                }
                 output.dir(configurations.bundle)
             })
         }
@@ -156,10 +159,6 @@ legacyForge {
 
 val mixinRefmap: Provider<RegularFile> = mixin.add(sourceSets.main.get(), refmapName)
 mixinConfigNames.forEach(mixin::config)
-
-sourceSets.main {
-    resources.srcDir("src/generated/resources")
-}
 
 tasks.register<Copy>("buildAndCollect") {
     group = "build"
