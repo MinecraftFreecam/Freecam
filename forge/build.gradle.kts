@@ -160,10 +160,6 @@ legacyForge {
 val mixinRefmap: Provider<RegularFile> = mixin.add(sourceSets.main.get(), refmapName)
 mixinConfigNames.forEach(mixin::config)
 
-sourceSets.main {
-    resources.srcDir("src/generated/resources")
-}
-
 tasks.register<Copy>("buildAndCollect") {
     group = "build"
     from(tasks.named<Jar>("reobfShadowJar").map { it.archiveFile })

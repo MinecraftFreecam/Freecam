@@ -81,10 +81,6 @@ neoForge {
     }
 }
 
-sourceSets.main {
-    resources.srcDir("src/generated/resources")
-}
-
 tasks.register<Copy>("buildAndCollect") {
     group = "build"
     from(tasks.shadowJar.flatMap { it.archiveFile })
