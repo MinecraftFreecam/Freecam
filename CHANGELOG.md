@@ -23,6 +23,8 @@ Feedback and bug reports are greatly appreciated!
 
 ### Fixed
 
+- Fixed mod description translations not working on NeoForge 26.2 ([576](https://github.com/MinecraftFreecam/Freecam/pull/576))
+
 ## [1.4.1-beta.3] - 2026-07-29
 
 1.4.1 adds initial support for Minecraft 26.2 and a new 'Outline Player' feature.
