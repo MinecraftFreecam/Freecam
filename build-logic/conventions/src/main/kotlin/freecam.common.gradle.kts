@@ -83,6 +83,13 @@ repositories {
     mavenCentral()
 }
 
+val extraResources = configurations.create("extraResources") {
+    description = "Additional resources added to processResources."
+    isCanBeConsumed = false
+    isCanBeResolved = true
+}
+
 tasks.processResources {
+    from(extraResources)
     dependsOn(tasks.named("stonecutterGenerate"))
 }

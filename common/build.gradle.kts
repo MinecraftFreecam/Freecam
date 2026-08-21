@@ -35,12 +35,6 @@ loom {
     }
 }
 
-val extraResources = configurations.register("extraResources") {
-    description = "Extra resources files"
-    isCanBeResolved = true
-    isCanBeConsumed = false
-}
-
 val i18nResources = configurations.register("i18nResources") {
     description = "The i18n project language files"
     isCanBeResolved = true
@@ -68,9 +62,7 @@ tasks.processResources.map { it.destinationDir.resolve("freecam.accesswidener") 
 }
 
 tasks.processResources {
-    from(extraResources) {
-        rename("icon-128.png", "icon.png")
-    }
+    rename("icon-128.png", "icon.png")
 
     from(i18nResources) {
         into("assets/${meta.id}/lang")
