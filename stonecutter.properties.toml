@@ -38,7 +38,7 @@ deps.modmenu = "20.0.1"
 deps.fabric_api = "0.152.2+26.2"
 reqs.fabric_loader = ">=0.18.0"
 
-deps.neoforge_version = "26.2.0.6-beta"
+deps.neoforge_version = "26.2.0.64"
 reqs.neoforge_version = ">=26.2.0-0"
 reqs.neoforge_loader = ">=1"
 
@@ -54,7 +54,7 @@ deps.modmenu = "18.0.0"
 deps.fabric_api = "0.145.4+26.1.2"
 reqs.fabric_loader = ">=0.18.0"
 
-deps.neoforge_version = "26.1.2.2-beta"
+deps.neoforge_version = "26.1.2.95"
 reqs.neoforge_version = ">=26.1.0-alpha"
 reqs.neoforge_loader = ">=1"
 
@@ -69,7 +69,7 @@ deps.fabric_api = "0.139.4+1.21.11"
 deps.modmenu = "17.0.0"
 reqs.fabric_loader = ">=0.14.0"
 
-deps.neoforge_version = "21.11.6-beta"
+deps.neoforge_version = "21.11.45"
 deps.neoforge_pr = ""
 reqs.neoforge_version = ">=21.9.0-beta"
 reqs.neoforge_loader = ">=1"

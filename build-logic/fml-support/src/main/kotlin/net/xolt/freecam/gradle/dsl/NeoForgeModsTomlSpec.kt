@@ -4,6 +4,7 @@ import net.xolt.freecam.model.FmlAccessTransformerEntry
 import net.xolt.freecam.model.FmlDependencyType
 import net.xolt.freecam.model.FmlMixinEntry
 import org.gradle.api.model.ObjectFactory
+import org.gradle.api.provider.Property
 import org.gradle.api.provider.SetProperty
 import org.gradle.api.tasks.Input
 import org.gradle.api.tasks.Nested
@@ -47,7 +48,17 @@ abstract class NeoForgeModsTomlSpec @Inject constructor(objects: ObjectFactory) 
     )
 }
 
-abstract class NeoForgeModEntrySpec : ModEntrySpec()
+abstract class NeoForgeModEntrySpec : ModEntrySpec() {
+    @get:Input @get:Optional abstract val bannerFile: Property<String>
+    @get:Input @get:Optional abstract val iconFile: Property<String>
+    @get:Input @get:Optional abstract val iconBlur: Property<Boolean>
+
+    override fun toModel(modId: String) = super.toModel(modId).copy(
+        bannerFile = bannerFile.orNull,
+        iconFile = iconFile.orNull,
+        iconBlur = iconBlur.orNull,
+    )
+}
 
 abstract class NeoForgeDependencyEntrySpec @Inject constructor(objects: ObjectFactory) : DependencyEntrySpec() {
     @get:Input val type = objects.property<FmlDependencyType>().convention(FmlDependencyType.REQUIRED)

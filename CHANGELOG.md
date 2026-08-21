@@ -15,11 +15,15 @@ Feedback and bug reports are greatly appreciated!
 
 ### Added
 
+- Added support for NeoForge's new 26.2+ mods list screen, meaning our icon is shown in the list ([576](https://github.com/MinecraftFreecam/Freecam/pull/576))
+
 ### Changed
 
 ### Removed
 
 ### Fixed
+
+- Fixed mod description translations not working on NeoForge 26.2 ([576](https://github.com/MinecraftFreecam/Freecam/pull/576))
 
 ## [1.4.1-beta.3] - 2026-07-29
 
