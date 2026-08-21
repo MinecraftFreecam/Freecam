@@ -14,4 +14,4 @@ toggle = "Freecam Aç/Kapa"
   open = "Ayar Arayüzü"
 
   [key.freecam.outlinePlayer]
-  toggle = "Toggle Outline Player"
+  toggle = "Oyuncu Vurgusunu Aç/Kapa"
