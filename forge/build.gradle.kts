@@ -148,6 +148,9 @@ legacyForge {
 
             // Mark internal dependencies as part of the mod, so their classes are loaded in dev runs.
             sourceSet(sourceSets.create("bundled") {
+                sequenceOf(java, resources).forEach {
+                    it.setSrcDirs(emptySet<String>())
+                }
                 output.dir(configurations.bundle)
             })
         }
