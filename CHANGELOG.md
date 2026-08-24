@@ -23,7 +23,7 @@ Feedback and bug reports are greatly appreciated!
 
 ### Fixed
 
-- Fixed mod description translations not working on NeoForge 26.2 ([576](https://github.com/MinecraftFreecam/Freecam/pull/576))
+- Fixed mod description translations not working on NeoForge 26.2.0.50–26.2.0.65 ([576](https://github.com/MinecraftFreecam/Freecam/pull/576))
 
 ## [1.4.1-beta.3] - 2026-07-29
 
