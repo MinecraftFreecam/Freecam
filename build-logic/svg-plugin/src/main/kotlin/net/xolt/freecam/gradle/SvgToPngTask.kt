@@ -1,6 +1,5 @@
 package net.xolt.freecam.gradle
 
-import net.xolt.freecam.png.optimizePng
 import net.xolt.freecam.transcoder.HighQualityPngTranscoder
 import net.xolt.freecam.transcoder.transcodeTo
 import org.apache.batik.transcoder.image.ImageTranscoder
@@ -97,9 +96,6 @@ abstract class SvgToPngTask : DefaultTask() {
         source.transcodeTo(
             destination = destination,
             transcoder = transcoder(),
-        )
-        destination.optimizePng(
-            compressionLevel = compressionLevel.orNull,
         )
     }
 }
