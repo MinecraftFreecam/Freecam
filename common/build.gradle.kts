@@ -50,7 +50,6 @@ dependencies {
     loomAdapter.applyMojangMappings()
     modCompileOnly(libs.fabric.loader)
     compileOnly(project(":config"))
-    extraResources(project(":branding", configuration = "icon_128"))
     i18nResources(project(":i18n"))
 }
 
@@ -62,8 +61,6 @@ tasks.processResources.map { it.destinationDir.resolve("freecam.accesswidener") 
 }
 
 tasks.processResources {
-    rename("icon-128.png", "icon.png")
-
     from(i18nResources) {
         into("assets/${meta.id}/lang")
     }

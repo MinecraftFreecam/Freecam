@@ -95,6 +95,7 @@ dependencies {
         artifact { classifier = "processor" }
     }
 
+    extraResources(project(":branding", configuration = "icon_128"))
     bundle(api(project(":config"))!!)
 
     sc.node.sibling("cloth-config")?.let {
@@ -185,7 +186,7 @@ val generateModsTomlTask = tasks.register<ForgeModsTomlTask>("generateModsToml")
             description = meta.description
             authors = meta.authors.joinToString(", ")
             displayURL = meta.homepageUrl.toString()
-            logoFile = "icon.png"
+            logoFile = "logo.png"
             logoBlur = true
         }
 
@@ -212,6 +213,8 @@ tasks.processResources {
     from(generateModsTomlTask) {
         into("META-INF")
     }
+
+    rename("icon-128.png", "logo.png")
 
     filesMatching("freecam-forge.mixins.json") {
         expand("mixinCompatLevel" to "JAVA_${meta.javaVersion}")
