@@ -30,6 +30,9 @@ neoForge {
 }
 
 dependencies {
+    // NeoForge's ModListScreen renders the Mod logo/banner at 50px high
+    // We use a 100px icon to scale well.
+    extraResources(project(":branding", configuration = "icon_100"))
     if (sc.current.parsed >= "26.2") {
         // In 26.2 NeoForge introduced a new ModListScreen, which shows a 24px icon.
         // We use a 96px icon because it is a multiple of 24.
@@ -116,12 +119,12 @@ val generateModsTomlTask = tasks.register<NeoForgeModsTomlTask>("generateModsTom
             authors = meta.authors.joinToString(", ")
             displayURL = meta.homepageUrl.toString()
             if (sc.current.parsed >= "26.2") {
-                bannerFile = "icon.png"
-                iconFile = "icon-96.png"
+                bannerFile = "banner.png"
+                iconFile = "icon.png"
                 iconBlur = true
             }
             if (sc.current.parsed <= "26.2") {
-                logoFile = "icon.png"
+                logoFile = "banner.png"
                 logoBlur = true
             }
         }
@@ -151,6 +154,13 @@ tasks.processResources {
     from(generateModsTomlTask) {
         into("META-INF")
     }
+
+    // For 26.2+, we use a 96px icon for the mod list icon (24px * 4)
+    rename("icon-96.png", "icon.png")
+
+    // For now, we use the 100px icon for the logo/banner
+    // TODO: introduce a dedicated banner
+    rename("icon-100.png", "banner.png")
 
     filesMatching("freecam-neoforge.mixins.json") {
         expand("mixinCompatLevel" to "JAVA_${meta.javaVersion}")

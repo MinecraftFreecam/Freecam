@@ -19,6 +19,8 @@ Feedback and bug reports are greatly appreciated!
 
 ### Changed
 
+- The mod logo in Forge & NeoForge builds now scales better ([590](https://github.com/MinecraftFreecam/Freecam/pull/590))
+
 ### Removed
 
 ### Fixed

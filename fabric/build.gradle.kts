@@ -66,6 +66,8 @@ dependencies {
         exclude(module = "fabric-loader")
     }
 
+    // ModMenu renders the icon at (64px * GUI_SCALE)
+    extraResources(project(":branding", configuration = "icon_128"))
     bundle(api(project(":config"))!!)
 
     sc.node.sibling("cloth-config")?.let {
@@ -186,6 +188,8 @@ tasks {
 
     processResources {
         from(modJsonTask)
+
+        rename("icon-128.png", "icon.png")
 
         filesMatching("freecam-fabric.mixins.json5") {
             expand("mixinCompatLevel" to "JAVA_${meta.javaVersion}")

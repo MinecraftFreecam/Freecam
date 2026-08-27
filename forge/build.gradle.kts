@@ -95,6 +95,9 @@ dependencies {
         artifact { classifier = "processor" }
     }
 
+    // Forge's ModListScreen renders the Mod logo at 50px high
+    // We use a 100px icon to scale well.
+    extraResources(project(":branding", configuration = "icon_100"))
     bundle(api(project(":config"))!!)
 
     sc.node.sibling("cloth-config")?.let {
@@ -185,7 +188,7 @@ val generateModsTomlTask = tasks.register<ForgeModsTomlTask>("generateModsToml")
             description = meta.description
             authors = meta.authors.joinToString(", ")
             displayURL = meta.homepageUrl.toString()
-            logoFile = "icon.png"
+            logoFile = "logo.png"
             logoBlur = true
         }
 
@@ -212,6 +215,8 @@ tasks.processResources {
     from(generateModsTomlTask) {
         into("META-INF")
     }
+
+    rename("icon-100.png", "logo.png")
 
     filesMatching("freecam-forge.mixins.json") {
         expand("mixinCompatLevel" to "JAVA_${meta.javaVersion}")
