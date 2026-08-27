@@ -6,7 +6,7 @@ plugins {
 
 val sourceDir = layout.projectDirectory.dir("src/main")
 
-svg.exportPngMatrix("icon", 24, 32, 48, 64, 96, 128, 192, 256, 512, 1024) {
+svg.exportPngMatrix("icon", 24, 32, 48, 64, 96, 100, 128, 192, 256, 512, 1024) {
     source = sourceDir.file("icon.svg")
 }
 
