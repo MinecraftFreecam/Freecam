@@ -1,9 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg">
-  <rect id="background" width="512" height="512" fill="#002a36"/>
   <path
     id="camera"
-    fill="#00607c"
+    fill="currentColor"
     fill-rule="evenodd"
     d="
       M240 252
