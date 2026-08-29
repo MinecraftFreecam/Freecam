@@ -26,15 +26,15 @@ export function main(args: CliOptions) {
     SCProjectsByVersionSchema.parse(versionsToml.versions),
   );
 
-  const changelogJobs = args.changelog
-    ? [buildChangelogJob(args.release, version)]
+  const releaseNotesJobs = args.changelog
+    ? [buildReleaseNotesJob(args.release, version)]
     : [];
 
   const staticJobs = matrixJobsToml
     ? MatrixJobsFileSchema.parse(matrixJobsToml).builds
     : [];
 
-  const matrix = [...changelogJobs, ...staticJobs, ...versionJobs].sort(
+  const matrix = [...releaseNotesJobs, ...staticJobs, ...versionJobs].sort(
     (a, b) => a.name.localeCompare(b.name),
   );
 
@@ -84,21 +84,24 @@ export function buildVersionMatrix(
   return matrix;
 }
 
-export function buildChangelogJob(
+export function buildReleaseNotesJob(
   release = false,
   version?: string,
-  file = "changelog.md",
+  file = "release-notes.md",
 ): MatrixJob {
   if (release && !version) {
-    throw new Error("buildChangelogJob: version is required when release=true");
+    throw new Error(
+      "buildReleaseNotesJob: version is required when release=true",
+    );
   }
 
   return {
-    name: "Changelog",
+    name: "Release Notes",
     gradle_args: [
       "--project-dir=changelog",
       ":getChangelog",
       release ? `--project-version=${version}` : "--unreleased",
+      "--no-header",
       `--output-file=build/${file}`,
     ],
     upload: { path: `changelog/build/${file}`, days: 90, archive: false },

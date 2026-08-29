@@ -27,7 +27,7 @@ jobs:
     permissions:
       contents: read
     with:
-      changelog: true
+      changelog_comment: true
       i18n: true
 
 
@@ -107,7 +107,7 @@ jobs:
       pull-requests: write # For posting comments
 
     steps:
-      - name: Wait for changelog
+      - name: Wait for release notes
         id: find
         if: needs.prepare.outputs.changelog_comment
         timeout-minutes: 11 # deadline + 1
@@ -130,13 +130,13 @@ jobs:
               }
             })()
 
-            // Due to Java & Gradle setup, the changelog usually takes ~1m to build.
+            // Due to Java & Gradle setup, release notes usually takes ~1m to build.
             // Wait 45s before polling, to reduce wasteful API calls.
             core.info("Waiting 45s before starting...")
             await sleep(45_000)
 
-            core.info("Polling for changelog.md")
-            const changelog = await (async () => {
+            core.info("Polling for release-notes.md")
+            const artifact = await (async () => {
               while (Date.now() < deadline) {
                 const artifacts = await github.rest.actions.listWorkflowRunArtifacts({
                   owner,
@@ -144,19 +144,19 @@ jobs:
                   run_id,
                 })
 
-                const match = artifacts.data.artifacts.find(a => a.name === "changelog.md")
+                const match = artifacts.data.artifacts.find(a => a.name === "release-notes.md")
                 if (match) return match
 
                 await backoff()
               }
             })()
 
-            if (!changelog) {
-              core.setFailed("Timed out waiting for changelog artifact")
+            if (!artifact) {
+              core.setFailed("Timed out waiting for release notes artifact")
               return
             }
 
-            core.setOutput("id", changelog.id)
+            core.setOutput("id", artifact.id)
 
       - name: Download artifact
         id: download
@@ -182,7 +182,7 @@ jobs:
             const body = (function() {
               try {
                  return marker + "\n\n# 📦 Changelog\n\n"
-                     + readFileSync("changelog.md", "utf8")
+                     + readFileSync("release-notes.md", "utf8")
               } catch (err) {
                 if (err.code !== 'ENOENT') throw err
                 return null
