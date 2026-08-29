@@ -1,5 +1,3 @@
-<p align="center" width="100%"><img src=".idea/icon.svg" width="128" height="128" alt="Freecam icon"></p>
-
 # Freecam
 [![Crowdin](https://badges.crowdin.net/freecam/localized.svg)](https://crowdin.com/project/freecam)
 
