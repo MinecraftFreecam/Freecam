@@ -17,7 +17,7 @@ and Freecam's versioning is based on [Semantic Versioning](https://semver.org/sp
 
 ### Fixed
 
-## [1.4.1-rc.1] - 2026-08-27
+## 1.4.1-rc.1 (2026-08-27)
 
 1.4.1 adds initial support for Minecraft 26.2 and a new 'Outline Player' feature.
 Feedback and bug reports are greatly appreciated!
@@ -36,7 +36,7 @@ Feedback and bug reports are greatly appreciated!
 
 - Fixed mod description translations not working on NeoForge 26.2.0.50–26.2.0.65 ([576](https://github.com/MinecraftFreecam/Freecam/pull/576))
 
-## [1.4.1-beta.3] - 2026-07-29
+## 1.4.1-beta.3 (2026-07-29)
 
 1.4.1 adds initial support for Minecraft 26.2 and a new 'Outline Player' feature.
 Feedback and bug reports are greatly appreciated!
@@ -51,7 +51,7 @@ Feedback and bug reports are greatly appreciated!
 
 - Show the correct Cloth Config license in the Forge 1.17.1 build ([549](https://github.com/MinecraftFreecam/Freecam/pull/549))
 
-## [1.4.1-beta.2] - 2026-07-13
+## 1.4.1-beta.2 (2026-07-13)
 
 1.4.1 adds initial support for Minecraft 26.2 and a new 'Outline Player' feature.
 Feedback and bug reports are greatly appreciated!
@@ -81,7 +81,7 @@ Feedback and bug reports are greatly appreciated!
 - Resolved Fabric Loader "invalid version" warnings related to our Cloth Config implementation ([486](https://github.com/MinecraftFreecam/Freecam/issues/486), [534](https://github.com/MinecraftFreecam/Freecam/pull/534))
 - Fixed our Config GUI not being available for (legacy) Forge builds ([539](https://github.com/MinecraftFreecam/Freecam/pull/539))
 
-## [1.4.1-beta.1] - 2026-06-26
+## 1.4.1-beta.1 (2026-06-26)
 
 1.4.1 adds initial support for Minecraft 26.2. Feedback and bug reports are greatly appreciated!
 **[Bug tracker](https://github.com/MinecraftFreecam/Freecam/issues).**
@@ -94,7 +94,7 @@ Feedback and bug reports are greatly appreciated!
 
 - Fixed compatibility with legacy Forge, broken in 1.4.0 ([516](https://github.com/MinecraftFreecam/Freecam/issues/516), [526](https://github.com/MinecraftFreecam/Freecam/pull/526))
 
-## [1.4.1-alpha.1] - 2026-06-19
+## 1.4.1-alpha.1 (2026-06-19)
 
 Initial support for Minecraft 26.2, which has only had light testing. Feedback and bug reports are greatly appreciated!
 **[Bug tracker](https://github.com/MinecraftFreecam/Freecam/issues).**
@@ -103,7 +103,7 @@ Initial support for Minecraft 26.2, which has only had light testing. Feedback a
 
 - 26.2 support ([511](https://github.com/MinecraftFreecam/Freecam/issues/511), [513](https://github.com/MinecraftFreecam/Freecam/pull/513))
 
-## [1.4.0] - 2026-06-16
+## 1.4.0 (2026-06-16)
 
 This release introduces support for Minecraft 26.1.x and includes significant internal changes to the project's build and configuration systems.
 While most users should not notice major behavioral changes, these changes simplify maintenance across supported Minecraft versions and improve long-term compatibility.
@@ -141,7 +141,7 @@ This release follows three alpha releases and two release candidates.
 - Iris rendering the player shadow when "Show Player" is disabled ([425](https://github.com/MinecraftFreecam/Freecam/issues/425), [426](https://github.com/MinecraftFreecam/Freecam/pull/426))
 - Run NeoForge setup during the correct startup phase ([391](https://github.com/MinecraftFreecam/Freecam/issues/391), [397](https://github.com/MinecraftFreecam/Freecam/issues/397))
 
-## [1.4.0-rc.2] - 2026-06-15
+## 1.4.0-rc.2 (2026-06-15)
 
 This version includes major underlying changes. Feedback and bug reports are greatly appreciated!
 **[Bug tracker](https://github.com/MinecraftFreecam/Freecam/issues).**
@@ -152,7 +152,7 @@ If no major issues are found, this version will be released as 1.4.0.
 
 - A crash when changing dimensions while Freecam is enabled ([505](https://github.com/MinecraftFreecam/Freecam/pull/505), [500](https://github.com/MinecraftFreecam/Freecam/issues/500))
 
-## [1.4.0-rc.1] - 2026-05-26
+## 1.4.0-rc.1 (2026-05-26)
 
 This version includes major underlying changes. Feedback and bug reports are greatly appreciated!
 **[Bug tracker](https://github.com/MinecraftFreecam/Freecam/issues).**
@@ -177,7 +177,7 @@ If no major issues are found, this version will be released as 1.4.0.
 - Marked 1.20.5 as supported by the 1.20.6 build ([436](https://github.com/MinecraftFreecam/Freecam/issues/436), [452](https://github.com/MinecraftFreecam/Freecam/pull/452))
 - Collision settings not being initialized correctly ([496](https://github.com/MinecraftFreecam/Freecam/issues/496), [497](https://github.com/MinecraftFreecam/Freecam/issues/497))
 
-## [1.4.0-alpha.3] - 2026-04-10
+## 1.4.0-alpha.3 (2026-04-10)
 
 This version includes major underlying changes. Feedback and bug reports are greatly appreciated!
 **[Bug tracker](https://github.com/MinecraftFreecam/Freecam/issues).**
@@ -191,7 +191,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Iris rendering the player shadow when "Show Player" is disabled ([425](https://github.com/MinecraftFreecam/Freecam/issues/425), [426](https://github.com/MinecraftFreecam/Freecam/pull/426))
 - A NeoForge crash when Iris is installed, caused by loading Iris classes too early ([424](https://github.com/MinecraftFreecam/Freecam/issues/424), [426](https://github.com/MinecraftFreecam/Freecam/pull/426))
 
-## [1.4.0-alpha.2] - 2026-04-04
+## 1.4.0-alpha.2 (2026-04-04)
 
 This version includes major underlying changes. Feedback and bug reports are greatly appreciated!
 **[Bug tracker](https://github.com/MinecraftFreecam/Freecam/issues).**
@@ -200,7 +200,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 
 - A NeoForge crash, caused by setup happening too early ([391](https://github.com/MinecraftFreecam/Freecam/issues/391), [397](https://github.com/MinecraftFreecam/Freecam/issues/397))
 
-## [1.4.0-alpha.1] - 2026-03-31
+## 1.4.0-alpha.1 (2026-03-31)
 
 This version includes major underlying changes. Feedback and bug reports are greatly appreciated!
 **[Bug tracker](https://github.com/MinecraftFreecam/Freecam/issues).**
@@ -227,13 +227,13 @@ This version includes major underlying changes. Feedback and bug reports are gre
 
 - Config options from other Freecam versions are no longer silently dropped when saving ([389](https://github.com/MinecraftFreecam/Freecam/pull/389))
 
-## [1.3.6] - 2025-12-20
+## 1.3.6 (2025-12-20)
 
 ### Added
 
 - 1.21.11 Support ([332](https://github.com/MinecraftFreecam/Freecam/pull/332))
 
-## [1.3.5] - 2025-10-10
+## 1.3.5 (2025-10-10)
 
 ### Added
 
@@ -246,7 +246,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - "Full brightness" rendering incorrectly on MacOS X ([300](https://github.com/MinecraftFreecam/Freecam/pull/300))
 - Crash loading the mod on a dedicated server ([293](https://github.com/MinecraftFreecam/Freecam/pull/293))
 
-## [1.3.4] - 2025-06-25
+## 1.3.4 (2025-06-25)
 
 ### Added
 
@@ -257,7 +257,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 
 - Various translation updates
 
-## [1.3.3] - 2025-03-26
+## 1.3.3 (2025-03-26)
 
 ### Added
 
@@ -267,7 +267,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 
 - Various translation updates
 
-## [1.3.2] - 2024-12-07
+## 1.3.2 (2024-12-07)
 
 ### Added
 
@@ -278,13 +278,13 @@ This version includes major underlying changes. Feedback and bug reports are gre
 
 - Various translation updates
 
-## [1.3.1] - 2024-11-03
+## 1.3.1 (2024-11-03)
 
 ### Added
 
 - 1.21.3 Support ([#252](https://github.com/MinecraftFreecam/Freecam/pull/252)).
 
-## [1.3.0] - 2024-07-27
+## 1.3.0 (2024-07-27)
 
 ### Added
 
@@ -303,7 +303,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Build against NeoForge 21.0.139-beta (fixes opening config screen through Forge modlist crashing)
 - Pumpkin overlay rendering while Freecam is enabled ([#239](https://github.com/MinecraftFreecam/Freecam/issues/239))
 
-## [1.2.4] - 2024-04-23
+## 1.2.4 (2024-04-23)
 
 ### Added
 
@@ -317,7 +317,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Movement speed options now use sliders instead of text fields ([#190](https://github.com/MinecraftFreecam/Freecam/pull/190)).
 - Redundant collision options are now dynamically hidden ([#121](https://github.com/MinecraftFreecam/Freecam/pull/121)).
 
-## [1.2.3] - 2024-02-04
+## 1.2.3 (2024-02-04)
 
 ### Added
 
@@ -347,7 +347,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Tripods can be set in non-vanilla dimensions.
 - "Disable on Damage" preventing player movement ([#155](https://github.com/MinecraftFreecam/Freecam/issues/155)).
 
-## [1.2.2] - 2023-12-25
+## 1.2.2 (2023-12-25)
 
 ### Added
 
@@ -358,13 +358,13 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Forge version now uses Cloth Config.
 - Lots of under-the-hood changes.
 
-## [1.2.1.1] - 2023-10-05
+## 1.2.1.1 (2023-10-05)
 
 ### Added
 
 - Minecraft 1.20.2 support (Thank you @jmolloy19 !).
 
-## [1.2.1] - 2023-07-13
+## 1.2.1 (2023-07-13)
 
 ### Changed
 
@@ -378,7 +378,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Fixed 'Show Player' setting not doing anything on Forge version.
 - Fixed crash on Fabric 1.16 version.
 
-## [1.2.0] - 2023-06-18
+## 1.2.0 (2023-06-18)
 
 ### Added
 
@@ -396,7 +396,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Fixed collision not being ignored for certain blocks.
 - Third person, if previously enabled, is now restored upon exiting freecam.
 
-## [1.1.10] - 2023-06-15
+## 1.1.10 (2023-06-15)
 
 ### Added
 
@@ -411,7 +411,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 
 - Fixed incorrect translation key.
 
-## [1.1.9] - 2023-03-19
+## 1.1.9 (2023-03-19)
 
 ### Added
 
@@ -424,7 +424,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Fixed 'Disable on Damage' false positives.
 - Fixed water submersion sounds playing while in Freecam.
 
-## [1.1.8] - 2022-12-19
+## 1.1.8 (2022-12-19)
 
 ### Added
 
@@ -445,7 +445,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Tripods are no-longer cleared when switching dimensions.
 - Fixed being able to hit tripods.
 
-## [1.1.7] - 2022-12-10
+## 1.1.7 (2022-12-10)
 
 ### Added
 
@@ -458,7 +458,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Fixed Freecam being pushed by pistons.
 - (Hopefully) fixed teleportation glitch.
 
-## [1.1.6] - 2022-09-11
+## 1.1.6 (2022-09-11)
 
 ### Added
 
@@ -470,7 +470,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Fixed tripods casting shadows when Iris is installed.
 - Fixed error in Italian translations.
 
-## [1.1.5] - 2022-08-28
+## 1.1.5 (2022-08-28)
 
 ### Added
 
@@ -481,7 +481,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Fixed some FPS issues.
 - Fixed water/ladders affecting flight speed.
 
-## [1.1.4] - 2022-07-21
+## 1.1.4 (2022-07-21)
 
 ### Changed
 
@@ -492,7 +492,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 
 - Interaction mode 'Player' now respects the allow interaction setting.
 
-## [1.1.3] - 2022-07-20
+## 1.1.3 (2022-07-20)
 
 ### Added
 
@@ -503,20 +503,20 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Fixed tripods getting stuck if the player leaves the dimension.
 - Fixed incorrect toggle message in 1.18.
 
-## [1.1.2] - 2022-07-06
+## 1.1.2 (2022-07-06)
 
 ### Fixed
 
 - Fixed freecam pose changing when clipping through blocks.
 
-## [1.1.1] - 2022-07-05
+## 1.1.1 (2022-07-05)
 
 ### Fixed
 
 - Fixed player going dark if freecam is in an area with low light.
 - Fixed getting stuck when entering freecam in 1-block-tall spaces with noclip disabled.
 
-## [1.1.0] - 2022-07-04
+## 1.1.0 (2022-07-04)
 
 ### Added
 
@@ -526,7 +526,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 
 - Fixed Optifabric incompatibility.
 
-## [1.0.9] - 2022-06-26
+## 1.0.9 (2022-06-26)
 
 ### Added
 
@@ -539,7 +539,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Fixed night vision not working underwater while in freecam.
 - Fixed crash when using items in freecam in 1.16/1.17.
 
-## [1.0.8] - 2022-06-10
+## 1.0.8 (2022-06-10)
 
 ### Changed
 
@@ -552,7 +552,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Fixed Freeze Player setting preventing movement while Player Control is active.
 - Fixed crash on launch.
 
-## [1.0.7] - 2022-06-09
+## 1.0.7 (2022-06-09)
 
 ### Added
 
@@ -562,7 +562,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 
 - Fixed crash on launch.
 
-## [1.0.6] - 2022-06-08
+## 1.0.6 (2022-06-08)
 
 ### Added
 
@@ -575,27 +575,27 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Fixed item use animations not playing in freecam.
 - Fixed being able to attack yourself (again).
 
-## [1.0.5] - 2022-05-14
+## 1.0.5 (2022-05-14)
 
 ### Fixed
 
 - Fixed chunk borders highlighting the wrong chunk if 'Show Player' is enabled.
 - Arm animations no longer play when 'Allow Interaction' is disabled.
 
-## [1.0.4] - 2022-04-11
+## 1.0.4 (2022-04-11)
 
 ### Fixed
 
 - Fixed Freecam entity projecting a shadow when Iris is installed.
 
-## [1.0.3] - 2022-04-05
+## 1.0.3 (2022-04-05)
 
 ### Fixed
 
 - Activating sprint in default flight mode now speeds you up.
 - Fixed fov changing when touching ground with noclip disabled.
 
-## [1.0.2] - 2022-04-03
+## 1.0.2 (2022-04-03)
 
 ### Changed
 
@@ -606,7 +606,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Fixed being able to break blocks with Allow Interaction disabled if player is in creative.
 - Fixed being able to open chests with Allow Interaction disabled.
 
-## [1.0.1] - 2022-04-02
+## 1.0.1 (2022-04-02)
 
 ### Added
 
@@ -622,7 +622,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Fixed hand not moving when the camera is turned.
 - Fixed freecam disabling randomly.
 
-## [1.0.0] - 2022-03-18
+## 1.0.0 (2022-03-18)
 
 ### Added
 
@@ -637,14 +637,14 @@ This version includes major underlying changes. Feedback and bug reports are gre
 
 - Removed 'Enable Message' and 'Disable Message' settings.
 
-## [0.4.9] - 2022-03-14
+## 0.4.9 (2022-03-14)
 
 ### Changed
 
 - Holding jump and sneak at the same time will now make you hover in place.
 - Player now remains sneaking if freecam is enabled while sneak is held.
 
-## [0.4.8] - 2022-03-03
+## 0.4.8 (2022-03-03)
 
 ### Added
 
@@ -655,56 +655,56 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - Made Freecam disable when switching dimensions/respawning.
 - Reordered settings.
 
-## [0.4.7] - 2022-02-27
+## 0.4.7 (2022-02-27)
 
 ### Fixed
 
 - Fixed OptiFabric crash.
 
-## [0.4.6] - 2022-02-26
+## 0.4.6 (2022-02-26)
 
 ### Fixed
 
 - Fixed crash if horizontal speed is set to 0.
 - Fixed incorrect arm lighting.
 
-## [0.4.5] - 2022-02-25
+## 0.4.5 (2022-02-25)
 
 ### Added
 
 - Added back Flight Mode option.
 
-## [0.4.4.1] - 2022-02-12
+## 0.4.4.1 (2022-02-12)
 
 ### Fixed
 
 - Fixes mixin java compatibility level.
 
-## [0.4.4] - 2022-02-12
+## 0.4.4 (2022-02-12)
 
 ### Changed
 
 - Made entities and block entities outside of entity view distance render while freecam is enabled.
 
-## [0.4.3] - 2022-02-11
+## 0.4.3 (2022-02-11)
 
 ### Fixed
 
 - Ok Zoomer compatibility.
 
-## [0.4.2] - 2022-02-10
+## 0.4.2 (2022-02-10)
 
 ### Added
 
 - Added 'Allow Entity Interaction' setting.
 
-## [0.4.1] - 2022-02-10
+## 0.4.1 (2022-02-10)
 
 ### Fixed
 
 - Fixes for 'Allow Breaking Blocks'.
 
-## [0.4.0] - 2022-02-10
+## 0.4.0 (2022-02-10)
 
 ### Added
 
@@ -719,14 +719,14 @@ This version includes major underlying changes. Feedback and bug reports are gre
 
 - Removed vanilla flight option.
 
-## [0.3.5] - 2022-01-10
+## 0.3.5 (2022-01-10)
 
 ### Fixed
 
 - Clone now updates its vehicle when the player rides a new entity.
 - Clone now shows damage when the player is hurt.
 
-## [0.3.4] - 2021-12-29
+## 0.3.4 (2021-12-29)
 
 ### Changed
 
@@ -745,7 +745,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 - You no longer take knockback while in freecam.
 - Clone position is now updated when player position is updated by server.
 
-## [0.3.3] - 2021-12-25
+## 0.3.3 (2021-12-25)
 
 ### Added
 
@@ -755,7 +755,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 
 - Fixes item pickup sounds being blocked.
 
-## [0.3.2] - 2021-12-21
+## 0.3.2 (2021-12-21)
 
 ### Changed
 
@@ -765,13 +765,13 @@ This version includes major underlying changes. Feedback and bug reports are gre
 
 - Fixed movement bug.
 
-## [0.3.1] - 2021-12-19
+## 0.3.1 (2021-12-19)
 
 ### Fixed
 
 - Fixed crash on disconnect if freecam is enabled.
 
-## [0.3] - 2021-12-17
+## 0.3 (2021-12-17)
 
 ### Changed
 
@@ -783,7 +783,7 @@ This version includes major underlying changes. Feedback and bug reports are gre
 
 - Fixed yaw resetting after using freecam in a vehicle.
 
-## [0.2.5] - 2021-12-16
+## 0.2.5 (2021-12-16)
 
 ### Added
 
@@ -797,89 +797,21 @@ This version includes major underlying changes. Feedback and bug reports are gre
 
 - Now restores limb angles on disable.
 
-## [0.2.4] - 2021-12-14
+## 0.2.4 (2021-12-14)
 
 ### Fixed
 
 - Visual fixes.
 
-## [0.2.3] - 2021-12-14
+## 0.2.3 (2021-12-14)
 
 ### Fixed
 
 - Bugfixes.
 
-## [0.2.2] - 2021-12-14
+## 0.2.2 (2021-12-14)
 
 ### Added
 
 - Minecraft 1.18 support.
 - Minecraft 1.17 support.
-
-[Unreleased]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.1-rc.1...HEAD
-[1.4.1-rc.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.1-beta.3...v1.4.1-rc.1
-[1.4.1-beta.3]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.1-beta.2...v1.4.1-beta.3
-[1.4.1-beta.2]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.1-beta.1...v1.4.1-beta.2
-[1.4.1-beta.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.1-alpha.1...v1.4.1-beta.1
-[1.4.1-alpha.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.0...v1.4.1-alpha.1
-[1.4.0]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.0-rc.2...v1.4.0
-[1.4.0-rc.2]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.0-rc.1...v1.4.0-rc.2
-[1.4.0-rc.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.0-alpha.3...v1.4.0-rc.1
-[1.4.0-alpha.3]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.0-alpha.2...v1.4.0-alpha.3
-[1.4.0-alpha.2]: https://github.com/MinecraftFreecam/Freecam/compare/v1.4.0-alpha.1...v1.4.0-alpha.2
-[1.4.0-alpha.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.6...v1.4.0-alpha.1
-[1.3.6]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.5...v1.3.6
-[1.3.5]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.4...v1.3.5
-[1.3.4]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.3...v1.3.4
-[1.3.3]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.2...v1.3.3
-[1.3.2]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.1...v1.3.2
-[1.3.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.3.0...v1.3.1
-[1.3.0]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.4...v1.3.0
-[1.2.4]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.3...v1.2.4
-[1.2.3]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.2...v1.2.3
-[1.2.2]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.1.1...v1.2.2
-[1.2.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.0...v1.2.1
-[1.2.0]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.10...v1.2.0
-[1.1.10]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.9...v1.1.10
-[1.1.9]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.8...v1.1.9
-[1.1.8]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.7...v1.1.8
-[1.1.7]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.6...v1.1.7
-[1.1.6]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.5...v1.1.6
-[1.1.5]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.4...v1.1.5
-[1.1.4]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.3...v1.1.4
-[1.1.3]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.2...v1.1.3
-[1.1.2]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.1...v1.1.2
-[1.1.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.1.0...v1.1.1
-[1.1.0]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.9...v1.1.0
-[1.0.9]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.8...v1.0.9
-[1.0.8]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.7...v1.0.8
-[1.0.7]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.6...v1.0.7
-[1.0.6]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.5...v1.0.6
-[1.0.5]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.4...v1.0.5
-[1.0.4]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.3...v1.0.4
-[1.0.3]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.2...v1.0.3
-[1.0.2]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.1...v1.0.2
-[1.0.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.0.0...v1.0.1
-[1.0.0]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.9...v1.0.0
-[0.4.9]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.8...v0.4.9
-[0.4.8]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.7...v0.4.8
-[0.4.7]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.6...v0.4.7
-[0.4.6]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.5...v0.4.6
-[0.4.5]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.4.1...v0.4.5
-[0.4.4]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.3...v0.4.4
-[0.4.3]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.2...v0.4.3
-[0.4.2]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.1...v0.4.2
-[0.4.1]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.0...v0.4.1
-[0.4.0]: https://github.com/MinecraftFreecam/Freecam/compare/v0.3.5...v0.4.0
-[0.3.5]: https://github.com/MinecraftFreecam/Freecam/compare/v0.3.4...v0.3.5
-[0.3.4]: https://github.com/MinecraftFreecam/Freecam/compare/v0.3.3...v0.3.4
-[0.3.3]: https://github.com/MinecraftFreecam/Freecam/compare/v0.3.2...v0.3.3
-[0.3.2]: https://github.com/MinecraftFreecam/Freecam/compare/v0.3.1...v0.3.2
-[0.3.1]: https://github.com/MinecraftFreecam/Freecam/compare/v0.3...v0.3.1
-[0.2.5]: https://github.com/MinecraftFreecam/Freecam/compare/v0.2.4...v0.2.5
-[0.2.4]: https://github.com/MinecraftFreecam/Freecam/compare/v0.2.3...v0.2.4
-[0.2.3]: https://github.com/MinecraftFreecam/Freecam/compare/v0.2.2...v0.2.3
-[0.2.2]: https://github.com/MinecraftFreecam/Freecam/commits/v0.2.2
-[1.2.1.1]: https://github.com/MinecraftFreecam/Freecam/compare/v1.2.1...v1.2.1.1
-[0.4.4.1]: https://github.com/MinecraftFreecam/Freecam/compare/v0.4.4...v0.4.4.1
-[0.3]: https://github.com/MinecraftFreecam/Freecam/compare/v0.2.5...v0.3

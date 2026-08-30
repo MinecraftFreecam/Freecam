@@ -66,8 +66,8 @@ jobs:
             const version = process.env.TARGET_VERSION;
 
             // Split on h2 headings and look for a section that starts with our version header
-            // We format version headers as "## [1.2.3] - YYYY-MM-DD"
-            const section = changelog.split(/^## +/m).find(c => c.startsWith(`[${version}]`));
+            // We format version headers as "## 1.2.3 (YYYY-MM-DD)"
+            const section = changelog.split(/^## +/m).find(c => c.startsWith(version));
 
             if (!section) {
               core.setFailed(`Version ${version} not found in CHANGELOG.md`);

@@ -14,8 +14,8 @@ describe("lint_changelog", () => {
   describe("lint throws for:", () => {
     const fixtures = [
       { name: "missing release", filename: "missing_release.md" },
-      { name: "unreleased not first", filename: "unreleased_after_release.md" },
-      { name: "missing footer", filename: "missing_footer.md" },
+      { name: "has unreleased section", filename: "has_unreleased.md" },
+      { name: "uses old format", filename: "old_format.md" },
     ];
     for (const { name, filename } of fixtures) {
       it(name, () => {

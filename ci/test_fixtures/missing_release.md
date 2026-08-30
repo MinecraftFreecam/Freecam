@@ -1,5 +1,5 @@
 # Changelog
 
-## [Unreleased]
+## 3.2.1 (2025-12-20)
 
-[Unreleased]: https://github.com/org/repo/compare/v1.2.3...HEAD
+Example
