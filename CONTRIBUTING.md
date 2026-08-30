@@ -127,14 +127,32 @@ CI will also run these checks for pull requests.
 ### Commit conventions
 
 We follow [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) for our commit messages and pull request titles (e.g., `feat: add new flight mode` or `fix: resolve crash on 1.20`).
+
 Try to break changes into discrete logical units, and commit each separately.
 Use brief but descriptive commit summaries, with more detail in the commit message body (if necessary).
 This helps keep the commit history clear and obvious, which can help with debugging and understanding the project history.
 
-### Changelog
+### User-facing changes
 
-If you make a **user-facing** change, please list it in our `CHANGELOG.md` file. Add changes to the "unreleased" section at the top,
-and they will be included in the next version's release notes.
+Changes that could affect end-users should be documented in [change files](https://knope.tech/reference/concepts/change-file/) in the `.changeset` directory.
+Use one change file per change: a single PR may contain multiple changes, and a single change may be iterated on over several PRs.
+
+If you have `knope` installed, or use our `nix-shell`, you can run `knope document-change` to create a new change in the change set.
+This will interactively prompt for a _summary_ and semantic _type_ (`major`, `minor`, `patch`, etc).
+
+You can also create change files manually:
+```markdown
+---
+default: minor
+---
+
+# Added an awesome new feature
+
+```
+The `default` front-matter defines how the change affects the "default package", i.e. Freecam.
+
+The total change set determines the version number chosen for the next release, following [Semantic Versioning](https://knope.tech/reference/concepts/semantic-versioning/).
+All changes in the change set will automatically be included in the release notes written to `CHANGELOG.md`.
 
 ## Release process
 
@@ -142,9 +160,10 @@ Typically only Freecam maintainers will make releases.
 
 The current release process is:
 1. Create a new branch from the latest `main`.
-2. Manually bump the version in `metadata.toml`.
-3. Add a corresponding release section to the top of `CHANGELOG.md`.
-4. Commit the changes, e.g. `git commit -p -m 'chore: release 1.4.1'`.
-5. Open a pull request.
-6. Merge the pull request.
-7. Check that CI/CD successfully published to GitHub, CurseForge, and Modrinth.
+2. Run `knope bump-version`. This will prepare a new release (bump version, update changelog, commit changes).
+   - Use `--override-version <version>` to manually specify a version.
+   - Use `--prerelease-label <label>` to make a pre-release (`alpha`, `beta`, etc).
+   - Use `--dry-run` to see what _would_ happen without actually making changes.
+3. Open a pull request, e.g. by running `gh pr create`.
+4. Merge the pull request, e.g. `gh pr merge --auto`.
+5. Check that CI/CD successfully published to GitHub, CurseForge, and Modrinth.

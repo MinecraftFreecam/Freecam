@@ -2,8 +2,8 @@
 name = "Freecam"
 id = "freecam"
 group = "net.xolt.freecam"
-# Version can specify a semver pre-release, e.g. -alpha.1
-# Remember to also update the changelog
+# Bump version using `knope bump-version`
+# Optionally pass `--prerelease-label` with `alpha`, `beta`, `rc`, etc
 version = "1.4.1-rc.1"
 authors = ["hashalite", "Matt Sturgeon"]
 license = "MIT"

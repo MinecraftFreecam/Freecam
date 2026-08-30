@@ -1,0 +1,78 @@
+[package]
+changelog = "CHANGELOG.md"
+assets = "artifacts/*"
+
+[[package.versioned_files]]
+path = "metadata.toml"
+regex = '(?m:^ *version *= *"(?<version>.+)"$)'
+
+
+[github]
+owner = "MinecraftFreecam"
+repo = "Freecam"
+
+
+[changes]
+ignore_conventional_commits = true
+
+
+[release_notes]
+change_templates = [
+    "### $summary (#$pr_number)\n\n$details\n\nBy $commit_author_name",
+    "### $summary ($commit_hash)\n\n$details\n\nBy $commit_author_name",
+    "- **$summary** by $commit_author_name (#$pr_number)",
+    "- **$summary** by $commit_author_name ($commit_hash)",
+    "### $summary\n\n$details",
+    "- **$summary**",
+]
+
+
+[[workflows]]
+name = "bump-version"
+help_text = "Prepare a new release (bump version, update changelog, commit changes)"
+
+[[workflows.steps]]
+type = "PrepareRelease"
+
+[[workflows.steps]]
+type = "Command"
+command = "git commit -m 'chore: release $version'"
+
+
+[[workflows]]
+name = "release"
+help_text = "Publish the current release"
+
+[[workflows.steps]]
+type = "Release"
+
+
+[[workflows]]
+name = "document-change"
+help_text = "Create a new change file to be included in the next release"
+
+[[workflows.steps]]
+type = "CreateChangeFile"
+
+
+[[workflows]]
+name = "print-version"
+help_text = "Print the current version of the project"
+
+[[workflows.steps]]
+type = "Command"
+command = "echo '$version'"
+
+
+[[workflows]]
+name = "print-release-notes"
+help_text = "Print the current version's release notes from the project changelog"
+
+[[workflows.steps]]
+type = "Command"
+shell = true
+command = """
+cat <<EOF
+$changelog
+EOF
+"""
