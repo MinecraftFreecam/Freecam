@@ -62,14 +62,13 @@ jobs:
 
           version=$(jq .mod_version "$meta" --raw-output)
           title=$(jq .display_name "$meta" --raw-output)
-          jq .changelog "$meta" --raw-output > changelog.md
 
           args=(
             --repo "$GITHUB_REPOSITORY"
             release create "v$version"
             --target "$ref"
             --title "$title"
-            --notes-file changelog.md
+            --notes-file artifacts/release-notes.md
           )
 
           jq '.release_type == "release"' "$meta" --exit-status >/dev/null || {
@@ -93,7 +92,7 @@ jobs:
           distribution: temurin
 
       - name: Setup Freecam Publisher
-        uses: MinecraftFreecam/Publisher@v0.0.5
+        uses: MinecraftFreecam/Publisher@v0.0.6
 
       - name: Publish to CurseForge & Modrinth
         env:

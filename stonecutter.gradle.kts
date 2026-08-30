@@ -85,29 +85,13 @@ stonecutter parameters {
     }
 }
 
-val releaseNotes = configurations.register("releaseNotes") {
-    isCanBeConsumed = false
-    isCanBeResolved = true
-}
-
 dependencies {
-    releaseNotes(project(":changelog", configuration = "releaseNotes"))
-
     sequenceOf("fabric", "forge", "neoforge")
         .mapNotNull { sc.tree[it] }
         .flatMap { it.nodes }
         .forEach {
             releaseMetadata(project(it.project.path, configuration = "releaseMetadataElements"))
         }
-}
-
-tasks.generateReleaseMetadata {
-    changelog = releaseNotes.map { it.singleFile.readText() }
-
-    // FIXME: the :changelog outgoing artifact should encode its dependencies,
-    //  this project shouldn't need to know about the underlying task.
-    //  See https://github.com/gradle/gradle/issues/24131
-    dependsOn(gradle.includedBuild("changelog").task(":getReleaseNotes"))
 }
 
 tasks.named<Wrapper>("wrapper") {

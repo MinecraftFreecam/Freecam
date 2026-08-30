@@ -3,7 +3,7 @@ name: Setup
 on:
   workflow_call:
     inputs:
-      changelog:
+      changelog_comment:
         description: Check whether a changelog comment should be posted
         type: boolean
         default: false
@@ -47,7 +47,7 @@ env:
   # Scopes that can be queried using `contains(env.scopes, 'scope')`
   scopes: >
     ${{ inputs.matrix && 'node' || '' }}
-    ${{ inputs.changelog && 'files' || '' }}
+    ${{ inputs.changelog_comment && 'files' || '' }}
     ${{ inputs.i18n && 'files' || '' }}
 
 jobs:
@@ -65,7 +65,7 @@ jobs:
       do_release: ${{ steps.check_release.outputs.do_release }}
       changelog_comment: >-
         ${{
-          steps.changed_files.outputs.changelog ||
+          steps.changed_files.outputs.changelog_comment ||
           steps.check_release.outputs.unreleased
         }}
       i18n_files: ${{ steps.changed_files.outputs.i18n }}
@@ -151,7 +151,7 @@ jobs:
 
       - name: Check whether this version is released
         id: check_release
-        if: inputs.release || inputs.changelog
+        if: inputs.release || inputs.changelog_comment || inputs.matrix
         uses: actions/github-script@v9
         env:
           VERSION: ${{ steps.version.outputs.version }}
@@ -173,11 +173,11 @@ jobs:
         id: matrix
         if: inputs.matrix
         env:
-          touches_changelog: ${{ steps.changed_files.outputs.changelog }}
           unreleased: ${{ steps.check_release.outputs.unreleased }}
           version: ${{ steps.version.outputs.version }}
         run: |
           args=(
+            --changelog
             --version "$version"
             --output matrix.json
           )
@@ -185,11 +185,6 @@ jobs:
           # If 'unreleased' is set, that means the version has been bumped, so do a release build.
           if [ -n "$unreleased" ]; then
             args+=( --release )
-          fi
-
-          # For PRs that touch the changelog or trigger a release, we build the changelog preview comment.
-          if [ "$GITHUB_EVENT_NAME" = "pull_request" ] && [ -n "$touches_changelog$unreleased" ]; then
-              args+=( --changelog )
           fi
 
           node ci/src/build_matrix.ts "${args[@]}"

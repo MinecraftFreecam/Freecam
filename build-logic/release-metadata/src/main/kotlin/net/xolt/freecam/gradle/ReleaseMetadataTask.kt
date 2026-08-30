@@ -30,9 +30,6 @@ abstract class ReleaseMetadataTask : DefaultTask() {
     }
 
     @get:Input
-    abstract val changelog: Property<String>
-
-    @get:Input
     abstract val version: Property<String>
 
     @get:Input
@@ -66,7 +63,6 @@ abstract class ReleaseMetadataTask : DefaultTask() {
         curseforgeId.convention(meta.map { it.curseforgeId.toLong() })
         modrinthId.convention(meta.map { it.modrinthId })
         githubTag.convention(meta.map { "v${it.releaseVersion}" })
-        changelog.convention("")
         outputFile.convention(version.flatMap {
             project.layout.buildDirectory.file("metadata/release-$it.json")
         })
@@ -78,7 +74,6 @@ abstract class ReleaseMetadataTask : DefaultTask() {
             modVersion = version.get(),
             releaseType = releaseType.get(),
             displayName = displayName.get(),
-            changelog = changelog.get(),
             versions = aggregateVersionFiles(),
             platforms = Platforms(
                 curseforge = Platforms.Curseforge(curseforgeId.get().toULong()),

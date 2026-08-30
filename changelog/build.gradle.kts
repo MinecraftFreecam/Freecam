@@ -68,7 +68,7 @@ val releaseNotesTask = tasks.register<GetChangelogTask>("getReleaseNotes") {
     unreleased = false
 
     outputFile = project.changelog.version.flatMap { version ->
-        project.layout.buildDirectory.file("build/$version/changelog.md")
+        project.layout.buildDirectory.file("build/$version/release-notes.md")
     }
 }
 
