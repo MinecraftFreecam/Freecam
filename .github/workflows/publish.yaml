@@ -8,9 +8,9 @@ on:
         type: string
         default: ${{ github.sha }}
       version:
-        description: Version to publish (required unless dry-run)
+        description: Version to publish
         type: string
-        required: false
+        required: true
       dry-run:
         description: Dry run
         type: boolean
@@ -47,7 +47,6 @@ jobs:
           ref: ${{ inputs.ref }}
           sparse-checkout: CHANGELOG.md
           sparse-checkout-cone-mode: false
-        if: ${{ !inputs.dry-run }}
 
       - name: Download artifacts
         uses: actions/download-artifact@v8
@@ -58,16 +57,10 @@ jobs:
       - name: Prepare Release Notes
         uses: actions/github-script@v9
         env:
-          DRY_RUN: ${{ inputs.dry-run }}
           TARGET_VERSION: ${{ inputs.version }}
         with:
           script: |
             const fs = require('fs');
-
-            if (process.env.DRY_RUN === 'true') {
-              fs.writeFileSync('artifacts/release-notes.md', 'Mock release notes.');
-              return;
-            }
 
             const changelog = fs.readFileSync('CHANGELOG.md', 'utf8');
             const version = process.env.TARGET_VERSION;

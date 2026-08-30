@@ -143,9 +143,8 @@ Typically only Freecam maintainers will make releases.
 The current release process is:
 1. Create a new branch from the latest `main`.
 2. Manually bump the version in `metadata.toml`.
-3. Run `./gradlew :changelog:patchChangelog` to mark the "unreleased" section as released.
-4. Check the diff; sometimes `patchChangelog` does strange things!
-5. Commit the changes, e.g. `git commit -p -m 'chore: release 1.4.1'`.
-6. Open a pull request.
-7. Merge the pull request.
-8. Check that CI/CD successfully published to GitHub, CurseForge, and Modrinth.
+3. Add a corresponding release section to the top of `CHANGELOG.md`.
+4. Commit the changes, e.g. `git commit -p -m 'chore: release 1.4.1'`.
+5. Open a pull request.
+6. Merge the pull request.
+7. Check that CI/CD successfully published to GitHub, CurseForge, and Modrinth.

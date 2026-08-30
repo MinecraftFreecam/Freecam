@@ -166,10 +166,7 @@ jobs:
 
           # If 'unreleased' is set, that means the version has been bumped, so do a release build.
           if [ -n "$unreleased" ]; then
-            args+=(
-              --release
-              --changelog
-            )
+            args+=( --release )
           fi
 
           node ci/src/build_matrix.ts "${args[@]}"
