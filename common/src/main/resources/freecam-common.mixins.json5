@@ -20,6 +20,7 @@
     //? if <1.21.6
     //"IrisShadowRendererMixin",
     "ItemInHandRendererMixin",
+    "KeyMappingAccessor",
     //? if >=26.2 {
     "LevelExtractorMixin",
     //? } else if >=1.21.11
