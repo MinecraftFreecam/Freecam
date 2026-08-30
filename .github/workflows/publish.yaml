@@ -7,6 +7,10 @@ on:
         description: Ref to publish
         type: string
         default: ${{ github.sha }}
+      version:
+        description: Version to publish (required unless dry-run)
+        type: string
+        required: false
       dry-run:
         description: Dry run
         type: boolean
@@ -37,11 +41,50 @@ jobs:
       contents: write
 
     steps:
+      - name: Checkout changelog
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.ref }}
+          sparse-checkout: CHANGELOG.md
+          sparse-checkout-cone-mode: false
+        if: ${{ !inputs.dry-run }}
+
       - name: Download artifacts
         uses: actions/download-artifact@v8
         with:
           path: artifacts
           merge-multiple: true
+
+      - name: Prepare Release Notes
+        uses: actions/github-script@v9
+        env:
+          DRY_RUN: ${{ inputs.dry-run }}
+          TARGET_VERSION: ${{ inputs.version }}
+        with:
+          script: |
+            const fs = require('fs');
+
+            if (process.env.DRY_RUN === 'true') {
+              fs.writeFileSync('artifacts/release-notes.md', 'Mock release notes.');
+              return;
+            }
+
+            const changelog = fs.readFileSync('CHANGELOG.md', 'utf8');
+            const version = process.env.TARGET_VERSION;
+
+            // Split on h2 headings and look for a section that starts with our version header
+            // We format version headers as "## [1.2.3] - YYYY-MM-DD"
+            const section = changelog.split(/^## +/m).find(c => c.startsWith(`[${version}]`));
+
+            if (!section) {
+              core.setFailed(`Version ${version} not found in CHANGELOG.md`);
+              return;
+            }
+
+            // Strip the header line itself to isolate the body
+            const body = section.substring(section.indexOf('\n') + 1).trim();
+
+            fs.writeFileSync('artifacts/release-notes.md', body);
 
       - name: Publish GitHub Release
         env:

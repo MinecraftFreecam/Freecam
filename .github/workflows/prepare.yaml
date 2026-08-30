@@ -160,14 +160,16 @@ jobs:
           version: ${{ steps.version.outputs.version }}
         run: |
           args=(
-            --changelog
             --version "$version"
             --output matrix.json
           )
 
           # If 'unreleased' is set, that means the version has been bumped, so do a release build.
           if [ -n "$unreleased" ]; then
-            args+=( --release )
+            args+=(
+              --release
+              --changelog
+            )
           fi
 
           node ci/src/build_matrix.ts "${args[@]}"
