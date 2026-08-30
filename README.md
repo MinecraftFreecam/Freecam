@@ -18,14 +18,12 @@ To paraphrase our license, we are not responsible for any damages or liability r
 Among other things, this means it's not our fault if you get banned from a server.
 Here's the [full license](./LICENSE).
 
-## Translation
+## Contributing
 
-<!-- website:start id="translation" -->
+<!-- website:start id="contribution" -->
 
-You can help [translate Freecam on Crowdin](https://crowdin.com/project/freecam).
-If you're unfamiliar with Crowdin, you can read their [getting started as a volunteer translator guide](https://support.crowdin.com/enterprise/getting-started-for-volunteers).
-
-If you'd like to translate a language we don't currently target, please [open an issue](https://github.com/MinecraftFreecam/Freecam/issues/new) asking us to enable the language.
+You can contribute to Freecam by opening or investigating issues, translating the mod to your language, or contributing code.
+See the [contributing guide](https://github.com/MinecraftFreecam/Freecam/blob/main/CONTRIBUTING.md) for more detail!
 
 <!-- website:stop -->
 <!-- website:start id="config" -->
