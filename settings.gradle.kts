@@ -57,6 +57,4 @@ stonecutter {
 
 include("branding", "config", "i18n")
 
-includeBuild("changelog")
-
 rootProject.name = "freecam"

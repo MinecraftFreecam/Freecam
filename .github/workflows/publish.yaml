@@ -37,53 +37,48 @@ jobs:
       contents: write
 
     steps:
+      - name: Checkout changelog
+        uses: actions/checkout@v7
+        with:
+          ref: ${{ inputs.ref }}
+          sparse-checkout: |
+            knope.toml
+            metadata.toml
+            CHANGELOG.md
+          sparse-checkout-cone-mode: false
+
+      - name: Install Knope
+        uses: knope-dev/action@v2.1.2
+        with:
+          # TODO: keep up to date
+          version: 0.23.0
+
       - name: Download artifacts
         uses: actions/download-artifact@v8
         with:
           path: artifacts
           merge-multiple: true
 
-      - name: Publish GitHub Release
-        env:
-          dry_run: ${{ inputs.dry-run || '' }}
-          ref: ${{ inputs.ref }}
-          GH_TOKEN: ${{ github.token }}
+      - name: Prepare Release Notes
         run: |
-          set -o pipefail
+          knope print-release-notes > release-notes.md
+
+      - name: Prepare Release Metadata
+        run: |
           shopt -s nullglob
 
-          meta=artifacts/release-metadata.json
           files=( artifacts/release-*.json )
           [ ${#files[@]} = 1 ] || {
             echo "::error::Found ${#files[@]} release json artifacts, expected 1"
             exit 1
           }
-          mv "${files[0]}" "$meta"
+          mv "${files[0]}" artifacts/release-metadata.json
 
-          version=$(jq .mod_version "$meta" --raw-output)
-          title=$(jq .display_name "$meta" --raw-output)
-
-          args=(
-            --repo "$GITHUB_REPOSITORY"
-            release create "v$version"
-            --target "$ref"
-            --title "$title"
-            --notes-file artifacts/release-notes.md
-          )
-
-          jq '.release_type == "release"' "$meta" --exit-status >/dev/null || {
-            args+=( --prerelease )
-          }
-
-          args+=( "$meta" artifacts/*.jar )
-
-          if [ -n "$dry_run" ]; then
-            echo "Dry run:"
-            printf ' %q' gh "${args[@]}"
-            echo
-          else
-            gh "${args[@]}"
-          fi
+      - name: Publish GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          knope release ${{ inputs.dry-run && '--dry-run' || '' }}
 
       - name: Setup Java
         uses: actions/setup-java@v5
@@ -102,6 +97,7 @@ jobs:
         run: |
           echo "::notice::Using $(freecam-publish --version)"
           args=(
+            --release-notes release-notes.md
             --metadata artifacts/release-metadata.json
             artifacts
           )

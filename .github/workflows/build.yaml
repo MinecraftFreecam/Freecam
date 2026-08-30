@@ -24,7 +24,6 @@ jobs:
     permissions:
       contents: read
     with:
-      changelog_comment: ${{ github.event_name != 'push' }}
       release: ${{ github.event_name != 'push' || github.ref == 'refs/heads/main' }}
       matrix: true
 

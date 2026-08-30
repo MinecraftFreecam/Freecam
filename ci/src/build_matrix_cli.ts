@@ -32,7 +32,6 @@ const CliOptionsSchema = z.object({
     file === "none" ? undefined : file,
   ),
   release: z.boolean(),
-  changelog: z.boolean(),
   version: VersionInput,
   output: z.string().optional(),
 });
@@ -62,12 +61,6 @@ export const command = buildCommand({
         kind: "parsed",
         parse: JobsFileInput.parse,
         default: toRelative(MATRIX_JOBS_FILE),
-      },
-
-      changelog: {
-        brief:
-          "Build changelog (current version if --release, otherwise unreleased)",
-        kind: "boolean",
       },
 
       release: {
