@@ -23,7 +23,7 @@ Here's the [full license](./LICENSE).
 <!-- website:start id="translation" -->
 
 You can help [translate Freecam on Crowdin](https://crowdin.com/project/freecam).
-If you're unfamiliar with Crowdin, you can read their [getting started as a volunteer translator guide](https://support.crowdin.com/enterprise/getting-started-for-volunteers).
+If you're unfamiliar with Crowdin, you can read their [getting started as a translator guide](https://support.crowdin.com/for-translators).
 
 If you'd like to translate a language we don't currently target, please [open an issue](https://github.com/MinecraftFreecam/Freecam/issues/new) asking us to enable the language.
 
