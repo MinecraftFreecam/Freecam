@@ -7,10 +7,6 @@ on:
         description: Ref to publish
         type: string
         default: ${{ github.sha }}
-      version:
-        description: Version to publish
-        type: string
-        required: true
       dry-run:
         description: Dry run
         type: boolean
@@ -45,8 +41,17 @@ jobs:
         uses: actions/checkout@v7
         with:
           ref: ${{ inputs.ref }}
-          sparse-checkout: CHANGELOG.md
+          sparse-checkout: |
+            knope.toml
+            metadata.toml
+            CHANGELOG.md
           sparse-checkout-cone-mode: false
+
+      - name: Install Knope
+        uses: knope-dev/action@v2.1.2
+        with:
+          # TODO: keep up to date
+          version: 0.23.0
 
       - name: Download artifacts
         uses: actions/download-artifact@v8
@@ -55,29 +60,8 @@ jobs:
           merge-multiple: true
 
       - name: Prepare Release Notes
-        uses: actions/github-script@v9
-        env:
-          TARGET_VERSION: ${{ inputs.version }}
-        with:
-          script: |
-            const fs = require('fs');
-
-            const changelog = fs.readFileSync('CHANGELOG.md', 'utf8');
-            const version = process.env.TARGET_VERSION;
-
-            // Split on h2 headings and look for a section that starts with our version header
-            // We format version headers as "## 1.2.3 (YYYY-MM-DD)"
-            const section = changelog.split(/^## +/m).find(c => c.startsWith(version));
-
-            if (!section) {
-              core.setFailed(`Version ${version} not found in CHANGELOG.md`);
-              return;
-            }
-
-            // Strip the header line itself to isolate the body
-            const body = section.substring(section.indexOf('\n') + 1).trim();
-
-            fs.writeFileSync('artifacts/release-notes.md', body);
+        run: |
+          knope print-release-notes > artifacts/release-notes.md
 
       - name: Publish GitHub Release
         env:
