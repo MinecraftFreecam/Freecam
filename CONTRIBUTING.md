@@ -183,5 +183,5 @@ If you need to manually prepare a release, use the following process:
    - Use `--prerelease-label <label>` to make a pre-release (`alpha`, `beta`, etc).
    - Use `--dry-run` to see what _would_ happen without actually making changes.
 3. Open a pull request, e.g. by running `gh pr create`.
-4. Merge the pull request, e.g. `gh pr merge --auto`.
-5. Check that CI/CD successfully published to GitHub, CurseForge, and Modrinth.
+4. Merge the pull request, e.g. by running `gh pr merge --auto`.
+5. Check that CI/CD successfully published the release to GitHub Releases, CurseForge, and Modrinth.
