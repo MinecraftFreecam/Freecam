@@ -40,6 +40,24 @@ command = "git commit -m 'chore: release $version'"
 
 
 [[workflows]]
+name = "create-pr"
+
+[[workflows.steps]]
+type = "CreatePullRequest"
+base = "main"
+
+[workflows.steps.title]
+template = "chore: release $version"
+
+[workflows.steps.body]
+template = """
+This PR was created by Knope. Merging it will create a new release.
+
+$changelog
+"""
+
+
+[[workflows]]
 name = "release"
 help_text = "Publish the current release"
 
