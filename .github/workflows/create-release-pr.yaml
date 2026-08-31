@@ -1,0 +1,86 @@
+name: Create Release PR
+on:
+  workflow_call:
+    secrets:
+      FREECAM_CI_APP_PRIVATE_KEY:
+        required: false # Falls back to `github.token`, e.g. on forks
+
+jobs:
+  create:
+    name: Create PR
+    runs-on: ubuntu-slim
+    timeout-minutes: 10
+
+    permissions:
+      # Use the same permissions as the freecam-ci app,
+      # for testing on forks where the app is not configured
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Generate App Token
+        uses: actions/create-github-app-token@v3
+        if: vars.FREECAM_CI_APP_CLIENT_ID
+        id: app-token
+        with:
+          client-id: ${{ vars.FREECAM_CI_APP_CLIENT_ID }}
+          private-key: ${{ secrets.FREECAM_CI_APP_PRIVATE_KEY }}
+          permission-contents: write
+          permission-pull-requests: write
+
+      - name: Checkout Repository
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+          fetch-tags: true
+          persist-credentials: true
+          token: ${{ steps.app-token.outputs.token || github.token }}
+
+      - name: Get GitHub App User ID
+        id: app-id
+        if: steps.app-token.outputs.app-slug
+        env:
+          APP_USERNAME: ${{ steps.app-token.outputs.app-slug }}[bot]
+          GH_TOKEN: ${{ steps.app-token.outputs.token }}
+        run: echo "app-id=$(gh api "/users/$APP_USERNAME" --jq .id)" >> "$GITHUB_OUTPUT"
+
+      - name: Configure git
+        env:
+          APP_USER_ID: ${{ steps.app-id.outputs.app-id || '41898282' }}
+          APP_USERNAME: ${{ steps.app-token.outputs.app-slug || 'github-actions' }}[bot]
+        run: |
+          git config --global user.name "$APP_USERNAME"
+          git config --global user.email "$APP_USER_ID+$APP_USERNAME@users.noreply.github.com"
+
+      - name: Install Knope
+        uses: knope-dev/action@v2.1.2
+        with:
+          # TODO: keep up to date
+          version: 0.23.0
+
+      # `PrepareRelease` throws `releases::no_release` when there are no changes documented.
+      # `allow_empty` suppresses the error, but no release is prepared.
+      # See: https://github.com/knope-dev/knope/issues/2010
+      - name: Normalize changeset
+        run: |
+          shopt -s nullglob
+          changes=( .changeset/*.md )
+          if [ ${#changes[@]} = 0 ]; then
+            printf '%s\n'  '---' 'default: invalid' '---' > .changeset/empty.md
+          fi
+
+      - name: Create release branch
+        run: git switch -c "release/$GITHUB_REF_NAME"
+
+      - name: Cut release
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
+        run: |
+          knope bump-version --verbose
+
+      - name: Create release PR
+        env:
+          GITHUB_TOKEN: ${{ steps.app-token.outputs.token || github.token }}
+        run: |
+          git push --force --set-upstream origin "release/$GITHUB_REF_NAME"
+          knope create-pr --verbose
