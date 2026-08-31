@@ -51,6 +51,8 @@ public class Freecam {
         }
         disableNextTick = false;
 
+        This is invalid syntax!!!
+
         if (isEnabled()) {
             // Prevent player from being controlled when freecam is enabled
             if (mc.player != null && mc.player.input instanceof KeyboardInput && !isPlayerControlEnabled()) {
