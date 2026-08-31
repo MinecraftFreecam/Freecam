@@ -53,32 +53,32 @@ public class Motion {
         if (freeCamera.input.keyPresses.jump()) {
             velocityY += vSpeed;
         }
-        if (isSneakKeyDown(freeCamera)) {
+        if (isSneakKeyDown()) {
             velocityY -= vSpeed;
         }
 
         freeCamera.setDeltaMovement(velocityX, velocityY, velocityZ);
     }
 
-    // The sneak keybind can be set to toggle rather than hold (Options > Controls > Toggle Sneak).
-    // In that case, MC.options.keyShift.isDown() reflects whatever sneak state the player toggled
-    // to beforehand, not whether the key is currently held, causing the camera to drift down for as
-    // long as that stale toggle happens to be on. Poll the physical key state directly instead, so
-    // descending in freecam always requires actually holding the key down, regardless of the toggle
-    // sneak setting.
-    private static boolean isSneakKeyDown(FreeCamera freeCamera) {
+    // With Toggle Sneak enabled, keyShift.isDown() reflects the toggled crouch state, not whether
+    // the key is held. Poll the physical key instead so descending always requires holding it.
+    static boolean isSneakKeyDown() {
         //~ if >=26.2 screen -> 'gui.screen()'
         if (MC.gui.screen() != null) {
             return false;
         }
 
         InputConstants.Key key = MC.options.keyShift.key;
-        if (key.getType() != InputConstants.Type.KEYSYM && key.getType() != InputConstants.Type.SCANCODE) {
-            // Not bound to a keyboard key (e.g. a mouse button); fall back to the mapping's own state.
-            return freeCamera.input.keyPresses.shift();
+        if (key.getType() == InputConstants.Type.MOUSE) {
+            // Mouse buttons can't be polled the same way; use the mapping's own state.
+            return MC.options.keyShift.isDown();
         }
 
-        //~ if <1.21.11 'MC.getWindow()' -> 'MC.getWindow().getWindow()'
+        //? if >=26.3 {
+        return InputConstants.isKeyDown(key.getValue());
+        //? } else {
+        /*//~ if <1.21.11 'MC.getWindow()' -> 'MC.getWindow().getWindow()'
         return InputConstants.isKeyDown(MC.getWindow(), key.getValue());
+        *///? }
     }
 }

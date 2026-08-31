@@ -32,7 +32,8 @@
     "LocalPlayerMixin",
     "MinecraftMixin",
     "MultiPlayerGameModeMixin",
-    "OptionsMixin"
+    "OptionsMixin",
+    "ToggleKeyMappingMixin"
   ],
   "injectors": {
     "defaultRequire": 1

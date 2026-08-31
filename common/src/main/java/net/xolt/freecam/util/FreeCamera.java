@@ -248,7 +248,7 @@ public class FreeCamera extends AbstractClientPlayer {
             case CREATIVE -> {
                 getAbilities().setFlyingSpeed((float) ModConfig.get().getVerticalSpeed() / 10);
 
-                if (this.input.keyPresses.shift() ^ this.input.keyPresses.jump()) {
+                if (Motion.isSneakKeyDown() ^ this.input.keyPresses.jump()) {
                     int direction = this.input.keyPresses.jump() ? 1 : -1;
                     this.setDeltaMovement(this.getDeltaMovement().add(0.0F, ((float) direction * this.getAbilities().getFlyingSpeed() * 3.0F), 0.0F));
                 }
