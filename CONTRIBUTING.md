@@ -78,7 +78,7 @@ Generally, we prefer to implement any non-trivial logic in `ci/`, because it is 
 
 Working on CI files requires [Node.js](https://nodejs.org).
 Run `npm ci` to set up dependencies and `npm test` to run the test suite.
-See `ci/README.md` for more detail.
+See [`ci/README.md`](ci/README.md) for more detail.
 
 ## Multi-version
 
