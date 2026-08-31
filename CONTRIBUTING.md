@@ -118,7 +118,7 @@ and [Mod Dev Gradle](https://docs.neoforged.net/toolchain/docs/plugins/mdg/) (us
 Some sub-projects have automated tests. Run `./gradlew test` to execute them, or `./gradlew check` for a more thorough set of checks.
 
 If you've changed any files in `:build-logic`, you can run `./gradlew --project-dir build-logic check`.
-If you've changed any files in `ci`, you should run `npm test` (see [below](#cicd)).
+If you've changed any files in `ci`, you should run `npm test` (see [above](#cicd)).
 
 CI will also run these checks for pull requests.
 
