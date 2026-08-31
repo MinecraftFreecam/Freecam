@@ -51,3 +51,33 @@ jobs:
       contents: write # Needs to match publish.yaml job permissions
     with:
       dry-run: true
+
+  # This meta-job exists only as a target for the 'required status checks' ruleset.
+  # It 'needs' all jobs that block merging a PR. Update the 'needs' list as CI requirements evolve.
+  status:
+    # Important: do not rename this job!
+    # The job name is the unique identifier used by required status checks.
+    name: Required checks
+    if: always()
+    runs-on: ubuntu-slim
+    permissions: {}
+
+    needs:
+      - lint
+      - build
+      - publish
+
+    steps:
+      - name: Check results
+        shell: python
+        env:
+          RESULTS: ${{ toJSON(needs.*.result) }}
+        run: |
+          import json, os, sys
+
+          ok = all(
+            result == "success"
+            for result in json.loads(os.environ["RESULTS"])
+          )
+
+          sys.exit(not ok)
