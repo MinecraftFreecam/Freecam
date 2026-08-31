@@ -78,7 +78,7 @@ Generally, we prefer to implement any non-trivial logic in `ci/`, because it is 
 
 Working on CI files requires [Node.js](https://nodejs.org).
 Run `npm ci` to set up dependencies and `npm test` to run the test suite.
-See `ci/README.md` for more detail.
+See [`ci/README.md`](ci/README.md) for more detail.
 
 ## Multi-version
 
@@ -118,7 +118,7 @@ and [Mod Dev Gradle](https://docs.neoforged.net/toolchain/docs/plugins/mdg/) (us
 Some sub-projects have automated tests. Run `./gradlew test` to execute them, or `./gradlew check` for a more thorough set of checks.
 
 If you've changed any files in `:build-logic`, you can run `./gradlew --project-dir build-logic check`.
-If you've changed any files in `ci`, you should run `npm test` (see [below](#cicd)).
+If you've changed any files in `ci`, you should run `npm test` (see [above](#cicd)).
 
 CI will also run these checks for pull requests.
 
@@ -158,12 +158,30 @@ All changes in the change set will automatically be included in the release note
 
 Typically only Freecam maintainers will make releases.
 
-The current release process is:
+> [!NOTE]
+> All pushes to `main` with an **unpublished version** will automatically be published to GitHub Releases, CurseForge, and Modrinth.
+>
+> All other pushes to `main` will automatically create (or update) a **release PR** that prepares the next release.
+> Merging the release PR will cause the release to be published.
+
+A release PR contains the version bump and generated changelog for the next release.
+
+> [!TIP]
+> Maintainers can push (or force-push) to automated release PRs, or create their own release PRs (see below).
+> This can be useful when a specific version number or pre-release is required.
+>
+> Manual intervention may also be necessary if the changeset does not produce the desired release notes.
+> `CHANGELOG.md` should only be manually edited as part of preparing a release.
+
+> [!CAUTION]
+> Take care when pushing to automated release PRs: subsequent automation may overwrite your changes.
+
+If you need to manually prepare a release, use the following process:
 1. Create a new branch from the latest `main`.
 2. Run `knope bump-version`. This will prepare a new release (bump version, update changelog, commit changes).
    - Use `--override-version <version>` to manually specify a version.
    - Use `--prerelease-label <label>` to make a pre-release (`alpha`, `beta`, etc).
    - Use `--dry-run` to see what _would_ happen without actually making changes.
 3. Open a pull request, e.g. by running `gh pr create`.
-4. Merge the pull request, e.g. `gh pr merge --auto`.
-5. Check that CI/CD successfully published to GitHub, CurseForge, and Modrinth.
+4. Merge the pull request, e.g. by running `gh pr merge --auto`.
+5. Check that CI/CD successfully published the release to GitHub Releases, CurseForge, and Modrinth.
