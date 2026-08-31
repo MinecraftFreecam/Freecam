@@ -30,7 +30,7 @@ jobs:
   create_release_pr:
     # Create a release PR unless this push event is the result of merging a release PR.
     # If `prepare` finds un unpublished version, that means a release PR was merged.
-    if: ${{ !needs.prepare.outputs.do_release }}
+    if: ${{ !needs.prepare.outputs.unreleased }}
 
     name: Create Release PR
     uses: ./.github/workflows/create-release-pr.yaml
@@ -51,7 +51,7 @@ jobs:
       matrix: ${{ needs.prepare.outputs.matrix }}
 
   publish:
-    if: needs.prepare.outputs.do_release
+    if: needs.prepare.outputs.unreleased
     name: Publish
     uses: ./.github/workflows/publish.yaml
     needs:

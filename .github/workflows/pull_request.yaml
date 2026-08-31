@@ -23,7 +23,6 @@ jobs:
     permissions:
       contents: read
     with:
-      release: true
       matrix: true
 
   lint:

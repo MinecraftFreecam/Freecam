@@ -47,7 +47,7 @@ jobs:
         env:
           ci: ${{ needs.prepare.outputs.ci_files }}
           i18n: ${{ needs.prepare.outputs.i18n_files }}
-          release: ${{ needs.prepare.outputs.do_release }}
+          release: ${{ needs.prepare.outputs.unreleased }}
         run: |
           import json
           import os
