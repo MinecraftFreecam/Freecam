@@ -1,0 +1,53 @@
+name: Check
+
+on:
+  pull_request:
+
+# Group workflow runs by PR number.
+# New runs cancel any pending run.
+# In-progress runs are asked to stop.
+concurrency:
+  group: pull_request-${{ github.event.number }}
+  cancel-in-progress: true
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  prepare:
+    name: Setup
+    uses: ./.github/workflows/prepare.yaml
+    permissions:
+      contents: read
+    with:
+      release: true
+      matrix: true
+
+  lint:
+    name: Lint
+    uses: ./.github/workflows/lint.yaml
+    permissions:
+      contents: read
+
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yaml
+    needs: prepare
+    permissions:
+      contents: read
+    with:
+      matrix: ${{ needs.prepare.outputs.matrix }}
+
+  publish:
+    name: Publish
+    uses: ./.github/workflows/publish.yaml
+    needs:
+      - prepare
+      - build
+    permissions:
+      contents: read
+    with:
+      dry-run: true

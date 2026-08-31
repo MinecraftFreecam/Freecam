@@ -1,0 +1,50 @@
+name: Push
+
+on:
+  push:
+    branches:
+      - main
+
+# Group workflow runs by ref.
+# New runs cancel any pending run.
+# In-progress runs are allowed to complete.
+concurrency:
+  group: push-${{ github.ref }}
+
+permissions: {}
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  prepare:
+    name: Setup
+    uses: ./.github/workflows/prepare.yaml
+    permissions:
+      contents: read
+    with:
+      release: true
+      matrix: true
+
+  build:
+    name: Build
+    uses: ./.github/workflows/build.yaml
+    needs: prepare
+    permissions:
+      contents: read
+    with:
+      matrix: ${{ needs.prepare.outputs.matrix }}
+
+  publish:
+    if: needs.prepare.outputs.do_release
+    name: Publish
+    uses: ./.github/workflows/publish.yaml
+    needs:
+      - prepare
+      - build
+    permissions:
+      contents: write
+    secrets:
+      MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
+      CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
