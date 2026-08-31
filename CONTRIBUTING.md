@@ -158,7 +158,25 @@ All changes in the change set will automatically be included in the release note
 
 Typically only Freecam maintainers will make releases.
 
-The current release process is:
+> [!NOTE]
+> All pushes to `main` with an **unpublished version** will automatically be published to GitHub Releases, CurseForge, and Modrinth.
+>
+> All other pushes to `main` will automatically create (or update) a **release PR** that prepares the next release.
+> Merging the release PR will cause the release to be published.
+
+A release PR contains the version bump and generated changelog for the next release.
+
+> [!TIP]
+> Maintainers can push (or force-push) to automated release PRs, or create their own release PRs (see below).
+> This can be useful when a specific version number or pre-release is required.
+>
+> Manual intervention may also be necessary if the changeset does not produce the desired release notes.
+> `CHANGELOG.md` should only be manually edited as part of preparing a release.
+
+> [!CAUTION]
+> Take care when pushing to automated release PRs: subsequent automation may overwrite your changes.
+
+If you need to manually prepare a release, use the following process:
 1. Create a new branch from the latest `main`.
 2. Run `knope bump-version`. This will prepare a new release (bump version, update changelog, commit changes).
    - Use `--override-version <version>` to manually specify a version.
