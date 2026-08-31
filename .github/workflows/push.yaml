@@ -32,7 +32,7 @@ jobs:
     # If `prepare` finds un unpublished version, that means a release PR was merged.
     if: ${{ !needs.prepare.outputs.unreleased }}
 
-    name: Create Release PR
+    name: Release PR
     uses: ./.github/workflows/create-release-pr.yaml
     needs: prepare
     permissions:

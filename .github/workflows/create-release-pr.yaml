@@ -7,7 +7,7 @@ on:
 
 jobs:
   create:
-    name: Create PR
+    name: Create
     runs-on: ubuntu-slim
     timeout-minutes: 10
 
