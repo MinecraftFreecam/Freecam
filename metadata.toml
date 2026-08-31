@@ -4,7 +4,7 @@ id = "freecam"
 group = "net.xolt.freecam"
 # Bump version using `knope bump-version`
 # Optionally pass `--prerelease-label` with `alpha`, `beta`, `rc`, etc
-version = "1.4.1-rc.1"
+version = "1.4.1"
 authors = ["hashalite", "Matt Sturgeon"]
 license = "MIT"
 homepage = "https://minecraftfreecam.github.io"
