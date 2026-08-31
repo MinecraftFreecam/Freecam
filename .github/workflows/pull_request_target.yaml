@@ -28,6 +28,7 @@ jobs:
       contents: read
     with:
       i18n: true
+      release: true
 
   label:
     name: Label
@@ -44,11 +45,12 @@ jobs:
         shell: python
         env:
           i18n: ${{ needs.prepare.outputs.i18n_files }}
+          release: ${{ needs.prepare.outputs.do_release }}
         run: |
           import json
           import os
 
-          managed = ["i18n"]
+          managed = ["i18n", "release"]
 
           labels = {
             label: os.environ.get(label) == "true"
