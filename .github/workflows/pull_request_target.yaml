@@ -12,7 +12,7 @@ on:
 # New runs cancel any pending run.
 # In-progress runs are allowed to complete.
 concurrency:
-  group: pr-comment-${{ github.event.number }}
+  group: pull_request_target-${{ github.event.number }}
 
 permissions: {}
 
