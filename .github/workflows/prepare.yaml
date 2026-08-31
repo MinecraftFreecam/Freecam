@@ -12,7 +12,7 @@ on:
         type: boolean
         default: false
       release:
-        description: Check whether a release should be made
+        description: Check whether the current project version has been published on GitHub Releases
         type: boolean
         default: false
       matrix:
@@ -23,9 +23,9 @@ on:
       version:
         description: The current project version
         value: ${{ jobs.prepare.outputs.version }}
-      do_release:
-        description: Whether to publish a GitHub Release
-        value: ${{ jobs.prepare.outputs.do_release }}
+      unreleased:
+        description: Whether the current project version is not yet published on GitHub Releases
+        value: ${{ jobs.prepare.outputs.unreleased }}
       ci_files:
         description: Whether the PR touches files in 'ci' or '.github'
         value: ${{ jobs.prepare.outputs.ci_files }}
@@ -62,7 +62,7 @@ jobs:
       contents: read
     outputs:
       version: ${{ steps.version.outputs.version }}
-      do_release: ${{ steps.check_release.outputs.do_release }}
+      unreleased: ${{ steps.check_release.outputs.unreleased }}
       ci_files: ${{ steps.changed_files.outputs.ci }}
       i18n_files: ${{ steps.changed_files.outputs.i18n }}
       matrix: ${{ steps.matrix.outputs.matrix }}
@@ -154,7 +154,6 @@ jobs:
         with:
           script: |
             const tag = `v${process.env.VERSION}`
-            const push = context.eventName === "push"
             try {
               const { data } = await github.rest.repos.getReleaseByTag({ ...context.repo, tag })
               core.notice(`${tag} already published (${data.published_at})`)
@@ -162,7 +161,6 @@ jobs:
               if (err.status !== 404) throw err
               core.notice(`${tag} not published — creating release`)
               core.setOutput("unreleased", "true")
-              if (push) core.setOutput("do_release", "true")
             }
 
       - name: Generate build matrix
