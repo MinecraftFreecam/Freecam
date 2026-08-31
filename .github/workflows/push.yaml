@@ -42,6 +42,11 @@ jobs:
       FREECAM_CI_APP_PRIVATE_KEY: ${{ secrets.FREECAM_CI_APP_PRIVATE_KEY }}
 
   build:
+    # Only build on:push when we need to publish a release
+    # Strictly speaking, we could run into cases where an outdated PR builds ok, but it fails when merged.
+    # However, we're much more likely to notice that now that we create release PRs on every push.
+    if: needs.prepare.outputs.unreleased
+
     name: Build
     uses: ./.github/workflows/build.yaml
     needs: prepare
