@@ -1,9 +1,14 @@
 name: Push
 
 on:
+  # Most CI happens on pull requests, but we also have some automation on pushes to release branches.
   push:
     branches:
+      # Mainline releases are published from the `main` branch.
       - main
+      # Followup releases may be published from version branches, e.g. `version/1.2.3`.
+      # This is useful when `main` has diverged from the base release.
+      - version/*
 
 # Group workflow runs by ref.
 # New runs cancel any pending run.
