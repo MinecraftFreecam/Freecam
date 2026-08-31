@@ -1,13 +1,7 @@
-name: Checks
+name: Lint
 
 on:
-  pull_request:
-
-# Group workflow runs by ref.
-# New runs cancel any pending run.
-# In-progress runs are allowed to complete.
-concurrency:
-  group: check-${{ github.ref }}
+  workflow_call:
 
 defaults:
   run:

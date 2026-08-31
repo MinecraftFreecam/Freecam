@@ -1,15 +1,12 @@
 name: Build
 
 on:
-  push:
-  pull_request:
-
-# Group workflow runs by event and ref.
-# New runs cancel any pending run.
-# PR runs also cancel in-progress runs.
-concurrency:
-  group: build-${{ github.event_name }}-${{ github.ref }}
-  cancel-in-progress: ${{ github.event_name != 'push' }}
+  workflow_call:
+    inputs:
+      matrix:
+        description: JSON build matrix
+        required: true
+        type: string
 
 permissions: {}
 
@@ -18,26 +15,16 @@ defaults:
     shell: bash
 
 jobs:
-  prepare:
-    name: Setup
-    uses: ./.github/workflows/prepare.yaml
-    permissions:
-      contents: read
-    with:
-      release: ${{ github.event_name != 'push' || github.ref == 'refs/heads/main' }}
-      matrix: true
-
   build:
     name: ${{ matrix.name }}
     runs-on: ubuntu-latest
     permissions:
       contents: read
 
-    needs: prepare
     strategy:
       fail-fast: false
       matrix:
-        include: ${{ fromJson(needs.prepare.outputs.matrix) }}
+        include: ${{ fromJson(inputs.matrix) }}
     timeout-minutes: 120
 
     steps:
@@ -107,18 +94,3 @@ jobs:
             echo "_Expires on **$(date --utc --date=+"$upload_days"days +%F)** (UTC)._"
             echo
           ) >> "$GITHUB_STEP_SUMMARY"
-
-  publish:
-    if: github.event_name != 'push' || needs.prepare.outputs.do_release
-    name: Publish
-    uses: ./.github/workflows/publish.yaml
-    needs:
-      - prepare
-      - build
-    permissions:
-      contents: write
-    secrets:
-      MODRINTH_TOKEN: ${{ secrets.MODRINTH_TOKEN }}
-      CURSEFORGE_TOKEN: ${{ secrets.CURSEFORGE_TOKEN }}
-    with:
-      dry-run: ${{ github.event_name != 'push' }}
