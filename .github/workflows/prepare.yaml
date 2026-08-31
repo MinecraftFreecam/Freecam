@@ -7,7 +7,7 @@ on:
         description: Check whether files in 'ci' or '.github' were touched
         type: boolean
         default: false
-      i18n:
+      i18n_files:
         description: Check whether i18n files were touched
         type: boolean
         default: false
@@ -48,7 +48,7 @@ env:
   scopes: >
     ${{ inputs.matrix && 'node' || '' }}
     ${{ inputs.ci_files && 'files' || '' }}
-    ${{ inputs.i18n && 'files' || '' }}
+    ${{ inputs.i18n_files && 'files' || '' }}
 
 jobs:
   prepare:

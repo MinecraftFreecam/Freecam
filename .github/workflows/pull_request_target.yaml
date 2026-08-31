@@ -28,7 +28,7 @@ jobs:
       contents: read
     with:
       ci_files: true
-      i18n: true
+      i18n_files: true
       release: true
 
   label:
