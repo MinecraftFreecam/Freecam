@@ -27,7 +27,9 @@ jobs:
     permissions:
       contents: read
     with:
-      i18n: true
+      ci_files: true
+      i18n_files: true
+      release: true
 
   label:
     name: Label
@@ -43,12 +45,14 @@ jobs:
       - name: Compute managed labels
         shell: python
         env:
+          ci: ${{ needs.prepare.outputs.ci_files }}
           i18n: ${{ needs.prepare.outputs.i18n_files }}
+          release: ${{ needs.prepare.outputs.do_release }}
         run: |
           import json
           import os
 
-          managed = ["i18n"]
+          managed = ["ci", "i18n", "release"]
 
           labels = {
             label: os.environ.get(label) == "true"

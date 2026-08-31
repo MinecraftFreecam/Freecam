@@ -3,7 +3,11 @@ name: Setup
 on:
   workflow_call:
     inputs:
-      i18n:
+      ci_files:
+        description: Check whether files in 'ci' or '.github' were touched
+        type: boolean
+        default: false
+      i18n_files:
         description: Check whether i18n files were touched
         type: boolean
         default: false
@@ -22,6 +26,9 @@ on:
       do_release:
         description: Whether to publish a GitHub Release
         value: ${{ jobs.prepare.outputs.do_release }}
+      ci_files:
+        description: Whether the PR touches files in 'ci' or '.github'
+        value: ${{ jobs.prepare.outputs.ci_files }}
       i18n_files:
         description: Whether the PR touches i18n files
         value: ${{ jobs.prepare.outputs.i18n_files }}
@@ -40,7 +47,8 @@ env:
   # Scopes that can be queried using `contains(env.scopes, 'scope')`
   scopes: >
     ${{ inputs.matrix && 'node' || '' }}
-    ${{ inputs.i18n && 'files' || '' }}
+    ${{ inputs.ci_files && 'files' || '' }}
+    ${{ inputs.i18n_files && 'files' || '' }}
 
 jobs:
   prepare:
@@ -55,6 +63,7 @@ jobs:
     outputs:
       version: ${{ steps.version.outputs.version }}
       do_release: ${{ steps.check_release.outputs.do_release }}
+      ci_files: ${{ steps.changed_files.outputs.ci }}
       i18n_files: ${{ steps.changed_files.outputs.i18n }}
       matrix: ${{ steps.matrix.outputs.matrix }}
 
@@ -118,6 +127,10 @@ jobs:
               }
             )
             const files = result.repository.pullRequest.files.nodes
+            if (files.some(f => f.path.startsWith("ci/") || f.path.startsWith(".github/"))) {
+              core.notice("This PR touches ci files")
+              core.setOutput("ci", "true")
+            }
             if (files.some(f => f.path.startsWith("i18n/"))) {
               core.notice("This PR touches i18n files")
               core.setOutput("i18n", "true")
