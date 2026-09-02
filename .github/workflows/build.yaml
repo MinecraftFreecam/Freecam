@@ -32,7 +32,7 @@ jobs:
 
       # Install Java used by the Gradle wrapper.
       # The JVM used to build is installed separately by the foojay resolver.
-      - uses: actions/setup-java@v5
+      - uses: actions/setup-java@v6
         with:
           java-version: '21'
           distribution: temurin
