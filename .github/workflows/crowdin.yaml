@@ -315,15 +315,6 @@ jobs:
               ).data
             })()
 
-            // Ensure the label is also applied when the workflow falls back to
-            // github.token, which does not trigger the PR labeling workflow.
-            await github.rest.issues.addLabels({
-              owner,
-              repo,
-              issue_number: pr.number,
-              labels: ["i18n"],
-            })
-
             core.setOutput("number", pr.number)
             core.setOutput("url", pr.html_url)
 
