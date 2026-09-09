@@ -159,9 +159,9 @@ All changes in the change set will automatically be included in the release note
 Typically only Freecam maintainers will make releases.
 
 > [!NOTE]
-> All pushes to `main` with an **unpublished version** will automatically be published to GitHub Releases, CurseForge, and Modrinth.
+> All pushes to `main` or `version/*` with an **unpublished version** will automatically be published to GitHub Releases, CurseForge, and Modrinth.
 >
-> All other pushes to `main` will automatically create (or update) a **release PR** that prepares the next release.
+> All other pushes to `main` or `version/*` will automatically create (or update) a **release PR** that prepares the next release.
 > Merging the release PR will cause the release to be published.
 
 A release PR contains the version bump and generated changelog for the next release.
@@ -185,3 +185,16 @@ If you need to manually prepare a release, use the following process:
 3. Open a pull request, e.g. by running `gh pr create`.
 4. Merge the pull request, e.g. by running `gh pr merge --auto`.
 5. Check that CI/CD successfully published the release to GitHub Releases, CurseForge, and Modrinth.
+
+### Splitting release maintenance and mainline development
+
+By using `version/*` branches, we can separate release maintenance from mainline development.
+
+A version branch can be created at any point, including from an earlier revision when the release needs to exclude newer mainline changes.
+Typically, we should only create one when this separation is actually needed, to avoid unnecessary complexity.
+
+For example, suppose we have started pre-releases for v1.2.3, but want to begin developing the next version on `main` before v1.2.3 is ready.
+We can create a `version/1.2.x` branch for the v1.2.x release series and continue development on `main`.
+
+Changes made on one branch are not automatically propagated to the other.
+When a change is relevant to both branches, we should cherry-pick it between them as appropriate.
