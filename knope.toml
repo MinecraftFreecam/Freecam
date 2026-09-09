@@ -86,11 +86,24 @@ command = "echo '$version'"
 name = "print-release-notes"
 help_text = "Print the current version's release notes from the project changelog"
 
+# Sadly, $changelog cannot be printed directly: Knope treats quotes in interpolated values as command argument syntax
+# https://github.com/knope-dev/knope/issues/2014
 [[workflows.steps]]
 type = "Command"
-shell = true
 command = """
-cat <<EOF
-$changelog
-EOF
+awk -v version='$version' '
+    /^ {0,3}#{1,2}($|[[:space:]])/ {
+        if (printing)
+            exit
+
+        if ($1 == "##" && $2 == version)
+            printing = 1
+
+        next
+    }
+
+    printing {
+        print
+    }
+' CHANGELOG.md
 """
