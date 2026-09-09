@@ -75,6 +75,7 @@ jobs:
         with:
           # Full depth for merge logic
           fetch-depth: 0
+          persist-credentials: false
 
       - name: Restore Crowdin cache
         uses: actions/cache/restore@v6
@@ -176,6 +177,7 @@ jobs:
       - uses: actions/checkout@v7
         with:
           token: ${{ steps.app-token.outputs.token || github.token }}
+          persist-credentials: true
 
 
       - name: Generate summary

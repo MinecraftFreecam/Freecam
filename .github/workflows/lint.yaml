@@ -36,6 +36,7 @@ jobs:
             package.json
             package-lock.json
           sparse-checkout-cone-mode: false
+          persist-credentials: false
 
       - name: Install CI dependencies
         run: npm ci

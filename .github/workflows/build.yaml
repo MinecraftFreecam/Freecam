@@ -29,6 +29,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
+        with:
+          persist-credentials: false
 
       # Install Java used by the Gradle wrapper.
       # The JVM used to build is installed separately by the foojay resolver.

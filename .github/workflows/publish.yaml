@@ -46,6 +46,7 @@ jobs:
             metadata.toml
             CHANGELOG.md
           sparse-checkout-cone-mode: false
+          persist-credentials: false
 
       - name: Install Knope
         uses: knope-dev/action@v2.1.2
