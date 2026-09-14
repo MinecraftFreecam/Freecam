@@ -83,6 +83,7 @@ jobs:
             package.json
             package-lock.json
           sparse-checkout-cone-mode: false
+          persist-credentials: false
 
       # Checkout PR metadata separately to support pull_request_target.
       # Trusted CI tooling will deserialize these files as arbitrary user input.
@@ -100,6 +101,7 @@ jobs:
             metadata.toml
             stonecutter.settings.toml
           sparse-checkout-cone-mode: false
+          persist-credentials: false
 
       - name: Install CI dependencies
         if: contains(env.scopes, 'node')
