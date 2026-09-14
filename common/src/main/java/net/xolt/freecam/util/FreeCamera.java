@@ -17,6 +17,7 @@ import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.config.model.Perspective;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 //? if >=26.3-0
 import net.minecraft.world.entity.MoveSimulationType;
@@ -152,10 +153,27 @@ public class FreeCamera extends AbstractClientPlayer {
     }
 
     // Needed for hand swings to be shown in freecam since the player is replaced by FreeCamera in HeldItemRenderer.renderItem()
+    //? if >=26.3-0 {
     @Override
+    public @Nullable SwingDescription getCurrentSwing() {
+        return MC.player.getCurrentSwing();
+    }
+
+    @Override
+    public float getSwingAnimation(final float partialTicks) {
+        return MC.player.getSwingAnimation(partialTicks);
+    }
+
+    @Override
+    public boolean isSwinging() {
+        return MC.player.isSwinging();
+    }
+    //? } else {
+    /*@Override
     public float getAttackAnim(float tickDelta) {
         return MC.player.getAttackAnim(tickDelta);
     }
+    *///? }
 
     // Needed for item use animations to be shown in freecam since the player is replaced by FreeCamera in HeldItemRenderer.renderItem()
     @Override

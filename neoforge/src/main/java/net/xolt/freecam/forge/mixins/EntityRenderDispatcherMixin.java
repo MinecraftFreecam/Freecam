@@ -21,7 +21,16 @@ public class EntityRenderDispatcherMixin {
     causing non-camera LocalPlayers to render
      **/
     @Inject(method = "shouldRender", at = @At("HEAD"), cancellable = true)
-    private <E extends Entity> void onShouldRender(E entity, Frustum culler, double camX, double camY, double camZ, CallbackInfoReturnable<Boolean> cir) {
+    private <E extends Entity> void onShouldRender(
+        E entity,
+        Frustum culler,
+        double camX,
+        double camY,
+        double camZ,
+        //? if >=26.3
+        float partialTicks,
+        CallbackInfoReturnable<Boolean> cir)
+    {
         if (entity == MC.player && Freecam.isEnabled() && ModConfig.get().shouldHidePlayer()) {
             cir.setReturnValue(false);
         }
