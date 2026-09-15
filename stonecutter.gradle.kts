@@ -18,6 +18,19 @@ stonecutter parameters {
         .filter { (key, value) ->
             value.isNotBlank()
         }
+        .map { (key, value) ->
+            key to when (key) {
+                // Simplify NeoForge PR versions for semver compatibility
+                "neoforge_version" ->
+                    "(.+)-pr-(\\d+)-.*".toRegex()
+                        .matchEntire(value)
+                        ?.destructured
+                        ?.let { (base, pr) ->
+                            "$base-pr-$pr"
+                        } ?: value
+                else -> value
+            }
+        }
         .filter { (key, value) ->
             try {
                 sc.parse(value)
