@@ -19,7 +19,11 @@
     "IrisHandRendererMixin",
     //? if <1.21.6
     //"IrisShadowRendererMixin",
-    "ItemInHandRendererMixin",
+    //? if >=26.3 {
+    "FirstPersonHandsAndItemsMixin",
+    "FirstPersonHandsAndItemsRendererMixin",
+    //? } else
+    //"ItemInHandRendererMixin",
     //? if >=26.2 {
     "LevelExtractorMixin",
     //? } else if >=1.21.11

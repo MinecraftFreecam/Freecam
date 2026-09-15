@@ -18,7 +18,16 @@ public class EntityRenderDispatcherMixin {
 
     // Prevents shadow being cast when Iris is enabled.
     @Inject(method = "shouldRender", at = @At("HEAD"), cancellable = true)
-    private void onShouldRender(Entity entity, Frustum culler, double camX, double camY, double camZ, CallbackInfoReturnable<Boolean> cir) {
+    private void onShouldRender(
+        Entity entity,
+        Frustum culler,
+        double camX,
+        double camY,
+        double camZ,
+        //? if >=26.3
+        float partialTicks,
+        CallbackInfoReturnable<Boolean> cir)
+    {
         if (entity instanceof FreeCamera) {
             cir.setReturnValue(false);
         } else if (entity == MC.player && Freecam.isEnabled() && ModConfig.get().shouldHidePlayer()) {

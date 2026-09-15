@@ -1,4 +1,5 @@
-package net.xolt.freecam.mixins;
+//? if <26.3 {
+/*package net.xolt.freecam.mixins;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.player.LocalPlayer;
@@ -15,11 +16,12 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 //? if >= 1.21.11 {
 import net.minecraft.client.renderer.SubmitNodeCollector;
 //? } else {
-/*import net.minecraft.client.renderer.MultiBufferSource;
- *///? }
+/^import net.minecraft.client.renderer.MultiBufferSource;
+^///? }
 
 import static net.xolt.freecam.Freecam.MC;
 
+/// Moved to [FirstPersonHandsAndItemsMixin] and [FirstPersonHandsAndItemsRenderer] in 26.3
 @Mixin(ItemInHandRenderer.class)
 public class ItemInHandRendererMixin {
 
@@ -116,3 +118,4 @@ public class ItemInHandRendererMixin {
         return lightCoords;
     }
 }
+*///? }

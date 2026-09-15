@@ -8,7 +8,7 @@ plugins {
     id("freecam.shadow") apply false
 }
 
-stonecutter active "26.2"
+stonecutter active "26.3"
 
 stonecutter parameters {
     val meta = node.project.meta
@@ -17,6 +17,19 @@ stonecutter parameters {
     meta.deps.asSequence()
         .filter { (key, value) ->
             value.isNotBlank()
+        }
+        .map { (key, value) ->
+            key to when (key) {
+                // Simplify NeoForge PR versions for semver compatibility
+                "neoforge_version" ->
+                    "(.+)-pr-(\\d+)-.*".toRegex()
+                        .matchEntire(value)
+                        ?.destructured
+                        ?.let { (base, pr) ->
+                            "$base-pr-$pr"
+                        } ?: value
+                else -> value
+            }
         }
         .filter { (key, value) ->
             try {
@@ -54,6 +67,11 @@ stonecutter parameters {
     }
 
     replacements {
+        string(current.parsed >= "26.3-0") {
+            replace("InputConstants.Type.KEYSYM", "InputConstants.Type.KEYBOARD")
+            replace("org.lwjgl.glfw.GLFW.GLFW_KEY_", "org.lwjgl.sdl.SDLScancode.SDL_SCANCODE_")
+            replace("GLFW_KEY_", "SDL_SCANCODE_")
+        }
         string(current.parsed >= "26.2") {
             replace("renderHandsWithItems", "submitHandsWithItems")
         }
