@@ -13,8 +13,8 @@
     "ci"
   ],
   "devDependencies": {
-    "@biomejs/biome": "2.5.12",
-    "@types/node": "^26.4.1",
+    "@biomejs/biome": "2.5.13",
+    "@types/node": "^26.5.1",
     "typescript": "^7.0.2"
   }
 }
