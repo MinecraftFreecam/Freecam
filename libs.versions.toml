@@ -7,7 +7,7 @@ fabric-loom = "1.17-SNAPSHOT"
 fabric-loader = "0.19.3"
 mapping-io = "0.8.0"
 mixin = "0.8.5"
-moddev = "2.0.140"
+mdg = "2.0.147" # https://projects.neoforged.net/neoforged/ModDevGradle
 fletchingtable = "0.1.0-alpha.23"
 batik = "1.19"
 foojay-resolver = "1.0.0"
@@ -40,8 +40,8 @@ shadow = { id = "com.gradleup.shadow", version.ref = "shadow" }
 stonecutter = { id = "dev.kikugie.stonecutter", version.ref = "stonecutter" }
 fabric-loom = { id = "net.fabricmc.fabric-loom", version.ref = "fabric-loom" }
 fabric-loom-remap = { id = "net.fabricmc.fabric-loom-remap", version.ref = "fabric-loom" }
-moddev = { id = "net.neoforged.moddev", version.ref = "moddev" }
-moddev-legacy = {id = "net.neoforged.moddev.legacyforge", version.ref = "moddev"}
+moddev = { id = "net.neoforged.moddev", version.ref = "mdg" }
+moddev-legacy = {id = "net.neoforged.moddev.legacyforge", version.ref = "mdg" }
 fletchingtable = { id = "dev.kikugie.fletching-table", version.ref = "fletchingtable" }
 fletchingtable-fabric = { id = "dev.kikugie.fletching-table.fabric", version.ref = "fletchingtable" }
 fletchingtable-neoforge = { id = "dev.kikugie.fletching-table.neoforge", version.ref = "fletchingtable" }
