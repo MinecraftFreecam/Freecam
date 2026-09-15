@@ -19,7 +19,7 @@ import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
-//? if >=26.3-0
+//? if >=26.3
 import net.minecraft.world.entity.MoveSimulationType;
 //~ if >=1.21.11 Input -> ClientInput
 import net.minecraft.client.player.ClientInput;
@@ -153,7 +153,7 @@ public class FreeCamera extends AbstractClientPlayer {
     }
 
     // Needed for hand swings to be shown in freecam since the player is replaced by FreeCamera in HeldItemRenderer.renderItem()
-    //? if >=26.3-0 {
+    //? if >=26.3 {
     @Override
     public @Nullable SwingDescription getCurrentSwing() {
         return MC.player.getCurrentSwing();
@@ -210,7 +210,7 @@ public class FreeCamera extends AbstractClientPlayer {
     @Override
     public @NotNull PushReaction getPistonPushReaction() {
         if (ModConfig.get().ignoreAllCollision()) {
-            //~ if >=26.3-0 IGNORE -> IGNORE_ENTITY
+            //~ if >=26.3 IGNORE -> IGNORE_ENTITY
             return PushReaction.IGNORE_ENTITY;
         }
         return super.getPistonPushReaction();
@@ -275,7 +275,7 @@ public class FreeCamera extends AbstractClientPlayer {
     }
 
     // Enabling movement ticking
-    //? if >=26.3-0 {
+    //? if >=26.3 {
     @Override
     public @NotNull MoveSimulationType getMoveSimulationType() {
         return MoveSimulationType.SERVER_AND_CLIENT;

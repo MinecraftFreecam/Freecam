@@ -24,7 +24,7 @@ public class EntityRenderDispatcherMixin {
         double camX,
         double camY,
         double camZ,
-        //? if >=26.3-0
+        //? if >=26.3
         float partialTicks,
         CallbackInfoReturnable<Boolean> cir)
     {

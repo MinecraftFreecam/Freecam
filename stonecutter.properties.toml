@@ -29,13 +29,13 @@ modmenu.modrinth_id = "mOgUt4GM"
 
 
 ["26.3"]
-reqs.mc = "26.3.x-0"
+reqs.mc = "~26.3"
 
 deps.cloth = "26.3.158"
 reqs.cloth = "~26.3"
 deps.modmenu = "21.0.0-beta.1"
 
-deps.fabric_api = "0.160.4+26.3"
+deps.fabric_api = "0.160.5+26.3"
 reqs.fabric_loader = ">=0.18.0"
 
 deps.neoforge_pr = "3403" # https://github.com/neoforged/NeoForge/pull/3403

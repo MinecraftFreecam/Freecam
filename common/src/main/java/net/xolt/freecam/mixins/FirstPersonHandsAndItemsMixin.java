@@ -1,4 +1,4 @@
-//? if >=26.3-0 {
+//? if >=26.3 {
 package net.xolt.freecam.mixins;
 
 import net.minecraft.client.player.FirstPersonHandsAndItems;
