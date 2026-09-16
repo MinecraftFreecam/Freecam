@@ -13,23 +13,24 @@ public enum TripodSlot {
         return this == NONE ? "None" : "#%d".formatted(ordinal());
     }
 
-    public static boolean inRange(int number) {
-        return number >= MIN && number <= MAX;
-    }
-
     public static TripodSlot valueOf(int number) throws IndexOutOfBoundsException {
-        if (!inRange(number)) {
-            throw new IndexOutOfBoundsException("Cannot get TripodSlot for number %d: must be %d-%d.".formatted(number, MIN, MAX));
-        }
-        return valueOfUnsafe(number);
+        if (number >= MIN && number <= MAX) return values()[number];
+        throw new IndexOutOfBoundsException("Cannot get TripodSlot for number %d: must be %d-%d.".formatted(number, MIN, MAX));
     }
 
     public static TripodSlot ofKeyCode(int keyCode) {
-        int number = keyCode - InputConstants.KEY_0;
-        return inRange(number) ? valueOfUnsafe(number) : NONE;
-    }
-
-    private static TripodSlot valueOfUnsafe(int number) {
-        return values()[number];
+        // We could compute keys 1-9 from a keycode offset, however an explicit mapping is more maintainable
+        return switch (keyCode) {
+            case InputConstants.KEY_1 -> ONE;
+            case InputConstants.KEY_2 -> TWO;
+            case InputConstants.KEY_3 -> THREE;
+            case InputConstants.KEY_4 -> FOUR;
+            case InputConstants.KEY_5 -> FIVE;
+            case InputConstants.KEY_6 -> SIX;
+            case InputConstants.KEY_7 -> SEVEN;
+            case InputConstants.KEY_8 -> EIGHT;
+            case InputConstants.KEY_9 -> NINE;
+            default -> NONE;
+        };
     }
 }
