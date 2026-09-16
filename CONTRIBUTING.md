@@ -158,29 +158,32 @@ All changes in the change set will automatically be included in the release note
 
 Typically only Freecam maintainers will make releases.
 
+Maintainers can push (or force-push) to automated release PRs, or create their own release PRs (see below).
+This can be useful when a specific version number or pre-release is required.
+
 > [!NOTE]
 > All pushes to `main` or `version/*` with an **unpublished version** will automatically be published to GitHub Releases, CurseForge, and Modrinth.
 >
-> All other pushes to `main` or `version/*` will automatically create (or update) a **release PR** that prepares the next release.
-> Merging the release PR will cause the release to be published.
-
-A release PR contains the version bump and generated changelog for the next release.
-
-> [!TIP]
-> Maintainers can push (or force-push) to automated release PRs, or create their own release PRs (see below).
-> This can be useful when a specific version number or pre-release is required.
->
-> Manual intervention may also be necessary if the changeset does not produce the desired release notes.
-> `CHANGELOG.md` should only be manually edited as part of preparing a release.
+> All other pushes to `main` or `version/*` will automatically create (or update) a **release PR** that prepares the next release. Merging the release PR will publish the release.
 
 > [!CAUTION]
-> Take care when pushing to automated release PRs: subsequent automation may overwrite your changes.
+> Release PR changelogs often require manual review before merging:
+> - **Categorization:** Change types are inferred from severity and may need adjusting.
+> - **Pre-release accumulation:** Knope does **not** consume or delete `.changeset` files during pre-releases (preserving them for the final release).
+>   Pre-release changelogs will include all accumulated change files.
+>
+> You can edit or push directly to an automated release PR, but take care: subsequent automated runs may overwrite your changes to `CHANGELOG.md`.
+> `CHANGELOG.md` should only be manually edited as part of preparing a release.
 
 If you need to manually prepare a release, use the following process:
 1. Create a new branch from the latest `main`.
 2. Run `knope bump-version`. This will prepare a new release (bump version, update changelog, commit changes).
    - Use `--override-version <version>` to manually specify a version.
    - Use `--prerelease-label <label>` to make a pre-release (`alpha`, `beta`, etc).
+     - **Pre-release-only changes:**
+       If a change applies only to this pre-release and shouldn't appear in the full release, delete its `.changeset` file after bumping.
+     - **Excluding pending changes:**
+       If an existing change shouldn't appear in these pre-release notes, temporarily remove its `.changeset` file before bumping, or prune the entry from `CHANGELOG.md` after bumping.
    - Use `--dry-run` to see what _would_ happen without actually making changes.
 3. Open a pull request, e.g. by running `gh pr create`.
 4. Merge the pull request, e.g. by running `gh pr merge --auto`.
