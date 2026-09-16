@@ -1,6 +1,6 @@
 package net.xolt.freecam.tripod;
 
-import static org.lwjgl.sdl.SDLScancode.SDL_SCANCODE_0;
+import com.mojang.blaze3d.platform.InputConstants;
 
 public enum TripodSlot {
     NONE, ONE, TWO, THREE, FOUR, FIVE, SIX, SEVEN, EIGHT, NINE;
@@ -25,7 +25,7 @@ public enum TripodSlot {
     }
 
     public static TripodSlot ofKeyCode(int keyCode) {
-        int number = keyCode - SDL_SCANCODE_0;
+        int number = keyCode - InputConstants.KEY_0;
         return inRange(number) ? valueOfUnsafe(number) : NONE;
     }
 
