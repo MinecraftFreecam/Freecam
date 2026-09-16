@@ -250,6 +250,16 @@ jobs:
               echo "deleted=$pr_branch" >> "$GITHUB_OUTPUT"
             fi
           else
+            echo "Documenting changes"
+            {
+              echo ---
+              echo 'default: patch'
+              echo ---
+              echo
+              echo '# Various translation updates'
+            } > .changeset/i18n_updates.md
+            git add .changeset/i18n_updates.md
+
             echo "Committing changes"
             {
               echo "chore(i18n): new translations from Crowdin"
