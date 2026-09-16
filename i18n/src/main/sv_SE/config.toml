@@ -2,11 +2,11 @@
 title = "Freecam-inställningar"
 
   [freecam.config.gui.fallback]
-  title = "KonfigurationsGUI är inte tillgängligt."
+  title = "Konfigurationsmeny ej tillgänglig."
 
 [freecam.config.controls]
-label = "Nyckelbindningar"
-tooltip = "Freecam-nyckelbindningar."
+label = "Tangentbindningar"
+tooltip = "Freecam-tangentbindningar."
 
 [freecam.config.movement]
 label = "Rörelsealternativ"
