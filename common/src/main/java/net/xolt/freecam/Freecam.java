@@ -3,6 +3,7 @@ package net.xolt.freecam;
 import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.ToggleKeyMapping;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.client.player.KeyboardInput;
 import net.minecraft.network.chat.Component;
@@ -41,6 +42,7 @@ public class Freecam {
     private static TripodSlot activeTripod = TripodSlot.NONE;
     private static FreeCamera freeCamera;
     private static CameraType rememberedF5 = null;
+    private static boolean sneakStateOnEnable = false;
 
     @ApiStatus.Internal
     public static void preTick(Minecraft mc) {
@@ -254,6 +256,7 @@ public class Freecam {
     private static void onEnable() {
         MC.smartCull = false;
         outlineEnabled = ModConfig.get().shouldOutlinePlayer();
+        sneakStateOnEnable = MC.options.keyShift.isDown();
 
         rememberedF5 = MC.options.getCameraType();
         //~ if >=26.2 getMainCamera -> mainCamera
@@ -279,6 +282,18 @@ public class Freecam {
     private static void onDisabled() {
         if (rememberedF5 != null) {
             MC.options.setCameraType(rememberedF5);
+        }
+        restoreSneakState();
+    }
+
+    // Using the sneak key to descend in freecam (see Motion.isSneakKeyDown) still reaches the real
+    // keyShift mapping, so with Toggle Sneak enabled it silently flips the player's persisted crouch
+    // state in the background. Flip it back if it changed while freecam was open, so freecam's own
+    // camera controls never leak into the player's actual sneak state once freecam closes.
+    private static void restoreSneakState() {
+        KeyMapping keyShift = MC.options.keyShift;
+        if (keyShift instanceof ToggleKeyMapping && keyShift.isDown() != sneakStateOnEnable) {
+            keyShift.setDown(true);
         }
     }
 
