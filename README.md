@@ -10,8 +10,7 @@ It is your responsibility to check **all** relevant rules **before** using this 
 
 <!-- website:stop -->
 
-While Freecam should only affect the client, it **may be possible** for servers to detect the mod being installed through various exploits in Minecraft,
-modding platforms, or this mod.  
+Freecam advertises networking channels so servers can send temporary restrictions. Servers may also detect the mod through other Minecraft or mod-loader behavior.
 Here's a [real example](https://github.com/MinecraftFreecam/Freecam/issues/196) that exploited translation keys. 
 
 To paraphrase our license, we are not responsible for any damages or liability related to Freecam.
@@ -83,6 +82,27 @@ See the [contributing guide](https://github.com/MinecraftFreecam/Freecam/blob/ma
 | Tripod Notifications  | Notifies you when entering/exiting tripod cameras.<br/> | `true`        |
 
 <!-- website:stop -->
+
+## Server policies
+
+Servers can temporarily restrict Freecam, clipping, full brightness, and interactions. Received rules reset on disconnect and never overwrite your saved preferences. Freecam also understands [AntiFreecam](https://github.com/Kesuaheli/AntiFreecam)'s collision restriction.
+
+For a LAN world, configure **Hosted Server Policy** in the settings menu, then open the world to LAN. Rules apply to compatible connected clients, including the host. Saving policy changes updates connected clients; unshared single-player worlds are unaffected.
+
+For a dedicated Fabric, Forge, or NeoForge server, install Freecam on the server and configure the `serverPolicy` section of `config/freecam.json`. You can copy the same file from a client. Restart the dedicated server after editing it. All four permissions default to `true`:
+
+```json
+{
+  "serverPolicy": {
+    "allowFreecam": true,
+    "allowClipping": false,
+    "allowFullbright": false,
+    "allowInteract": true
+  }
+}
+```
+
+Clients without Freecam can still join. A custom server plugin can instead send the four boolean fields as a raw UTF-8 JSON object on `freecam:server_config` (without the `serverPolicy` wrapper). Each valid message replaces the previous JSON policy; omitted fields allow the feature. AntiFreecam's separate restriction still applies until it is lifted or the client disconnects.
 
 ## Requirements
 
