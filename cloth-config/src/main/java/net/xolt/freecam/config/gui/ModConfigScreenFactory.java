@@ -82,6 +82,7 @@ public class ModConfigScreenFactory {
                 visualCategory(entryBuilder),
                 utilityCategory(entryBuilder),
                 serversCategory(entryBuilder),
+                serverPolicyCategory(entryBuilder),
                 notificationCategory(entryBuilder)
         ).forEach(category::addEntry);
 
@@ -469,6 +470,32 @@ public class ModConfigScreenFactory {
                 notifyTripod
         ).forEach(builder::add);
 
+        return builder.build();
+    }
+
+    private SubCategoryListEntry serverPolicyCategory(ConfigEntryBuilder entryBuilder) {
+        SubCategoryBuilder builder = entryBuilder.startSubCategory(Component.translatable("freecam.config.serverPolicy.label"))
+                .setTooltip(Component.translatable("freecam.config.serverPolicy.tooltip"));
+        builder.add(entryBuilder.startBooleanToggle(
+                        Component.translatable("freecam.config.serverPolicy.allowFreecam"), config().serverPolicy.allowFreecam)
+                .setDefaultValue(defaults().serverPolicy.allowFreecam)
+                .setSaveConsumer(value -> config().serverPolicy.allowFreecam = value)
+                .build());
+        builder.add(entryBuilder.startBooleanToggle(
+                        Component.translatable("freecam.config.serverPolicy.allowClipping"), config().serverPolicy.allowClipping)
+                .setDefaultValue(defaults().serverPolicy.allowClipping)
+                .setSaveConsumer(value -> config().serverPolicy.allowClipping = value)
+                .build());
+        builder.add(entryBuilder.startBooleanToggle(
+                        Component.translatable("freecam.config.serverPolicy.allowFullbright"), config().serverPolicy.allowFullbright)
+                .setDefaultValue(defaults().serverPolicy.allowFullbright)
+                .setSaveConsumer(value -> config().serverPolicy.allowFullbright = value)
+                .build());
+        builder.add(entryBuilder.startBooleanToggle(
+                        Component.translatable("freecam.config.serverPolicy.allowInteract"), config().serverPolicy.allowInteract)
+                .setDefaultValue(defaults().serverPolicy.allowInteract)
+                .setSaveConsumer(value -> config().serverPolicy.allowInteract = value)
+                .build());
         return builder.build();
     }
 

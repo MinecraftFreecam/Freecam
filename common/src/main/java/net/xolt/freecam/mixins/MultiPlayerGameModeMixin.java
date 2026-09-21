@@ -9,7 +9,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.EntityHitResult;
 import net.xolt.freecam.Freecam;
-import net.xolt.freecam.config.ModConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
@@ -62,16 +61,16 @@ public class MultiPlayerGameModeMixin {
     }
     *///? }
 
-    // Prevents attacking self.
+    // Prevents attacking self or bypassing interaction restrictions.
     @Inject(method = "attack", at = @At("HEAD"), cancellable = true)
     private void onAttackEntity(Player player, Entity target, CallbackInfo ci) {
-        if (target == MC.player) {
+        if (target == MC.player || freecam$disableInteract()) {
             ci.cancel();
         }
     }
 
     @Unique
     private static boolean freecam$disableInteract() {
-        return Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && ModConfig.get().shouldPreventInteractions();
+        return Freecam.shouldPreventInteractions();
     }
 }

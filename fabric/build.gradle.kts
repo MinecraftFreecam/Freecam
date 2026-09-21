@@ -31,6 +31,7 @@ val fabricApiModules =  buildList {
     sequenceOf(
         "fabric-api-base",
         "fabric-lifecycle-events-v1",
+        "fabric-networking-api-v1",
     ).forEach(::add)
     when {
         mc >= "1.21.9" -> add("fabric-resource-loader-v1")
@@ -113,10 +114,10 @@ loom {
             generateRunConfig = true
         }
         getByName("server") {
-//            server()
-//            displayName = "Fabric Server"
-//            generateRunConfig = true
-            generateRunConfig = false
+            server()
+            displayName = "Fabric Server"
+            runDir("build/run-server")
+            generateRunConfig = true
         }
     }
 }
@@ -159,7 +160,7 @@ tasks {
             meta.authors.forEach(::author)
             icon("icon.png")
 
-            client()
+            entrypoint("main", "net.xolt.freecam.fabric.FreecamFabricCommon")
             entrypoint("client", "net.xolt.freecam.fabric.FreecamFabric")
             entrypoint("modmenu", "net.xolt.freecam.fabric.ModMenuIntegration")
 
@@ -173,7 +174,8 @@ tasks {
 
             depends("minecraft", meta.reqs["mc"]?.toString() ?: error("${project.path} missing reqs.mc"))
             depends("fabricloader", meta.reqs["fabric_loader"]?.toString() ?: error("${project.path} missing reqs.fabric_loader"))
-            fabricApiModules.forEach { depends(it, "*") }
+            listOf("fabric-api-base", "fabric-lifecycle-events-v1", "fabric-networking-api-v1")
+                .forEach { depends(it, "*") }
             recommends("modmenu", "*")
 
             contactInformation = mapOf(

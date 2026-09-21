@@ -2,6 +2,7 @@ package net.xolt.freecam.config.model;
 
 import net.minecraft.world.level.block.Block;
 import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.network.ServerPolicies;
 
 public class ModConfigImpl implements ModConfig {
 
@@ -34,17 +35,17 @@ public class ModConfigImpl implements ModConfig {
 
     @Override
     public boolean ignoreAllCollision() {
-        return data.collision.ignoreAll;
+        return ServerPolicies.allowClipping() && data.collision.ignoreAll;
     }
 
     @Override
     public boolean shouldCheckInitialCollision() {
-        return data.collision.alwaysCheck || !data.collision.ignoreAll;
+        return !ServerPolicies.allowClipping() || data.collision.alwaysCheck || !data.collision.ignoreAll;
     }
 
     @Override
     public boolean ignoreCollisionWith(Block block) {
-        return data.collision.ignoreAll || collisionPredicate.shouldIgnore(block);
+        return ServerPolicies.allowClipping() && (data.collision.ignoreAll || collisionPredicate.shouldIgnore(block));
     }
 
     @Override
@@ -64,7 +65,7 @@ public class ModConfigImpl implements ModConfig {
 
     @Override
     public boolean isFullBrightEnabled() {
-        return data.visual.fullBright;
+        return ServerPolicies.allowFullbright() && data.visual.fullBright;
     }
 
     @Override
@@ -84,11 +85,11 @@ public class ModConfigImpl implements ModConfig {
 
     @Override
     public boolean shouldPreventInteractions() {
-        return !data.utility.allowInteract;
+        return !ServerPolicies.allowInteract() || !data.utility.allowInteract;
     }
 
     public boolean allowInteractionsFrom(ModConfigDTO.InteractionMode mode) {
-        return data.utility.allowInteract && data.utility.interactionMode == mode;
+        return ServerPolicies.allowInteract() && data.utility.allowInteract && data.utility.interactionMode == mode;
     }
 
     @Override
