@@ -16,6 +16,10 @@ out/
 # mpeltonen/sbt-idea plugin
 .idea_modules/
 
+# Eclipse / Java language server
+bin/
+.eclipse/
+
 # python
 .venv/
 __pycache__/
