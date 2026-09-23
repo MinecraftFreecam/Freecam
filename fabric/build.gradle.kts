@@ -174,8 +174,7 @@ tasks {
 
             depends("minecraft", meta.reqs["mc"]?.toString() ?: error("${project.path} missing reqs.mc"))
             depends("fabricloader", meta.reqs["fabric_loader"]?.toString() ?: error("${project.path} missing reqs.fabric_loader"))
-            listOf("fabric-api-base", "fabric-lifecycle-events-v1", "fabric-networking-api-v1")
-                .forEach { depends(it, "*") }
+            fabricApiModules.forEach { depends(it, "*") }
             recommends("modmenu", "*")
 
             contactInformation = mapOf(
