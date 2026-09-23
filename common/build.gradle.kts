@@ -50,8 +50,11 @@ dependencies {
     loomAdapter.applyMojangMappings()
     modCompileOnly(libs.fabric.loader) {
         exclude(module = "sponge-mixin")
+        exclude(module = "mixinextras-fabric")
     }
     compileOnly(libs.sponge.mixin)
+    compileOnly(libs.mixinextras.common)
+    annotationProcessor(libs.mixinextras.common)
     compileOnly(project(":config"))
     i18nResources(project(":i18n"))
 }
