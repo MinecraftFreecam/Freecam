@@ -30,6 +30,17 @@ neoForge {
 }
 
 dependencies {
+    // Bundle the MixinExtras we build against
+    implementation(libs.mixinextras.neoforge)
+    jarJar(libs.mixinextras.neoforge) {
+        version?.let {
+            version {
+                prefer(it)
+                strictly("[$it,)")
+            }
+        }
+    }
+
     // NeoForge's ModListScreen renders the Mod logo/banner at 50px high
     // We use a 100px icon to scale well.
     extraResources(project(":branding", configuration = "icon_100"))

@@ -50,7 +50,16 @@ val fabricApiVersion = requireNotNull(meta.deps["fabric_api"]) {
 dependencies {
     minecraft("com.mojang:minecraft:${meta.mc}")
     loomAdapter.applyMojangMappings()
-    modImplementation(libs.fabric.loader)
+    modImplementation(libs.fabric.loader) {
+        exclude(module = "mixinextras-fabric")
+    }
+
+    // Bundle the MixinExtras we build against
+    libs.mixinextras.fabric.let { dep ->
+        implementation(dep)
+        annotationProcessor(dep)
+        include(dep)
+    }
 
     fabricApiModules.forEach { name ->
         include(modImplementation(fabricApi.module(name, fabricApiVersion))!!)

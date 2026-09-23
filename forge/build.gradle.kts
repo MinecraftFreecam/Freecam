@@ -21,11 +21,14 @@ val forgeVersion = requireNotNull(meta.deps["forge_version"]) {
     "Missing deps.forge_version for ${project.path}"
 }
 
+val supportsJarJar = sc.eval(forgeVersion, ">= 40.1.60")
+
 val refmapName = "mixins.freecam.refmap.json"
-val mixinConfigNames = listOf(
-    "freecam-common.mixins.json",
-    "freecam-forge.mixins.json",
-)
+val mixinConfigNames = buildList {
+    add("freecam-common.mixins.json")
+    add("freecam-forge.mixins.json")
+    if (!supportsJarJar) add("init-mixinextras.mixins.json")
+}
 
 stonecutter replacements {
     string(sc.eval(forgeVersion, ">= 41")) {
@@ -81,7 +84,7 @@ configurations.create("finalBundle") {
  * @param shadowJarConfig configuration for the `shadowJar` task, applied when Jar-in-Jar is not available
  */
 fun DependencyHandler.include(dependencyNotation: Any, shadowJarConfig: ShadowJar.() -> Unit) {
-    if (sc.eval(forgeVersion, ">=40.1.60")) {
+    if (supportsJarJar) {
         jarJar(dependencyNotation)
     } else {
         add("finalBundle", dependencyNotation)
@@ -93,6 +96,27 @@ dependencies {
     compileOnlyApi("org.jetbrains:annotations:26.0.2")
     annotationProcessor(libs.sponge.mixin) {
         artifact { classifier = "processor" }
+    }
+
+    // Bundle the MixinExtras we build against
+    // Jar-in-jar was added in Forge 40.1.60, before then we must shadow the common artefact and bootstrap it ourselves.
+    if (supportsJarJar) {
+        implementation(libs.mixinextras.forge)
+        annotationProcessor(libs.mixinextras.forge)
+        jarJar(libs.mixinextras.forge) {
+            version?.let {
+                version {
+                    prefer(it)
+                    strictly("[$it,)")
+                }
+            }
+        }
+    } else {
+        implementation(libs.mixinextras.common)
+        annotationProcessor(libs.mixinextras.common)
+        include(libs.mixinextras.common) {
+            relocate("com.llamalad7.mixinextras", "${meta.group}.shadowed.mixinextras")
+        }
     }
 
     // Forge's ModListScreen renders the Mod logo at 50px high
@@ -226,7 +250,12 @@ tasks.processResources {
         "java_version" to meta.javaVersion,
         "mixinConfigs" to mixinConfigNames,
         "mixinRefmap" to refmapName,
+        "supportsJarJar" to supportsJarJar,
     )
+
+    filesMatching("init-mixinextras.mixins.json") {
+        if (supportsJarJar) exclude()
+    }
 
     doLast {
         // Add the refmap to mixin config files
@@ -274,6 +303,8 @@ tasks.shadowJar {
     transform<PreserveFirstFoundResourceTransformer> {
         include("pack.mcmeta")
     }
+
+    mergeServiceFiles()
 
     finalizedBy("reobfShadowJar")
 }
