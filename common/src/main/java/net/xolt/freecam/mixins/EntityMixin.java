@@ -8,11 +8,18 @@ import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import static net.xolt.freecam.Freecam.MC;
 
 @Mixin(Entity.class)
 public class EntityMixin {
+
+    /// Overridden by [LocalPlayerMixin].
+    @Inject(method = "getViewXRot", at = @At("HEAD"), cancellable = true)
+    protected void onGetViewXRot(float partialTick, CallbackInfoReturnable<Float> cir) {
+        // No-op
+    }
 
     // Makes mouse input rotate the FreeCamera.
     @Inject(method = "turn", at = @At("HEAD"), cancellable = true)
