@@ -80,6 +80,14 @@ repositories {
         filter { includeGroup("org.lwjgl") }
     }
 
+    // Fletching Table automatically adds KikuGui repositories.
+    // We apply content filtering to prevent an outage affecting unrelated dependencies.
+    withType<MavenArtifactRepository>().configureEach {
+        if (url.host == "maven.kikugie.dev") {
+            content { includeGroupAndSubgroups("dev.kikugie") }
+        }
+    }
+
     mavenCentral()
 }
 
