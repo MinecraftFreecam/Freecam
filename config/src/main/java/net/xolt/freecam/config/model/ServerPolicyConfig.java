@@ -15,6 +15,6 @@ public class ServerPolicyConfig {
 
     public ServerPolicy snapshot() {
         boolean allowIgnoringCollision = collision == null || collision.allowIgnoring;
-        return new ServerPolicy(allowFreecam, allowIgnoringCollision, allowFullbright, allowInteract);
+        return new ServerPolicy(allowFreecam, new ServerPolicy.CollisionPolicy(allowIgnoringCollision), allowFullbright, allowInteract);
     }
 }

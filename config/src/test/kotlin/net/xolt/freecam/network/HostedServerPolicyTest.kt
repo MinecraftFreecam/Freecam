@@ -29,11 +29,11 @@ class HostedServerPolicyTest {
         loader.write(config)
         val saved = file.readText()
         val serverConfig = loader.read()
-        serverConfig.serverPolicy.snapshot() shouldBe ServerPolicy(true, false, true, false)
+        serverConfig.serverPolicy.snapshot() shouldBe ServerPolicy(true, ServerPolicy.CollisionPolicy(false), true, false)
 
         HostedServerPolicy.configure(serverConfig)
         ServerPolicies.applyJson("""{"allowFreecam":false,"allowFullbright":false}""") shouldBe true
-        HostedServerPolicy.get() shouldBe ServerPolicy(true, false, true, false)
+        HostedServerPolicy.get() shouldBe ServerPolicy(true, ServerPolicy.CollisionPolicy(false), true, false)
         loader.write(serverConfig)
         file.readText() shouldBe saved
     }
@@ -45,6 +45,6 @@ class HostedServerPolicyTest {
         config.serverPolicy.allowFreecam = false
         HostedServerPolicy.get() shouldBe ServerPolicy.ALLOW_ALL
         HostedServerPolicy.configure(config)
-        HostedServerPolicy.get() shouldBe ServerPolicy(false, true, true, true)
+        HostedServerPolicy.get() shouldBe ServerPolicy(false, ServerPolicy.CollisionPolicy(true), true, true)
     }
 }

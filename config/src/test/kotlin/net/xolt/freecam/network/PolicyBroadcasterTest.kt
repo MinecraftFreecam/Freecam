@@ -4,7 +4,7 @@ import io.kotest.matchers.shouldBe
 import kotlin.test.Test
 
 class PolicyBroadcasterTest {
-    private val restricted = ServerPolicy(false, false, false, false)
+    private val restricted = ServerPolicy(false, ServerPolicy.CollisionPolicy(false), false, false)
 
     @Test
     fun `waits for channel registration then sends once and broadcasts changes`() {

@@ -94,11 +94,17 @@ class ServerPoliciesTest {
     }
 
     @Test
+    fun `policies serialize to the documented wire format`() {
+        ServerPolicy(true, ServerPolicy.CollisionPolicy(false), true, false).toJson() shouldBe
+            """{"allowFreecam":true,"collision":{"allowIgnoring":false},"allowFullbright":true,"allowInteract":false}"""
+    }
+
+    @Test
     fun `server snapshots round trip every policy combination`() {
         for (bits in 0..15) {
-            val policy = ServerPolicy(bits and 1 != 0, bits and 2 != 0, bits and 4 != 0, bits and 8 != 0)
+            val policy = ServerPolicy(bits and 1 != 0, ServerPolicy.CollisionPolicy(bits and 2 != 0), bits and 4 != 0, bits and 8 != 0)
             ServerPolicies.applyJson(policy.toJson()) shouldBe true
-            policies() shouldBe listOf(policy.allowFreecam(), policy.allowIgnoringCollision(), policy.allowFullbright(), policy.allowInteract())
+            policies() shouldBe listOf(policy.allowFreecam(), policy.collision().allowIgnoring(), policy.allowFullbright(), policy.allowInteract())
         }
     }
 }

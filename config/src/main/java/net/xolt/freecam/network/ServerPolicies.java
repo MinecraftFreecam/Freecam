@@ -31,7 +31,7 @@ public final class ServerPolicies {
     }
 
     public static boolean allowIgnoringCollision() {
-        return !forceCollision && current.allowIgnoringCollision();
+        return !forceCollision && current.collision().allowIgnoring();
     }
 
     public static boolean allowFullbright() {
@@ -76,7 +76,7 @@ public final class ServerPolicies {
             JsonObject collision = readObject(root, "collision");
             ServerPolicy parsed = new ServerPolicy(
                     readBoolean(root, "allowFreecam"),
-                    readBoolean(collision, "allowIgnoring"),
+                    new ServerPolicy.CollisionPolicy(readBoolean(collision, "allowIgnoring")),
                     readBoolean(root, "allowFullbright"),
                     readBoolean(root, "allowInteract")
             );
