@@ -1,8 +1,5 @@
 package net.xolt.freecam.mixins;
 
-import com.mojang.authlib.GameProfile;
-import net.minecraft.client.multiplayer.ClientLevel;
-import net.minecraft.client.player.AbstractClientPlayer;
 import net.minecraft.client.player.LocalPlayer;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModConfig;
@@ -15,11 +12,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import static net.xolt.freecam.Freecam.MC;
 
 @Mixin(LocalPlayer.class)
-public abstract class LocalPlayerMixin extends AbstractClientPlayer {
-
-    public LocalPlayerMixin(ClientLevel level, GameProfile gameProfile) {
-        super(level, gameProfile);
-    }
+public abstract class LocalPlayerMixin extends EntityMixin {
 
     // Needed for Baritone compatibility.
     @Inject(method = "isControlledCamera", at = @At("HEAD"), cancellable = true)
@@ -30,22 +23,12 @@ public abstract class LocalPlayerMixin extends AbstractClientPlayer {
     }
 
     // Makes rotation depend upon FreeCamera rather than the player.
-    //? if >=26.3 {
     @Override
-    public float getViewXRot(float partialTick) {
-        if (freecam$useFreecamRotation()) {
-            return Freecam.getFreeCamera().getViewXRot(partialTick);
-        }
-        return super.getViewXRot(partialTick);
-    }
-    //? } else {
-    /*@Inject(method = "getViewXRot", at = @At("HEAD"), cancellable = true)
-    private void onGetViewXRot(float partialTick, CallbackInfoReturnable<Float> cir) {
+    protected void onGetViewXRot(float partialTick, CallbackInfoReturnable<Float> cir) {
         if (freecam$useFreecamRotation()) {
             cir.setReturnValue(Freecam.getFreeCamera().getViewXRot(partialTick));
         }
     }
-    *///? }
 
     // Makes rotation depend upon FreeCamera rather than the player.
     @Inject(method = "getViewYRot", at = @At("HEAD"), cancellable = true)
