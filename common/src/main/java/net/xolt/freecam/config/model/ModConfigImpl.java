@@ -35,17 +35,17 @@ public class ModConfigImpl implements ModConfig {
 
     @Override
     public boolean ignoreAllCollision() {
-        return ServerPolicies.allowClipping() && data.collision.ignoreAll;
+        return ServerPolicies.allowIgnoringCollision() && data.collision.ignoreAll;
     }
 
     @Override
     public boolean shouldCheckInitialCollision() {
-        return !ServerPolicies.allowClipping() || data.collision.alwaysCheck || !data.collision.ignoreAll;
+        return !ServerPolicies.allowIgnoringCollision() || data.collision.alwaysCheck || !data.collision.ignoreAll;
     }
 
     @Override
     public boolean ignoreCollisionWith(Block block) {
-        return ServerPolicies.allowClipping() && (data.collision.ignoreAll || collisionPredicate.shouldIgnore(block));
+        return ServerPolicies.allowIgnoringCollision() && (data.collision.ignoreAll || collisionPredicate.shouldIgnore(block));
     }
 
     @Override

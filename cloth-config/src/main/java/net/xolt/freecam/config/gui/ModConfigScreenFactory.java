@@ -482,9 +482,9 @@ public class ModConfigScreenFactory {
                 .setSaveConsumer(value -> config().serverPolicy.allowFreecam = value)
                 .build());
         builder.add(entryBuilder.startBooleanToggle(
-                        Component.translatable("freecam.config.serverPolicy.allowClipping"), config().serverPolicy.allowClipping)
-                .setDefaultValue(defaults().serverPolicy.allowClipping)
-                .setSaveConsumer(value -> config().serverPolicy.allowClipping = value)
+                        Component.translatable("freecam.config.serverPolicy.allowIgnoringCollision"), config().serverPolicy.collision.allowIgnoring)
+                .setDefaultValue(defaults().serverPolicy.collision.allowIgnoring)
+                .setSaveConsumer(value -> config().serverPolicy.collision.allowIgnoring = value)
                 .build());
         builder.add(entryBuilder.startBooleanToggle(
                         Component.translatable("freecam.config.serverPolicy.allowFullbright"), config().serverPolicy.allowFullbright)

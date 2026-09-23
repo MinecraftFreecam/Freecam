@@ -14,7 +14,7 @@ class ServerPoliciesTest {
 
     private fun policies() = listOf(
         ServerPolicies.allowFreecam(),
-        ServerPolicies.allowClipping(),
+        ServerPolicies.allowIgnoringCollision(),
         ServerPolicies.allowFullbright(),
         ServerPolicies.allowInteract(),
     )
@@ -26,13 +26,13 @@ class ServerPoliciesTest {
 
     @Test
     fun `raw plugin message applies independent restrictions`() {
-        ServerPolicies.applyBytes("""{"allowClipping":false,"allowInteract":false}""".toByteArray()) shouldBe true
+        ServerPolicies.applyBytes("""{"collision":{"allowIgnoring":false},"allowInteract":false}""".toByteArray()) shouldBe true
         policies() shouldBe listOf(true, false, true, false)
     }
 
     @Test
     fun `updates replace the policy and default omitted fields to allowed`() {
-        ServerPolicies.applyJson("""{"allowFreecam":false,"allowClipping":false,"allowFullbright":false,"allowInteract":false}""") shouldBe true
+        ServerPolicies.applyJson("""{"allowFreecam":false,"collision":{"allowIgnoring":false},"allowFullbright":false,"allowInteract":false}""") shouldBe true
         policies() shouldBe listOf(false, false, false, false)
         ServerPolicies.applyJson("""{"allowFullbright":false}""") shouldBe true
         policies() shouldBe listOf(true, true, false, true)
@@ -46,7 +46,8 @@ class ServerPoliciesTest {
         for (json in listOf("", "null", "[]", "true", "{", "{} trailing",
             "{allowFreecam:true}", "{'allowFreecam':true}", "{/*comment*/}",
             """{"allowFreecam":true,"allowInteract":"false"}""",
-            """{"allowClipping":null}""", """{"allowFullbright":0}""")) {
+            """{"collision":{"allowIgnoring":null}}""", """{"collision":false}""",
+            """{"allowFullbright":0}""")) {
             ServerPolicies.applyJson(json) shouldBe false
             policies() shouldBe listOf(false, true, true, true)
         }
@@ -54,18 +55,18 @@ class ServerPoliciesTest {
 
     @Test
     fun `unknown fields are ignored for forward compatibility`() {
-        ServerPolicies.applyJson("""{"futurePolicy":{"value":false},"allowInteract":false}""") shouldBe true
+        ServerPolicies.applyJson("""{"futurePolicy":{"value":false},"collision":{"allowIgnoringTransparent":false},"allowInteract":false}""") shouldBe true
         policies() shouldBe listOf(true, true, true, false)
     }
 
     @Test
     fun `disconnect reset restores permissions before the next server`() {
-        ServerPolicies.applyJson("""{"allowFreecam":false,"allowClipping":false,"allowFullbright":false,"allowInteract":false}""") shouldBe true
+        ServerPolicies.applyJson("""{"allowFreecam":false,"collision":{"allowIgnoring":false},"allowFullbright":false,"allowInteract":false}""") shouldBe true
         ServerPolicies.reset()
         policies() shouldBe listOf(true, true, true, true)
     }
     @Test
-    fun `AntiFreecam boolean only restricts clipping`() {
+    fun `AntiFreecam boolean only restricts ignoring collision`() {
         ServerPolicies.applyAntiFreecamBytes(byteArrayOf(1)) shouldBe true
         policies() shouldBe listOf(true, false, true, true)
         ServerPolicies.applyAntiFreecamBytes(byteArrayOf(0)) shouldBe true
@@ -76,8 +77,8 @@ class ServerPoliciesTest {
     fun `protocols cannot lift each others restrictions`() {
         ServerPolicies.applyAntiFreecam(true)
         ServerPolicies.applyJson("{}") shouldBe true
-        ServerPolicies.allowClipping() shouldBe false
-        ServerPolicies.applyJson("""{"allowFreecam":false,"allowClipping":false}""") shouldBe true
+        ServerPolicies.allowIgnoringCollision() shouldBe false
+        ServerPolicies.applyJson("""{"allowFreecam":false,"collision":{"allowIgnoring":false}}""") shouldBe true
         ServerPolicies.applyAntiFreecam(false)
         policies() shouldBe listOf(false, false, true, true)
     }
@@ -87,7 +88,7 @@ class ServerPoliciesTest {
         ServerPolicies.applyAntiFreecam(true)
         ServerPolicies.applyAntiFreecamBytes(byteArrayOf()) shouldBe false
         ServerPolicies.applyAntiFreecamBytes(byteArrayOf(0, 0)) shouldBe false
-        ServerPolicies.allowClipping() shouldBe false
+        ServerPolicies.allowIgnoringCollision() shouldBe false
         ServerPolicies.reset()
         policies() shouldBe listOf(true, true, true, true)
     }
@@ -97,7 +98,7 @@ class ServerPoliciesTest {
         for (bits in 0..15) {
             val policy = ServerPolicy(bits and 1 != 0, bits and 2 != 0, bits and 4 != 0, bits and 8 != 0)
             ServerPolicies.applyJson(policy.toJson()) shouldBe true
-            policies() shouldBe listOf(policy.allowFreecam(), policy.allowClipping(), policy.allowFullbright(), policy.allowInteract())
+            policies() shouldBe listOf(policy.allowFreecam(), policy.allowIgnoringCollision(), policy.allowFullbright(), policy.allowInteract())
         }
     }
 }

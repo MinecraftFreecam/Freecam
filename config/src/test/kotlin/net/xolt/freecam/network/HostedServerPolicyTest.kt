@@ -24,7 +24,7 @@ class HostedServerPolicyTest {
         val file = dir.resolve("freecam.json")
         val loader = BasicConfigLoader(RawJsonPreservingSerializer(), ModConfigDTO::class.java, file)
         val config = ModConfigDTO()
-        config.serverPolicy.allowClipping = false
+        config.serverPolicy.collision.allowIgnoring = false
         config.serverPolicy.allowInteract = false
         loader.write(config)
         val saved = file.readText()

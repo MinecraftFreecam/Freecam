@@ -30,8 +30,8 @@ public final class ServerPolicies {
         return current.allowFreecam();
     }
 
-    public static boolean allowClipping() {
-        return !forceCollision && current.allowClipping();
+    public static boolean allowIgnoringCollision() {
+        return !forceCollision && current.allowIgnoringCollision();
     }
 
     public static boolean allowFullbright() {
@@ -73,9 +73,10 @@ public final class ServerPolicies {
             }
 
             JsonObject root = rootElement.getAsJsonObject();
+            JsonObject collision = readObject(root, "collision");
             ServerPolicy parsed = new ServerPolicy(
                     readBoolean(root, "allowFreecam"),
-                    readBoolean(root, "allowClipping"),
+                    readBoolean(collision, "allowIgnoring"),
                     readBoolean(root, "allowFullbright"),
                     readBoolean(root, "allowInteract")
             );
@@ -97,6 +98,17 @@ public final class ServerPolicies {
             }
             return root;
         }
+    }
+
+    private static JsonObject readObject(JsonObject root, String key) {
+        JsonElement value = root.get(key);
+        if (value == null) {
+            return new JsonObject();
+        }
+        if (!value.isJsonObject()) {
+            throw new JsonParseException("'" + key + "' must be an object");
+        }
+        return value.getAsJsonObject();
     }
 
     private static boolean readBoolean(JsonObject root, String key) {
