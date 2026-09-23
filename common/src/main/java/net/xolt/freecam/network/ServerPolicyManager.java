@@ -14,7 +14,7 @@ import java.util.IdentityHashMap;
 import java.util.Map;
 import java.util.function.BiPredicate;
 
-/** Server-side lifecycle; never loads client classes on a dedicated server. */
+/** Server-side lifecycle; must not load client-side classes. */
 public final class ServerPolicyManager {
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerPolicyManager.class);
     private static final Map<MinecraftServer, State> SERVERS = new IdentityHashMap<>();
