@@ -87,7 +87,7 @@ See the [contributing guide](https://github.com/MinecraftFreecam/Freecam/blob/ma
 
 Servers can temporarily restrict Freecam, ignoring collision, full brightness, and interactions. Received rules reset on disconnect and never overwrite your saved preferences. Freecam also understands [AntiFreecam](https://github.com/Kesuaheli/AntiFreecam)'s collision restriction.
 
-For a LAN world, configure **Hosted Server Policy** in the settings menu, then open the world to LAN. Rules apply to compatible connected clients, including the host. Saving policy changes updates connected clients; unshared single-player worlds are unaffected.
+For a LAN world, configure the policy options under **Multiplayer Options** in the settings menu, then open the world to LAN. Rules apply to compatible connected clients, including the host. Saving policy changes updates connected clients; unshared single-player worlds are unaffected.
 
 For a dedicated Fabric, Forge, or NeoForge server, install Freecam on the server and configure the `serverPolicy` section of `config/freecam.json`. You can copy the same file from a client. Restart the dedicated server after editing it. All permissions default to `true`:
 

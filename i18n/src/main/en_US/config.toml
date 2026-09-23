@@ -97,7 +97,7 @@ interact.mode.PLAYER = "Player"
 
 [freecam.config.servers]
 label = "Multiplayer Options"
-tooltip = "Options relating to multiplayer servers."
+tooltip = "Options relating to multiplayer."
 
 mode.label = "Restriction mode"
 mode."tooltip[0]" = "Allow or disallow use of freecam on certain servers."
@@ -121,9 +121,16 @@ tripod.label = "Tripod Notifications"
 tripod.tooltip = "Notifies you when entering/exiting tripod cameras."
 
 [freecam.config.serverPolicy]
-label = "Hosted Server Policy"
-tooltip = "Restrictions for players in your LAN world or dedicated server. Does not change your personal settings."
-allowFreecam = "Allow Freecam"
-allowIgnoringCollision = "Allow Ignoring Collision"
-allowFullbright = "Allow Full Brightness"
-allowInteract = "Allow Interactions in Freecam"
+hostedNote = "§7Applies to players on your LAN world or dedicated server."
+
+allowFreecam.label = "Allow Freecam"
+allowFreecam.tooltip = "Whether players can use freecam."
+
+allowIgnoringCollision.label = "Allow Ignoring Collision"
+allowIgnoringCollision.tooltip = "Whether players can travel through blocks in freecam."
+
+allowFullbright.label = "Allow Full Brightness"
+allowFullbright.tooltip = "Whether players can use full brightness in freecam."
+
+allowInteract.label = "Allow Interactions"
+allowInteract.tooltip = "Whether players can interact with blocks/entities in freecam."
