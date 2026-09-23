@@ -2,10 +2,12 @@
 default: minor
 ---
 
-Servers can temporarily restrict Freecam, clipping, full brightness, and interactions using a raw UTF-8 JSON plugin message on `freecam:server_config`.
+# Freecam can now be installed server-side, to configure server-controlled policies
 
-The boolean fields `allowFreecam`, `allowClipping`, `allowFullbright`, and `allowInteract` default to `true` when omitted. Each valid message replaces the previous policy; invalid messages leave it unchanged. Restrictions reset on disconnect and never change the saved local configuration.
+Added initial server policies to restrict freecam, ignoring collision, full brightness, and interactions.
+Servers can configure these policies to temporarily restrict Freecam's features while connected to that server.
 
-Supports AntiFreecam's `antifreecam:freecam_config_packet` boolean: `forceCollision=true` disables clipping, independently of JSON restrictions, and resets on disconnect.
+Users can configure these policies for open-to-LAN worlds in Freecam's "Multiplayer Options".
+Servers can install Freecam and use the same config file to enforce policies.
 
-Freecam can now be installed on dedicated servers. Configure `serverPolicy` in `config/freecam.json` (or copy that file from a client) and restart the server to apply it. The same four permissions can be edited under **Hosted Server Policy** in the client settings. Opening a world to LAN applies these rules to compatible connected clients, including the host; saving changes updates them during play. Unshared single-player worlds keep their personal settings. Clients without Freecam remain able to join.
+See our [README](https://github.com/MinecraftFreecam/Freecam/?tab=readme-ov-file) for more detail.
