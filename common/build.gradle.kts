@@ -48,7 +48,10 @@ val i18nResources = configurations.register("i18nResources") {
 dependencies {
     minecraft("com.mojang:minecraft:${meta.mc}")
     loomAdapter.applyMojangMappings()
-    modCompileOnly(libs.fabric.loader)
+    modCompileOnly(libs.fabric.loader) {
+        exclude(module = "sponge-mixin")
+    }
+    compileOnly(libs.sponge.mixin)
     compileOnly(project(":config"))
     i18nResources(project(":i18n"))
 }
