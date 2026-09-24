@@ -11,6 +11,7 @@ import net.minecraft.world.level.ChunkPos;
 import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.config.keys.Tickable;
+import net.xolt.freecam.network.HostedServerPolicy;
 import net.xolt.freecam.network.ServerPolicies;
 import net.xolt.freecam.tripod.TripodRegistry;
 import net.xolt.freecam.tripod.TripodSlot;
@@ -45,6 +46,8 @@ public class Freecam {
 
     @ApiStatus.Internal
     public static void preTick(Minecraft mc) {
+        ServerPolicies.setHostPolicy(mc.hasSingleplayerServer() ? HostedServerPolicy.forHost() : null);
+
         // Disable if the previous tick asked us to,
         // or Freecam is restricted on the current server
         if ((disableNextTick || isRestrictedOnServer()) && isEnabled()) {

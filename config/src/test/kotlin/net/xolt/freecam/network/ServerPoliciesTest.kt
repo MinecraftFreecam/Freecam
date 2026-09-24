@@ -94,6 +94,27 @@ class ServerPoliciesTest {
     }
 
     @Test
+    fun `host policy replaces received restrictions while hosting`() {
+        ServerPolicies.applyJson("""{"allowFreecam":false,"collision":{"allowIgnoring":false}}""") shouldBe true
+        ServerPolicies.applyAntiFreecam(true)
+        ServerPolicies.setHostPolicy(ServerPolicy.ALLOW_ALL)
+        policies() shouldBe listOf(true, true, true, true)
+
+        ServerPolicies.setHostPolicy(ServerPolicy(true, ServerPolicy.CollisionPolicy(true), false, true))
+        policies() shouldBe listOf(true, true, false, true)
+
+        ServerPolicies.setHostPolicy(null)
+        policies() shouldBe listOf(false, false, true, true)
+    }
+
+    @Test
+    fun `reset clears the host policy`() {
+        ServerPolicies.setHostPolicy(ServerPolicy(false, ServerPolicy.CollisionPolicy(false), false, false))
+        ServerPolicies.reset()
+        policies() shouldBe listOf(true, true, true, true)
+    }
+
+    @Test
     fun `policies serialize to the documented wire format`() {
         ServerPolicy(true, ServerPolicy.CollisionPolicy(false), true, false).toJson() shouldBe
             """{"allowFreecam":true,"collision":{"allowIgnoring":false},"allowFullbright":true,"allowInteract":false}"""

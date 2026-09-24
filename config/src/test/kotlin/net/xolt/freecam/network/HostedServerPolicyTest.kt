@@ -39,6 +39,18 @@ class HostedServerPolicyTest {
     }
 
     @Test
+    fun `host is only restricted when applyToHost is enabled`() {
+        val config = ModConfigDTO()
+        config.serverPolicy.allowFreecam = false
+        HostedServerPolicy.configure(config)
+        HostedServerPolicy.forHost() shouldBe ServerPolicy.ALLOW_ALL
+
+        config.serverPolicy.applyToHost = true
+        HostedServerPolicy.configure(config)
+        HostedServerPolicy.forHost() shouldBe HostedServerPolicy.get()
+    }
+
+    @Test
     fun `published snapshots only change when settings are saved`() {
         val config = ModConfigDTO()
         HostedServerPolicy.configure(config)

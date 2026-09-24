@@ -7,6 +7,7 @@ import com.google.gson.JsonParseException;
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;
 import com.google.gson.stream.JsonToken;
+import org.jetbrains.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,29 +23,45 @@ public final class ServerPolicies {
     private static final ServerPolicy ALLOW_ALL = ServerPolicy.ALLOW_ALL;
     private static volatile ServerPolicy current = ALLOW_ALL;
     private static volatile boolean forceCollision;
+    private static volatile ServerPolicy hostPolicy;
     public static final String ANTI_FREECAM_CHANNEL = "antifreecam:freecam_config_packet";
 
     private ServerPolicies() {}
 
     public static boolean allowFreecam() {
-        return current.allowFreecam();
+        return effective().allowFreecam();
     }
 
     public static boolean allowIgnoringCollision() {
+        ServerPolicy host = hostPolicy;
+        if (host != null) {
+            return host.collision().allowIgnoring();
+        }
         return !forceCollision && current.collision().allowIgnoring();
     }
 
     public static boolean allowFullbright() {
-        return current.allowFullbright();
+        return effective().allowFullbright();
     }
 
     public static boolean allowInteract() {
-        return current.allowInteract();
+        return effective().allowInteract();
+    }
+
+    /** While hosting, the local config decides instead of received policies; {@code null} when not hosting. */
+    public static void setHostPolicy(@Nullable ServerPolicy policy) {
+        hostPolicy = policy;
     }
 
     public static void reset() {
         current = ALLOW_ALL;
         forceCollision = false;
+        hostPolicy = null;
+    }
+
+    private static ServerPolicy effective() {
+        ServerPolicy host = hostPolicy;
+        return host != null ? host : current;
     }
 
     public static void applyAntiFreecam(boolean force) {
