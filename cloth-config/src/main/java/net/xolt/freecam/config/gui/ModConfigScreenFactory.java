@@ -469,6 +469,16 @@ public class ModConfigScreenFactory {
                 .setSaveConsumer(value -> config().serverPolicy.allowInteract = value)
                 .build();
 
+        BooleanListEntry applyToHost = entryBuilder.startBooleanToggle(
+                        Component.translatable("freecam.config.serverPolicy.applyToHost.label"),
+                        config().serverPolicy.applyToHost)
+                .setTooltip(
+                        Component.translatable("freecam.config.serverPolicy.applyToHost.tooltip[0]"),
+                        Component.translatable("freecam.config.serverPolicy.applyToHost.tooltip[1]"))
+                .setDefaultValue(defaults().serverPolicy.applyToHost)
+                .setSaveConsumer(value -> config().serverPolicy.applyToHost = value)
+                .build();
+
         // Add entries to the sub-category
         Stream.of(
                 mode,
@@ -477,7 +487,8 @@ public class ModConfigScreenFactory {
                 allowFreecam,
                 allowIgnoringCollision,
                 allowFullbright,
-                allowInteract
+                allowInteract,
+                applyToHost
         ).forEach(builder::add);
 
         return builder.build();

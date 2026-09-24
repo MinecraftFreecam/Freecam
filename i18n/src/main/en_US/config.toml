@@ -134,3 +134,7 @@ allowFullbright.tooltip = "Whether players can use full brightness in freecam."
 
 allowInteract.label = "Allow Interactions"
 allowInteract.tooltip = "Whether players can interact with blocks/entities in freecam."
+
+applyToHost.label = "Apply Policies to Me"
+applyToHost."tooltip[0]" = "Whether the policies above also restrict you in worlds you host."
+applyToHost."tooltip[1]" = "§7Applies whether or not the world is open to LAN."
