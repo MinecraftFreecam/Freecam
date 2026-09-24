@@ -9,7 +9,7 @@ public final class HostedServerPolicy {
     private HostedServerPolicy() {}
 
     public static void configure(ModConfigDTO config) {
-        policy = config.serverPolicy == null ? ServerPolicy.ALLOW_ALL : config.serverPolicy.snapshot();
+        policy = ServerPolicy.create(config.serverPolicy);
     }
 
     public static ServerPolicy get() {

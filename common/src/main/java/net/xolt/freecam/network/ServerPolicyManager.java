@@ -27,7 +27,7 @@ public final class ServerPolicyManager {
             ModConfigLoader loader = new ModConfigLoader(new RawJsonPreservingSerializer(), "freecam", configDir);
             try {
                 ModConfigDTO config = loader.read();
-                policy = config.serverPolicy == null ? ServerPolicy.ALLOW_ALL : config.serverPolicy.snapshot();
+                policy = ServerPolicy.create(config.serverPolicy);
                 if (!Files.exists(loader.getFilepath())) {
                     loader.write(config);
                 }
