@@ -36,7 +36,7 @@ jobs:
       # The JVM used to build is installed separately by the foojay resolver.
       - uses: actions/setup-java@v6
         with:
-          java-version: '21'
+          java-version: '25'
           distribution: temurin
       - uses: gradle/actions/setup-gradle@v6
 
