@@ -176,6 +176,8 @@ tasks {
             depends("fabricloader", meta.reqs["fabric_loader"]?.toString() ?: error("${project.path} missing reqs.fabric_loader"))
             fabricApiModules.forEach { depends(it, "*") }
             recommends("modmenu", "*")
+            // AntiFreecam registers the same payload type; its behaviour is built into Freecam
+            breaks("antifreecam", "*")
 
             contactInformation = mapOf(
                 "homepage" to meta.homepageUrl.toString(),
