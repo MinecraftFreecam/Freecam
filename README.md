@@ -11,7 +11,6 @@ It is your responsibility to check **all** relevant rules **before** using this 
 <!-- website:stop -->
 
 Freecam advertises networking channels so servers can send temporary restrictions. Servers may also detect the mod through other Minecraft or mod-loader behavior.
-Here's a [real example](https://github.com/MinecraftFreecam/Freecam/issues/196) that exploited translation keys. 
 
 To paraphrase our license, we are not responsible for any damages or liability related to Freecam.
 Among other things, this means it's not our fault if you get banned from a server.
@@ -85,9 +84,10 @@ See the [contributing guide](https://github.com/MinecraftFreecam/Freecam/blob/ma
 
 ## Server policies
 
-Servers can temporarily restrict Freecam, ignoring collision, full brightness, and interactions. Received rules reset on disconnect and never overwrite your saved preferences. Freecam also understands [AntiFreecam](https://github.com/Kesuaheli/AntiFreecam)'s collision restriction.
+Servers can temporarily restrict Freecam, ignoring collision, full brightness, and interactions. Received rules reset on disconnect and never overwrite your saved preferences. Freecam also supports servers using [AntiFreecam](https://github.com/Kesuaheli/AntiFreecam).
 
-For a LAN world, configure the policy options under **Multiplayer Options** in the settings menu, then open the world to LAN. Rules apply to compatible connected clients; saving policy changes updates them. The host is not restricted by default. Enable **Apply Policies to Me** to restrict yourself too, in every world you host, whether or not it is open to LAN.
+For singleplayer, configuring the policy options under **Multiplayer Options** in the settings menu will affect players connected via open-to-LAN. Policies apply to compatible connected clients; saving policy changes updates them.
+By default, you are not affected by your own policies: enable **Apply Policies to Me** to also restrict yourself in singleplayer worlds.
 
 For a dedicated Fabric, Forge, or NeoForge server, install Freecam on the server and configure the `serverPolicy` section of `config/freecam.json`. You can copy the same file from a client. Restart the dedicated server after editing it. All permissions default to `true`:
 
@@ -104,7 +104,9 @@ For a dedicated Fabric, Forge, or NeoForge server, install Freecam on the server
 }
 ```
 
-Clients without Freecam can still join. A custom server plugin can instead send the same fields as a raw UTF-8 JSON object on `freecam:server_config` (without the `serverPolicy` wrapper). Each valid message replaces the previous JSON policy; omitted fields allow the feature. AntiFreecam's separate restriction still applies until it is lifted or the client disconnects.
+Clients without Freecam can still join and clients with a different implementation of freecam are unaffected.
+
+Instead of installing Freecam on your server, a custom server plugin can send a compatible UTF-8 JSON payload on the `freecam:server_config` channel. The payload schema is the same JSON that's saved in a `config/freecam.json` config, without the outer `serverPolicy` wrapper. Each valid message replaces the previous policy; omitted fields allow the feature.
 
 ## Requirements
 

@@ -2,7 +2,7 @@
 default: minor
 ---
 
-# Freecam can now be installed server-side, to configure server-controlled policies
+# Freecam can now be installed server-side, enabling server-controlled usage policies
 
 Added initial server policies to restrict freecam, ignoring collision, full brightness, and interactions.
 Servers can configure these policies to temporarily restrict Freecam's features while connected to that server.
