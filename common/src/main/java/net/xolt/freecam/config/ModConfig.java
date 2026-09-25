@@ -16,8 +16,10 @@ import net.xolt.freecam.config.model.FlightMode;
 import net.xolt.freecam.config.model.ModConfigDTO;
 import net.xolt.freecam.config.model.ModConfigImpl;
 import net.xolt.freecam.config.model.Perspective;
+import net.xolt.freecam.config.model.ServerRestrictedFeature;
 
 import java.nio.file.Path;
+import java.util.List;
 
 import static net.xolt.freecam.Freecam.MC;
 
@@ -91,6 +93,8 @@ public interface ModConfig {
     boolean allowInteractionsFromPlayer();
 
     boolean isRestrictedOnServer(String serverIp);
+
+    List<ServerRestrictedFeature> getServerRestrictedFeatures();
 
     boolean shouldNotifyFreecam();
 

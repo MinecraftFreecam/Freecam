@@ -4,6 +4,9 @@ import net.minecraft.world.level.block.Block;
 import net.xolt.freecam.config.ModConfig;
 import net.xolt.freecam.network.ServerPolicies;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ModConfigImpl implements ModConfig {
 
     private final ModConfigDTO data;
@@ -95,6 +98,24 @@ public class ModConfigImpl implements ModConfig {
 
     public boolean allowInteractionsFrom(ModConfigDTO.InteractionMode mode) {
         return data.utility.interactionMode == mode && !shouldPreventInteractions();
+    }
+
+    @Override
+    public List<ServerRestrictedFeature> getServerRestrictedFeatures() {
+        List<ServerRestrictedFeature> restricted = new ArrayList<>();
+        boolean ignoresCollision = data.collision.ignoreAll || data.collision.ignoreTransparent
+                || data.collision.ignoreOpenable || data.collision.ignoreCustom;
+        if (ignoresCollision && !serverPolicies.allowIgnoringCollision()) {
+            restricted.add(ServerRestrictedFeature.IGNORING_COLLISION);
+        }
+        if (data.visual.fullBright && !serverPolicies.allowFullbright()) {
+            restricted.add(ServerRestrictedFeature.FULL_BRIGHTNESS);
+        }
+        if (data.utility.allowInteract && data.utility.interactionMode == ModConfigDTO.InteractionMode.CAMERA
+                && !serverPolicies.allowCameraInteractions()) {
+            restricted.add(ServerRestrictedFeature.CAMERA_INTERACTIONS);
+        }
+        return restricted;
     }
 
     @Override
