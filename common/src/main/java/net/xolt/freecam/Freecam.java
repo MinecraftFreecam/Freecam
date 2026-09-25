@@ -391,17 +391,6 @@ public class Freecam {
         return playerControlEnabled;
     }
 
-    @ApiStatus.Internal
-    public static boolean shouldPreventInteractions() {
-        if (!isEnabled()) {
-            return false;
-        }
-        if (!ServerPolicies.allowInteract()) {
-            return true;
-        }
-        return !isPlayerControlEnabled() && ModConfig.get().shouldPreventInteractions();
-    }
-
     @ApiStatus.Experimental
     @ApiStatus.AvailableSince("1.2.4")
     public static boolean isRestrictedOnServer() {

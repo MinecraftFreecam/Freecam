@@ -28,15 +28,7 @@ public class MinecraftMixin {
         }
     }
 
-    // Prevents item use when interactions are disabled.
-    @Inject(method = "startUseItem", at = @At("HEAD"), cancellable = true)
-    private void onUseItem(CallbackInfo ci) {
-        if (freecam$disableInteract()) {
-            ci.cancel();
-        }
-    }
-
-    // Prevents item pick when interactions are disabled.
+    // Prevents item pick when allowInteract is disabled.
     //~ if >=26.1 pickBlock -> pickBlockOrEntity
     @Inject(method = "pickBlockOrEntity", at = @At("HEAD"), cancellable = true)
     private void onDoItemPick(CallbackInfo ci) {
@@ -83,6 +75,6 @@ public class MinecraftMixin {
 
     @Unique
     private static boolean freecam$disableInteract() {
-        return Freecam.shouldPreventInteractions();
+        return Freecam.isEnabled() && !Freecam.isPlayerControlEnabled() && ModConfig.get().shouldPreventInteractions();
     }
 }
