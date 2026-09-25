@@ -85,11 +85,14 @@ public class ModConfigImpl implements ModConfig {
 
     @Override
     public boolean shouldPreventInteractions() {
-        return !ServerPolicies.allowInteract() || !data.utility.allowInteract;
+        // Servers may only restrict interactions from the camera's perspective.
+        boolean restrictedByServer = data.utility.interactionMode == ModConfigDTO.InteractionMode.CAMERA
+                && !ServerPolicies.allowCameraInteractions();
+        return !data.utility.allowInteract || restrictedByServer;
     }
 
     public boolean allowInteractionsFrom(ModConfigDTO.InteractionMode mode) {
-        return ServerPolicies.allowInteract() && data.utility.allowInteract && data.utility.interactionMode == mode;
+        return data.utility.interactionMode == mode && !shouldPreventInteractions();
     }
 
     @Override

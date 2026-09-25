@@ -44,8 +44,8 @@ public final class ServerPolicies {
         return effective().allowFullbright();
     }
 
-    public static boolean allowInteract() {
-        return effective().allowInteract();
+    public static boolean allowCameraInteractions() {
+        return effective().allowCameraInteractions();
     }
 
     /** While hosting, the local config decides instead of received policies; {@code null} when not hosting. */
@@ -95,7 +95,7 @@ public final class ServerPolicies {
                     readBoolean(root, "allowFreecam"),
                     new ServerPolicy.CollisionPolicy(readBoolean(collision, "allowIgnoring")),
                     readBoolean(root, "allowFullbright"),
-                    readBoolean(root, "allowInteract")
+                    readBoolean(root, "allowCameraInteractions")
             );
             current = parsed;
             LOGGER.debug("Applied server Freecam policies: {}", parsed);

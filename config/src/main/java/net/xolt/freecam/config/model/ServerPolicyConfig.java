@@ -9,7 +9,7 @@ public class ServerPolicyConfig {
     }
 
     public boolean allowFullbright = true;
-    public boolean allowInteract = true;
+    public boolean allowCameraInteractions = true;
 
     /** Whether the host of an integrated server is restricted too; ignored by dedicated servers. */
     public boolean applyToHost = false;

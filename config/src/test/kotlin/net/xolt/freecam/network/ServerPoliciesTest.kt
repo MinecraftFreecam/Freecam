@@ -16,7 +16,7 @@ class ServerPoliciesTest {
         ServerPolicies.allowFreecam(),
         ServerPolicies.allowIgnoringCollision(),
         ServerPolicies.allowFullbright(),
-        ServerPolicies.allowInteract(),
+        ServerPolicies.allowCameraInteractions(),
     )
 
     @Test
@@ -26,13 +26,13 @@ class ServerPoliciesTest {
 
     @Test
     fun `raw plugin message applies independent restrictions`() {
-        ServerPolicies.applyBytes("""{"collision":{"allowIgnoring":false},"allowInteract":false}""".toByteArray()) shouldBe true
+        ServerPolicies.applyBytes("""{"collision":{"allowIgnoring":false},"allowCameraInteractions":false}""".toByteArray()) shouldBe true
         policies() shouldBe listOf(true, false, true, false)
     }
 
     @Test
     fun `updates replace the policy and default omitted fields to allowed`() {
-        ServerPolicies.applyJson("""{"allowFreecam":false,"collision":{"allowIgnoring":false},"allowFullbright":false,"allowInteract":false}""") shouldBe true
+        ServerPolicies.applyJson("""{"allowFreecam":false,"collision":{"allowIgnoring":false},"allowFullbright":false,"allowCameraInteractions":false}""") shouldBe true
         policies() shouldBe listOf(false, false, false, false)
         ServerPolicies.applyJson("""{"allowFullbright":false}""") shouldBe true
         policies() shouldBe listOf(true, true, false, true)
@@ -45,7 +45,7 @@ class ServerPoliciesTest {
         ServerPolicies.applyJson("""{"allowFreecam":false}""") shouldBe true
         for (json in listOf("", "null", "[]", "true", "{", "{} trailing",
             "{allowFreecam:true}", "{'allowFreecam':true}", "{/*comment*/}",
-            """{"allowFreecam":true,"allowInteract":"false"}""",
+            """{"allowFreecam":true,"allowCameraInteractions":"false"}""",
             """{"collision":{"allowIgnoring":null}}""", """{"collision":false}""",
             """{"allowFullbright":0}""")) {
             ServerPolicies.applyJson(json) shouldBe false
@@ -55,13 +55,13 @@ class ServerPoliciesTest {
 
     @Test
     fun `unknown fields are ignored for forward compatibility`() {
-        ServerPolicies.applyJson("""{"futurePolicy":{"value":false},"collision":{"allowIgnoringTransparent":false},"allowInteract":false}""") shouldBe true
+        ServerPolicies.applyJson("""{"futurePolicy":{"value":false},"collision":{"allowIgnoringTransparent":false},"allowCameraInteractions":false}""") shouldBe true
         policies() shouldBe listOf(true, true, true, false)
     }
 
     @Test
     fun `disconnect reset restores permissions before the next server`() {
-        ServerPolicies.applyJson("""{"allowFreecam":false,"collision":{"allowIgnoring":false},"allowFullbright":false,"allowInteract":false}""") shouldBe true
+        ServerPolicies.applyJson("""{"allowFreecam":false,"collision":{"allowIgnoring":false},"allowFullbright":false,"allowCameraInteractions":false}""") shouldBe true
         ServerPolicies.reset()
         policies() shouldBe listOf(true, true, true, true)
     }
@@ -117,7 +117,7 @@ class ServerPoliciesTest {
     @Test
     fun `policies serialize to the documented wire format`() {
         ServerPolicy(true, ServerPolicy.CollisionPolicy(false), true, false).toJson() shouldBe
-            """{"allowFreecam":true,"collision":{"allowIgnoring":false},"allowFullbright":true,"allowInteract":false}"""
+            """{"allowFreecam":true,"collision":{"allowIgnoring":false},"allowFullbright":true,"allowCameraInteractions":false}"""
     }
 
     @Test
@@ -125,7 +125,7 @@ class ServerPoliciesTest {
         for (bits in 0..15) {
             val policy = ServerPolicy(bits and 1 != 0, ServerPolicy.CollisionPolicy(bits and 2 != 0), bits and 4 != 0, bits and 8 != 0)
             ServerPolicies.applyJson(policy.toJson()) shouldBe true
-            policies() shouldBe listOf(policy.allowFreecam(), policy.collision().allowIgnoring(), policy.allowFullbright(), policy.allowInteract())
+            policies() shouldBe listOf(policy.allowFreecam(), policy.collision().allowIgnoring(), policy.allowFullbright(), policy.allowCameraInteractions())
         }
     }
 }

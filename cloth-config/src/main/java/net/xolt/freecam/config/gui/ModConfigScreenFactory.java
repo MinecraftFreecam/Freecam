@@ -457,12 +457,12 @@ public class ModConfigScreenFactory {
                 .setSaveConsumer(value -> config().serverPolicy.allowFullbright = value)
                 .build();
 
-        BooleanListEntry allowInteract = entryBuilder.startBooleanToggle(
-                        Component.translatable("freecam.config.serverPolicy.allowInteract.label"),
-                        config().serverPolicy.allowInteract)
-                .setTooltip(Component.translatable("freecam.config.serverPolicy.allowInteract.tooltip"))
-                .setDefaultValue(defaults().serverPolicy.allowInteract)
-                .setSaveConsumer(value -> config().serverPolicy.allowInteract = value)
+        BooleanListEntry allowCameraInteractions = entryBuilder.startBooleanToggle(
+                        Component.translatable("freecam.config.serverPolicy.allowCameraInteractions.label"),
+                        config().serverPolicy.allowCameraInteractions)
+                .setTooltip(Component.translatable("freecam.config.serverPolicy.allowCameraInteractions.tooltip"))
+                .setDefaultValue(defaults().serverPolicy.allowCameraInteractions)
+                .setSaveConsumer(value -> config().serverPolicy.allowCameraInteractions = value)
                 .build();
 
         BooleanListEntry applyToHost = entryBuilder.startBooleanToggle(
@@ -484,7 +484,7 @@ public class ModConfigScreenFactory {
                 allowFreecam,
                 allowIgnoringCollision,
                 allowFullbright,
-                allowInteract,
+                allowCameraInteractions,
                 applyToHost
         ).forEach(builder::add);
 

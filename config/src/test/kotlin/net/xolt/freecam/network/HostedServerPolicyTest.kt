@@ -25,7 +25,7 @@ class HostedServerPolicyTest {
         val loader = BasicConfigLoader(RawJsonPreservingSerializer(), ModConfigDTO::class.java, file)
         val config = ModConfigDTO()
         config.serverPolicy.collision.allowIgnoring = false
-        config.serverPolicy.allowInteract = false
+        config.serverPolicy.allowCameraInteractions = false
         loader.write(config)
         val saved = file.readText()
         val serverConfig = loader.read()

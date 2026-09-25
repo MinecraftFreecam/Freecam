@@ -10,7 +10,7 @@ class ServerPolicyTest {
         val config = ServerPolicyConfig()
         config.allowFreecam = false
         config.collision.allowIgnoring = false
-        config.allowInteract = false
+        config.allowCameraInteractions = false
         ServerPolicy.create(config) shouldBe ServerPolicy(false, ServerPolicy.CollisionPolicy(false), true, false)
     }
 

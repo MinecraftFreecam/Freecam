@@ -132,8 +132,8 @@ allowIgnoringCollision.tooltip = "Whether players can travel through blocks in f
 allowFullbright.label = "Allow Full Brightness"
 allowFullbright.tooltip = "Whether players can use full brightness in freecam."
 
-allowInteract.label = "Allow Interactions"
-allowInteract.tooltip = "Whether players can interact with blocks/entities in freecam."
+allowCameraInteractions.label = "Allow Camera Interactions"
+allowCameraInteractions.tooltip = "Whether players can interact with blocks/entities from the camera's perspective in freecam."
 
 applyToHost.label = "Apply Policies to Me"
 applyToHost."tooltip[0]" = "Whether the policies above also restrict you in singleplayer worlds."
