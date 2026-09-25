@@ -46,8 +46,8 @@ public class FreecamNeoforgeClient {
     //? if >=1.21.11 {
     @SubscribeEvent
     public static void registerClientPayloads(RegisterClientPayloadHandlersEvent event) {
-        event.register(ServerPolicyPayload.TYPE, (payload, context) -> ServerPolicies.applyJson(payload.json()));
-        event.register(AntiFreecamPayload.TYPE, (payload, context) -> ServerPolicies.applyAntiFreecam(payload.forceCollision()));
+        event.register(ServerPolicyPayload.TYPE, (payload, context) -> ServerPolicies.get().applyJson(payload.json()));
+        event.register(AntiFreecamPayload.TYPE, (payload, context) -> ServerPolicies.get().applyAntiFreecam(payload.forceCollision()));
     }
     //? }
 

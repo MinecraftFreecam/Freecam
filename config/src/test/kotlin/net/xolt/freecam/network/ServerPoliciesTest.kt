@@ -1,22 +1,16 @@
 package net.xolt.freecam.network
 
 import io.kotest.matchers.shouldBe
-import kotlin.test.AfterTest
-import kotlin.test.BeforeTest
 import kotlin.test.Test
 
 class ServerPoliciesTest {
-    @BeforeTest
-    fun setup() = ServerPolicies.reset()
-
-    @AfterTest
-    fun cleanup() = ServerPolicies.reset()
+    private val serverPolicies = ServerPolicies()
 
     private fun policies() = listOf(
-        ServerPolicies.allowFreecam(),
-        ServerPolicies.allowIgnoringCollision(),
-        ServerPolicies.allowFullbright(),
-        ServerPolicies.allowCameraInteractions(),
+        serverPolicies.allowFreecam(),
+        serverPolicies.allowIgnoringCollision(),
+        serverPolicies.allowFullbright(),
+        serverPolicies.allowCameraInteractions(),
     )
 
     @Test
@@ -26,91 +20,91 @@ class ServerPoliciesTest {
 
     @Test
     fun `raw plugin message applies independent restrictions`() {
-        ServerPolicies.applyBytes("""{"collision":{"allowIgnoring":false},"allowCameraInteractions":false}""".toByteArray()) shouldBe true
+        serverPolicies.applyBytes("""{"collision":{"allowIgnoring":false},"allowCameraInteractions":false}""".toByteArray()) shouldBe true
         policies() shouldBe listOf(true, false, true, false)
     }
 
     @Test
     fun `updates replace the policy and default omitted fields to allowed`() {
-        ServerPolicies.applyJson("""{"allowFreecam":false,"collision":{"allowIgnoring":false},"allowFullbright":false,"allowCameraInteractions":false}""") shouldBe true
+        serverPolicies.applyJson("""{"allowFreecam":false,"collision":{"allowIgnoring":false},"allowFullbright":false,"allowCameraInteractions":false}""") shouldBe true
         policies() shouldBe listOf(false, false, false, false)
-        ServerPolicies.applyJson("""{"allowFullbright":false}""") shouldBe true
+        serverPolicies.applyJson("""{"allowFullbright":false}""") shouldBe true
         policies() shouldBe listOf(true, true, false, true)
-        ServerPolicies.applyJson("{}") shouldBe true
+        serverPolicies.applyJson("{}") shouldBe true
         policies() shouldBe listOf(true, true, true, true)
     }
 
     @Test
     fun `invalid updates leave the previous policy intact`() {
-        ServerPolicies.applyJson("""{"allowFreecam":false}""") shouldBe true
+        serverPolicies.applyJson("""{"allowFreecam":false}""") shouldBe true
         for (json in listOf("", "null", "[]", "true", "{", "{} trailing",
             "{allowFreecam:true}", "{'allowFreecam':true}", "{/*comment*/}",
             """{"allowFreecam":true,"allowCameraInteractions":"false"}""",
             """{"collision":{"allowIgnoring":null}}""", """{"collision":false}""",
             """{"allowFullbright":0}""")) {
-            ServerPolicies.applyJson(json) shouldBe false
+            serverPolicies.applyJson(json) shouldBe false
             policies() shouldBe listOf(false, true, true, true)
         }
     }
 
     @Test
     fun `unknown fields are ignored for forward compatibility`() {
-        ServerPolicies.applyJson("""{"futurePolicy":{"value":false},"collision":{"allowIgnoringTransparent":false},"allowCameraInteractions":false}""") shouldBe true
+        serverPolicies.applyJson("""{"futurePolicy":{"value":false},"collision":{"allowIgnoringTransparent":false},"allowCameraInteractions":false}""") shouldBe true
         policies() shouldBe listOf(true, true, true, false)
     }
 
     @Test
     fun `disconnect reset restores permissions before the next server`() {
-        ServerPolicies.applyJson("""{"allowFreecam":false,"collision":{"allowIgnoring":false},"allowFullbright":false,"allowCameraInteractions":false}""") shouldBe true
-        ServerPolicies.reset()
+        serverPolicies.applyJson("""{"allowFreecam":false,"collision":{"allowIgnoring":false},"allowFullbright":false,"allowCameraInteractions":false}""") shouldBe true
+        serverPolicies.reset()
         policies() shouldBe listOf(true, true, true, true)
     }
     @Test
     fun `AntiFreecam boolean only restricts ignoring collision`() {
-        ServerPolicies.applyAntiFreecamBytes(byteArrayOf(1)) shouldBe true
+        serverPolicies.applyAntiFreecamBytes(byteArrayOf(1)) shouldBe true
         policies() shouldBe listOf(true, false, true, true)
-        ServerPolicies.applyAntiFreecamBytes(byteArrayOf(0)) shouldBe true
+        serverPolicies.applyAntiFreecamBytes(byteArrayOf(0)) shouldBe true
         policies() shouldBe listOf(true, true, true, true)
     }
 
     @Test
     fun `protocols cannot lift each others restrictions`() {
-        ServerPolicies.applyAntiFreecam(true)
-        ServerPolicies.applyJson("{}") shouldBe true
-        ServerPolicies.allowIgnoringCollision() shouldBe false
-        ServerPolicies.applyJson("""{"allowFreecam":false,"collision":{"allowIgnoring":false}}""") shouldBe true
-        ServerPolicies.applyAntiFreecam(false)
+        serverPolicies.applyAntiFreecam(true)
+        serverPolicies.applyJson("{}") shouldBe true
+        serverPolicies.allowIgnoringCollision() shouldBe false
+        serverPolicies.applyJson("""{"allowFreecam":false,"collision":{"allowIgnoring":false}}""") shouldBe true
+        serverPolicies.applyAntiFreecam(false)
         policies() shouldBe listOf(false, false, true, true)
     }
 
     @Test
     fun `malformed AntiFreecam packets preserve the previous restriction`() {
-        ServerPolicies.applyAntiFreecam(true)
-        ServerPolicies.applyAntiFreecamBytes(byteArrayOf()) shouldBe false
-        ServerPolicies.applyAntiFreecamBytes(byteArrayOf(0, 0)) shouldBe false
-        ServerPolicies.allowIgnoringCollision() shouldBe false
-        ServerPolicies.reset()
+        serverPolicies.applyAntiFreecam(true)
+        serverPolicies.applyAntiFreecamBytes(byteArrayOf()) shouldBe false
+        serverPolicies.applyAntiFreecamBytes(byteArrayOf(0, 0)) shouldBe false
+        serverPolicies.allowIgnoringCollision() shouldBe false
+        serverPolicies.reset()
         policies() shouldBe listOf(true, true, true, true)
     }
 
     @Test
     fun `host policy replaces received restrictions while hosting`() {
-        ServerPolicies.applyJson("""{"allowFreecam":false,"collision":{"allowIgnoring":false}}""") shouldBe true
-        ServerPolicies.applyAntiFreecam(true)
-        ServerPolicies.setHostPolicy(ServerPolicy.ALLOW_ALL)
+        serverPolicies.applyJson("""{"allowFreecam":false,"collision":{"allowIgnoring":false}}""") shouldBe true
+        serverPolicies.applyAntiFreecam(true)
+        serverPolicies.setHostPolicy(ServerPolicy.ALLOW_ALL)
         policies() shouldBe listOf(true, true, true, true)
 
-        ServerPolicies.setHostPolicy(ServerPolicy(true, ServerPolicy.CollisionPolicy(true), false, true))
+        serverPolicies.setHostPolicy(ServerPolicy(true, ServerPolicy.CollisionPolicy(true), false, true))
         policies() shouldBe listOf(true, true, false, true)
 
-        ServerPolicies.setHostPolicy(null)
+        serverPolicies.setHostPolicy(null)
         policies() shouldBe listOf(false, false, true, true)
     }
 
     @Test
     fun `reset clears the host policy`() {
-        ServerPolicies.setHostPolicy(ServerPolicy(false, ServerPolicy.CollisionPolicy(false), false, false))
-        ServerPolicies.reset()
+        serverPolicies.setHostPolicy(ServerPolicy(false, ServerPolicy.CollisionPolicy(false), false, false))
+        serverPolicies.reset()
         policies() shouldBe listOf(true, true, true, true)
     }
 
@@ -124,7 +118,7 @@ class ServerPoliciesTest {
     fun `server snapshots round trip every policy combination`() {
         for (bits in 0..15) {
             val policy = ServerPolicy(bits and 1 != 0, ServerPolicy.CollisionPolicy(bits and 2 != 0), bits and 4 != 0, bits and 8 != 0)
-            ServerPolicies.applyJson(policy.toJson()) shouldBe true
+            serverPolicies.applyJson(policy.toJson()) shouldBe true
             policies() shouldBe listOf(policy.allowFreecam(), policy.collision().allowIgnoring(), policy.allowFullbright(), policy.allowCameraInteractions())
         }
     }

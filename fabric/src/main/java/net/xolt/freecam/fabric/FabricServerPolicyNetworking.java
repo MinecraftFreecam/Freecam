@@ -17,25 +17,25 @@ public final class FabricServerPolicyNetworking {
         //? if >=1.20.5 {
         ClientPlayNetworking.registerGlobalReceiver(
                 ServerPolicyPayload.TYPE,
-                (payload, context) -> ServerPolicies.applyJson(payload.json())
+                (payload, context) -> ServerPolicies.get().applyJson(payload.json())
         );
         ClientConfigurationNetworking.registerGlobalReceiver(AntiFreecamPayload.TYPE,
-                (payload, context) -> ServerPolicies.applyAntiFreecam(payload.forceCollision()));
+                (payload, context) -> ServerPolicies.get().applyAntiFreecam(payload.forceCollision()));
         ClientPlayNetworking.registerGlobalReceiver(AntiFreecamPayload.TYPE,
-                (payload, context) -> ServerPolicies.applyAntiFreecam(payload.forceCollision()));
-        ClientConfigurationConnectionEvents.DISCONNECT.register((handler, client) -> ServerPolicies.reset());
+                (payload, context) -> ServerPolicies.get().applyAntiFreecam(payload.forceCollision()));
+        ClientConfigurationConnectionEvents.DISCONNECT.register((handler, client) -> ServerPolicies.get().reset());
         //? } else {
         /*ClientPlayNetworking.registerGlobalReceiver(new Identifier(ServerPolicies.CHANNEL),
                 (client, handler, buffer, responseSender) -> {
                     byte[] bytes = new byte[buffer.readableBytes()];
                     buffer.readBytes(bytes);
-                    client.execute(() -> ServerPolicies.applyBytes(bytes));
+                    client.execute(() -> ServerPolicies.get().applyBytes(bytes));
                 });
         ClientPlayNetworking.registerGlobalReceiver(new Identifier(ServerPolicies.ANTI_FREECAM_CHANNEL),
                 (client, handler, buffer, responseSender) -> {
                     byte[] bytes = new byte[buffer.readableBytes()];
                     buffer.readBytes(bytes);
-                    client.execute(() -> ServerPolicies.applyAntiFreecamBytes(bytes));
+                    client.execute(() -> ServerPolicies.get().applyAntiFreecamBytes(bytes));
                 });
         *///? }
     }

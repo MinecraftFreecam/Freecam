@@ -3,6 +3,7 @@ package net.xolt.freecam.config;
 import net.minecraft.world.level.block.Block;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.network.HostedServerPolicy;
+import net.xolt.freecam.network.ServerPolicies;
 import net.xolt.freecam.config.controller.BasicConfigController;
 import net.xolt.freecam.config.controller.ConfigController;
 import net.xolt.freecam.config.controller.ConfigControllerRegistry;
@@ -34,10 +35,10 @@ public interface ModConfig {
         ConfigController<ModConfigDTO> dtoController = new BasicConfigController<>(loader, ModConfigDTO::new);
         ConfigControllerRegistry.register(ModConfigDTO.class, dtoController);
 
-        ConfigController<ModConfigImpl> controller = new ModConfigController(dtoController);
+        ConfigController<ModConfigImpl> controller = new ModConfigController(dtoController, ServerPolicies.get());
         ConfigControllerRegistry.register(ModConfigImpl.class, controller);
 
-        dtoController.registerListener(() -> HostedServerPolicy.configure(dtoController.getConfig()));
+        dtoController.registerListener(() -> HostedServerPolicy.get().configure(dtoController.getConfig()));
         controller.load();
     }
 

@@ -46,7 +46,7 @@ public class Freecam {
 
     @ApiStatus.Internal
     public static void preTick(Minecraft mc) {
-        ServerPolicies.setHostPolicy(mc.hasSingleplayerServer() ? HostedServerPolicy.forHost() : null);
+        ServerPolicies.get().setHostPolicy(mc.hasSingleplayerServer() ? HostedServerPolicy.get().forHost() : null);
 
         // Disable if the previous tick asked us to,
         // or Freecam is restricted on the current server
@@ -89,7 +89,7 @@ public class Freecam {
         if (isEnabled()) {
             disable();
         }
-        ServerPolicies.reset();
+        ServerPolicies.get().reset();
         tripods.clear();
     }
 
@@ -395,7 +395,7 @@ public class Freecam {
     @ApiStatus.AvailableSince("1.2.4")
     public static boolean isRestrictedOnServer() {
         ServerData server = MC.getCurrentServer();
-        return !ServerPolicies.allowFreecam() || (server != null && !MC.hasSingleplayerServer()
+        return !ServerPolicies.get().allowFreecam() || (server != null && !MC.hasSingleplayerServer()
                 && ModConfig.get().isRestrictedOnServer(server.ip));
     }
 }

@@ -43,7 +43,7 @@ public final class ServerPolicyManager {
         State state = SERVERS.get(server);
         if (state == null) return;
         ServerPolicy policy = server.isDedicatedServer() ? state.dedicatedPolicy
-                : server.isPublished() ? HostedServerPolicy.get() : ServerPolicy.ALLOW_ALL;
+                : server.isPublished() ? HostedServerPolicy.get().forClients() : ServerPolicy.ALLOW_ALL;
         state.broadcaster.tick(server.getPlayerList().getPlayers(), policy, send);
     }
 

@@ -18,21 +18,26 @@ import java.nio.charset.StandardCharsets;
 /** Connection-scoped overrides; never serialized into the local configuration. */
 public final class ServerPolicies {
     public static final String CHANNEL = "freecam:server_config";
+    public static final String ANTI_FREECAM_CHANNEL = "antifreecam:freecam_config_packet";
     private static final Logger LOGGER = LoggerFactory.getLogger(ServerPolicies.class);
     private static final TypeAdapter<JsonElement> JSON_ADAPTER = new Gson().getAdapter(JsonElement.class);
     private static final ServerPolicy ALLOW_ALL = ServerPolicy.ALLOW_ALL;
-    private static volatile ServerPolicy current = ALLOW_ALL;
-    private static volatile boolean forceCollision;
-    private static volatile ServerPolicy hostPolicy;
-    public static final String ANTI_FREECAM_CHANNEL = "antifreecam:freecam_config_packet";
+    private static final ServerPolicies CLIENT = new ServerPolicies();
 
-    private ServerPolicies() {}
+    private volatile ServerPolicy current = ALLOW_ALL;
+    private volatile boolean forceCollision;
+    private volatile ServerPolicy hostPolicy;
 
-    public static boolean allowFreecam() {
+    /** The policies received by this client's current connection. */
+    public static ServerPolicies get() {
+        return CLIENT;
+    }
+
+    public boolean allowFreecam() {
         return effective().allowFreecam();
     }
 
-    public static boolean allowIgnoringCollision() {
+    public boolean allowIgnoringCollision() {
         ServerPolicy host = hostPolicy;
         if (host != null) {
             return host.collision().allowIgnoring();
@@ -40,35 +45,35 @@ public final class ServerPolicies {
         return !forceCollision && current.collision().allowIgnoring();
     }
 
-    public static boolean allowFullbright() {
+    public boolean allowFullbright() {
         return effective().allowFullbright();
     }
 
-    public static boolean allowCameraInteractions() {
+    public boolean allowCameraInteractions() {
         return effective().allowCameraInteractions();
     }
 
     /** While hosting, the local config decides instead of received policies; {@code null} when not hosting. */
-    public static void setHostPolicy(@Nullable ServerPolicy policy) {
+    public void setHostPolicy(@Nullable ServerPolicy policy) {
         hostPolicy = policy;
     }
 
-    public static void reset() {
+    public void reset() {
         current = ALLOW_ALL;
         forceCollision = false;
         hostPolicy = null;
     }
 
-    private static ServerPolicy effective() {
+    private ServerPolicy effective() {
         ServerPolicy host = hostPolicy;
         return host != null ? host : current;
     }
 
-    public static void applyAntiFreecam(boolean force) {
+    public void applyAntiFreecam(boolean force) {
         forceCollision = force;
     }
 
-    public static boolean applyAntiFreecamBytes(byte[] payload) {
+    public boolean applyAntiFreecamBytes(byte[] payload) {
         if (payload.length != 1) {
             LOGGER.warn("Ignoring invalid {} payload length: {}", ANTI_FREECAM_CHANNEL, payload.length);
             return false;
@@ -77,12 +82,12 @@ public final class ServerPolicies {
         return true;
     }
 
-    public static boolean applyBytes(byte[] payload) {
+    public boolean applyBytes(byte[] payload) {
         return applyJson(new String(payload, StandardCharsets.UTF_8));
     }
 
     /** Replaces the policy atomically. Missing fields allow the feature; invalid updates preserve it. */
-    public static boolean applyJson(String json) {
+    public boolean applyJson(String json) {
         try {
             JsonElement rootElement = parse(json);
             if (!rootElement.isJsonObject()) {

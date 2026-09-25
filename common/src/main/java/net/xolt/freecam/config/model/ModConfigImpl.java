@@ -7,10 +7,12 @@ import net.xolt.freecam.network.ServerPolicies;
 public class ModConfigImpl implements ModConfig {
 
     private final ModConfigDTO data;
+    private final ServerPolicies serverPolicies;
     private final CollisionPredicate collisionPredicate;
 
-    public ModConfigImpl(ModConfigDTO data) {
+    public ModConfigImpl(ModConfigDTO data, ServerPolicies serverPolicies) {
         this.data = data;
+        this.serverPolicies = serverPolicies;
         collisionPredicate = CollisionPredicate.create(data.collision);
     }
 
@@ -35,17 +37,17 @@ public class ModConfigImpl implements ModConfig {
 
     @Override
     public boolean ignoreAllCollision() {
-        return ServerPolicies.allowIgnoringCollision() && data.collision.ignoreAll;
+        return serverPolicies.allowIgnoringCollision() && data.collision.ignoreAll;
     }
 
     @Override
     public boolean shouldCheckInitialCollision() {
-        return !ServerPolicies.allowIgnoringCollision() || data.collision.alwaysCheck || !data.collision.ignoreAll;
+        return !serverPolicies.allowIgnoringCollision() || data.collision.alwaysCheck || !data.collision.ignoreAll;
     }
 
     @Override
     public boolean ignoreCollisionWith(Block block) {
-        return ServerPolicies.allowIgnoringCollision() && (data.collision.ignoreAll || collisionPredicate.shouldIgnore(block));
+        return serverPolicies.allowIgnoringCollision() && (data.collision.ignoreAll || collisionPredicate.shouldIgnore(block));
     }
 
     @Override
@@ -65,7 +67,7 @@ public class ModConfigImpl implements ModConfig {
 
     @Override
     public boolean isFullBrightEnabled() {
-        return ServerPolicies.allowFullbright() && data.visual.fullBright;
+        return serverPolicies.allowFullbright() && data.visual.fullBright;
     }
 
     @Override
@@ -87,7 +89,7 @@ public class ModConfigImpl implements ModConfig {
     public boolean shouldPreventInteractions() {
         // Servers may only restrict interactions from the camera's perspective.
         boolean restrictedByServer = data.utility.interactionMode == ModConfigDTO.InteractionMode.CAMERA
-                && !ServerPolicies.allowCameraInteractions();
+                && !serverPolicies.allowCameraInteractions();
         return !data.utility.allowInteract || restrictedByServer;
     }
 

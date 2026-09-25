@@ -24,9 +24,9 @@ public class NeoforgeServerPolicyNetworking {
         registrar.commonToClient(AntiFreecamPayload.TYPE, AntiFreecamPayload.STREAM_CODEC);
         //? } else {
         /*registrar.playToClient(ServerPolicyPayload.TYPE, ServerPolicyPayload.STREAM_CODEC,
-                (payload, context) -> ServerPolicies.applyJson(payload.json()));
+                (payload, context) -> ServerPolicies.get().applyJson(payload.json()));
         registrar.commonToClient(AntiFreecamPayload.TYPE, AntiFreecamPayload.STREAM_CODEC,
-                (payload, context) -> ServerPolicies.applyAntiFreecam(payload.forceCollision()));
+                (payload, context) -> ServerPolicies.get().applyAntiFreecam(payload.forceCollision()));
         *///? }
     }
 

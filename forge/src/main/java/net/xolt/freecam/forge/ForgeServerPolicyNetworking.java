@@ -44,8 +44,8 @@ public final class ForgeServerPolicyNetworking {
         buffer.readBytes(bytes);
         NetworkEvent.Context context = event.getSource().get();
         context.enqueueWork(() -> {
-            if (antiFreecam) ServerPolicies.applyAntiFreecamBytes(bytes);
-            else ServerPolicies.applyBytes(bytes);
+            if (antiFreecam) ServerPolicies.get().applyAntiFreecamBytes(bytes);
+            else ServerPolicies.get().applyBytes(bytes);
         });
         context.setPacketHandled(true);
     }
