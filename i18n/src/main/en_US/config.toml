@@ -121,7 +121,7 @@ tripod.label = "Tripod Notifications"
 tripod.tooltip = "Notifies you when entering/exiting tripod cameras."
 
 [freecam.config.serverPolicy]
-hostedNote = "§7Applies to players on your LAN world or dedicated server."
+description = "§7These options restrict Freecam usage by other players connecting to your singleplayer worlds over LAN. This only affects players using a compatible Freecam mod, such as this one."
 
 allowFreecam.label = "Allow Freecam"
 allowFreecam.tooltip = "Whether players can use freecam."
