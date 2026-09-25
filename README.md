@@ -84,7 +84,7 @@ See the [contributing guide](https://github.com/MinecraftFreecam/Freecam/blob/ma
 
 ## Server policies
 
-Servers can temporarily restrict Freecam, ignoring collision, full brightness, and interactions. Received rules reset on disconnect and never overwrite your saved preferences. Freecam also supports servers using [AntiFreecam](https://github.com/Kesuaheli/AntiFreecam).
+Servers can temporarily restrict Freecam, ignoring collision, full brightness, and interactions from the camera. Received rules reset on disconnect and never overwrite your saved preferences. Freecam also supports servers using [AntiFreecam](https://github.com/Kesuaheli/AntiFreecam).
 
 For singleplayer, configuring the policy options under **Multiplayer Options** in the settings menu will affect players connected via open-to-LAN. Policies apply to compatible connected clients; saving policy changes updates them.
 By default, you are not affected by your own policies: enable **Apply Policies to Me** to also restrict yourself in singleplayer worlds.
@@ -99,7 +99,7 @@ For a dedicated Fabric, Forge, or NeoForge server, install Freecam on the server
       "allowIgnoring": false
     },
     "allowFullbright": false,
-    "allowInteract": true
+    "allowCameraInteractions": true
   }
 }
 ```

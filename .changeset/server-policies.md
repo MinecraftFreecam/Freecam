@@ -4,7 +4,7 @@ default: minor
 
 # Freecam can now be installed server-side, enabling server-controlled usage policies
 
-Added initial server policies to restrict freecam, ignoring collision, full brightness, and interactions.
+Added initial server policies to restrict freecam, ignoring collision, full brightness, and interactions from the camera.
 Servers can configure these policies to temporarily restrict Freecam's features while connected to that server.
 
 Users can configure these policies for open-to-LAN worlds in Freecam's "Multiplayer Options".
