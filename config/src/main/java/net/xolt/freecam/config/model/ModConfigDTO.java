@@ -71,6 +71,8 @@ public class ModConfigDTO implements RawJsonHolder {
         public List<String> blacklist = new ArrayList<>();
     }
 
+    public ServerPolicyConfig serverPolicy = new ServerPolicyConfig();
+
     public NotificationConfig notification = new NotificationConfig();
     public static class NotificationConfig {
         public boolean notifyFreecam = true;

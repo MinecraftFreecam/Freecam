@@ -2,14 +2,20 @@ package net.xolt.freecam.config.model;
 
 import net.minecraft.world.level.block.Block;
 import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.network.ServerPolicies;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ModConfigImpl implements ModConfig {
 
     private final ModConfigDTO data;
+    private final ServerPolicies serverPolicies;
     private final CollisionPredicate collisionPredicate;
 
-    public ModConfigImpl(ModConfigDTO data) {
+    public ModConfigImpl(ModConfigDTO data, ServerPolicies serverPolicies) {
         this.data = data;
+        this.serverPolicies = serverPolicies;
         collisionPredicate = CollisionPredicate.create(data.collision);
     }
 
@@ -34,17 +40,17 @@ public class ModConfigImpl implements ModConfig {
 
     @Override
     public boolean ignoreAllCollision() {
-        return data.collision.ignoreAll;
+        return serverPolicies.allowIgnoringCollision() && data.collision.ignoreAll;
     }
 
     @Override
     public boolean shouldCheckInitialCollision() {
-        return data.collision.alwaysCheck || !data.collision.ignoreAll;
+        return !serverPolicies.allowIgnoringCollision() || data.collision.alwaysCheck || !data.collision.ignoreAll;
     }
 
     @Override
     public boolean ignoreCollisionWith(Block block) {
-        return data.collision.ignoreAll || collisionPredicate.shouldIgnore(block);
+        return serverPolicies.allowIgnoringCollision() && (data.collision.ignoreAll || collisionPredicate.shouldIgnore(block));
     }
 
     @Override
@@ -64,7 +70,7 @@ public class ModConfigImpl implements ModConfig {
 
     @Override
     public boolean isFullBrightEnabled() {
-        return data.visual.fullBright;
+        return serverPolicies.allowFullbright() && data.visual.fullBright;
     }
 
     @Override
@@ -84,11 +90,32 @@ public class ModConfigImpl implements ModConfig {
 
     @Override
     public boolean shouldPreventInteractions() {
-        return !data.utility.allowInteract;
+        // Servers may only restrict interactions from the camera's perspective.
+        boolean restrictedByServer = data.utility.interactionMode == ModConfigDTO.InteractionMode.CAMERA
+                && !serverPolicies.allowCameraInteractions();
+        return !data.utility.allowInteract || restrictedByServer;
     }
 
     public boolean allowInteractionsFrom(ModConfigDTO.InteractionMode mode) {
-        return data.utility.allowInteract && data.utility.interactionMode == mode;
+        return data.utility.interactionMode == mode && !shouldPreventInteractions();
+    }
+
+    @Override
+    public List<ServerRestrictedFeature> getServerRestrictedFeatures() {
+        List<ServerRestrictedFeature> restricted = new ArrayList<>();
+        boolean ignoresCollision = data.collision.ignoreAll || data.collision.ignoreTransparent
+                || data.collision.ignoreOpenable || data.collision.ignoreCustom;
+        if (ignoresCollision && !serverPolicies.allowIgnoringCollision()) {
+            restricted.add(ServerRestrictedFeature.IGNORING_COLLISION);
+        }
+        if (data.visual.fullBright && !serverPolicies.allowFullbright()) {
+            restricted.add(ServerRestrictedFeature.FULL_BRIGHTNESS);
+        }
+        if (data.utility.allowInteract && data.utility.interactionMode == ModConfigDTO.InteractionMode.CAMERA
+                && !serverPolicies.allowCameraInteractions()) {
+            restricted.add(ServerRestrictedFeature.CAMERA_INTERACTIONS);
+        }
+        return restricted;
     }
 
     @Override

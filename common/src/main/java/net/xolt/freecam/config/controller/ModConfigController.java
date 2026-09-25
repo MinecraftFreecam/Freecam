@@ -2,6 +2,7 @@ package net.xolt.freecam.config.controller;
 
 import net.xolt.freecam.config.model.ModConfigDTO;
 import net.xolt.freecam.config.model.ModConfigImpl;
+import net.xolt.freecam.network.ServerPolicies;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,18 +10,20 @@ import java.util.List;
 public class ModConfigController implements ConfigController<ModConfigImpl> {
 
     private final ConfigController<ModConfigDTO> controller;
+    private final ServerPolicies serverPolicies;
     private final List<Runnable> listeners = new ArrayList<>();
     private final ModConfigImpl defaultConfig;
     private ModConfigImpl config;
 
-    public ModConfigController(ConfigController<ModConfigDTO> dtoController) {
+    public ModConfigController(ConfigController<ModConfigDTO> dtoController, ServerPolicies serverPolicies) {
         this.controller = dtoController;
-        this.defaultConfig = new ModConfigImpl(new ModConfigDTO());
+        this.serverPolicies = serverPolicies;
+        this.defaultConfig = new ModConfigImpl(new ModConfigDTO(), serverPolicies);
         this.controller.registerListener(this::onChange);
     }
 
     private void onChange() {
-        config = new ModConfigImpl(controller.getConfig());
+        config = new ModConfigImpl(controller.getConfig(), serverPolicies);
         listeners.forEach(Runnable::run);
     }
 

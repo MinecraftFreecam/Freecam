@@ -79,10 +79,11 @@ neoForge {
             client()
             ideName = "NeoForge Client (${project.path})"
         }
-//        register("server") {
-//            server()
-//            ideName = "NeoForge Server (${project.path})"
-//        }
+        register("server") {
+            server()
+            ideName = "NeoForge Server (${project.path})"
+            gameDirectory = layout.buildDirectory.dir("run-server")
+        }
     }
 
     mods {
@@ -143,12 +144,12 @@ val generateModsTomlTask = tasks.register<NeoForgeModsTomlTask>("generateModsTom
         dependency(meta.id, "minecraft") {
             versionRange = meta.reqs["mc"]?.toMavenFormat()
             ordering = "NONE"
-            side = "CLIENT"
+            side = "BOTH"
         }
         dependency(meta.id, "neoforge") {
             versionRange = meta.reqs["neoforge_version"]?.toMavenFormat()
             ordering = "NONE"
-            side = "CLIENT"
+            side = "BOTH"
         }
         dependency(meta.id, "cloth_config") {
             versionRange = meta.reqs["cloth"]?.toMavenFormat()
@@ -182,4 +183,9 @@ tasks.processResources {
 
 tasks.shadowJar {
     from(tasks.jarJar)
+}
+
+// Allow commands such as `stop` in the dedicated development server console.
+tasks.withType<JavaExec>().matching { it.name == "runServer" }.configureEach {
+    standardInput = System.`in`
 }
