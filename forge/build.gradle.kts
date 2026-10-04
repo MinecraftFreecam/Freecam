@@ -236,6 +236,8 @@ val generateModsTomlTask = tasks.register<ForgeModsTomlTask>("generateModsToml")
 }
 
 tasks.processResources {
+    val mixinextras = libs.versions.mixinextras.get()
+
     from(generateModsTomlTask) {
         into("META-INF")
     }
@@ -243,11 +245,15 @@ tasks.processResources {
     rename("icon-100.png", "logo.png")
 
     filesMatching("freecam-forge.mixins.json") {
-        expand("mixinCompatLevel" to "JAVA_${meta.javaVersion}")
+        expand(
+            "mixinCompatLevel" to "JAVA_${meta.javaVersion}",
+            "mixinExtrasMinVersion" to mixinextras,
+        )
     }
 
     inputs.properties(
         "java_version" to meta.javaVersion,
+        "mixinextras_version" to mixinextras,
         "mixinConfigs" to mixinConfigNames,
         "mixinRefmap" to refmapName,
         "supportsJarJar" to supportsJarJar,

@@ -162,6 +162,8 @@ val generateModsTomlTask = tasks.register<NeoForgeModsTomlTask>("generateModsTom
 }
 
 tasks.processResources {
+    val mixinextras = libs.versions.mixinextras.get()
+
     from(generateModsTomlTask) {
         into("META-INF")
     }
@@ -174,10 +176,16 @@ tasks.processResources {
     rename("icon-100.png", "banner.png")
 
     filesMatching("freecam-neoforge.mixins.json") {
-        expand("mixinCompatLevel" to "JAVA_${meta.javaVersion}")
+        expand(
+            "mixinCompatLevel" to "JAVA_${meta.javaVersion}",
+            "mixinExtrasMinVersion" to mixinextras,
+        )
     }
 
-    inputs.properties("java_version" to meta.javaVersion)
+    inputs.properties(
+        "java_version" to meta.javaVersion,
+        "mixinextras_version" to mixinextras,
+    )
 }
 
 tasks.shadowJar {

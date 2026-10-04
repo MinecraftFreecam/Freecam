@@ -196,15 +196,23 @@ tasks {
     }
 
     processResources {
+        val mixinextras = libs.versions.mixinextras.get()
+
         from(modJsonTask)
 
         rename("icon-128.png", "icon.png")
 
         filesMatching("freecam-fabric.mixins.json5") {
-            expand("mixinCompatLevel" to "JAVA_${meta.javaVersion}")
+            expand(
+                "mixinCompatLevel" to "JAVA_${meta.javaVersion}",
+                "mixinExtrasMinVersion" to mixinextras,
+            )
         }
 
-        inputs.properties("java_version" to meta.javaVersion)
+        inputs.properties(
+            "java_version" to meta.javaVersion,
+            "mixinextras_version" to mixinextras,
+        )
     }
 
     if (loomAdapter.hasMappings) {
