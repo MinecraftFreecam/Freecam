@@ -175,12 +175,8 @@ public class Freecam {
             return;
         }
 
-        if (playerControlEnabled) {
-            freeCamera.setInput(new KeyboardInput(MC.options));
-        } else {
+        if (!playerControlEnabled) {
             MC.player.input = new KeyboardInput(MC.options);
-            //~ if >=1.21.11 'new Input()' -> 'new ClientInput()'
-            freeCamera.setInput(new ClientInput());
         }
         playerControlEnabled = !playerControlEnabled;
     }
@@ -201,7 +197,7 @@ public class Freecam {
             position = null;
         }
 
-        freeCamera = new FreeCamera(-420 - tripod.ordinal());
+        freeCamera = new FreeCamera(-420 - tripod.ordinal(), () -> !isPlayerControlEnabled());
         if (position == null) {
             moveToPlayer();
         } else {
@@ -231,7 +227,7 @@ public class Freecam {
 
     private static void onEnableFreecam() {
         onEnable();
-        freeCamera = new FreeCamera(-420);
+        freeCamera = new FreeCamera(-420, () -> !isPlayerControlEnabled());
         moveToPlayer();
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
@@ -267,8 +263,6 @@ public class Freecam {
         MC.setCameraEntity(MC.player);
         playerControlEnabled = false;
         freeCamera.despawn();
-        //~ if >=1.21.11 Input -> ClientInput
-        freeCamera.input = new ClientInput();
         freeCamera = null;
 
         if (MC.player != null) {

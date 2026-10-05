@@ -27,26 +27,34 @@ import net.minecraft.client.player.ClientInput;
 import net.minecraft.core.Holder;
 
 import java.util.UUID;
+import java.util.function.BooleanSupplier;
 
 import static net.xolt.freecam.Freecam.MC;
 
 @ApiStatus.Internal
 @ApiStatus.AvailableSince("0.4.0")
 public class FreeCamera extends AbstractClientPlayer {
-    //~ if >=1.21.11 Input -> ClientInput
-    private ClientInput input;
+
+    private final BooleanSupplier hasInput;
+    private final KeyboardInput keyboardInput;
+    //~ if >=1.21.11 ' Input' -> ' ClientInput'
+    private final ClientInput dummyInput;
+
     private float yBob;
     private float xBob;
     private float yBobO;
     private float xBobO;
 
-    public FreeCamera(int id) {
+    public FreeCamera(int id, BooleanSupplier hasInputPredicate) {
         super(MC.level, new GameProfile(UUID.randomUUID(), "FreeCamera"));
 
         setId(id);
         setPose(Pose.SWIMMING);
         getAbilities().flying = true;
-        input = new KeyboardInput(MC.options);
+        hasInput = hasInputPredicate;
+        keyboardInput = new KeyboardInput(MC.options);
+        //~ if >=1.21.11 'new Input()' -> 'new ClientInput()'
+        dummyInput = new ClientInput();
     }
 
     @Override
@@ -316,13 +324,8 @@ public class FreeCamera extends AbstractClientPlayer {
     }
 
     //~ if >=1.21.11 ' Input' -> ' ClientInput'
-    public ClientInput getInput() {
-        return input;
-    }
-
-    //~ if >=1.21.11 '(Input' -> '(ClientInput'
-    public void setInput(ClientInput input) {
-        this.input = input;
+    private ClientInput getInput() {
+        return hasInput.getAsBoolean() ? keyboardInput : dummyInput;
     }
 
     public boolean isForwardKeyDown() {
