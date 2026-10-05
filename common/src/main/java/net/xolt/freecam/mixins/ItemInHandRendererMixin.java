@@ -58,7 +58,7 @@ public class ItemInHandRendererMixin {
                     opcode = Opcodes.GETFIELD)
     )
     private float redirectGetXBob(LocalPlayer player) {
-        return Freecam.isEnabled() ? Freecam.getFreeCamera().xBob : player.xBob;
+        return Freecam.isEnabled() ? Freecam.getFreeCamera().xBob() : player.xBob;
     }
 
     // Makes arm movement depend upon FreeCamera movement rather than player movement.
@@ -70,7 +70,7 @@ public class ItemInHandRendererMixin {
                     opcode = Opcodes.GETFIELD)
     )
     private float redirectGetXBobO(LocalPlayer player) {
-        return Freecam.isEnabled() ? Freecam.getFreeCamera().xBobO : player.xBobO;
+        return Freecam.isEnabled() ? Freecam.getFreeCamera().xBobO() : player.xBobO;
     }
 
     // Makes arm movement depend upon FreeCamera movement rather than player movement.
@@ -82,7 +82,7 @@ public class ItemInHandRendererMixin {
                     opcode = Opcodes.GETFIELD)
     )
     private float redirectGetYBob(LocalPlayer player) {
-        return Freecam.isEnabled() ? Freecam.getFreeCamera().yBob : player.yBob;
+        return Freecam.isEnabled() ? Freecam.getFreeCamera().yBob() : player.yBob;
     }
 
     // Makes arm movement depend upon FreeCamera movement rather than player movement.
@@ -94,7 +94,7 @@ public class ItemInHandRendererMixin {
                     opcode = Opcodes.GETFIELD)
     )
     private float redirectGetYBobO(LocalPlayer player) {
-        return Freecam.isEnabled() ? Freecam.getFreeCamera().yBobO : player.yBobO;
+        return Freecam.isEnabled() ? Freecam.getFreeCamera().yBobO() : player.yBobO;
     }
 
     @Inject(method = "submitHandsWithItems", at = @At("HEAD"))

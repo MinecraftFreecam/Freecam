@@ -82,12 +82,6 @@ stonecutter parameters {
         }
         string(current.parsed >= "1.21.11") {
             replace("ResourceLocation", "Identifier")
-            replace("input.jumping", "input.keyPresses.jump()")
-            replace("input.shiftKeyDown", "input.keyPresses.shift()")
-            replace("input.up", "input.keyPresses.forward()")
-            replace("input.down", "input.keyPresses.backward()")
-            replace("input.right", "input.keyPresses.right()")
-            replace("input.left", "input.keyPresses.left()")
         }
         string(current.parsed >= "1.20") {
             replace("canEnterPose(", "wouldNotSuffocateAtTargetPose(")

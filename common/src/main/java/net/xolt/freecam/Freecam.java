@@ -176,11 +176,11 @@ public class Freecam {
         }
 
         if (playerControlEnabled) {
-            freeCamera.input = new KeyboardInput(MC.options);
+            freeCamera.setInput(new KeyboardInput(MC.options));
         } else {
             MC.player.input = new KeyboardInput(MC.options);
-            //~ if >=1.21.11 Input -> ClientInput
-            freeCamera.input = new ClientInput();
+            //~ if >=1.21.11 'new Input()' -> 'new ClientInput()'
+            freeCamera.setInput(new ClientInput());
         }
         playerControlEnabled = !playerControlEnabled;
     }
