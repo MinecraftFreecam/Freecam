@@ -115,7 +115,6 @@ dependencies {
         }
     } else {
         implementation(libs.mixinextras.common)
-        annotationProcessor(libs.mixinextras.common)
         include(libs.mixinextras.common) {
             relocate("com.llamalad7.mixinextras", "${meta.group}.shadowed.mixinextras")
         }
@@ -164,6 +163,11 @@ legacyForge {
         register("client") {
             client()
             ideName = "Forge Client (${project.path})"
+
+            if (!supportsJarJar) {
+                // FIXME: ModDevGradle does not make MixinExtras available to IDE runs, so explicitly add it:
+                additionalRuntimeClasspathConfiguration.dependencies.add(libs.mixinextras.common.get())
+            }
         }
 //        register("server") {
 //            server()
