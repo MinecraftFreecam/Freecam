@@ -4,6 +4,9 @@
   "plugin": "net.xolt.freecam.FreecamMixinConfig",
   "compatibilityLevel": "${mixinCompatLevel}",
   "minVersion": "0.8",
+  "mixinextras": {
+    "minVersion": "${mixinExtrasMinVersion}"
+  },
   "client": [
     "EntityRenderDispatcherMixin"
   ],
