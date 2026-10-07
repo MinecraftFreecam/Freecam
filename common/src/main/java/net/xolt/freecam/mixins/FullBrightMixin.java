@@ -1,54 +1,53 @@
 package net.xolt.freecam.mixins;
 
-//~ if >=26.0 LightTexture -> Lightmap
-import net.minecraft.client.renderer.Lightmap;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModConfig;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
-//? if >=1.21.11 {
+
+//~ if >=26.1 LightTexture -> Lightmap
+import net.minecraft.client.renderer.Lightmap;
+
+//? if <26.1 >=1.19 {
+/*import com.llamalad7.mixinextras.expression.Definition;
+import com.llamalad7.mixinextras.expression.Expression;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-//? } else {
-/*import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
-*///? }
-//? if >=26.1 {
-import net.minecraft.client.renderer.state.LightmapRenderState;
-//? } else if >=1.19 {
-/*import net.minecraft.world.level.dimension.DimensionType;
 *///? } else {
-/*import net.minecraft.world.level.Level;
-*///? }
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import static org.objectweb.asm.Opcodes.GETFIELD;
+//? }
 
-//~ if >=26.0 LightTexture -> Lightmap
+//~ if >=26.1 LightTexture -> Lightmap
 @Mixin(Lightmap.class)
 public class FullBrightMixin {
 
-    //? if >=26.1 {
-    @WrapOperation(method = "render", at = @At(value = "FIELD", target = "Lnet/minecraft/client/renderer/state/LightmapRenderState;brightness:F"))
-    private float getBrightness(LightmapRenderState instance, Operation<Float> original) {
-        if (Freecam.isEnabled() && ModConfig.get().isFullBrightEnabled()) {
-            return 16.0f;
-        }
-        return original.call(instance);
+    @Unique
+    private boolean freecam$useFullBright() {
+        return Freecam.isEnabled() && ModConfig.get().isFullBrightEnabled();
     }
-    //? } else if >=1.21.11 {
-    /*@WrapOperation(method = "updateLightTexture", at = @At(value="INVOKE", target="Lnet/minecraft/world/level/dimension/DimensionType;ambientLight()F"))
-    private float getBrightness(DimensionType instance, Operation<Float> original) {
-        if (Freecam.isEnabled() && ModConfig.get().isFullBrightEnabled()) {
-            return 1.0f;
-        }
-        return original.call(instance);
+
+    //? if >=26.1 {
+    @ModifyExpressionValue(method = "render", at = @At(value = "FIELD", opcode = GETFIELD, target = "Lnet/minecraft/client/renderer/state/LightmapRenderState;brightness:F"))
+    private float onGetBrightness(float original) {
+        return freecam$useFullBright() ? 16.0f : original;
+    }
+    //? } else if >=1.19 {
+    /*@Expression("this.minecraft.options.gamma().get()")
+    @Definition(id = "minecraft", field = "Lnet/minecraft/client/renderer/LightTexture;minecraft:Lnet/minecraft/client/Minecraft;")
+    @Definition(id = "options", field = "Lnet/minecraft/client/Minecraft;options:Lnet/minecraft/client/Options;")
+    @Definition(id = "gamma", method = "Lnet/minecraft/client/Options;gamma()Lnet/minecraft/client/OptionInstance;")
+    @Definition(id = "get", method = "Lnet/minecraft/client/OptionInstance;get()Ljava/lang/Object;")
+    @WrapOperation(method = "updateLightTexture", at = @At("MIXINEXTRAS:EXPRESSION"))
+    @SuppressWarnings("unchecked")
+    private <T> T onGetGamma(net.minecraft.client.OptionInstance<T> instance, Operation<T> original) {
+        return freecam$useFullBright() ? (T) (Double) 16.0 : original.call(instance);
     }
     *///? } else {
-    /*@Inject(method = "getBrightness", at = @At("HEAD"), cancellable = true)
-    //~ if >1.18.2 'private void' -> 'private static void'
-    //~ if >1.18.2 'Level level' -> 'DimensionType dimensionType'
-    private static void onGetBrightness(DimensionType dimensionType, int lightLevel, CallbackInfoReturnable<Float> cir) {
-        if (Freecam.isEnabled() && ModConfig.get().isFullBrightEnabled()) {
-            cir.setReturnValue(1.0f);
-        }
+    /*@ModifyExpressionValue(method = "updateLightTexture", at = @At(value = "FIELD", opcode = GETFIELD, target = "Lnet/minecraft/client/Options;gamma:D"))
+    private double onGetGamma(double original) {
+        return freecam$useFullBright() ? 16.0 : original;
     }
     *///? }
 }
