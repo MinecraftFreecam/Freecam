@@ -12,6 +12,8 @@
     "BlockStateBaseMixin",
     "CameraMixin",
     "ClientPacketListenerMixin",
+    //? if >=1.21.11
+    "EnablePlayerOutlineMixin",
     "EntityMixin",
     "EntityRenderDispatcherMixin",
     "FirstPersonHandRotationMixin",
@@ -26,10 +28,6 @@
     "KeyMappingMixin",
     //? if <1.21.6
     //"IrisShadowRendererMixin",
-    //? if >=26.2 {
-    "LevelExtractorMixin",
-    //? } else if >=1.21.11
-    //"LevelRendererMixin",
     "LivingEntityMixin",
     "LocalPlayerMixin",
     "MinecraftMixin",
