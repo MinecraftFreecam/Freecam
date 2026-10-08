@@ -14,6 +14,7 @@
     "ClientPacketListenerMixin",
     "EntityMixin",
     "EntityRenderDispatcherMixin",
+    "FirstPersonHandRotationMixin",
     "FirstPersonHandShadingMixin",
     "FullBrightMixin",
     "GameRendererMixin",
@@ -25,10 +26,6 @@
     "KeyMappingMixin",
     //? if <1.21.6
     //"IrisShadowRendererMixin",
-    //? if >=26.3 {
-    "FirstPersonHandsAndItemsMixin",
-    //? } else
-    //"ItemInHandRendererMixin",
     //? if >=26.2 {
     "LevelExtractorMixin",
     //? } else if >=1.21.11
