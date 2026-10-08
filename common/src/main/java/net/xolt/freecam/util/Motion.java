@@ -19,24 +19,24 @@ public class Motion {
         hSpeed = hSpeed * (freeCamera.isSprinting() ? 1.5 : 1.0);
 
         boolean straight = false;
-        if (freeCamera.input.keyPresses.forward()) {
+        if (freeCamera.isForwardKeyDown()) {
             velocityX += forward.x * hSpeed;
             velocityZ += forward.z * hSpeed;
             straight = true;
         }
-        if (freeCamera.input.keyPresses.backward()) {
+        if (freeCamera.isBackwardKeyDown()) {
             velocityX -= forward.x * hSpeed;
             velocityZ -= forward.z * hSpeed;
             straight = true;
         }
 
         boolean strafing = false;
-        if (freeCamera.input.keyPresses.right()) {
+        if (freeCamera.isRightKeyDown()) {
             velocityZ += side.z * hSpeed;
             velocityX += side.x * hSpeed;
             strafing = true;
         }
-        if (freeCamera.input.keyPresses.left()) {
+        if (freeCamera.isLeftKeyDown()) {
             velocityZ -= side.z * hSpeed;
             velocityX -= side.x * hSpeed;
             strafing = true;
@@ -47,10 +47,10 @@ public class Motion {
             velocityZ *= DIAGONAL_MULTIPLIER;
         }
 
-        if (freeCamera.input.keyPresses.jump()) {
+        if (freeCamera.isJumpKeyDown()) {
             velocityY += vSpeed;
         }
-        if (freeCamera.input.keyPresses.shift()) {
+        if (freeCamera.isSneakKeyDown()) {
             velocityY -= vSpeed;
         }
 

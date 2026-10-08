@@ -22,8 +22,8 @@ public class FirstPersonHandsAndItemsMixin {
             FreeCamera camera = Freecam.getFreeCamera();
             state.viewXRot = camera.getViewXRot(partialTicks);
             state.viewYRot = camera.getViewYRot(partialTicks);
-            state.xBob = Mth.lerp(partialTicks, camera.xBobO, camera.xBob);
-            state.yBob = Mth.lerp(partialTicks, camera.yBobO, camera.yBob);
+            state.xBob = Mth.lerp(partialTicks, camera.xBobO(), camera.xBob());
+            state.yBob = Mth.lerp(partialTicks, camera.yBobO(), camera.yBob());
         }
     }
 }

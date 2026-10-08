@@ -20,6 +20,8 @@
     //? if >=26.2
     "HudMixin",
     "IrisHandRendererMixin",
+    "KeyboardInputMixin",
+    "KeyMappingMixin",
     //? if <1.21.6
     //"IrisShadowRendererMixin",
     //? if >=26.3 {

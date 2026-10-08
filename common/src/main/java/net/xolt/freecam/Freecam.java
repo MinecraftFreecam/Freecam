@@ -4,7 +4,6 @@ import net.minecraft.client.CameraType;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
-import net.minecraft.client.player.KeyboardInput;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
@@ -41,6 +40,10 @@ public class Freecam {
     private static TripodSlot activeTripod = TripodSlot.NONE;
     private static FreeCamera freeCamera;
     private static CameraType rememberedF5 = null;
+    //~ if >=1.21.11 ' Input' -> ' ClientInput'
+    private static @Nullable ClientInput playerInput = null;
+    //~ if >=1.21.11 ' Input' -> ' ClientInput'
+    private static @Nullable ClientInput dummyPlayerInput = null;
 
     @ApiStatus.Internal
     public static void preTick(Minecraft mc) {
@@ -53,24 +56,8 @@ public class Freecam {
 
         if (isEnabled()) {
             // Prevent player from being controlled when freecam is enabled
-            if (mc.player != null && mc.player.input instanceof KeyboardInput && !isPlayerControlEnabled()) {
-                //? if >=1.21.11 {
-                ClientInput input = new ClientInput();
-                Input keyPresses = mc.player.input.keyPresses;
-                input.keyPresses = new Input(
-                        false,
-                        false,
-                        false,
-                        false,
-                        false,
-                        keyPresses.shift(),
-                        false
-                );
-                //? } else {
-                /*Input input = new Input();
-                input.keyPresses.shift() = mc.player.input.keyPresses.shift();
-                *///? }
-                mc.player.input = input;
+            if (mc.player != null) {
+                mc.player.input = playerControlEnabled ? playerInput : dummyPlayerInput;
             }
         }
     }
@@ -176,12 +163,13 @@ public class Freecam {
         }
 
         if (playerControlEnabled) {
-            freeCamera.input = new KeyboardInput(MC.options);
-        } else {
-            MC.player.input = new KeyboardInput(MC.options);
-            //~ if >=1.21.11 Input -> ClientInput
-            freeCamera.input = new ClientInput();
+            updateDummyInput();
         }
+
+        if (MC.player != null) {
+            MC.player.input = playerControlEnabled ? dummyPlayerInput : playerInput;
+        }
+
         playerControlEnabled = !playerControlEnabled;
     }
 
@@ -201,7 +189,7 @@ public class Freecam {
             position = null;
         }
 
-        freeCamera = new FreeCamera(-420 - tripod.ordinal());
+        freeCamera = new FreeCamera(-420 - tripod.ordinal(), () -> !isPlayerControlEnabled());
         if (position == null) {
             moveToPlayer();
         } else {
@@ -231,7 +219,7 @@ public class Freecam {
 
     private static void onEnableFreecam() {
         onEnable();
-        freeCamera = new FreeCamera(-420);
+        freeCamera = new FreeCamera(-420, () -> !isPlayerControlEnabled());
         moveToPlayer();
         freeCamera.spawn();
         MC.setCameraEntity(freeCamera);
@@ -256,6 +244,10 @@ public class Freecam {
         outlineEnabled = ModConfig.get().shouldOutlinePlayer();
 
         rememberedF5 = MC.options.getCameraType();
+
+        playerInput = MC.player.input;
+        MC.player.input = updateDummyInput();
+
         //~ if >=26.2 getMainCamera -> mainCamera
         if (MC.gameRenderer.mainCamera().isDetached()) {
             MC.options.setCameraType(CameraType.FIRST_PERSON);
@@ -267,13 +259,14 @@ public class Freecam {
         MC.setCameraEntity(MC.player);
         playerControlEnabled = false;
         freeCamera.despawn();
-        //~ if >=1.21.11 Input -> ClientInput
-        freeCamera.input = new ClientInput();
         freeCamera = null;
 
         if (MC.player != null) {
-            MC.player.input = new KeyboardInput(MC.options);
+            MC.player.input = playerInput;
         }
+
+        playerInput = null;
+        dummyPlayerInput = null;
     }
 
     private static void onDisabled() {
@@ -292,6 +285,26 @@ public class Freecam {
         if (ModConfig.get().shouldNotifyTripod()) {
             sendOverlayMessage(Component.translatable("freecam.msg.tripod.reset", tripod));
         }
+    }
+
+    //~ if >=1.21.11 ' Input' -> ' ClientInput'
+    private static ClientInput updateDummyInput() {
+        //? if >=1.21.11 {
+        ClientInput input = new ClientInput();
+        input.keyPresses = new Input(
+            false,
+            false,
+            false,
+            false,
+            false,
+            playerInput.keyPresses.shift(),
+            false
+        );
+        //? } else {
+        /*Input input = new Input();
+        input.shiftKeyDown = playerInput.shiftKeyDown;
+        *///? }
+        return dummyPlayerInput = input;
     }
 
     /** Send a message to be shown over the action bar. */
