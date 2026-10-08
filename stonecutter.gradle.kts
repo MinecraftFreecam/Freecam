@@ -70,9 +70,6 @@ stonecutter parameters {
         string(current.parsed >= "26.3-0") {
             replace("InputConstants.Type.KEYSYM", "InputConstants.Type.KEYBOARD")
         }
-        string(current.parsed >= "26.2") {
-            replace("renderHandsWithItems", "submitHandsWithItems")
-        }
         string(current.parsed >= "26.0") {
             replace("accessWidener v2 named", "accessWidener v2 official")
             replace("GuiGraphics", "GuiGraphicsExtractor")

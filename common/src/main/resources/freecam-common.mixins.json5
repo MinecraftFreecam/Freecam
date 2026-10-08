@@ -12,27 +12,21 @@
     "BlockStateBaseMixin",
     "CameraMixin",
     "ClientPacketListenerMixin",
+    //? if >=1.21.11
+    "EnablePlayerOutlineMixin",
     "EntityMixin",
     "EntityRenderDispatcherMixin",
+    "FirstPersonHandRotationMixin",
+    "FirstPersonHandShadingMixin",
     "FullBrightMixin",
     "GameRendererMixin",
-    "GuiMixin",
-    //? if >=26.2
-    "HudMixin",
+    "HudItemOverlayMixin",
+    "HudPlayerMixin",
     "IrisHandRendererMixin",
     "KeyboardInputMixin",
     "KeyMappingMixin",
     //? if <1.21.6
     //"IrisShadowRendererMixin",
-    //? if >=26.3 {
-    "FirstPersonHandsAndItemsMixin",
-    "FirstPersonHandsAndItemsRendererMixin",
-    //? } else
-    //"ItemInHandRendererMixin",
-    //? if >=26.2 {
-    "LevelExtractorMixin",
-    //? } else if >=1.21.11
-    //"LevelRendererMixin",
     "LivingEntityMixin",
     "LocalPlayerMixin",
     "MinecraftMixin",
