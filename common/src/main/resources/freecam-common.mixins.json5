@@ -20,9 +20,8 @@
     "FirstPersonHandShadingMixin",
     "FullBrightMixin",
     "GameRendererMixin",
-    "GuiMixin",
-    //? if >=26.2
-    "HudMixin",
+    "HudItemOverlayMixin",
+    "HudPlayerMixin",
     "IrisHandRendererMixin",
     "KeyboardInputMixin",
     "KeyMappingMixin",
