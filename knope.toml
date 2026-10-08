@@ -25,6 +25,12 @@ change_templates = [
     "### $summary\n\n$details",
     "- **$summary**",
 ]
+extra_changelog_sections = [
+  { types = ["major"], name = "Major changes" },
+  { types = ["minor"], name = "Minor changes" },
+  { types = ["patch"], name = "Patch changes" },
+  { types = ["note"], footers = ["Changelog-Note"], name = "Notes" }
+]
 
 
 [[workflows]]
