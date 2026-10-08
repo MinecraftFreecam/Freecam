@@ -1,11 +1,10 @@
 package net.xolt.freecam.mixins;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.minecraft.world.entity.player.Player;
 import net.xolt.freecam.Freecam;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 //? if >=26.2 {
 import net.minecraft.client.gui.Hud;
@@ -21,10 +20,8 @@ import static net.xolt.freecam.Freecam.MC;
 @Mixin(Hud.class)
 public class HudPlayerMixin {
 
-    @Inject(method = "getCameraPlayer", at = @At("HEAD"), cancellable = true)
-    private void onGetCameraPlayer(CallbackInfoReturnable<Player> cir) {
-        if (Freecam.isEnabled()) {
-            cir.setReturnValue(MC.player);
-        }
+    @ModifyReturnValue(method = "getCameraPlayer", at = @At("RETURN"))
+    private Player onGetCameraPlayer(Player original) {
+        return Freecam.isEnabled() ? MC.player : original;
     }
 }
