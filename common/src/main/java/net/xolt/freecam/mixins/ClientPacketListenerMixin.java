@@ -14,7 +14,7 @@ public class ClientPacketListenerMixin {
     @Inject(method = "handleRespawn", at = @At("TAIL"))
     private void onPlayerRespawn(CallbackInfo ci) {
         if (Freecam.isEnabled()) {
-            Freecam.toggle();
+            Freecam.disable();
         }
     }
 }

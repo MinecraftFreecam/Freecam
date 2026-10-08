@@ -429,11 +429,63 @@ public class ModConfigScreenFactory {
                 .setSaveConsumer(value -> config().servers.blacklist = value)
                 .build();
 
+        TextListEntry policyDescription = entryBuilder.startTextDescription(
+                        Component.translatable("freecam.config.serverPolicy.description"))
+                .build();
+
+        BooleanListEntry allowFreecam = entryBuilder.startBooleanToggle(
+                        Component.translatable("freecam.config.serverPolicy.allowFreecam.label"),
+                        config().serverPolicy.allowFreecam)
+                .setTooltip(Component.translatable("freecam.config.serverPolicy.allowFreecam.tooltip"))
+                .setDefaultValue(defaults().serverPolicy.allowFreecam)
+                .setSaveConsumer(value -> config().serverPolicy.allowFreecam = value)
+                .build();
+
+        BooleanListEntry allowIgnoringCollision = entryBuilder.startBooleanToggle(
+                        Component.translatable("freecam.config.serverPolicy.allowIgnoringCollision.label"),
+                        config().serverPolicy.collision.allowIgnoring)
+                .setTooltip(Component.translatable("freecam.config.serverPolicy.allowIgnoringCollision.tooltip"))
+                .setDefaultValue(defaults().serverPolicy.collision.allowIgnoring)
+                .setSaveConsumer(value -> config().serverPolicy.collision.allowIgnoring = value)
+                .build();
+
+        BooleanListEntry allowFullbright = entryBuilder.startBooleanToggle(
+                        Component.translatable("freecam.config.serverPolicy.allowFullbright.label"),
+                        config().serverPolicy.allowFullbright)
+                .setTooltip(Component.translatable("freecam.config.serverPolicy.allowFullbright.tooltip"))
+                .setDefaultValue(defaults().serverPolicy.allowFullbright)
+                .setSaveConsumer(value -> config().serverPolicy.allowFullbright = value)
+                .build();
+
+        BooleanListEntry allowCameraInteractions = entryBuilder.startBooleanToggle(
+                        Component.translatable("freecam.config.serverPolicy.allowCameraInteractions.label"),
+                        config().serverPolicy.allowCameraInteractions)
+                .setTooltip(Component.translatable("freecam.config.serverPolicy.allowCameraInteractions.tooltip"))
+                .setDefaultValue(defaults().serverPolicy.allowCameraInteractions)
+                .setSaveConsumer(value -> config().serverPolicy.allowCameraInteractions = value)
+                .build();
+
+        BooleanListEntry applyToHost = entryBuilder.startBooleanToggle(
+                        Component.translatable("freecam.config.serverPolicy.applyToHost.label"),
+                        config().serverPolicy.applyToHost)
+                .setTooltip(
+                        Component.translatable("freecam.config.serverPolicy.applyToHost.tooltip[0]"),
+                        Component.translatable("freecam.config.serverPolicy.applyToHost.tooltip[1]"))
+                .setDefaultValue(defaults().serverPolicy.applyToHost)
+                .setSaveConsumer(value -> config().serverPolicy.applyToHost = value)
+                .build();
+
         // Add entries to the sub-category
         Stream.of(
                 mode,
                 whitelist,
-                blacklist
+                blacklist,
+                policyDescription,
+                allowFreecam,
+                allowIgnoringCollision,
+                allowFullbright,
+                allowCameraInteractions,
+                applyToHost
         ).forEach(builder::add);
 
         return builder.build();

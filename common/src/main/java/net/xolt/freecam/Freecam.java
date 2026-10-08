@@ -5,11 +5,15 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.config.model.ServerRestrictedFeature;
 import net.xolt.freecam.config.keys.Tickable;
+import net.xolt.freecam.network.HostedServerPolicy;
+import net.xolt.freecam.network.ServerPolicies;
 import net.xolt.freecam.tripod.TripodRegistry;
 import net.xolt.freecam.tripod.TripodSlot;
 import net.xolt.freecam.util.FreeCamera;
@@ -17,6 +21,7 @@ import net.xolt.freecam.util.FreecamPosition;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
 
 //? if >=1.21.11 {
@@ -47,10 +52,12 @@ public class Freecam {
 
     @ApiStatus.Internal
     public static void preTick(Minecraft mc) {
+        ServerPolicies.get().setHostPolicy(mc.hasSingleplayerServer() ? HostedServerPolicy.get().forHost() : null);
+
         // Disable if the previous tick asked us to,
         // or Freecam is restricted on the current server
         if ((disableNextTick || isRestrictedOnServer()) && isEnabled()) {
-            toggle();
+            disable();
         }
         disableNextTick = false;
 
@@ -70,8 +77,9 @@ public class Freecam {
     @ApiStatus.Internal
     public static void onDisconnect() {
         if (isEnabled()) {
-            toggle();
+            disable();
         }
+        ServerPolicies.get().reset();
         tripods.clear();
     }
 
@@ -103,7 +111,7 @@ public class Freecam {
     public static void toggle() {
         if (isRestrictedOnServer()) {
             if (ModConfig.get().shouldNotifyFreecam()) {
-                sendOverlayMessage(Component.translatable("freecam.msg.restricted.server", MC.getCurrentServer().ip));
+                sendOverlayMessage(Component.translatable("freecam.msg.restricted.server", (MC.getCurrentServer() == null ? "LAN" : MC.getCurrentServer().ip)));
             }
             return;
         }
@@ -131,7 +139,7 @@ public class Freecam {
 
         if (isRestrictedOnServer()) {
             if (ModConfig.get().shouldNotifyTripod()) {
-                sendOverlayMessage(Component.translatable("freecam.msg.restricted.server", MC.getCurrentServer().ip));
+                sendOverlayMessage(Component.translatable("freecam.msg.restricted.server", (MC.getCurrentServer() == null ? "LAN" : MC.getCurrentServer().ip)));
             }
             return;
         }
@@ -201,7 +209,10 @@ public class Freecam {
         activeTripod = tripod;
 
         if (ModConfig.get().shouldNotifyTripod()) {
-            sendOverlayMessage(Component.translatable("freecam.msg.tripod.open", tripod));
+            Component restricted = serverRestrictedFeatures();
+            sendOverlayMessage(restricted == null
+                    ? Component.translatable("freecam.msg.tripod.open", tripod)
+                    : Component.translatable("freecam.msg.restricted.tripodOpen", tripod, restricted));
         }
     }
 
@@ -225,7 +236,10 @@ public class Freecam {
         MC.setCameraEntity(freeCamera);
 
         if (ModConfig.get().shouldNotifyFreecam()) {
-            sendOverlayMessage(Component.translatable("freecam.msg.enabled"));
+            Component restricted = serverRestrictedFeatures();
+            sendOverlayMessage(restricted == null
+                    ? Component.translatable("freecam.msg.enabled")
+                    : Component.translatable("freecam.msg.restricted.enabled", restricted));
         }
     }
 
@@ -237,6 +251,22 @@ public class Freecam {
                 sendOverlayMessage(Component.translatable("freecam.msg.disabled"));
             }
         }
+    }
+
+    // Lists the enabled features the server blocks, so users know why they have no effect.
+    private static @Nullable Component serverRestrictedFeatures() {
+        List<ServerRestrictedFeature> features = ModConfig.get().getServerRestrictedFeatures();
+        if (features.isEmpty()) {
+            return null;
+        }
+        MutableComponent names = Component.literal("");
+        for (int i = 0; i < features.size(); i++) {
+            if (i > 0) {
+                names.append(", ");
+            }
+            names.append(features.get(i).getName());
+        }
+        return names;
     }
 
     private static void onEnable() {
@@ -273,6 +303,21 @@ public class Freecam {
         if (rememberedF5 != null) {
             MC.options.setCameraType(rememberedF5);
         }
+    }
+
+    @ApiStatus.Internal
+    public static void disable() {
+        if (!isEnabled()) {
+            return;
+        }
+        if (tripodEnabled) {
+            onDisableTripod();
+        } else if (freecamEnabled) {
+            onDisableFreecam();
+        }
+        freecamEnabled = false;
+        tripodEnabled = false;
+        onDisabled();
     }
 
     private static void resetCamera(TripodSlot tripod) {
@@ -388,7 +433,7 @@ public class Freecam {
     @ApiStatus.AvailableSince("1.2.4")
     public static boolean isRestrictedOnServer() {
         ServerData server = MC.getCurrentServer();
-        return server != null && !MC.hasSingleplayerServer()
-                && ModConfig.get().isRestrictedOnServer(server.ip);
+        return !ServerPolicies.get().allowFreecam() || (server != null && !MC.hasSingleplayerServer()
+                && ModConfig.get().isRestrictedOnServer(server.ip));
     }
 }

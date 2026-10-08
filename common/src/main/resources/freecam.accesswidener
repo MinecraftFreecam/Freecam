@@ -7,3 +7,7 @@ accessible method net/minecraft/client/multiplayer/ClientPacketListener setClien
 
 #? if <1.20
 #accessible field net/minecraft/client/KeyMapping key Lcom/mojang/blaze3d/platform/InputConstants$Key;
+
+# Required by the legacy Forge channel capability check.
+#? if <1.20.5
+#accessible field net/minecraft/server/network/ServerGamePacketListenerImpl connection Lnet/minecraft/network/Connection;
