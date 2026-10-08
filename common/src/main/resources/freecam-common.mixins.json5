@@ -14,6 +14,7 @@
     "ClientPacketListenerMixin",
     "EntityMixin",
     "EntityRenderDispatcherMixin",
+    "FirstPersonHandShadingMixin",
     "FullBrightMixin",
     "GameRendererMixin",
     "GuiMixin",
@@ -26,7 +27,6 @@
     //"IrisShadowRendererMixin",
     //? if >=26.3 {
     "FirstPersonHandsAndItemsMixin",
-    "FirstPersonHandsAndItemsRendererMixin",
     //? } else
     //"ItemInHandRendererMixin",
     //? if >=26.2 {
