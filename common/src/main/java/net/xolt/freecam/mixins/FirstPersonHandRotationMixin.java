@@ -1,22 +1,48 @@
-//? if <26.3 {
-/*package net.xolt.freecam.mixins;
+package net.xolt.freecam.mixins;
 
-import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import net.minecraft.client.player.LocalPlayer;
-import net.minecraft.client.renderer.ItemInHandRenderer;
 import net.xolt.freecam.Freecam;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 
+//? if >=26.3 {
+import net.minecraft.client.player.FirstPersonHandsAndItems;
+import net.minecraft.client.renderer.state.level.FirstPersonHandsAndItemsRenderState;
+import net.minecraft.util.Mth;
+import net.xolt.freecam.util.FreeCamera;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+//? } else {
+/*import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
+import net.minecraft.client.renderer.ItemInHandRenderer;
 import static org.objectweb.asm.Opcodes.GETFIELD;
+*///? }
 
-/// Moved to [FirstPersonHandsAndItemsMixin] in 26.3
-@Mixin(ItemInHandRenderer.class)
-public class ItemInHandRendererMixin {
+/// Make first-person hand & held item view bobbing & rotation use the camera,
+/// instead of the player.
 
-    @WrapOperation(method = "submitHandsWithItems", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/player/LocalPlayer;getViewXRot(F)F"))
+//~ if >=26.3 ItemInHandRenderer -> FirstPersonHandsAndItems
+@Mixin(FirstPersonHandsAndItems.class)
+public class FirstPersonHandRotationMixin {
+
+    //? if >=26.3 {
+
+    @Inject(method = "extractRenderState", at = @At("TAIL"))
+    private void onExtractRenderState(LocalPlayer player, float partialTicks, FirstPersonHandsAndItemsRenderState state, CallbackInfo ci) {
+        if (Freecam.isEnabled()) {
+            FreeCamera camera = Freecam.getFreeCamera();
+            state.viewXRot = camera.getViewXRot(partialTicks);
+            state.viewYRot = camera.getViewYRot(partialTicks);
+            state.xBob = Mth.lerp(partialTicks, camera.xBobO(), camera.xBob());
+            state.yBob = Mth.lerp(partialTicks, camera.yBobO(), camera.yBob());
+        }
+    }
+
+    //? } else {
+    /*//~ if >=26.2 renderHandsWithItems -> submitHandsWithItems {
+
     private float onSubmitHandsWithItems_player_getViewXRot(LocalPlayer player, float partialTick, Operation<Float> original) {
         return Freecam.isEnabled() ? Freecam.getFreeCamera().getViewXRot(partialTick) : original.call(player, partialTick);
     }
@@ -49,5 +75,7 @@ public class ItemInHandRendererMixin {
     private float onSubmitHandsWithItems_player_yBobO(float original) {
         return Freecam.isEnabled() ? Freecam.getFreeCamera().yBobO() : original;
     }
+
+    //~ }
+    *///? }
 }
-*///? }
