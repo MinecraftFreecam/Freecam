@@ -1,11 +1,11 @@
 package net.xolt.freecam.mixins;
 
+import com.llamalad7.mixinextras.injector.ModifyExpressionValue;
 import net.minecraft.world.entity.Entity;
 import net.xolt.freecam.Freecam;
 import net.xolt.freecam.config.ModConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.ModifyVariable;
 
 import static net.xolt.freecam.Freecam.MC;
 
@@ -18,10 +18,10 @@ import net.minecraft.client.Minecraft;
 //~ if >=26.1 GameRenderer -> Minecraft
 @Mixin(Minecraft.class)
 public class HitTargetSourceMixin {
-    @ModifyVariable(method = "pick(F)V", at = @At(value = "INVOKE_ASSIGN", target = "Lnet/minecraft/client/Minecraft;getCameraEntity()Lnet/minecraft/world/entity/Entity;"))
-    private Entity onGetHitTargetSource(Entity entity) {
+    @ModifyExpressionValue(method = "pick(F)V", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;getCameraEntity()Lnet/minecraft/world/entity/Entity;"))
+    private Entity onGetHitTargetSource(Entity original) {
         return Freecam.isEnabled() && (Freecam.isPlayerControlEnabled() || ModConfig.get().allowInteractionsFromPlayer())
             ? MC.player
-            : entity;
+            : original;
     }
 }
