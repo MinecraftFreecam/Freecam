@@ -20,6 +20,7 @@
     "FirstPersonHandShadingMixin",
     "FullBrightMixin",
     "GameRendererMixin",
+    "HitTargetSourceMixin",
     "HudItemOverlayMixin",
     "HudPlayerMixin",
     "IrisHandRendererMixin",
