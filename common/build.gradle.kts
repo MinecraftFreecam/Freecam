@@ -48,6 +48,7 @@ val i18nResources = configurations.register("i18nResources") {
 dependencies {
     minecraft("com.mojang:minecraft:${meta.mc}")
     loomAdapter.applyMojangMappings()
+    // Needed for @Environment annotations and EnvType enum, which are added to Minecraft by loom.
     modCompileOnly(libs.fabric.loader) {
         exclude(module = "sponge-mixin")
         exclude(module = "mixinextras-fabric")

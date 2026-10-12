@@ -7,7 +7,11 @@ plugins {
 dependencies {
     minecraft("com.mojang:minecraft:${meta.mc}")
     loomAdapter.applyMojangMappings()
-    modCompileOnly(libs.fabric.loader)
+    // Needed for @Environment annotations and EnvType enum, which are added to Minecraft by loom.
+    modCompileOnly(libs.fabric.loader) {
+        exclude(module = "sponge-mixin")
+        exclude(module = "mixinextras-fabric")
+    }
 
     // Loader project should provide their own :common, :config and cloth-config dependencies
     compileOnly(project(path = commonNode.project.path, configuration = "namedElements"))
