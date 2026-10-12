@@ -28,7 +28,6 @@ asm-commons = { group = "org.ow2.asm", name = "asm-commons", version.ref = "asm"
 sponge-mixin = { group = "org.spongepowered", name = "mixin", version.ref = "mixin" }
 mixinextras-common = { group = "io.github.llamalad7", name = "mixinextras-common", version.ref = "mixinextras" }
 mixinextras-fabric = { group = "io.github.llamalad7", name = "mixinextras-fabric", version.ref = "mixinextras" }
-mixinextras-forge = { group = "io.github.llamalad7", name = "mixinextras-forge", version.ref = "mixinextras" }
 mixinextras-neoforge = { group = "io.github.llamalad7", name = "mixinextras-neoforge", version.ref = "mixinextras" }
 batik-codec = { group = "org.apache.xmlgraphics", name = "batik-codec", version.ref = "batik" }
 batik-transcoder = { group = "org.apache.xmlgraphics", name = "batik-transcoder", version.ref = "batik" }
