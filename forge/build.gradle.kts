@@ -24,11 +24,7 @@ val forgeVersion = requireNotNull(meta.deps["forge_version"]) {
 val supportsJarJar = sc.eval(forgeVersion, ">= 40.1.60")
 
 val refmapName = "mixins.freecam.refmap.json"
-val mixinConfigNames = buildList {
-    add("freecam-common.mixins.json")
-    add("freecam-forge.mixins.json")
-    if (!supportsJarJar) add("init-mixinextras.mixins.json")
-}
+val mixinConfigNames = listOf("freecam-common.mixins.json", "freecam-forge.mixins.json")
 
 stonecutter replacements {
     string(sc.eval(forgeVersion, ">= 41")) {
@@ -98,26 +94,11 @@ dependencies {
         artifact { classifier = "processor" }
     }
 
-    compileOnly(libs.mixinextras.common)
     annotationProcessor(libs.mixinextras.common)
-
+    implementation(libs.mixinextras.common)
     // Bundle the MixinExtras we build against
-    // Jar-in-jar was added in Forge 40.1.60, before then we must shadow the common artefact and bootstrap it ourselves.
-    if (supportsJarJar) {
-        implementation(libs.mixinextras.forge)
-        jarJar(libs.mixinextras.forge) {
-            version?.let {
-                version {
-                    prefer(it)
-                    strictly("[$it,)")
-                }
-            }
-        }
-    } else {
-        implementation(libs.mixinextras.common)
-        include(libs.mixinextras.common) {
-            relocate("com.llamalad7.mixinextras", "${meta.group}.shadowed.mixinextras")
-        }
+    include(libs.mixinextras.common) {
+        relocate("com.llamalad7.mixinextras", "${meta.group}.shadowed.mixinextras")
     }
 
     // Forge's ModListScreen renders the Mod logo at 50px high
@@ -262,12 +243,7 @@ tasks.processResources {
         "mixinextras_version" to mixinextras,
         "mixinConfigs" to mixinConfigNames,
         "mixinRefmap" to refmapName,
-        "supportsJarJar" to supportsJarJar,
     )
-
-    filesMatching("init-mixinextras.mixins.json") {
-        if (supportsJarJar) exclude()
-    }
 
     doLast {
         // Add the refmap to mixin config files

@@ -1,5 +1,0 @@
-{
-  "minVersion": "0.8",
-  "plugin": "net.xolt.freecam.forge.InitMixinExtrasConfigPlugin",
-  "package": "net.xolt.freecam.forge.mixins.empty"
-}
