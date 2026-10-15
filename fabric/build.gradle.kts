@@ -116,7 +116,7 @@ loom {
         getByName("server") {
             server()
             displayName = "Fabric Server"
-            runDir("build/run-server")
+            runDirectory = layout.buildDirectory.dir("run-server")
             generateRunConfig = true
         }
     }
