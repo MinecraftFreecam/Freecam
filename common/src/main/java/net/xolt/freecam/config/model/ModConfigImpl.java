@@ -10,12 +10,10 @@ import java.util.List;
 public class ModConfigImpl implements ModConfig {
 
     private final ModConfigDTO data;
-    private final ServerPolicies serverPolicies;
     private final CollisionPredicate collisionPredicate;
 
-    public ModConfigImpl(ModConfigDTO data, ServerPolicies serverPolicies) {
+    public ModConfigImpl(ModConfigDTO data) {
         this.data = data;
-        this.serverPolicies = serverPolicies;
         collisionPredicate = CollisionPredicate.create(data.collision);
     }
 
@@ -40,17 +38,17 @@ public class ModConfigImpl implements ModConfig {
 
     @Override
     public boolean ignoreAllCollision() {
-        return serverPolicies.allowIgnoringCollision() && data.collision.ignoreAll;
+        return ServerPolicies.get().allowIgnoringCollision() && data.collision.ignoreAll;
     }
 
     @Override
     public boolean shouldCheckInitialCollision() {
-        return !serverPolicies.allowIgnoringCollision() || data.collision.alwaysCheck || !data.collision.ignoreAll;
+        return !ServerPolicies.get().allowIgnoringCollision() || data.collision.alwaysCheck || !data.collision.ignoreAll;
     }
 
     @Override
     public boolean ignoreCollisionWith(Block block) {
-        return serverPolicies.allowIgnoringCollision() && (data.collision.ignoreAll || collisionPredicate.shouldIgnore(block));
+        return ServerPolicies.get().allowIgnoringCollision() && (data.collision.ignoreAll || collisionPredicate.shouldIgnore(block));
     }
 
     @Override
@@ -70,7 +68,7 @@ public class ModConfigImpl implements ModConfig {
 
     @Override
     public boolean isFullBrightEnabled() {
-        return serverPolicies.allowFullbright() && data.visual.fullBright;
+        return ServerPolicies.get().allowFullbright() && data.visual.fullBright;
     }
 
     @Override
@@ -92,7 +90,7 @@ public class ModConfigImpl implements ModConfig {
     public boolean shouldPreventInteractions() {
         // Servers may only restrict interactions from the camera's perspective.
         boolean restrictedByServer = data.utility.interactionMode == ModConfigDTO.InteractionMode.CAMERA
-                && !serverPolicies.allowCameraInteractions();
+                && !ServerPolicies.get().allowCameraInteractions();
         return !data.utility.allowInteract || restrictedByServer;
     }
 
@@ -105,14 +103,14 @@ public class ModConfigImpl implements ModConfig {
         List<ServerRestrictedFeature> restricted = new ArrayList<>();
         boolean ignoresCollision = data.collision.ignoreAll || data.collision.ignoreTransparent
                 || data.collision.ignoreOpenable || data.collision.ignoreCustom;
-        if (ignoresCollision && !serverPolicies.allowIgnoringCollision()) {
+        if (ignoresCollision && !ServerPolicies.get().allowIgnoringCollision()) {
             restricted.add(ServerRestrictedFeature.IGNORING_COLLISION);
         }
-        if (data.visual.fullBright && !serverPolicies.allowFullbright()) {
+        if (data.visual.fullBright && !ServerPolicies.get().allowFullbright()) {
             restricted.add(ServerRestrictedFeature.FULL_BRIGHTNESS);
         }
         if (data.utility.allowInteract && data.utility.interactionMode == ModConfigDTO.InteractionMode.CAMERA
-                && !serverPolicies.allowCameraInteractions()) {
+                && !ServerPolicies.get().allowCameraInteractions()) {
             restricted.add(ServerRestrictedFeature.CAMERA_INTERACTIONS);
         }
         return restricted;
