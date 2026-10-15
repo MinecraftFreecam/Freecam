@@ -194,6 +194,6 @@ tasks.shadowJar {
 }
 
 // Allow commands such as `stop` in the dedicated development server console.
-tasks.withType<JavaExec>().matching { it.name == "runServer" }.configureEach {
+tasks.named<JavaExec>("runServer") {
     standardInput = System.`in`
 }
