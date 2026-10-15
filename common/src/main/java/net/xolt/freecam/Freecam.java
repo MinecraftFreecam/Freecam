@@ -260,7 +260,7 @@ public class Freecam {
         if (features.isEmpty()) {
             return null;
         }
-        MutableComponent names = Component.literal("");
+        MutableComponent names = Component.empty();
         for (int i = 0; i < features.size(); i++) {
             if (i > 0) {
                 names.append(", ");
