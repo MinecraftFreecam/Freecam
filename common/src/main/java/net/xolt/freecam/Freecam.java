@@ -5,11 +5,15 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ServerData;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.world.entity.Entity;
 import net.minecraft.world.level.ChunkPos;
 import net.xolt.freecam.config.ModBindings;
 import net.xolt.freecam.config.ModConfig;
+import net.xolt.freecam.config.model.ServerRestrictedFeature;
 import net.xolt.freecam.config.keys.Tickable;
+import net.xolt.freecam.network.HostedServerPolicy;
+import net.xolt.freecam.network.ServerPolicies;
 import net.xolt.freecam.tripod.TripodRegistry;
 import net.xolt.freecam.tripod.TripodSlot;
 import net.xolt.freecam.util.FreeCamera;
@@ -17,6 +21,7 @@ import net.xolt.freecam.util.FreecamPosition;
 import org.jetbrains.annotations.ApiStatus;
 import org.jetbrains.annotations.Nullable;
 
+import java.util.List;
 import java.util.Optional;
 
 //? if >=1.21.11 {
@@ -47,10 +52,12 @@ public class Freecam {
 
     @ApiStatus.Internal
     public static void preTick(Minecraft mc) {
+        ServerPolicies.get().setHostPolicy(mc.hasSingleplayerServer() ? HostedServerPolicy.get().forHost() : null);
+
         // Disable if the previous tick asked us to,
         // or Freecam is restricted on the current server
-        if ((disableNextTick || isRestrictedOnServer()) && isEnabled()) {
-            toggle();
+        if ((disableNextTick || isRestricted()) && isEnabled()) {
+            disable();
         }
         disableNextTick = false;
 
@@ -70,8 +77,9 @@ public class Freecam {
     @ApiStatus.Internal
     public static void onDisconnect() {
         if (isEnabled()) {
-            toggle();
+            disable();
         }
+        ServerPolicies.get().reset();
         tripods.clear();
     }
 
@@ -101,12 +109,7 @@ public class Freecam {
 
     @ApiStatus.AvailableSince("0.3.1")
     public static void toggle() {
-        if (isRestrictedOnServer()) {
-            if (ModConfig.get().shouldNotifyFreecam()) {
-                sendOverlayMessage(Component.translatable("freecam.msg.restricted.server", MC.getCurrentServer().ip));
-            }
-            return;
-        }
+        if (checkAndNotifyRestrictions(ModConfig.get().shouldNotifyFreecam())) return;
 
         if (tripodEnabled) {
             toggleTripod(activeTripod);
@@ -125,14 +128,7 @@ public class Freecam {
     }
 
     private static void toggleTripod(TripodSlot tripod) {
-        if (tripod == TripodSlot.NONE) {
-            return;
-        }
-
-        if (isRestrictedOnServer()) {
-            if (ModConfig.get().shouldNotifyTripod()) {
-                sendOverlayMessage(Component.translatable("freecam.msg.restricted.server", MC.getCurrentServer().ip));
-            }
+        if (tripod == TripodSlot.NONE || checkAndNotifyRestrictions(ModConfig.get().shouldNotifyTripod())) {
             return;
         }
 
@@ -201,7 +197,7 @@ public class Freecam {
         activeTripod = tripod;
 
         if (ModConfig.get().shouldNotifyTripod()) {
-            sendOverlayMessage(Component.translatable("freecam.msg.tripod.open", tripod));
+            sendOverlayMessage(appendServerRestrictions(Component.translatable("freecam.msg.tripod.open", tripod)));
         }
     }
 
@@ -225,7 +221,7 @@ public class Freecam {
         MC.setCameraEntity(freeCamera);
 
         if (ModConfig.get().shouldNotifyFreecam()) {
-            sendOverlayMessage(Component.translatable("freecam.msg.enabled"));
+            sendOverlayMessage(appendServerRestrictions(Component.translatable("freecam.msg.enabled")));
         }
     }
 
@@ -237,6 +233,63 @@ public class Freecam {
                 sendOverlayMessage(Component.translatable("freecam.msg.disabled"));
             }
         }
+    }
+
+    /// Notify the user if Freecam is not allowed on this server
+    /// @return whether to prevent enabling Freecam
+    private static boolean checkAndNotifyRestrictions(boolean notify) {
+        if (isRestrictedOnServer()) {
+            if (notify) {
+                sendOverlayMessage(Component.translatable("freecam.msg.restricted.server", MC.getCurrentServer().ip));
+            }
+            return true;
+        }
+
+        if (ServerPolicies.get().allowFreecam()) return false;
+
+        if (notify) {
+            sendOverlayMessage(Component.translatable("freecam.msg.restricted.onEnable", serverPolicyOwner()));
+        }
+        return true;
+    }
+
+    // Lists the enabled features the server blocks, so users know why they have no effect.
+    private static @Nullable Component serverRestrictedFeatures() {
+        // TODO: consider filtering features for those that _actually_ restrict the current ModConfig
+        List<ServerRestrictedFeature> features = ModConfig.get().getServerRestrictedFeatures();
+        if (features.isEmpty()) {
+            return null;
+        }
+        MutableComponent names = Component.empty();
+        for (int i = 0; i < features.size(); i++) {
+            if (i > 0) {
+                names.append(", ");
+            }
+            names.append(features.get(i).getName());
+        }
+        return names;
+    }
+
+    /// Append [#serverRestrictedFeatures()] to a copy of the `component`.
+    /// Returns the original `component` if no features are currently restricted.
+    private static Component appendServerRestrictions(Component component) {
+        Component features = serverRestrictedFeatures();
+        if (features == null) return component;
+        // TODO: Improve restricted features notification
+        //  - consider posting restrictions in chat, for future reference
+        //  - or posting the notification separately, after a delay
+        //  - or notifying only when a specific restricted feature is used
+        return component.copy().append(" ").append(Component.translatable(
+            "freecam.msg.restricted.features",
+            serverPolicyOwner(),
+            features
+        ));
+    }
+
+    private static Component serverPolicyOwner() {
+        return Optional.ofNullable(MC.getCurrentServer())
+            .<Component>map(server -> Component.literal(server.ip))
+            .orElseGet(() -> Component.translatable("freecam.msg.restricted.localPolicy"));
     }
 
     private static void onEnable() {
@@ -273,6 +326,21 @@ public class Freecam {
         if (rememberedF5 != null) {
             MC.options.setCameraType(rememberedF5);
         }
+    }
+
+    @ApiStatus.Internal
+    public static void disable() {
+        if (!isEnabled()) {
+            return;
+        }
+        if (tripodEnabled) {
+            onDisableTripod();
+        } else if (freecamEnabled) {
+            onDisableFreecam();
+        }
+        freecamEnabled = false;
+        tripodEnabled = false;
+        onDisabled();
     }
 
     private static void resetCamera(TripodSlot tripod) {
@@ -384,11 +452,18 @@ public class Freecam {
         return playerControlEnabled;
     }
 
+    /// Whether [ModConfig] has configured the current server as not allowed.
     @ApiStatus.Experimental
     @ApiStatus.AvailableSince("1.2.4")
     public static boolean isRestrictedOnServer() {
         ServerData server = MC.getCurrentServer();
-        return server != null && !MC.hasSingleplayerServer()
-                && ModConfig.get().isRestrictedOnServer(server.ip);
+        return server != null && !MC.hasSingleplayerServer() && ModConfig.get().isRestrictedOnServer(server.ip);
+    }
+
+    /// Whether the current [ServerPolicies] or [ModConfig] should prevent using Freecam.
+    @ApiStatus.Experimental
+    @ApiStatus.AvailableSince("1.6.0")
+    public static boolean isRestricted() {
+        return !ServerPolicies.get().allowFreecam() || isRestrictedOnServer();
     }
 }

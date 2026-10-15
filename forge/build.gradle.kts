@@ -150,10 +150,11 @@ legacyForge {
                 additionalRuntimeClasspathConfiguration.dependencies.add(libs.mixinextras.common.get())
             }
         }
-//        register("server") {
-//            server()
-//            ideName = "Forge Server (${project.path})"
-//        }
+        register("server") {
+            server()
+            ideName = "Forge Server (${project.path})"
+            gameDirectory = layout.buildDirectory.dir("run-server")
+        }
     }
 
     mods {
@@ -206,12 +207,12 @@ val generateModsTomlTask = tasks.register<ForgeModsTomlTask>("generateModsToml")
         dependency(meta.id, "minecraft") {
             versionRange = meta.reqs["mc"]?.toMavenFormat()
             ordering = "NONE"
-            side = "CLIENT"
+            side = "BOTH"
         }
         dependency(meta.id, "forge") {
             versionRange = meta.reqs["forge_version"]?.toMavenFormat()
             ordering = "NONE"
-            side = "CLIENT"
+            side = "BOTH"
         }
         dependency(meta.id, "cloth_config") {
             versionRange = meta.reqs["cloth"]?.toMavenFormat()
@@ -299,4 +300,9 @@ tasks.shadowJar {
 
 obfuscation {
     reobfuscate(tasks.shadowJar, sourceSets.main.get())
+}
+
+// Allow commands such as `stop` in the dedicated development server console.
+tasks.named<JavaExec>("runServer") {
+    standardInput = System.`in`
 }

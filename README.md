@@ -10,9 +10,7 @@ It is your responsibility to check **all** relevant rules **before** using this 
 
 <!-- website:stop -->
 
-While Freecam should only affect the client, it **may be possible** for servers to detect the mod being installed through various exploits in Minecraft,
-modding platforms, or this mod.  
-Here's a [real example](https://github.com/MinecraftFreecam/Freecam/issues/196) that exploited translation keys. 
+Freecam advertises networking channels so servers can send temporary restrictions. Servers may also detect the mod through other Minecraft or mod-loader behavior.
 
 To paraphrase our license, we are not responsible for any damages or liability related to Freecam.
 Among other things, this means it's not our fault if you get banned from a server.
@@ -83,6 +81,32 @@ See the [contributing guide](https://github.com/MinecraftFreecam/Freecam/blob/ma
 | Tripod Notifications  | Notifies you when entering/exiting tripod cameras.<br/> | `true`        |
 
 <!-- website:stop -->
+
+## Server policies
+
+Servers can temporarily restrict Freecam, ignoring collision, full brightness, and interactions from the camera. Received rules reset on disconnect and never overwrite your saved preferences. Freecam also supports servers using [AntiFreecam](https://github.com/Kesuaheli/AntiFreecam).
+
+For singleplayer, configuring the policy options under **Multiplayer Options** in the settings menu will affect players connected via open-to-LAN. Policies apply to compatible connected clients; saving policy changes updates them.
+By default, you are not affected by your own policies: enable **Apply Policies to Me** to also restrict yourself in singleplayer worlds.
+
+For a dedicated Fabric, Forge, or NeoForge server, install Freecam on the server and configure the `serverPolicy` section of `config/freecam.json`. You can copy the same file from a client. Restart the dedicated server after editing it. All permissions default to `true`:
+
+```json
+{
+  "serverPolicy": {
+    "allowFreecam": true,
+    "collision": {
+      "allowIgnoring": false
+    },
+    "allowFullbright": false,
+    "allowCameraInteractions": true
+  }
+}
+```
+
+Clients without Freecam can still join and clients with a different implementation of freecam are unaffected.
+
+Instead of installing Freecam on your server, a custom server plugin can send a compatible UTF-8 JSON payload on the `freecam:server_config` channel. The payload schema is the same JSON that's saved in a `config/freecam.json` config, without the outer `serverPolicy` wrapper. Each valid message replaces the previous policy; omitted fields allow the feature.
 
 ## Requirements
 
