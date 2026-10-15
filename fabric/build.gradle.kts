@@ -173,7 +173,9 @@ tasks {
             }
 
             depends("minecraft", meta.reqs["mc"]?.toString() ?: error("${project.path} missing reqs.mc"))
-            depends("fabricloader", meta.reqs["fabric_loader"]?.toString() ?: error("${project.path} missing reqs.fabric_loader"))
+            // Match MixinExtras' fabric-loader requirement, because fabric-loader provides mixin itself
+            // https://github.com/LlamaLad7/MixinExtras/blob/0.5.5/platform/fabric/src/main/resources/fabric.mod.json#L23
+            depends("fabricloader", ">=0.14.25")
             fabricApiModules.forEach { depends(it, "*") }
             recommends("modmenu", "*")
             // AntiFreecam registers the same payload type; its behaviour is built into Freecam
@@ -199,15 +201,23 @@ tasks {
     }
 
     processResources {
+        val mixinextras = libs.versions.mixinextras.get()
+
         from(modJsonTask)
 
         rename("icon-128.png", "icon.png")
 
         filesMatching("freecam-fabric.mixins.json5") {
-            expand("mixinCompatLevel" to "JAVA_${meta.javaVersion}")
+            expand(
+                "mixinCompatLevel" to "JAVA_${meta.javaVersion}",
+                "mixinExtrasMinVersion" to mixinextras,
+            )
         }
 
-        inputs.properties("java_version" to meta.javaVersion)
+        inputs.properties(
+            "java_version" to meta.javaVersion,
+            "mixinextras_version" to mixinextras,
+        )
     }
 
     if (loomAdapter.hasMappings) {

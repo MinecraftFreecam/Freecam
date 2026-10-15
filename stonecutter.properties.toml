@@ -36,7 +36,6 @@ reqs.cloth = "~26.3"
 deps.modmenu = "21.0.0-beta.1"
 
 deps.fabric_api = "0.160.5+26.3"
-reqs.fabric_loader = ">=0.18.0"
 
 deps.neoforge_pr = ""
 deps.neoforge_version = "26.3.0.1-beta"
@@ -52,7 +51,6 @@ reqs.cloth = "~26.2"
 deps.modmenu = "20.0.1"
 
 deps.fabric_api = "0.152.2+26.2"
-reqs.fabric_loader = ">=0.18.0"
 
 deps.neoforge_version = "26.2.0.64"
 reqs.neoforge_version = ">=26.2.0-0"
@@ -68,7 +66,6 @@ reqs.cloth = "~26.1"
 deps.modmenu = "18.0.0"
 
 deps.fabric_api = "0.145.4+26.1.2"
-reqs.fabric_loader = ">=0.18.0"
 
 deps.neoforge_version = "26.1.2.95"
 reqs.neoforge_version = ">=26.1.0-alpha"
@@ -83,7 +80,6 @@ reqs.cloth = "~21.11"
 
 deps.fabric_api = "0.139.4+1.21.11"
 deps.modmenu = "17.0.0"
-reqs.fabric_loader = ">=0.14.0"
 
 deps.neoforge_version = "21.11.45"
 deps.neoforge_pr = ""
@@ -97,7 +93,6 @@ reqs.cloth = "^14"
 
 deps.fabric_api = "0.100.8+1.20.6"
 deps.modmenu = "10.0.0"
-reqs.fabric_loader = ">=0.14.0"
 
 deps.neoforge_version = "20.6.139"
 deps.neoforge_pr = ""
@@ -116,7 +111,6 @@ reqs.cloth = "^10.1"
 
 deps.fabric_api = "0.87.2+1.19.4"
 deps.modmenu = "6.3.1"
-reqs.fabric_loader = ">=0.12.11"
 
 deps.forge_version = "45.2.6"
 reqs.forge_version = ">=45"
@@ -130,7 +124,6 @@ reqs.cloth = "^6"
 
 deps.fabric_api = "0.77.0+1.18.2"
 deps.modmenu = "3.2.5"
-reqs.fabric_loader = ">=0.12.11"
 
 deps.forge_version = "40.2.14"
 reqs.forge_version = ">=40"
@@ -143,7 +136,6 @@ reqs.cloth = "^5"
 
 deps.fabric_api = "0.46.1+1.17"
 deps.modmenu = "2.0.17"
-reqs.fabric_loader = ">=0.12.11"
 
 deps.forge_version = "37.1.1"
 reqs.forge_version = ">=37"
@@ -162,7 +154,6 @@ deps.cloth = "4.17.101"
 
 deps.fabric_api = "0.42.0+1.16"
 deps.modmenu = "1.16.23"
-reqs.fabric_loader = ">=0.12.11"
 
 deps.forge_version = "36.2.41"
 reqs.forge_version = ">=34"

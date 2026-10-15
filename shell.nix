@@ -15,7 +15,7 @@ pkgs.callPackage (
     name = "freecam";
     project_dir = toString ./.;
     packages = [
-      javaPackages.compiler.openjdk21
+      javaPackages.compiler.openjdk25
       nodejs_24
       knope
       zizmor
