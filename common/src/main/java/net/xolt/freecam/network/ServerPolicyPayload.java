@@ -32,10 +32,8 @@ public record ServerPolicyPayload(String json) implements CustomPacketPayload {
     }
 
     private static Identifier identifier() {
-        //? if >=1.21 {
+        //~ if >=1.21 'new ResourceLocation' -> 'Identifier.fromNamespaceAndPath'
         return Identifier.fromNamespaceAndPath(Freecam.MOD_ID, "server_config");
-        //? } else
-        //return new ResourceLocation(Freecam.MOD_ID, "server_config");
     }
 }
 //? }
