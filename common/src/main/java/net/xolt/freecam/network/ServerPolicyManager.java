@@ -25,14 +25,21 @@ public final class ServerPolicyManager {
         ServerPolicy policy = ServerPolicy.ALLOW_ALL;
         if (server.isDedicatedServer()) {
             ModConfigLoader loader = new ModConfigLoader(new RawJsonPreservingSerializer(), "freecam", configDir);
+            ModConfigDTO config = null;
             try {
-                ModConfigDTO config = loader.read();
+                config = loader.read();
                 policy = ServerPolicy.create(config.serverPolicy);
-                if (!Files.exists(loader.getFilepath())) {
-                    loader.write(config);
-                }
             } catch (Exception e) {
-                LOGGER.error("Failed to load Freecam server policy; using defaults", e);
+                // Fail closed: a broken config must not silently lift the server's restrictions.
+                LOGGER.error("Failed to load Freecam server policy; restricting all features", e);
+                policy = ServerPolicy.RESTRICT_ALL;
+            }
+            if (config != null && !Files.exists(loader.getFilepath())) {
+                try {
+                    loader.write(config);
+                } catch (Exception e) {
+                    LOGGER.warn("Failed to write default Freecam server policy", e);
+                }
             }
         }
         SERVERS.put(server, new State(policy));

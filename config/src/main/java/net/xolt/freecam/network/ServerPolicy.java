@@ -7,6 +7,7 @@ import org.jetbrains.annotations.Nullable;
 /** Immutable policy snapshot shared by the sender and receiver. */
 public record ServerPolicy(boolean allowFreecam, CollisionPolicy collision, boolean allowFullbright, boolean allowCameraInteractions) {
     public static final ServerPolicy ALLOW_ALL = new ServerPolicy(true, new CollisionPolicy(true), true, true);
+    public static final ServerPolicy RESTRICT_ALL = new ServerPolicy(false, new CollisionPolicy(false), false, false);
     private static final Gson GSON = new Gson();
 
     public record CollisionPolicy(boolean allowIgnoring) {}
