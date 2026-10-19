@@ -7,7 +7,7 @@ import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Options;
 import net.minecraft.client.player.KeyboardInput;
 import net.xolt.freecam.Freecam;
-import net.xolt.freecam.accessors.KeyMappingStateAccessor;
+import net.xolt.freecam.config.keys.KeyStateHolder;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -18,7 +18,7 @@ abstract class KeyboardInputMixin {
 
     @Final @Shadow private Options options;
 
-    /// When controlling the camera, use the [effective sneak key state][KeyMappingStateAccessor#freecam$isKeyDown()]
+    /// When controlling the camera, use the [effective sneak key state][KeyStateHolder#isSneakKeyDown()]
     /// instead of [Minecraft's state][KeyMapping#isDown()], which may actually represent 'toggle sneak'.
     @Expression("this.options.keyShift.isDown()")
     @Definition(id = "options", field = "Lnet/minecraft/client/player/KeyboardInput;options:Lnet/minecraft/client/Options;")
@@ -27,7 +27,7 @@ abstract class KeyboardInputMixin {
     @ModifyExpressionValue(method = "tick", at = @At("MIXINEXTRAS:EXPRESSION"))
     private boolean modifyShiftKeyDown(boolean original) {
         return Freecam.isEnabled() && !Freecam.isPlayerControlEnabled()
-            ? ((KeyMappingStateAccessor) options.keyShift).freecam$isKeyDown()
+            ? KeyStateHolder.isSneakKeyDown()
             : original;
     }
 }
