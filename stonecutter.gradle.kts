@@ -87,7 +87,7 @@ stonecutter parameters {
         string(current.parsed >= "1.19") {
             replace("new net.minecraft.network.chat.TranslatableComponent(", "Component.translatable(")
             replace("new net.minecraft.network.chat.TextComponent(", "Component.literal(")
-            replace("net.minecraft.network.chat.TextComponent.EMPTY", "Component.empty()")
+            replace("new net.minecraft.network.chat.TextComponent(\"\")", "Component.empty()")
         }
     }
 }
