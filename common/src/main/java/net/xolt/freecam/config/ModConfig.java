@@ -2,6 +2,7 @@ package net.xolt.freecam.config;
 
 import net.minecraft.world.level.block.Block;
 import net.xolt.freecam.Freecam;
+import net.xolt.freecam.network.HostedServerPolicy;
 import net.xolt.freecam.config.controller.BasicConfigController;
 import net.xolt.freecam.config.controller.ConfigController;
 import net.xolt.freecam.config.controller.ConfigControllerRegistry;
@@ -14,8 +15,10 @@ import net.xolt.freecam.config.model.FlightMode;
 import net.xolt.freecam.config.model.ModConfigDTO;
 import net.xolt.freecam.config.model.ModConfigImpl;
 import net.xolt.freecam.config.model.Perspective;
+import net.xolt.freecam.config.model.ServerRestrictedFeature;
 
 import java.nio.file.Path;
+import java.util.List;
 
 import static net.xolt.freecam.Freecam.MC;
 
@@ -36,6 +39,7 @@ public interface ModConfig {
         ConfigController<ModConfigImpl> controller = new ModConfigController(dtoController);
         ConfigControllerRegistry.register(ModConfigImpl.class, controller);
 
+        dtoController.registerListener(() -> HostedServerPolicy.get().configure(dtoController.getConfig()));
         controller.load();
     }
 
@@ -88,6 +92,8 @@ public interface ModConfig {
     boolean allowInteractionsFromPlayer();
 
     boolean isRestrictedOnServer(String serverIp);
+
+    List<ServerRestrictedFeature> getServerRestrictedFeatures();
 
     boolean shouldNotifyFreecam();
 
