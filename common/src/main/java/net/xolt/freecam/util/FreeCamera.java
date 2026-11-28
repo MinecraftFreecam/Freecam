@@ -59,6 +59,7 @@ public class FreeCamera extends AbstractClientPlayer {
 
     @Override
     public void tick() {
+        noPhysics = ModConfig.get().ignoreAllCollision();
         getInput().tick(
             //? if <1.21.11
             //false // isMovingSlowly
